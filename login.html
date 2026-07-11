@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تسجيل الدخول - نقابة تكنولوجيا المعلومات</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            direction: rtl;
+            overflow: hidden;
+        }
+
+        /* خلفية ذكاء اصطناعي */
+        .ai-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 20%, rgba(0, 200, 150, 0.05) 0%, transparent 50%);
+            animation: aiMove 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes aiMove {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            100% {
+                transform: rotate(3deg) scale(1.02);
+            }
+        }
+
+        .ai-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* جزيئات */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(100, 200, 255, 0.2);
+            border-radius: 50%;
+            animation: floatP 15s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(3) {
+            top: 60%;
+            left: 10%;
+            animation-delay: 4s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(4) {
+            top: 80%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+        .particle:nth-child(5) {
+            top: 45%;
+            left: 45%;
+            animation-delay: 3s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(6) {
+            top: 15%;
+            left: 50%;
+            animation-delay: 5s;
+        }
+        .particle:nth-child(7) {
+            top: 70%;
+            left: 35%;
+            animation-delay: 2.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(8) {
+            top: 90%;
+            left: 55%;
+            animation-delay: 4.5s;
+        }
+        .particle:nth-child(9) {
+            top: 25%;
+            left: 85%;
+            animation-delay: 1.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(10) {
+            top: 55%;
+            left: 25%;
+            animation-delay: 3.5s;
+        }
+        .particle:nth-child(11) {
+            top: 5%;
+            left: 40%;
+            animation-delay: 0.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(12) {
+            top: 75%;
+            left: 60%;
+            animation-delay: 2.8s;
+        }
+
+        @keyframes floatP {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.5);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.2;
+            }
+        }
+
+        /* شبكة */
+        .grid-line {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* بطاقة تسجيل الدخول */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 24px;
+            color: #fff;
+            margin: 0 auto 12px;
+        }
+
+        .login-header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .login-header p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.3);
+            margin-top: 8px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.5);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .login-footer a {
+            color: #0055e6;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-msg {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #ef4444;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .error-msg.active {
+            display: block;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 8px 0;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .spinner-sm {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 28px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- خلفية -->
+    <div class="ai-bg"></div>
+    <div class="grid-line"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- حاوية تسجيل الدخول -->
+    <div class="login-container">
+        <div class="login-card">
+
+            <div class="login-header">
+                <div class="logo-box">ن.ت</div>
+                <h1>تسجيل الدخول</h1>
+                <p>نقابة تكنولوجيا المعلومات - لجنة التحول الرقمي</p>
+            </div>
+
+            <div class="error-msg" id="loginError"></div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label>📧 البريد الإلكتروني</label>
+                    <input type="email" id="emailInput" placeholder="admin@itws.com" required />
+                </div>
+
+                <div class="form-group">
+                    <label>🔒 كلمة المرور</label>
+                    <input type="password" id="passwordInput" placeholder="••••••••" required />
+                </div>
+
+                <div class="loader" id="loginLoader">
+                    <div class="spinner-sm"></div>
+                    <span style="color:rgba(255,255,255,0.3);font-size:13px;margin-right:8px;">جاري تسجيل الدخول...</span>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">🔑 تسجيل الدخول</button>
+            </form>
+
+            <div class="login-footer">
+                <p>ليس لديك حساب؟ <a href="#">تواصل مع الإدارة</a></p>
+                <a href="index.html" class="back-link">← العودة إلى الرئيسية</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
+        let loading = false;
+
+        // ============================================================
+        // 3. التحقق من حالة المصادقة
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                // مستخدم مسجل الدخول - توجيه إلى الرئيسية
+                window.location.href = 'index.html';
+            }
+        });
+
+        // ============================================================
+        // 4. معالجة تسجيل الدخول
+        // ============================================================
+        function handleLogin(e) {
+            e.preventDefault();
+
+            if (loading) return;
+
+            const email = document.getElementById('emailInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
+
+            if (!email || !password) {
+                showError('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+                return false;
+            }
+
+            loading = true;
+            document.getElementById('loginBtn').disabled = true;
+            document.getElementById('loginLoader').classList.add('active');
+            document.getElementById('loginError').classList.remove('active');
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function(userCredential) {
+                    // التحقق من وجود المستخدم في Firestore
+                    const uid = userCredential.user.uid;
+                    return db.collection('users').doc(uid).get();
+                })
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.isActive !== false) {
+                            // مستخدم نشط - توجيه إلى الرئيسية
+                            window.location.href = 'index.html';
+                        } else {
+                            // مستخدم غير نشط
+                            auth.signOut();
+                            showError('❌ هذا المستخدم غير نشط. تواصل مع الإدارة.');
+                        }
+                    } else {
+                        // مستخدم غير موجود في Firestore
+                        auth.signOut();
+                        showError('❌ المستخدم غير مصرح له بالدخول.');
+                    }
+                })
+                .catch(function(err) {
+                    let msg = '❌ حدث خطأ في تسجيل الدخول';
+                    if (err.code === 'auth/user-not-found') {
+                        msg = '❌ البريد الإلكتروني غير مسجل';
+                    } else if (err.code === 'auth/wrong-password') {
+                        msg = '❌ كلمة المرور غير صحيحة';
+                    } else if (err.code === 'auth/too-many-requests') {
+                        msg = '❌ تم حظر الحساب مؤقتاً. حاول لاحقاً';
+                    } else if (err.code === 'auth/invalid-email') {
+                        msg = '❌ البريد الإلكتروني غير صحيح';
+                    }
+                    showError(msg);
+                })
+                .finally(function() {
+                    loading = false;
+                    document.getElementById('loginBtn').disabled = false;
+                    document.getElementById('loginLoader').classList.remove('active');
+                });
+
+            return false;
+        }
+
+        // ============================================================
+        // 5. عرض الخطأ
+        // ============================================================
+        function showError(msg) {
+            const el = document.getElementById('loginError');
+            el.textContent = msg;
+            el.classList.add('active');
+        }
+
+        // ============================================================
+        // 6. الضغط على Enter
+        // ============================================================
+        document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        console.log('✅ صفحة تسجيل الدخول - نقابة تكنولوجيا المعلومات');
+    </script>
+
+</body>
+</html>
