@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>نقابة تكنولوجيا المعلومات - توثيق الشهادات</title>
+
+    <!-- ========== Firebase SDK ========== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+
+    <!-- ========== مكتبات خارجية ========== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
+
+    <style>
+        /* ============================================================
+                   التصميم الكامل - خلفية ذكاء اصطناعي + رسمي تقني
+                   ============================================================ */
+
+        /* --- إعادة تعيين --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* --- خلفية ذكاء اصطناعي --- */
+        .ai-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 20%, rgba(0, 200, 150, 0.05) 0%, transparent 50%);
+            animation: aiMove 20s ease-in-out infinite alternate;
+        }
+        .ai-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        @keyframes aiMove {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            100% {
+                transform: rotate(3deg) scale(1.02);
+            }
+        }
+
+        /* --- جزيئات متحركة --- */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(100, 200, 255, 0.25);
+            border-radius: 50%;
+            animation: floatP 15s infinite ease-in-out;
+        }
+        .particle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(3) {
+            top: 60%;
+            left: 10%;
+            animation-delay: 4s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(4) {
+            top: 80%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+        .particle:nth-child(5) {
+            top: 45%;
+            left: 45%;
+            animation-delay: 3s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(6) {
+            top: 15%;
+            left: 50%;
+            animation-delay: 5s;
+        }
+        .particle:nth-child(7) {
+            top: 70%;
+            left: 35%;
+            animation-delay: 2.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(8) {
+            top: 90%;
+            left: 55%;
+            animation-delay: 4.5s;
+        }
+        .particle:nth-child(9) {
+            top: 25%;
+            left: 85%;
+            animation-delay: 1.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(10) {
+            top: 55%;
+            left: 25%;
+            animation-delay: 3.5s;
+        }
+        .particle:nth-child(11) {
+            top: 5%;
+            left: 40%;
+            animation-delay: 0.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(12) {
+            top: 75%;
+            left: 60%;
+            animation-delay: 2.8s;
+        }
+        .particle:nth-child(13) {
+            top: 40%;
+            left: 5%;
+            animation-delay: 4.2s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(14) {
+            top: 65%;
+            left: 90%;
+            animation-delay: 1.8s;
+        }
+        .particle:nth-child(15) {
+            top: 50%;
+            left: 75%;
+            animation-delay: 3.2s;
+            width: 5px;
+            height: 5px;
+        }
+
+        @keyframes floatP {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translate(30px, -60px) scale(1.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.2;
+            }
+        }
+
+        /* --- طبقة الشبكة التقنية --- */
+        .grid-line {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* --- الحاوية الرئيسية --- */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- الهيدر --- */
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 18px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .header-title p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        .btn-lg {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        /* --- البطاقات --- */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .card-glow {
+            border-color: rgba(0, 85, 230, 0.3);
+            box-shadow: 0 0 40px rgba(0, 85, 230, 0.05);
+        }
+
+        /* --- عناوين --- */
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .section-title span {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-sub {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        /* --- نموذج البحث --- */
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-row select,
+        .search-row input {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-row select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .search-row select:focus,
+        .search-row input:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.15);
+        }
+
+        .search-row input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .search-row .btn {
+            flex-shrink: 0;
+        }
+
+        /* --- بيانات الباحث --- */
+        .researcher-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .researcher-fields input,
+        .researcher-fields select {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .researcher-fields select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .researcher-fields input:focus,
+        .researcher-fields select:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.1);
+        }
+
+        .researcher-fields input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* --- النتيجة --- */
+        .result-box {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        /* --- بطاقة الشهادة --- */
+        .certificate-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 85, 230, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+
+        .cert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .cert-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cert-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .cert-status.valid {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .cert-status.invalid {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .cert-code {
+            font-family: monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 14px;
+            border-radius: 8px;
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .cert-item {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .cert-item .label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .cert-item .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .cert-item .value.grade-a {
+            color: #22c55e;
+        }
+        .cert-item .value.grade-b {
+            color: #3b82f6;
+        }
+        .cert-item .value.grade-c {
+            color: #eab308;
+        }
+        .cert-item .value.grade-d {
+            color: #f97316;
+        }
+        .cert-item .value.grade-f {
+            color: #ef4444;
+        }
+
+        .cert-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 20px;
+        }
+
+        /* --- الأكاديمية --- */
+        .academy-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .academy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .academy-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .academy-badge {
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .branch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .branch-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .branch-item .gov {
+            font-weight: 700;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .branch-item .addr {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 2px 0;
+        }
+
+        .branch-item .phone {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .branch-item .main-badge {
+            font-size: 10px;
+            color: #0055e6;
+            background: rgba(0, 85, 230, 0.1);
+            padding: 2px 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* --- حالة التحميل --- */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+        .loader.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- رسائل الخطأ --- */
+        .error-msg {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            color: #ef4444;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .error-msg.active {
+            display: block;
+        }
+
+        .success-msg {
+            display: none;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            color: #22c55e;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .success-msg.active {
+            display: block;
+        }
+
+        /* --- الإحصائيات --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 18px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .stat-item .num {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item .lbl {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 2px;
+        }
+
+        /* --- الميزات --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .feature-item .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .feature-item .title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .feature-item .desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 2px;
+        }
+
+        /* --- الفوتر --- */
+        .footer {
+            text-align: center;
+            padding: 24px 0 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 12px;
+        }
+
+        /* --- استجابة --- */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 16px 18px;
+            }
+            .header-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .search-row {
+                flex-direction: column;
+            }
+            .search-row select,
+            .search-row input {
+                min-width: unset;
+            }
+            .cert-header {
+                flex-direction: column;
+            }
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+            .researcher-fields {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .section-title {
+                font-size: 22px;
+            }
+            .cert-actions {
+                flex-direction: column;
+            }
+            .cert-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .academy-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 12px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- أدوات --- */
+        .text-center {
+            text-align: center;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mt-24 {
+            margin-top: 24px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .w-full {
+            width: 100%;
+        }
+
+        /* --- علامات التبويب --- */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 85, 230, 0.15);
+            color: #fff;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== خلفية ذكاء اصطناعي ===== -->
+    <div class="ai-bg"></div>
+    <div class="grid-line"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ===== الحاوية الرئيسية ===== -->
+    <div class="main-container">
+
+        <!-- ===== الهيدر ===== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box">ن.ت</div>
+                <div class="header-title">
+                    <h1>نقابة تكنولوجيا المعلومات</h1>
+                    <p>لجنة التحول الرقمي والتدريب</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="#" class="btn btn-outline btn-sm" id="loginBtn">تسجيل الدخول</a>
+                <a href="#" class="btn btn-primary btn-sm" id="adminBtn" style="display:none;">لوحة التحكم</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn" style="display:none;">تسجيل الخروج</a>
+            </div>
+        </header>
+
+        <!-- ===== البطل ===== -->
+        <div class="text-center" style="margin-bottom:30px;">
+            <h1 class="section-title">تحقق من صحة <span>شهاداتك التدريبية</span></h1>
+            <p class="section-sub">منصة رسمية لتحقق من صحة الشهادات الصادرة عن الأكاديميات المعتمدة</p>
+        </div>
+
+        <!-- ===== الإحصائيات ===== -->
+        <div class="stats-grid" id="statsContainer">
+            <div class="stat-item">
+                <div class="num" id="statCertificates">0</div>
+                <div class="lbl">شهادة موثقة</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="statAcademies">0</div>
+                <div class="lbl">أكاديمية معتمدة</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="statSearches">0</div>
+                <div class="lbl">عملية بحث</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="statStudents">0</div>
+                <div class="lbl">خريج مسجل</div>
+            </div>
+        </div>
+
+        <!-- ===== علامات التبويب ===== -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tabCertificate">🔍 بحث عن شهادة</button>
+            <button class="tab-btn" data-tab="tabAcademy">🏛️ بحث عن أكاديمية</button>
+        </div>
+
+        <!-- ===== تبويب الشهادة ===== -->
+        <div class="tab-content active" id="tabCertificate">
+            <div class="card card-glow">
+                <form id="certificateSearchForm" onsubmit="return searchCertificate(event)">
+                    <div class="search-box">
+                        <div class="search-row">
+                            <input type="text" id="certCode" placeholder="أدخل كود الشهادة (مثال: NTI-CERT-2026-ABCDEF)" required />
+                            <button type="submit" class="btn btn-primary" id="searchCertBtn">🔍 بحث</button>
+                        </div>
+
+                        <div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;">
+                            أدخل الكود المطبوع على الشهادة للتحقق من صحتها
+                        </div>
+
+                        <!-- بيانات الباحث -->
+                        <div class="researcher-fields">
+                            <input type="text" id="researcherName" placeholder="اسم الباحث *" required />
+                            <input type="text" id="researcherPhone" placeholder="رقم الهاتف *" required />
+                            <input type="text" id="researcherEntity" placeholder="الجهة (شركة / مصنع / جهة حكومية) *" required />
+                            <select id="researcherEntityType" required>
+                                <option value="">نوع الجهة *</option>
+                                <option value="شركة">شركة</option>
+                                <option value="مصنع">مصنع</option>
+                                <option value="جهة حكومية">جهة حكومية</option>
+                                <option value="مؤسسة خاصة">مؤسسة خاصة</option>
+                                <option value="فرد">فرد</option>
+                                <option value="أكاديمية">أكاديمية</option>
+                                <option value="جامعة">جامعة</option>
+                                <option value="مركز تدريب">مركز تدريب</option>
+                            </select>
+                            <select id="researcherGovernorate" required>
+                                <option value="">المحافظة *</option>
+                                <option value="القاهرة">القاهرة</option>
+                                <option value="الإسكندرية">الإسكندرية</option>
+                                <option value="الجيزة">الجيزة</option>
+                                <option value="القليوبية">القليوبية</option>
+                                <option value="الشرقية">الشرقية</option>
+                                <option value="الدقهلية">الدقهلية</option>
+                                <option value="المنوفية">المنوفية</option>
+                                <option value="الغربية">الغربية</option>
+                                <option value="كفر الشيخ">كفر الشيخ</option>
+                                <option value="دمياط">دمياط</option>
+                                <option value="بورسعيد">بورسعيد</option>
+                                <option value="الإسماعيلية">الإسماعيلية</option>
+                                <option value="السويس">السويس</option>
+                                <option value="شمال سيناء">شمال سيناء</option>
+                                <option value="جنوب سيناء">جنوب سيناء</option>
+                                <option value="البحر الأحمر">البحر الأحمر</option>
+                                <option value="الأقصر">الأقصر</option>
+                                <option value="أسوان">أسوان</option>
+                                <option value="أسيوط">أسيوط</option>
+                                <option value="سوهاج">سوهاج</option>
+                                <option value="قنا">قنا</option>
+                                <option value="المنيا">المنيا</option>
+                                <option value="بني سويف">بني سويف</option>
+                                <option value="الفيوم">الفيوم</option>
+                                <option value="مطروح">مطروح</option>
+                                <option value="الوادي الجديد">الوادي الجديد</option>
+                                <option value="حلوان">حلوان</option>
+                                <option value="العاشر من رمضان">العاشر من رمضان</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- حالة التحميل -->
+                <div class="loader" id="certLoader">
+                    <div class="spinner"></div>
+                    <div style="color:rgba(255,255,255,0.3);">جاري البحث...</div>
+                </div>
+
+                <!-- رسائل -->
+                <div class="error-msg" id="certError"></div>
+                <div class="success-msg" id="certSuccess"></div>
+
+                <!-- النتيجة -->
+                <div class="result-box" id="certResult">
+                    <!-- سيتم عرض الشهادة هنا -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== تبويب الأكاديمية ===== -->
+        <div class="tab-content" id="tabAcademy">
+            <div class="card card-glow">
+                <form id="academySearchForm" onsubmit="return searchAcademy(event)">
+                    <div class="search-box">
+                        <div class="search-row">
+                            <input type="text" id="academyLicense" placeholder="أدخل الرقم الاعتمادي للأكاديمية" required />
+                            <button type="submit" class="btn btn-primary" id="searchAcademyBtn">🏛️ بحث</button>
+                        </div>
+
+                        <div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;">
+                            أدخل الرقم الاعتمادي الصادر من النقابة
+                        </div>
+
+                        <!-- بيانات الباحث -->
+                        <div class="researcher-fields">
+                            <input type="text" id="acadResearcherName" placeholder="اسم الباحث *" required />
+                            <input type="text" id="acadResearcherPhone" placeholder="رقم الهاتف *" required />
+                            <input type="text" id="acadResearcherEntity" placeholder="الجهة *" required />
+                            <select id="acadResearcherEntityType" required>
+                                <option value="">نوع الجهة *</option>
+                                <option value="شركة">شركة</option>
+                                <option value="مصنع">مصنع</option>
+                                <option value="جهة حكومية">جهة حكومية</option>
+                                <option value="مؤسسة خاصة">مؤسسة خاصة</option>
+                                <option value="فرد">فرد</option>
+                            </select>
+                            <select id="acadResearcherGovernorate" required>
+                                <option value="">المحافظة *</option>
+                                <option value="القاهرة">القاهرة</option>
+                                <option value="الإسكندرية">الإسكندرية</option>
+                                <option value="الجيزة">الجيزة</option>
+                                <option value="القليوبية">القليوبية</option>
+                                <option value="الشرقية">الشرقية</option>
+                                <option value="الدقهلية">الدقهلية</option>
+                                <option value="المنوفية">المنوفية</option>
+                                <option value="الغربية">الغربية</option>
+                                <option value="كفر الشيخ">كفر الشيخ</option>
+                                <option value="دمياط">دمياط</option>
+                                <option value="بورسعيد">بورسعيد</option>
+                                <option value="الإسماعيلية">الإسماعيلية</option>
+                                <option value="السويس">السويس</option>
+                                <option value="شمال سيناء">شمال سيناء</option>
+                                <option value="جنوب سيناء">جنوب سيناء</option>
+                                <option value="البحر الأحمر">البحر الأحمر</option>
+                                <option value="الأقصر">الأقصر</option>
+                                <option value="أسوان">أسوان</option>
+                                <option value="أسيوط">أسيوط</option>
+                                <option value="سوهاج">سوهاج</option>
+                                <option value="قنا">قنا</option>
+                                <option value="المنيا">المنيا</option>
+                                <option value="بني سويف">بني سويف</option>
+                                <option value="الفيوم">الفيوم</option>
+                                <option value="مطروح">مطروح</option>
+                                <option value="الوادي الجديد">الوادي الجديد</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="loader" id="academyLoader">
+                    <div class="spinner"></div>
+                    <div style="color:rgba(255,255,255,0.3);">جاري البحث...</div>
+                </div>
+
+                <div class="error-msg" id="academyError"></div>
+                <div class="success-msg" id="academySuccess"></div>
+
+                <div class="result-box" id="academyResult">
+                    <!-- سيتم عرض الأكاديمية هنا -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== الميزات ===== -->
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="icon">✅</div>
+                <div class="title">توثيق معتمد</div>
+                <div class="desc">شهادات موثقة من نقابة تكنولوجيا المعلومات</div>
+            </div>
+            <div class="feature-item">
+                <div class="icon">🔒</div>
+                <div class="title">آمن وموثوق</div>
+                <div class="desc">بيانات محمية بأعلى معايير الأمان</div>
+            </div>
+            <div class="feature-item">
+                <div class="icon">📄</div>
+                <div class="title">طباعة وتحميل</div>
+                <div class="desc">احصل على نسخة رسمية من الشهادة PDF</div>
+            </div>
+            <div class="feature-item">
+                <div class="icon">🏛️</div>
+                <div class="title">فروع 27 محافظة</div>
+                <div class="desc">عناوين وبيانات جميع الأكاديميات المعتمدة</div>
+            </div>
+        </div>
+
+        <!-- ===== الفوتر ===== -->
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - لجنة التحول الرقمي والتدريب
+        </footer>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== جافا سكريبت ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. متغيرات عامة
+        // ============================================================
+        let currentUser = null;
+
+        // ============================================================
+        // 3. دوال مساعدة
+        // ============================================================
+        function showLoader(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function hideLoader(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showError(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.add('active');
+        }
+
+        function hideError(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showSuccess(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.add('active');
+        }
+
+        function hideSuccess(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showResult(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function hideResult(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('ar-EG', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function getGradeClass(grade) {
+            if (!grade) return '';
+            const g = grade.toUpperCase();
+            if (g.startsWith('A')) return 'grade-a';
+            if (g.startsWith('B')) return 'grade-b';
+            if (g.startsWith('C')) return 'grade-c';
+            if (g.startsWith('D')) return 'grade-d';
+            return 'grade-f';
+        }
+
+        // ============================================================
+        // 4. المصادقة
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('adminBtn').style.display = 'inline-flex';
+                document.getElementById('logoutBtn').style.display = 'inline-flex';
+                // جلب بيانات المستخدم من Firestore
+                db.collection('users').doc(user.uid).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.role === 'super_admin' || data.role === 'admin') {
+                            document.getElementById('adminBtn').style.display = 'inline-flex';
+                        }
+                    }
+                });
+            } else {
+                currentUser = null;
+                document.getElementById('loginBtn').style.display = 'inline-flex';
+                document.getElementById('adminBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // تسجيل دخول سريع (للاختبار)
+            const email = prompt('أدخل البريد الإلكتروني:');
+            if (!email) return;
+            const password = prompt('أدخل كلمة المرور:');
+            if (!password) return;
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function() {
+                    alert('✅ تم تسجيل الدخول بنجاح');
+                })
+                .catch(function(err) {
+                    alert('❌ خطأ: ' + err.message);
+                });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(function() {
+                alert('✅ تم تسجيل الخروج');
+            });
+        });
+
+        document.getElementById('adminBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('🚧 سيتم توجيهك إلى لوحة التحكم قريباً');
+        });
+
+        // ============================================================
+        // 5. البحث عن شهادة
+        // ============================================================
+        function searchCertificate(e) {
+            e.preventDefault();
+
+            const code = document.getElementById('certCode').value.trim();
+            if (!code) {
+                showError('certError', 'الرجاء إدخال كود الشهادة');
+                return false;
+            }
+
+            // التحقق من بيانات الباحث
+            const name = document.getElementById('researcherName').value.trim();
+            const phone = document.getElementById('researcherPhone').value.trim();
+            const entity = document.getElementById('researcherEntity').value.trim();
+            const entityType = document.getElementById('researcherEntityType').value;
+            const governorate = document.getElementById('researcherGovernorate').value;
+
+            if (!name || !phone || !entity || !entityType || !governorate) {
+                showError('certError', 'الرجاء إكمال جميع بيانات الباحث');
+                return false;
+            }
+
+            hideError('certError');
+            hideSuccess('certSuccess');
+            hideResult('certResult');
+            showLoader('certLoader');
+
+            // البحث في Firestore
+            db.collection('certificates')
+                .where('certificateCode', '==', code)
+                .where('isActive', '==', true)
+                .get()
+                .then(function(querySnapshot) {
+                    hideLoader('certLoader');
+
+                    if (querySnapshot.empty) {
+                        showError('certError', '❌ لم يتم العثور على شهادة بهذا الكود');
+                        // تسجيل البحث
+                        logSearch('certificate', code, name, phone, entity, entityType, governorate, 0);
+                        return;
+                    }
+
+                    const doc = querySnapshot.docs[0];
+                    const data = doc.data();
+
+                    // تسجيل البحث
+                    logSearch('certificate', code, name, phone, entity, entityType, governorate, 1);
+
+                    // عرض الشهادة
+                    renderCertificate(data);
+                    showResult('certResult');
+                    showSuccess('certSuccess', '✅ تم العثور على الشهادة بنجاح');
+
+                    // تحديث الإحصائيات
+                    updateStats();
+
+                })
+                .catch(function(err) {
+                    hideLoader('certLoader');
+                    showError('certError', '❌ حدث خطأ: ' + err.message);
+                });
+
+            return false;
+        }
+
+        // ============================================================
+        // 6. عرض الشهادة
+        // ============================================================
+        function renderCertificate(data) {
+            const container = document.getElementById('certResult');
+
+            const statusHtml = data.isActive ?
+                '<span class="cert-status valid">✅ صالحة</span>' :
+                '<span class="cert-status invalid">❌ غير صالحة</span>';
+
+            const gradeClass = getGradeClass(data.grade);
+
+            container.innerHTML = `
+                        <div class="certificate-card">
+                            <div class="cert-header">
+                                <div class="cert-header-left">
+                                    <div style="font-size:24px;">📜</div>
+                                    <div>
+                                        <div style="font-weight:700;font-size:18px;color:#fff;">شهادة اجتياز دورة تدريبية</div>
+                                        <div style="font-size:12px;color:rgba(255,255,255,0.3);">${data.certificateCode}</div>
+                                    </div>
+                                </div>
+                                ${statusHtml}
+                            </div>
+
+                            <div class="cert-grid">
+                                <div class="cert-item">
+                                    <div class="label">👤 اسم الطالب</div>
+                                    <div class="value">${data.studentName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📚 اسم الدورة التدريبية</div>
+                                    <div class="value">${data.courseName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">⏱️ عدد الساعات</div>
+                                    <div class="value">${data.courseHours || 'غير محدد'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🏅 تقدير الاجتياز</div>
+                                    <div class="value ${gradeClass}">${data.grade || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🏛️ الأكاديمية</div>
+                                    <div class="value">${data.academyName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📍 الفرع</div>
+                                    <div class="value">${data.branchName || data.branchId || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🔑 رقم اعتماد الأكاديمية</div>
+                                    <div class="value">${data.academyLicenseNumber || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📅 تاريخ الحصول على الشهادة</div>
+                                    <div class="value">${formatDate(data.issuedAt)}</div>
+                                </div>
+                            </div>
+
+                            <div class="cert-actions">
+                                <button class="btn btn-success btn-sm" onclick="printCertificate()">
+                                    🖨️ طباعة
+                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF()">
+                                    📥 تحميل PDF
+                                </button>
+                                <button class="btn btn-outline btn-sm" onclick="shareCertificate()">
+                                    📤 مشاركة
+                                </button>
+                                <div style="flex:1;text-align:left;font-size:11px;color:rgba(255,255,255,0.2);">
+                                    تم التحقق بواسطة نقابة تكنولوجيا المعلومات
+                                </div>
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // ============================================================
+        // 7. البحث عن أكاديمية
+        // ============================================================
+        function searchAcademy(e) {
+            e.preventDefault();
+
+            const license = document.getElementById('academyLicense').value.trim();
+            if (!license) {
+                showError('academyError', 'الرجاء إدخال الرقم الاعتمادي');
+                return false;
+            }
+
+            const name = document.getElementById('acadResearcherName').value.trim();
+            const phone = document.getElementById('acadResearcherPhone').value.trim();
+            const entity = document.getElementById('acadResearcherEntity').value.trim();
+            const entityType = document.getElementById('acadResearcherEntityType').value;
+            const governorate = document.getElementById('acadResearcherGovernorate').value;
+
+            if (!name || !phone || !entity || !entityType || !governorate) {
+                showError('academyError', 'الرجاء إكمال جميع بيانات الباحث');
+                return false;
+            }
+
+            hideError('academyError');
+            hideSuccess('academySuccess');
+            hideResult('academyResult');
+            showLoader('academyLoader');
+
+            db.collection('academies')
+                .where('licenseNumber', '==', license)
+                .where('isDeleted', '==', false)
+                .get()
+                .then(function(querySnapshot) {
+                    hideLoader('academyLoader');
+
+                    if (querySnapshot.empty) {
+                        showError('academyError', '❌ لم يتم العثور على أكاديمية بهذا الرقم الاعتمادي');
+                        logSearch('academy', license, name, phone, entity, entityType, governorate, 0);
+                        return;
+                    }
+
+                    const doc = querySnapshot.docs[0];
+                    const data = doc.data();
+
+                    logSearch('academy', license, name, phone, entity, entityType, governorate, 1);
+
+                    renderAcademy(data);
+                    showResult('academyResult');
+                    showSuccess('academySuccess', '✅ تم العثور على الأكاديمية بنجاح');
+
+                    updateStats();
+                })
+                .catch(function(err) {
+                    hideLoader('academyLoader');
+                    showError('academyError', '❌ حدث خطأ: ' + err.message);
+                });
+
+            return false;
+        }
+
+        // ============================================================
+        // 8. عرض الأكاديمية
+        // ============================================================
+        function renderAcademy(data) {
+            const container = document.getElementById('academyResult');
+
+            let branchesHtml = '';
+            if (data.branches && data.branches.length > 0) {
+                branchesHtml = data.branches.map(function(b) {
+                    return `
+                                <div class="branch-item">
+                                    <div class="gov">${b.governorate || '-'}</div>
+                                    <div class="addr">${b.address || '-'}</div>
+                                    <div class="phone">📞 ${b.phone || '-'}</div>
+                                    ${b.isMainBranch ? '<div class="main-badge">⭐ الرئيسي</div>' : ''}
+                                </div>
+                            `;
+                }).join('');
+            } else {
+                branchesHtml = '<div style="color:rgba(255,255,255,0.3);font-size:14px;">لا توجد فروع مسجلة</div>';
+            }
+
+            container.innerHTML = `
+                        <div class="academy-card">
+                            <div class="academy-header">
+                                <div>
+                                    <div class="academy-name">${data.name || '-'}</div>
+                                    <div style="font-size:13px;color:rgba(255,255,255,0.3);">
+                                        الرقم الاعتمادي: ${data.licenseNumber || '-'}
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="academy-badge">✅ معتمدة</span>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.25);margin-top:4px;">
+                                        البطاقة الضريبية: ${data.taxNumber || '-'}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="font-weight:700;color:#fff;font-size:15px;margin-bottom:8px;">
+                                📍 الفروع (${data.branches ? data.branches.length : 0})
+                            </div>
+                            <div class="branch-grid">
+                                ${branchesHtml}
+                            </div>
+
+                            <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:rgba(255,255,255,0.2);">
+                                تم التسجيل: ${formatDate(data.createdAt)}
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // ============================================================
+        // 9. تسجيل البحث
+        // ============================================================
+        function logSearch(type, value, name, phone, entity, entityType, governorate, resultCount) {
+            const data = {
+                searchType: type,
+                searchValue: value,
+                searcherName: name,
+                searcherPhone: phone,
+                searcherEntity: entity,
+                searcherEntityType: entityType,
+                governorate: governorate,
+                resultCount: resultCount,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                ipAddress: 'auto',
+                userAgent: navigator.userAgent
+            };
+
+            db.collection('searchLogs').add(data)
+                .then(function() {
+                    console.log('✅ تم تسجيل البحث');
+                })
+                .catch(function(err) {
+                    console.error('❌ خطأ في تسجيل البحث:', err);
+                });
+        }
+
+        // ============================================================
+        // 10. تحديث الإحصائيات
+        // ============================================================
+        function updateStats() {
+            // عدد الشهادات
+            db.collection('certificates').where('isActive', '==', true).get()
+                .then(function(snap) {
+                    document.getElementById('statCertificates').textContent = snap.size;
+                });
+
+            // عدد الأكاديميات
+            db.collection('academies').where('isDeleted', '==', false).get()
+                .then(function(snap) {
+                    document.getElementById('statAcademies').textContent = snap.size;
+                });
+
+            // عدد عمليات البحث
+            db.collection('searchLogs').get()
+                .then(function(snap) {
+                    document.getElementById('statSearches').textContent = snap.size;
+                });
+
+            // عدد الطلاب (من الشهادات - فريد)
+            db.collection('certificates').where('isActive', '==', true).get()
+                .then(function(snap) {
+                    const names = new Set();
+                    snap.forEach(function(doc) {
+                        const data = doc.data();
+                        if (data.studentName) names.add(data.studentName);
+                    });
+                    document.getElementById('statStudents').textContent = names.size;
+                });
+        }
+
+        // ============================================================
+        // 11. تبويب
+        // ============================================================
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                document.querySelectorAll('.tab-content').forEach(function(tab) {
+                    tab.classList.remove('active');
+                });
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ============================================================
+        // 12. طباعة وتحميل ومشاركة
+        // ============================================================
+        function printCertificate() {
+            const content = document.getElementById('certResult').innerHTML;
+            const win = window.open('', '_blank');
+            win.document.write(`
+                        <html dir="rtl">
+                        <head><title>شهادة معتمدة</title>
+                        <style>
+                            body { font-family: 'Tahoma', sans-serif; padding: 40px; background: #fff; color: #000; }
+                            .certificate-card { max-width: 800px; margin: 0 auto; }
+                            .cert-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0055e6; padding-bottom: 16px; }
+                            .cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+                            .cert-item { padding: 8px 12px; border-bottom: 1px solid #eee; }
+                            .label { font-size: 11px; color: #666; }
+                            .value { font-size: 16px; font-weight: 600; }
+                            .grade-a { color: #22c55e; }
+                            .grade-b { color: #3b82f6; }
+                            .grade-c { color: #eab308; }
+                            .grade-d { color: #f97316; }
+                            .grade-f { color: #ef4444; }
+                            .cert-status { display: inline-block; padding: 4px 16px; border-radius: 20px; background: #22c55e; color: #fff; }
+                            .cert-actions { display: none; }
+                            .footer { text-align: center; margin-top: 30px; color: #999; font-size: 12px; border-top: 1px solid #eee; padding-top: 16px; }
+                            .branch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+                            .branch-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; }
+                            .main-badge { color: #0055e6; font-size: 11px; }
+                            @media print { body { padding: 20px; } .cert-actions { display: none !important; } }
+    </style>
+</head>
+<body>
+    ${content}
+    <div class="footer">نقابة تكنولوجيا المعلومات - لجنة التحول الرقمي والتدريب</div>
+</body>
+</html>
+`);
+win.document.close();
+setTimeout(function() { win.print(); }, 500);
+}
+
+function downloadCertificatePDF() {
+    const element = document.getElementById('certResult');
+    if (!element || element.innerHTML.trim() === '') {
+        alert('❌ لا توجد شهادة للتحميل');
+        return;
+    }
+
+    // إضافة تذييل
+    const html = `
+                <div style="padding:20px;font-family:'Tahoma',sans-serif;">
+                    ${element.innerHTML}
+                    <div style="text-align:center;margin-top:30px;padding-top:16px;border-top:1px solid #ddd;color:#999;font-size:12px;">
+                        نقابة تكنولوجيا المعلومات - لجنة التحول الرقمي والتدريب
+                    </div>
+                </div>
+            `;
+
+    const win = window.open('', '_blank');
+    win.document.write(`
+                <html dir="rtl">
+                <head>
+                    <title>شهادة معتمدة</title>
+                    <style>
+                        body { font-family: 'Tahoma', sans-serif; padding: 20px; background: #fff; }
+                        .certificate-card { max-width: 800px; margin: 0 auto; }
+                        .cert-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0055e6; padding-bottom: 16px; }
+                        .cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+                        .cert-item { padding: 8px 12px; border-bottom: 1px solid #eee; }
+                        .label { font-size: 11px; color: #666; }
+                        .value { font-size: 16px; font-weight: 600; }
+                        .grade-a { color: #22c55e; }
+                        .grade-b { color: #3b82f6; }
+                        .grade-c { color: #eab308; }
+                        .grade-d { color: #f97316; }
+                        .grade-f { color: #ef4444; }
+                        .cert-status { display: inline-block; padding: 4px 16px; border-radius: 20px; background: #22c55e; color: #fff; }
+                        .cert-actions { display: none; }
+                        .branch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+                        .branch-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; }
+                        .main-badge { color: #0055e6; font-size: 11px; }
+                        @media print { body { padding: 20px; } .cert-actions { display: none !important; } }
+                    </style>
+                </head>
+                <body>
+                    ${html}
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        } < \/script> <
+                    /body> <
+                    /html>
+                    `);
+                    win.document.close();
+                }
+
+                function shareCertificate() {
+                    const url = window.location.href;
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'شهادة معتمدة من نقابة تكنولوجيا المعلومات',
+                            text: 'تحقق من صحة الشهادة عبر الرابط التالي:',
+                            url: url
+                        }).catch(function() {});
+                    } else {
+                        navigator.clipboard.writeText(url).then(function() {
+                            alert('✅ تم نسخ الرابط إلى الحافظة');
+                        }).catch(function() {
+                            prompt('انسخ الرابط:', url);
+                        });
+                    }
+                }
+
+                // ============================================================
+                // 13. تحميل البيانات عند بدء التشغيل
+                // ============================================================
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateStats();
+
+                    // تحديث الإحصائيات كل 30 ثانية
+                    setInterval(updateStats, 30000);
+                });
+
+                // ============================================================
+                // 14. إدخال كود الشهادة من الرابط (للتحقق المباشر)
+                // ============================================================
+                (function() {
+                    const params = new URLSearchParams(window.location.search);
+                    const code = params.get('code');
+                    if (code) {
+                        document.getElementById('certCode').value = code;
+                        // تشغيل البحث تلقائياً
+                        setTimeout(function() {
+                            document.getElementById('certificateSearchForm').dispatchEvent(new Event('submit'));
+                        }, 500);
+                    }
+                })();
+
+                console.log('✅ منصة توثيق الشهادات - نقابة تكنولوجيا المعلومات');
+                console.log('📌 جاهزة للاستخدام');
+            </script>
+
+        </body>
+        </html>
