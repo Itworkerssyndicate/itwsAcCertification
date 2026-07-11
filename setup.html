@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تهيئة قاعدة البيانات - نقابة تكنولوجيا المعلومات</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        /* ===== التصميم الكامل ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* خلفية ذكاء اصطناعي */
+        .ai-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 20%, rgba(0, 200, 150, 0.05) 0%, transparent 50%);
+            animation: aiMove 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes aiMove {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            100% {
+                transform: rotate(3deg) scale(1.02);
+            }
+        }
+
+        .ai-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(100, 200, 255, 0.2);
+            border-radius: 50%;
+            animation: floatP 15s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(3) {
+            top: 60%;
+            left: 10%;
+            animation-delay: 4s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(4) {
+            top: 80%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+        .particle:nth-child(5) {
+            top: 45%;
+            left: 45%;
+            animation-delay: 3s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(6) {
+            top: 15%;
+            left: 50%;
+            animation-delay: 5s;
+        }
+        .particle:nth-child(7) {
+            top: 70%;
+            left: 35%;
+            animation-delay: 2.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(8) {
+            top: 90%;
+            left: 55%;
+            animation-delay: 4.5s;
+        }
+        .particle:nth-child(9) {
+            top: 25%;
+            left: 85%;
+            animation-delay: 1.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(10) {
+            top: 55%;
+            left: 25%;
+            animation-delay: 3.5s;
+        }
+        .particle:nth-child(11) {
+            top: 5%;
+            left: 40%;
+            animation-delay: 0.5s;
+            width: 5px;
+            height: 5px;
+        }
+        .particle:nth-child(12) {
+            top: 75%;
+            left: 60%;
+            animation-delay: 2.8s;
+        }
+
+        @keyframes floatP {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.5);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.2;
+            }
+        }
+
+        .grid-line {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* هيدر */
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 18px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .header-title p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+        }
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        .btn-lg {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .card-glow {
+            border-color: rgba(0, 85, 230, 0.3);
+            box-shadow: 0 0 40px rgba(0, 85, 230, 0.05);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .section-title span {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-sub {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .setup-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .setup-item .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .setup-item .title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+        }
+        .setup-item .desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 2px;
+        }
+        .setup-item .status {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .setup-item .status.done {
+            color: #22c55e;
+        }
+        .setup-item .status.pending {
+            color: #f59e0b;
+        }
+        .setup-item .status.error {
+            color: #ef4444;
+        }
+
+        /* نموذج السوبر أدمن */
+        .admin-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .admin-form .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .admin-form label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 4px;
+        }
+
+        .admin-form input,
+        .admin-form select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .admin-form input:focus,
+        .admin-form select:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.15);
+        }
+
+        .admin-form input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-form select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* رسائل */
+        .msg-box {
+            display: none;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .msg-box.active {
+            display: block;
+        }
+        .msg-box.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        .msg-box.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        .msg-box.info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        .msg-box.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .loader.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .log-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 12px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .log-area .log-line {
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .log-area .log-line.success {
+            color: #22c55e;
+        }
+        .log-area .log-line.error {
+            color: #ef4444;
+        }
+        .log-area .log-line.info {
+            color: #3b82f6;
+        }
+        .log-area .log-line.warning {
+            color: #f59e0b;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px 0 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 16px 18px;
+            }
+            .header-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .admin-form {
+                grid-template-columns: 1fr;
+            }
+            .admin-form .full-width {
+                grid-column: 1;
+            }
+            .setup-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 12px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .setup-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mt-24 {
+            margin-top: 24px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- خلفية -->
+    <div class="ai-bg"></div>
+    <div class="grid-line"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- الحاوية -->
+    <div class="main-container">
+
+        <!-- هيدر -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box">ن.ت</div>
+                <div class="header-title">
+                    <h1>تهيئة قاعدة البيانات</h1>
+                    <p>نقابة تكنولوجيا المعلومات - لجنة التحول الرقمي</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="index.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
+            </div>
+        </header>
+
+        <!-- المحتوى -->
+        <div class="card card-glow">
+            <div class="section-title">⚙️ <span>تهيئة النظام</span></div>
+            <div class="section-sub">إنشاء مستخدم سوبر أدمن وإعداد قواعد البيانات</div>
+
+            <!-- رسائل -->
+            <div class="msg-box" id="setupMessage"></div>
+
+            <!-- حالة التحميل -->
+            <div class="loader" id="setupLoader">
+                <div class="spinner"></div>
+                <div style="color:rgba(255,255,255,0.3);">جاري تهيئة النظام...</div>
+            </div>
+
+            <!-- حالة قواعد البيانات -->
+            <div style="margin-bottom:24px;">
+                <h3 style="font-weight:700;color:#fff;margin-bottom:12px;">📊 حالة قواعد البيانات</h3>
+                <div class="setup-grid" id="dbStatusGrid">
+                    <div class="setup-item">
+                        <div class="icon">👤</div>
+                        <div class="title">المستخدمين</div>
+                        <div class="status pending" id="statusUsers">⏳ جاري التحقق...</div>
+                    </div>
+                    <div class="setup-item">
+                        <div class="icon">🏛️</div>
+                        <div class="title">الأكاديميات</div>
+                        <div class="status pending" id="statusAcademies">⏳ جاري التحقق...</div>
+                    </div>
+                    <div class="setup-item">
+                        <div class="icon">📜</div>
+                        <div class="title">الشهادات</div>
+                        <div class="status pending" id="statusCertificates">⏳ جاري التحقق...</div>
+                    </div>
+                    <div class="setup-item">
+                        <div class="icon">📊</div>
+                        <div class="title">سجل النشاطات</div>
+                        <div class="status pending" id="statusActivities">⏳ جاري التحقق...</div>
+                    </div>
+                    <div class="setup-item">
+                        <div class="icon">🔍</div>
+                        <div class="title">سجل البحث</div>
+                        <div class="status pending" id="statusSearchLogs">⏳ جاري التحقق...</div>
+                    </div>
+                    <div class="setup-item">
+                        <div class="icon">👥</div>
+                        <div class="title">المستخدمين النشطين</div>
+                        <div class="status pending" id="statusActiveUsers">⏳ جاري التحقق...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- نموذج إنشاء السوبر أدمن -->
+            <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;margin-top:20px;">
+                <h3 style="font-weight:700;color:#fff;margin-bottom:12px;">👑 إنشاء مستخدم سوبر أدمن</h3>
+                <p style="font-size:13px;color:rgba(255,255,255,0.3);margin-bottom:16px;">
+                    أدخل بيانات السوبر أدمن الجديد. إذا كان موجوداً بالفعل، سيتم تحديث بياناته.
+                </p>
+
+                <form id="adminForm" onsubmit="return createSuperAdmin(event)">
+                    <div class="admin-form">
+                        <div class="full-width">
+                            <label>📧 البريد الإلكتروني *</label>
+                            <input type="email" id="adminEmail" placeholder="superadmin@itws.com" required />
+                        </div>
+                        <div>
+                            <label>🔒 كلمة المرور *</label>
+                            <input type="password" id="adminPassword" placeholder="••••••••" required minlength="6" />
+                        </div>
+                        <div>
+                            <label>🔒 تأكيد كلمة المرور *</label>
+                            <input type="password" id="adminPasswordConfirm" placeholder="••••••••" required minlength="6" />
+                        </div>
+                        <div>
+                            <label>👤 الاسم الكامل *</label>
+                            <input type="text" id="adminName" placeholder="سوبر أدمن النظام" required />
+                        </div>
+                        <div>
+                            <label>📞 رقم الهاتف *</label>
+                            <input type="tel" id="adminPhone" placeholder="01234567890" required />
+                        </div>
+                        <div>
+                            <label>🔑 الدور</label>
+                            <select id="adminRole">
+                                <option value="super_admin">سوبر أدمن</option>
+                                <option value="admin">أدمن</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex-center mt-16">
+                        <button type="submit" class="btn btn-success btn-lg" id="createAdminBtn">
+                            👑 إنشاء / تحديث السوبر أدمن
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg" onclick="checkStatus()">
+                            🔄 تحديث الحالة
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- سجل العمليات -->
+            <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;margin-top:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                    <h3 style="font-weight:700;color:#fff;">📋 سجل العمليات</h3>
+                    <button class="btn btn-outline btn-sm" onclick="clearLog()">🗑️ مسح</button>
+                </div>
+                <div class="log-area" id="logArea">
+                    <div class="log-line info">⏳ جاهز لتهيئة النظام...</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- أزرار إضافية -->
+        <div class="flex-center" style="gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="checkStatus()">🔍 التحقق من الحالة</button>
+            <button class="btn btn-warning" onclick="resetAllData()">🗑️ إعادة تعيين جميع البيانات</button>
+            <button class="btn btn-outline" onclick="seedData()">🌱 تعبئة بيانات تجريبية</button>
+        </div>
+
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - لجنة التحول الرقمي والتدريب
+        </footer>
+
+    </div>
+
+    <!-- ===== جافا سكريبت ===== -->
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. دوال مساعدة
+        // ============================================================
+        function addLog(message, type = 'info') {
+            const logArea = document.getElementById('logArea');
+            const time = new Date().toLocaleTimeString('ar-EG');
+            const div = document.createElement('div');
+            div.className = `log-line ${type}`;
+            div.textContent = `[${time}] ${message}`;
+            logArea.appendChild(div);
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('logArea').innerHTML = '';
+            addLog('🗑️ تم مسح السجل', 'info');
+        }
+
+        function showMessage(msg, type = 'info') {
+            const el = document.getElementById('setupMessage');
+            el.textContent = msg;
+            el.className = `msg-box active ${type}`;
+        }
+
+        function hideMessage() {
+            document.getElementById('setupMessage').className = 'msg-box';
+        }
+
+        function showLoader() {
+            document.getElementById('setupLoader').classList.add('active');
+        }
+
+        function hideLoader() {
+            document.getElementById('setupLoader').classList.remove('active');
+        }
+
+        function setStatus(id, text, type = 'pending') {
+            const el = document.getElementById(id);
+            el.textContent = text;
+            el.className = `status ${type}`;
+        }
+
+        function getEgyptTime() {
+            const now = new Date();
+            return new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
+        }
+
+        // ============================================================
+        // 3. التحقق من حالة قواعد البيانات
+        // ============================================================
+        async function checkStatus() {
+            hideMessage();
+            showLoader();
+            addLog('🔍 جاري التحقق من حالة قواعد البيانات...', 'info');
+
+            try {
+                // التحقق من المستخدمين
+                const usersSnap = await db.collection('users').get();
+                const activeUsers = await db.collection('users').where('isActive', '==', true).get();
+                setStatus('statusUsers', `${usersSnap.size} مستخدم`, usersSnap.size > 0 ? 'done' : 'pending');
+                setStatus('statusActiveUsers', `${activeUsers.size} نشط`, activeUsers.size > 0 ? 'done' : 'pending');
+                addLog(`👤 المستخدمين: ${usersSnap.size} (${activeUsers.size} نشط)`, 'info');
+
+                // الأكاديميات
+                const acadSnap = await db.collection('academies').get();
+                const activeAcad = await db.collection('academies').where('isDeleted', '==', false).get();
+                setStatus('statusAcademies', `${activeAcad.size} معتمدة`, activeAcad.size > 0 ? 'done' : 'pending');
+                addLog(`🏛️ الأكاديميات: ${activeAcad.size} معتمدة`, 'info');
+
+                // الشهادات
+                const certSnap = await db.collection('certificates').get();
+                const activeCert = await db.collection('certificates').where('isActive', '==', true).get();
+                setStatus('statusCertificates', `${activeCert.size} نشطة`, activeCert.size > 0 ? 'done' : 'pending');
+                addLog(`📜 الشهادات: ${activeCert.size} نشطة`, 'info');
+
+                // النشاطات
+                const actSnap = await db.collection('activities').get();
+                setStatus('statusActivities', `${actSnap.size} سجل`, actSnap.size > 0 ? 'done' : 'pending');
+                addLog(`📊 سجل النشاطات: ${actSnap.size}`, 'info');
+
+                // سجل البحث
+                const searchSnap = await db.collection('searchLogs').get();
+                setStatus('statusSearchLogs', `${searchSnap.size} عملية`, searchSnap.size > 0 ? 'done' : 'pending');
+                addLog(`🔍 سجل البحث: ${searchSnap.size} عملية`, 'info');
+
+                showMessage('✅ تم التحقق من حالة قواعد البيانات بنجاح', 'success');
+                addLog('✅ اكتمل التحقق', 'success');
+
+            } catch (err) {
+                console.error(err);
+                showMessage('❌ حدث خطأ: ' + err.message, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
+            }
+
+            hideLoader();
+        }
+
+        // ============================================================
+        // 4. إنشاء / تحديث السوبر أدمن
+        // ============================================================
+        async function createSuperAdmin(e) {
+            e.preventDefault();
+            hideMessage();
+            showLoader();
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const confirm = document.getElementById('adminPasswordConfirm').value;
+            const name = document.getElementById('adminName').value.trim();
+            const phone = document.getElementById('adminPhone').value.trim();
+            const role = document.getElementById('adminRole').value;
+
+            // التحقق
+            if (!email || !password || !name || !phone) {
+                showMessage('❌ الرجاء ملء جميع الحقول', 'error');
+                hideLoader();
+                return false;
+            }
+
+            if (password !== confirm) {
+                showMessage('❌ كلمة المرور غير متطابقة', 'error');
+                hideLoader();
+                return false;
+            }
+
+            if (password.length < 6) {
+                showMessage('❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+                hideLoader();
+                return false;
+            }
+
+            addLog(`👑 جاري إنشاء/تحديث المستخدم: ${email}`, 'info');
+
+            try {
+                // 1. التحقق من وجود المستخدم في Auth
+                let uid = null;
+                let userExists = false;
+
+                try {
+                    // محاولة البحث عن المستخدم
+                    const userCred = await auth.signInWithEmailAndPassword(email, password);
+                    uid = userCred.user.uid;
+                    userExists = true;
+                    addLog(`✅ المستخدم موجود بالفعل في Auth: ${uid}`, 'success');
+                } catch (err) {
+                    if (err.code === 'auth/user-not-found') {
+                        // إنشاء مستخدم جديد
+                        const userCred = await auth.createUserWithEmailAndPassword(email, password);
+                        uid = userCred.user.uid;
+                        addLog(`✅ تم إنشاء مستخدم جديد في Auth: ${uid}`, 'success');
+                    } else if (err.code === 'auth/wrong-password') {
+                        // المستخدم موجود لكن كلمة المرور مختلفة - نعيد المحاولة بتسجيل الدخول أولاً
+                        addLog(`⚠️ المستخدم موجود بكلمة مرور مختلفة، جاري التحديث...`, 'warning');
+                        // نحذف المستخدم ونعيد إنشاؤه (في حالة النسيان)
+                        // ملاحظة: هذه العملية تحتاج إلى صلاحيات إضافية
+                        showMessage('⚠️ المستخدم موجود بالفعل. الرجاء استخدام بريد إلكتروني آخر أو الاتصال بالدعم.', 'warning');
+                        hideLoader();
+                        return false;
+                    } else {
+                        throw err;
+                    }
+                }
+
+                // 2. حفظ/تحديث بيانات المستخدم في Firestore
+                const userData = {
+                    uid: uid,
+                    email: email,
+                    displayName: name,
+                    phone: phone,
+                    role: role,
+                    createdAt: getEgyptTime(),
+                    lastLogin: getEgyptTime(),
+                    isActive: true,
+                    updatedAt: getEgyptTime(),
+                };
+
+                await db.collection('users').doc(uid).set(userData, { merge: true });
+                addLog(`✅ تم حفظ بيانات المستخدم في Firestore`, 'success');
+
+                // 3. تسجيل النشاط
+                await db.collection('activities').add({
+                    userId: uid,
+                    userEmail: email,
+                    userName: name,
+                    userRole: role,
+                    type: 'user_create',
+                    description: `إنشاء/تحديث مستخدم سوبر أدمن: ${email}`,
+                    details: {
+                        action: userExists ? 'update' : 'create',
+                        role: role,
+                    },
+                    timestamp: getEgyptTime(),
+                    ipAddress: 'auto',
+                    userAgent: navigator.userAgent,
+                });
+
+                showMessage(`✅ تم ${userExists ? 'تحديث' : 'إنشاء'} السوبر أدمن بنجاح!`, 'success');
+                addLog(`🎉 تم ${userExists ? 'تحديث' : 'إنشاء'} السوبر أدمن: ${email}`, 'success');
+
+                // تحديث الحالة
+                await checkStatus();
+
+            } catch (err) {
+                console.error(err);
+                showMessage('❌ حدث خطأ: ' + err.message, 'error');
+                addLog(`❌ خطأ: ${err.message}`, 'error');
+            }
+
+            hideLoader();
+            return false;
+        }
+
+        // ============================================================
+        // 5. إعادة تعيين جميع البيانات
+        // ============================================================
+        async function resetAllData() {
+            if (!confirm('⚠️ هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
+                return;
+            }
+
+            if (!confirm('⚠️ تأكيد نهائي: حذف جميع الأكاديميات والشهادات والنشاطات وسجل البحث؟')) {
+                return;
+            }
+
+            hideMessage();
+            showLoader();
+            addLog('🗑️ جاري حذف جميع البيانات...', 'warning');
+
+            const collections = ['academies', 'certificates', 'activities', 'searchLogs'];
+
+            try {
+                for (const colName of collections) {
+                    const snap = await db.collection(colName).get();
+                    const batch = db.batch();
+                    snap.docs.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                    addLog(`✅ تم حذف ${snap.size} من ${colName}`, 'success');
+                }
+
+                showMessage('✅ تم حذف جميع البيانات بنجاح', 'success');
+                addLog('🎉 اكتمل حذف جميع البيانات', 'success');
+                await checkStatus();
+
+            } catch (err) {
+                console.error(err);
+                showMessage('❌ حدث خطأ: ' + err.message, 'error');
+                addLog(`❌ خطأ: ${err.message}`, 'error');
+            }
+
+            hideLoader();
+        }
+
+        // ============================================================
+        // 6. تعبئة بيانات تجريبية
+        // ============================================================
+        async function seedData() {
+            if (!confirm('🌱 هل تريد تعبئة بيانات تجريبية (أكاديميات وشهادات)؟')) {
+                return;
+            }
+
+            hideMessage();
+            showLoader();
+            addLog('🌱 جاري تعبئة البيانات التجريبية...', 'info');
+
+            try {
+                // إنشاء أكاديميات تجريبية
+                const academies = [
+                    {
+                        name: 'معهد القاهرة العالي لتكنولوجيا المعلومات',
+                        taxNumber: '123-456-789',
+                        licenseNumber: 'NTI-2024-001',
+                        branches: [
+                            { governorate: 'القاهرة', address: 'ميدان التحرير - برج النيل', phone: '0223456789',
+                                isMainBranch: true },
+                            { governorate: 'الجيزة', address: 'شارع الهرم - أمام الجامعة', phone: '0229876543',
+                                isMainBranch: false },
+                            { governorate: 'الإسكندرية', address: 'شارع سعد زغلول', phone: '0323456789',
+                                isMainBranch: false },
+                        ],
+                        createdAt: getEgyptTime(),
+                        createdBy: 'system',
+                        updatedAt: getEgyptTime(),
+                        updatedBy: 'system',
+                        isDeleted: false,
+                    },
+                    {
+                        name: 'أكاديمية النيل للتدريب التقني',
+                        taxNumber: '987-654-321',
+                        licenseNumber: 'NTI-2024-002',
+                        branches: [
+                            { governorate: 'القليوبية', address: 'مدينة بنها - شارع الجامعة', phone: '0223456789',
+                                isMainBranch: true },
+                            { governorate: 'الشرقية', address: 'مدينة الزقازيق - ميدان المحطة', phone: '0223456789',
+                                isMainBranch: false },
+                        ],
+                        createdAt: getEgyptTime(),
+                        createdBy: 'system',
+                        updatedAt: getEgyptTime(),
+                        updatedBy: 'system',
+                        isDeleted: false,
+                    },
+                ];
+
+                let academyIds = [];
+                for (const academy of academies) {
+                    const docRef = db.collection('academies').doc();
+                    await docRef.set({
+                        academyId: docRef.id,
+                        ...academy,
+                    });
+                    academyIds.push(docRef.id);
+                    addLog(`✅ تم إنشاء أكاديمية: ${academy.name}`, 'success');
+                }
+
+                // إنشاء شهادات تجريبية
+                const students = ['أحمد محمد علي', 'سارة محمود', 'خالد إبراهيم', 'فاطمة أحمد', 'عمر حسن'];
+                const courses = ['أمن سيبراني متقدم', 'تطوير تطبيقات الويب', 'الذكاء الاصطناعي', 'علم البيانات', 'هندسة البرمجيات'];
+                const grades = ['A+', 'A', 'A-', 'B+', 'B'];
+
+                // جلب الأكاديميات للحصول على بياناتها
+                const acadSnap = await db.collection('academies').where('isDeleted', '==', false).get();
+                const acadList = [];
+                acadSnap.forEach(doc => acadList.push({ id: doc.id, ...doc.data() }));
+
+                if (acadList.length > 0) {
+                    for (let i = 0; i < 10; i++) {
+                        const acad = acadList[Math.floor(Math.random() * acadList.length)];
+                        const branch = acad.branches[Math.floor(Math.random() * acad.branches.length)];
+
+                        const year = new Date().getFullYear();
+                        const num = String(i + 1).padStart(4, '0');
+                        const code = `NTI-${year}-${num}`;
+
+                        await db.collection('certificates').doc(code).set({
+                            certificateCode: code,
+                            studentName: students[Math.floor(Math.random() * students.length)],
+                            courseName: courses[Math.floor(Math.random() * courses.length)],
+                            courseHours: Math.floor(Math.random() * 40) + 10,
+                            completionDate: getEgyptTime(),
+                            grade: grades[Math.floor(Math.random() * grades.length)],
+                            academyId: acad.id,
+                            branchId: branch.branchId || 'branch_1',
+                            academyName: acad.name,
+                            academyLicenseNumber: acad.licenseNumber,
+                            branchName: branch.governorate,
+                            issuedBy: 'system',
+                            issuedAt: getEgyptTime(),
+                            updatedAt: getEgyptTime(),
+                            updatedBy: 'system',
+                            isActive: true,
+                        });
+                        addLog(`✅ تم إنشاء شهادة: ${code}`, 'success');
+                    }
+                }
+
+                showMessage('✅ تم تعبئة البيانات التجريبية بنجاح', 'success');
+                addLog('🎉 اكتملت تعبئة البيانات التجريبية', 'success');
+                await checkStatus();
+
+            } catch (err) {
+                console.error(err);
+                showMessage('❌ حدث خطأ: ' + err.message, 'error');
+                addLog(`❌ خطأ: ${err.message}`, 'error');
+            }
+
+            hideLoader();
+        }
+
+        // ============================================================
+        // 7. تحميل أولي
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkStatus();
+            addLog('🚀 تم تهيئة شاشة الإعدادات', 'info');
+        });
+
+        console.log('✅ شاشة تهيئة قاعدة البيانات - نقابة تكنولوجيا المعلومات');
+    </script>
+
+</body>
+</html>
