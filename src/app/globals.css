@@ -1,0 +1,332 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   إعدادات أساسية
+   ============================================ */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+/* ============================================
+   إعدادات عامة
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+  background: #0a0e1a;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+/* ============================================
+   شريط التمرير المخصص
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0055e6, #5c00e6);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0044b8, #4a00b8);
+}
+
+/* ============================================
+   خلفية متحركة بالذكاء الاصطناعي
+   ============================================ */
+.ai-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: linear-gradient(135deg, #0a0e1a 0%, #1a1a3e 25%, #0d1b2a 50%, #1b1b4a 75%, #0a0e1a 100%);
+  overflow: hidden;
+}
+
+.ai-background::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(0, 150, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 20%, rgba(0, 200, 150, 0.05) 0%, transparent 50%);
+  animation: aiMove 20s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+.ai-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* جزيئات متحركة */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(100, 200, 255, 0.3);
+  border-radius: 50%;
+  animation: floatParticle 15s infinite ease-in-out;
+}
+
+.particle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; width: 4px; height: 4px; }
+.particle:nth-child(2) { top: 30%; left: 70%; animation-delay: 2s; width: 3px; height: 3px; }
+.particle:nth-child(3) { top: 60%; left: 10%; animation-delay: 4s; width: 5px; height: 5px; }
+.particle:nth-child(4) { top: 80%; left: 80%; animation-delay: 1s; width: 3px; height: 3px; }
+.particle:nth-child(5) { top: 45%; left: 45%; animation-delay: 3s; width: 4px; height: 4px; }
+.particle:nth-child(6) { top: 15%; left: 50%; animation-delay: 5s; width: 2px; height: 2px; }
+.particle:nth-child(7) { top: 70%; left: 35%; animation-delay: 2.5s; width: 5px; height: 5px; }
+.particle:nth-child(8) { top: 90%; left: 55%; animation-delay: 4.5s; width: 3px; height: 3px; }
+.particle:nth-child(9) { top: 25%; left: 85%; animation-delay: 1.5s; width: 4px; height: 4px; }
+.particle:nth-child(10) { top: 55%; left: 25%; animation-delay: 3.5s; width: 3px; height: 3px; }
+.particle:nth-child(11) { top: 5%; left: 40%; animation-delay: 0.5s; width: 5px; height: 5px; }
+.particle:nth-child(12) { top: 75%; left: 60%; animation-delay: 2.8s; width: 3px; height: 3px; }
+.particle:nth-child(13) { top: 40%; left: 5%; animation-delay: 4.2s; width: 4px; height: 4px; }
+.particle:nth-child(14) { top: 65%; left: 90%; animation-delay: 1.8s; width: 3px; height: 3px; }
+.particle:nth-child(15) { top: 50%; left: 75%; animation-delay: 3.2s; width: 5px; height: 5px; }
+.particle:nth-child(16) { top: 20%; left: 30%; animation-delay: 0.7s; width: 3px; height: 3px; }
+.particle:nth-child(17) { top: 85%; left: 15%; animation-delay: 3.7s; width: 4px; height: 4px; }
+.particle:nth-child(18) { top: 35%; left: 95%; animation-delay: 1.2s; width: 5px; height: 5px; }
+.particle:nth-child(19) { top: 95%; left: 45%; animation-delay: 4.8s; width: 3px; height: 3px; }
+.particle:nth-child(20) { top: 50%; left: 10%; animation-delay: 2.2s; width: 4px; height: 4px; }
+
+@keyframes floatParticle {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  25% { transform: translate(30px, -40px) scale(1.2); opacity: 0.8; }
+  50% { transform: translate(-20px, -80px) scale(0.8); opacity: 0.5; }
+  75% { transform: translate(40px, -30px) scale(1.3); opacity: 0.9; }
+  100% { transform: translate(-10px, 0) scale(1); opacity: 0.3; }
+}
+
+@keyframes aiMove {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(2deg) scale(1.02); }
+  50% { transform: rotate(0deg) scale(0.98); }
+  75% { transform: rotate(-2deg) scale(1.01); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* ============================================
+   شبكة تقنية
+   ============================================ */
+.grid-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(0, 150, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 150, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ============================================
+   تأثيرات زجاجية
+   ============================================ */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   تأثيرات النصوص
+   ============================================ */
+.text-gradient {
+  background: linear-gradient(135deg, #0055e6, #5c00e6, #0055e6);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShimmer 3s ease-in-out infinite;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f5b42d, #d4941a, #f5b42d);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShimmer 3s ease-in-out infinite;
+}
+
+@keyframes gradientShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ============================================
+   تأثيرات البطاقات
+   ============================================ */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0, 85, 230, 0.15);
+}
+
+/* ============================================
+   تأثيرات التحميل
+   ============================================ */
+.loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #0055e6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   تنسيقات عامة
+   ============================================ */
+.container-custom {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ============================================
+   تنسيقات الجداول
+   ============================================ */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================
+   تنسيقات النماذج
+   ============================================ */
+.form-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.form-input:focus {
+  border-color: #0055e6;
+  box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.2);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   تنسيقات للأجهزة المحمولة
+   ============================================ */
+@media (max-width: 640px) {
+  .container-custom {
+    padding: 0 0.75rem;
+  }
+}
