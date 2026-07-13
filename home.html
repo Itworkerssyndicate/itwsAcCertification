@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الرئيسية - نقابة تكنولوجيا المعلومات</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           التصميم الكامل للصفحة الرئيسية (البحث العام)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* ===== خلفية ذكاء اصطناعي ===== */
+        .ai-background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.04) 0%, transparent 60%);
+            animation: bgPulse 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.05) rotate(2deg);
+            }
+        }
+
+        .ai-background::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* ===== جزيئات متحركة ===== */
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 200, 255, 0.06);
+            animation: particleFloat 25s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 4s;
+        }
+        .particle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(4) {
+            width: 200px;
+            height: 200px;
+            bottom: 30%;
+            left: 15%;
+            animation-delay: 6s;
+        }
+        .particle:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .particle:nth-child(6) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            right: 50%;
+            animation-delay: 5s;
+        }
+        .particle:nth-child(7) {
+            width: 90px;
+            height: 90px;
+            bottom: 5%;
+            left: 40%;
+            animation-delay: 1s;
+        }
+        .particle:nth-child(8) {
+            width: 180px;
+            height: 180px;
+            top: 10%;
+            right: 60%;
+            animation-delay: 7s;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.2);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.2;
+            }
+        }
+
+        /* ===== شبكة تقنية ===== */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* ===== الحاوية الرئيسية ===== */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== الهيدر ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.25);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        .btn-lg {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ===== المحتوى الرئيسي ===== */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #80b3ff 50%, #ffffff 80%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleShimmer 5s ease-in-out infinite;
+        }
+
+        @keyframes titleShimmer {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* ===== الإحصائيات (للأدمن فقط) ===== */
+        .stats-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid.visible {
+            display: grid;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 18px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .stat-item .num {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item .lbl {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 2px;
+        }
+
+        /* ===== علامات التبويب ===== */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 85, 230, 0.15);
+            color: #fff;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== بطاقات البحث ===== */
+        .search-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-card .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-row input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-row input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .search-row input:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        }
+
+        .search-row .btn {
+            flex-shrink: 0;
+        }
+
+        .search-hint {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        /* ===== نتيجة البحث ===== */
+        .result-box {
+            display: none;
+            margin-top: 24px;
+        }
+
+        .result-box.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .certificate-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 85, 230, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+
+        .cert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .cert-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cert-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cert-status.valid {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .cert-status.invalid {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .cert-code {
+            font-family: monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .cert-item {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .cert-item .label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .cert-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .cert-item .value.grade-a {
+            color: #22c55e;
+        }
+        .cert-item .value.grade-b {
+            color: #3b82f6;
+        }
+        .cert-item .value.grade-c {
+            color: #eab308;
+        }
+        .cert-item .value.grade-d {
+            color: #f97316;
+        }
+        .cert-item .value.grade-f {
+            color: #ef4444;
+        }
+
+        .cert-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 16px;
+        }
+
+        .academy-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .academy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .academy-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .academy-badge {
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .branch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .branch-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .branch-item .gov {
+            font-weight: 700;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .branch-item .addr {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+            margin: 2px 0;
+        }
+
+        .branch-item .phone {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .branch-item .main-badge {
+            font-size: 10px;
+            color: #0055e6;
+            background: rgba(0, 85, 230, 0.10);
+            padding: 2px 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* ===== رسائل ===== */
+        .msg {
+            display: none;
+            border-radius: 14px;
+            padding: 14px 20px;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .msg.show {
+            display: block;
+        }
+
+        .msg.success {
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+            color: #22c55e;
+        }
+
+        .msg.error {
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.20);
+            color: #ef4444;
+        }
+
+        .msg.info {
+            background: rgba(59, 130, 246, 0.10);
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            color: #3b82f6;
+        }
+
+        /* ===== تحميل ===== */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== زر خدمات النقابة ===== */
+        .services-btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .services-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 32px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .services-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .services-btn .icon {
+            font-size: 20px;
+        }
+
+        .services-btn .arrow {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .services-btn:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ===== الفوتر ===== */
+        .footer {
+            text-align: center;
+            padding: 24px 0 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 12px;
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 14px 18px;
+            }
+            .header-right {
+                justify-content: center;
+            }
+            .hero-title {
+                font-size: 28px;
+            }
+            .search-row {
+                flex-direction: column;
+            }
+            .search-row input {
+                min-width: unset;
+            }
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tabs {
+                flex-direction: column;
+                max-width: 100%;
+            }
+            .services-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 12px;
+            }
+            .search-card {
+                padding: 16px;
+            }
+            .hero-title {
+                font-size: 22px;
+            }
+            .hero-subtitle {
+                font-size: 14px;
+            }
+            .cert-actions {
+                flex-direction: column;
+            }
+            .cert-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .cert-header {
+                flex-direction: column;
+            }
+            .branch-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== خلفية ذكاء اصطناعي ===== -->
+    <div class="ai-background"></div>
+
+    <!-- ===== جزيئات ===== -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ===== شبكة ===== -->
+    <div class="grid-lines"></div>
+
+    <!-- ===== الحاوية ===== -->
+    <div class="main-container">
+
+        <!-- ===== الهيدر ===== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box" onclick="window.location.href='index.html'">ن.ت</div>
+                <div class="header-title">
+                    <h1>نقابة تكنولوجيا المعلومات</h1>
+                    <p>لجنة التحول الرقمي والتدريب</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="#" class="btn btn-outline btn-sm" id="loginBtn">🔑 تسجيل الدخول</a>
+                <a href="#" class="btn btn-primary btn-sm" id="adminBtn" style="display:none;">📊 لوحة التحكم</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn" style="display:none;">🚪 تسجيل الخروج</a>
+            </div>
+        </header>
+
+        <!-- ===== البطل ===== -->
+        <div class="hero-section">
+            <h1 class="hero-title">تحقق من صحة شهاداتك التدريبية</h1>
+            <p class="hero-subtitle">منصة رسمية موثوقة من نقابة تكنولوجيا المعلومات</p>
+        </div>
+
+        <!-- ===== إحصائيات (للأدمن فقط) ===== -->
+        <div class="stats-grid" id="statsContainer">
+            <div class="stat-item">
+                <div class="num" id="statCertificates">0</div>
+                <div class="lbl">شهادة موثقة</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="statAcademies">0</div>
+                <div class="lbl">أكاديمية معتمدة</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="statSearches">0</div>
+                <div class="lbl">عملية بحث</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="statStudents">0</div>
+                <div class="lbl">خريج مسجل</div>
+            </div>
+        </div>
+
+        <!-- ===== علامات التبويب ===== -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tabCertificate">🔍 بحث عن شهادة</button>
+            <button class="tab-btn" data-tab="tabAcademy">🏛️ بحث عن أكاديمية</button>
+        </div>
+
+        <!-- ===== تبويب الشهادة ===== -->
+        <div class="tab-content active" id="tabCertificate">
+            <div class="search-card">
+                <form id="certificateSearchForm" onsubmit="return searchCertificate(event)">
+                    <div class="search-box">
+                        <div class="search-row">
+                            <input type="text" id="certCode" placeholder="أدخل كود الشهادة (مثال: NTI-2026-0001)" required />
+                            <button type="submit" class="btn btn-primary" id="searchCertBtn">🔍 بحث</button>
+                        </div>
+                        <div class="search-hint">أدخل الكود المطبوع على الشهادة للتحقق من صحتها</div>
+                    </div>
+                </form>
+
+                <div class="loader" id="certLoader">
+                    <div class="spinner"></div>
+                    <div style="color:rgba(255,255,255,0.3);">جاري البحث...</div>
+                </div>
+
+                <div class="msg" id="certError"></div>
+                <div class="msg" id="certSuccess"></div>
+
+                <div class="result-box" id="certResult"></div>
+            </div>
+        </div>
+
+        <!-- ===== تبويب الأكاديمية ===== -->
+        <div class="tab-content" id="tabAcademy">
+            <div class="search-card">
+                <form id="academySearchForm" onsubmit="return searchAcademy(event)">
+                    <div class="search-box">
+                        <div class="search-row">
+                            <input type="text" id="academyLicense" placeholder="أدخل الرقم الاعتمادي للأكاديمية" required />
+                            <button type="submit" class="btn btn-primary" id="searchAcademyBtn">🏛️ بحث</button>
+                        </div>
+                        <div class="search-hint">أدخل الرقم الاعتمادي الصادر من النقابة</div>
+                    </div>
+                </form>
+
+                <div class="loader" id="academyLoader">
+                    <div class="spinner"></div>
+                    <div style="color:rgba(255,255,255,0.3);">جاري البحث...</div>
+                </div>
+
+                <div class="msg" id="academyError"></div>
+                <div class="msg" id="academySuccess"></div>
+
+                <div class="result-box" id="academyResult"></div>
+            </div>
+        </div>
+
+        <!-- ===== زر خدمات النقابة ===== -->
+        <div class="services-btn-container">
+            <a href="#" class="services-btn" id="servicesBtn">
+                <span class="icon">🏛️</span>
+                <span id="servicesBtnText">خدمات النقابة الإلكترونية</span>
+                <span class="arrow">←</span>
+            </a>
+        </div>
+
+        <!-- ===== الفوتر ===== -->
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    جافا سكريبت
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. متغيرات عامة
+        // ============================================================
+        let currentUser = null;
+        let isAdmin = false;
+
+        // ============================================================
+        // 3. دوال مساعدة
+        // ============================================================
+        function showLoader(id) {
+            document.getElementById(id).classList.add('show');
+        }
+
+        function hideLoader(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function showMsg(id, msg, type = 'info') {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.className = `msg show ${type}`;
+        }
+
+        function hideMsg(id) {
+            document.getElementById(id).className = 'msg';
+        }
+
+        function showResult(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function hideResult(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('ar-EG', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function getGradeClass(grade) {
+            if (!grade) return '';
+            const g = grade.toUpperCase();
+            if (g.startsWith('A')) return 'grade-a';
+            if (g.startsWith('B')) return 'grade-b';
+            if (g.startsWith('C')) return 'grade-c';
+            if (g.startsWith('D')) return 'grade-d';
+            return 'grade-f';
+        }
+
+        // ============================================================
+        // 4. المصادقة
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'inline-flex';
+
+                db.collection('users').doc(user.uid).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.role === 'super_admin' || data.role === 'admin') {
+                            isAdmin = true;
+                            document.getElementById('adminBtn').style.display = 'inline-flex';
+                            document.getElementById('statsContainer').classList.add('visible');
+                            updateStats();
+                        }
+                    }
+                });
+            } else {
+                currentUser = null;
+                isAdmin = false;
+                document.getElementById('loginBtn').style.display = 'inline-flex';
+                document.getElementById('adminBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('statsContainer').classList.remove('visible');
+            }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(function() {
+                window.location.href = 'login.html';
+            });
+        });
+
+        document.getElementById('adminBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'dashboard.html';
+        });
+
+        // ============================================================
+        // 5. البحث عن شهادة
+        // ============================================================
+        function searchCertificate(e) {
+            e.preventDefault();
+
+            const code = document.getElementById('certCode').value.trim();
+            if (!code) {
+                showMsg('certError', 'الرجاء إدخال كود الشهادة', 'error');
+                return false;
+            }
+
+            hideMsg('certError');
+            hideMsg('certSuccess');
+            hideResult('certResult');
+            showLoader('certLoader');
+
+            db.collection('certificates')
+                .where('certificateCode', '==', code)
+                .where('isActive', '==', true)
+                .get()
+                .then(function(querySnapshot) {
+                    hideLoader('certLoader');
+
+                    if (querySnapshot.empty) {
+                        showMsg('certError', '❌ لم يتم العثور على شهادة بهذا الكود', 'error');
+                        return;
+                    }
+
+                    const doc = querySnapshot.docs[0];
+                    const data = doc.data();
+
+                    renderCertificate(data);
+                    showResult('certResult');
+                    showMsg('certSuccess', '✅ تم العثور على الشهادة بنجاح', 'success');
+
+                    if (isAdmin) updateStats();
+                })
+                .catch(function(err) {
+                    hideLoader('certLoader');
+                    showMsg('certError', '❌ حدث خطأ: ' + err.message, 'error');
+                });
+
+            return false;
+        }
+
+        // ============================================================
+        // 6. عرض الشهادة
+        // ============================================================
+        function renderCertificate(data) {
+            const container = document.getElementById('certResult');
+
+            const statusHtml = data.isActive ?
+                '<span class="cert-status valid">✅ صالحة</span>' :
+                '<span class="cert-status invalid">❌ غير صالحة</span>';
+
+            const gradeClass = getGradeClass(data.grade);
+
+            container.innerHTML = `
+                        <div class="certificate-card">
+                            <div class="cert-header">
+                                <div class="cert-header-left">
+                                    <div style="font-size:22px;">📜</div>
+                                    <div>
+                                        <div style="font-weight:700;font-size:17px;color:#fff;">شهادة اجتياز دورة تدريبية</div>
+                                        <div class="cert-code">${data.certificateCode}</div>
+                                    </div>
+                                </div>
+                                ${statusHtml}
+                            </div>
+
+                            <div class="cert-grid">
+                                <div class="cert-item">
+                                    <div class="label">👤 اسم الطالب</div>
+                                    <div class="value">${data.studentName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📚 اسم الدورة التدريبية</div>
+                                    <div class="value">${data.courseName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">⏱️ عدد الساعات</div>
+                                    <div class="value">${data.courseHours || 'غير محدد'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🏅 تقدير الاجتياز</div>
+                                    <div class="value ${gradeClass}">${data.grade || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🏛️ الأكاديمية</div>
+                                    <div class="value">${data.academyName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📍 الفرع</div>
+                                    <div class="value">${data.branchName || data.branchId || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🔑 رقم اعتماد الأكاديمية</div>
+                                    <div class="value">${data.academyLicenseNumber || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📅 تاريخ الحصول على الشهادة</div>
+                                    <div class="value">${formatDate(data.issuedAt)}</div>
+                                </div>
+                            </div>
+
+                            <div class="cert-actions">
+                                <button class="btn btn-success btn-sm" onclick="window.print()">🖨️ طباعة</button>
+                                <button class="btn btn-primary btn-sm" onclick="alert('🚧 جاري تحميل PDF...')">📥 تحميل PDF</button>
+                                <button class="btn btn-outline btn-sm" onclick="alert('🚧 جاري المشاركة...')">📤 مشاركة</button>
+                                <div style="flex:1;text-align:left;font-size:10px;color:rgba(255,255,255,0.15);">
+                                    تم التحقق بواسطة نقابة تكنولوجيا المعلومات
+                                </div>
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // ============================================================
+        // 7. البحث عن أكاديمية
+        // ============================================================
+        function searchAcademy(e) {
+            e.preventDefault();
+
+            const license = document.getElementById('academyLicense').value.trim();
+            if (!license) {
+                showMsg('academyError', 'الرجاء إدخال الرقم الاعتمادي', 'error');
+                return false;
+            }
+
+            hideMsg('academyError');
+            hideMsg('academySuccess');
+            hideResult('academyResult');
+            showLoader('academyLoader');
+
+            db.collection('academies')
+                .where('licenseNumber', '==', license)
+                .where('isDeleted', '==', false)
+                .get()
+                .then(function(querySnapshot) {
+                    hideLoader('academyLoader');
+
+                    if (querySnapshot.empty) {
+                        showMsg('academyError', '❌ لم يتم العثور على أكاديمية بهذا الرقم الاعتمادي', 'error');
+                        return;
+                    }
+
+                    const doc = querySnapshot.docs[0];
+                    const data = doc.data();
+
+                    renderAcademy(data);
+                    showResult('academyResult');
+                    showMsg('academySuccess', '✅ تم العثور على الأكاديمية بنجاح', 'success');
+
+                    if (isAdmin) updateStats();
+                })
+                .catch(function(err) {
+                    hideLoader('academyLoader');
+                    showMsg('academyError', '❌ حدث خطأ: ' + err.message, 'error');
+                });
+
+            return false;
+        }
+
+        // ============================================================
+        // 8. عرض الأكاديمية
+        // ============================================================
+        function renderAcademy(data) {
+            const container = document.getElementById('academyResult');
+
+            let branchesHtml = '';
+            if (data.branches && data.branches.length > 0) {
+                branchesHtml = data.branches.map(function(b) {
+                    return `
+                                <div class="branch-item">
+                                    <div class="gov">${b.governorate || '-'}</div>
+                                    <div class="addr">${b.address || '-'}</div>
+                                    <div class="phone">📞 ${b.phone || '-'}</div>
+                                    ${b.isMainBranch ? '<div class="main-badge">⭐ الرئيسي</div>' : ''}
+                                </div>
+                            `;
+                }).join('');
+            } else {
+                branchesHtml = '<div style="color:rgba(255,255,255,0.3);font-size:14px;">لا توجد فروع مسجلة</div>';
+            }
+
+            container.innerHTML = `
+                        <div class="academy-card">
+                            <div class="academy-header">
+                                <div>
+                                    <div class="academy-name">${data.name || '-'}</div>
+                                    <div style="font-size:13px;color:rgba(255,255,255,0.3);">
+                                        الرقم الاعتمادي: ${data.licenseNumber || '-'}
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="academy-badge">✅ معتمدة</span>
+                                    <div style="font-size:12px;color:rgba(255,255,255,0.2);margin-top:4px;">
+                                        البطاقة الضريبية: ${data.taxNumber || '-'}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="font-weight:700;color:#fff;font-size:15px;margin-bottom:8px;">
+                                📍 الفروع (${data.branches ? data.branches.length : 0})
+                            </div>
+                            <div class="branch-grid">
+                                ${branchesHtml}
+                            </div>
+
+                            <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:rgba(255,255,255,0.15);">
+                                تم التسجيل: ${formatDate(data.createdAt)}
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // ============================================================
+        // 9. تحديث الإحصائيات
+        // ============================================================
+        function updateStats() {
+            db.collection('certificates').where('isActive', '==', true).get()
+                .then(function(snap) {
+                    document.getElementById('statCertificates').textContent = snap.size;
+                });
+
+            db.collection('academies').where('isDeleted', '==', false).get()
+                .then(function(snap) {
+                    document.getElementById('statAcademies').textContent = snap.size;
+                });
+
+            db.collection('searchLogs').get()
+                .then(function(snap) {
+                    document.getElementById('statSearches').textContent = snap.size;
+                });
+
+            db.collection('certificates').where('isActive', '==', true).get()
+                .then(function(snap) {
+                    const names = new Set();
+                    snap.forEach(function(doc) {
+                        const data = doc.data();
+                        if (data.studentName) names.add(data.studentName);
+                    });
+                    document.getElementById('statStudents').textContent = names.size;
+                });
+        }
+
+        // ============================================================
+        // 10. علامات التبويب
+        // ============================================================
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                document.querySelectorAll('.tab-content').forEach(function(tab) {
+                    tab.classList.remove('active');
+                });
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ============================================================
+        // 11. زر خدمات النقابة (قابل للتخصيص من الإعدادات)
+        // ============================================================
+        // القيم الافتراضية - سيتم جلبها من Firestore لاحقاً
+        let servicesLink = 'https://itws.org.eg/services';
+        let servicesText = 'خدمات النقابة الإلكترونية';
+
+        // جلب إعدادات زر الخدمات من Firestore
+        function loadServicesButtonSettings() {
+            db.collection('settings').doc('servicesButton').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.link) servicesLink = data.link;
+                        if (data.text) servicesText = data.text;
+                        document.getElementById('servicesBtn').href = servicesLink;
+                        document.getElementById('servicesBtnText').textContent = servicesText;
+                    }
+                })
+                .catch(function(err) {
+                    // استخدام القيم الافتراضية
+                    console.log('⚠️ استخدام الإعدادات الافتراضية لزر الخدمات');
+                });
+        }
+
+        loadServicesButtonSettings();
+
+        // ============================================================
+        // 12. التحميل الأولي
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // إذا كان هناك كود في الرابط
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            if (code) {
+                document.getElementById('certCode').value = code;
+                setTimeout(function() {
+                    document.getElementById('certificateSearchForm').dispatchEvent(new Event('submit'));
+                }, 500);
+            }
+
+            console.log('✅ الصفحة الرئيسية - نقابة تكنولوجيا المعلومات');
+            console.log('🔍 جاهزة للبحث');
+        });
+    </script>
+
+</body>
+</html>
