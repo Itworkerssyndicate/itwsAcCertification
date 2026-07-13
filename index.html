@@ -357,7 +357,7 @@
             letter-spacing: 1px;
         }
 
-        /* ===== النصوص الرئيسية ===== */
+        /* ===== النصوص الرئيسية - يتم جلبها من الإعدادات ===== */
         .splash-title {
             font-size: 44px;
             font-weight: 800;
@@ -657,16 +657,16 @@
     <!-- ===== المحتوى المركزي ===== -->
     <div class="splash-content">
 
-        <!-- الشعار -->
-        <div class="union-logo">
+        <!-- الشعار - يتم جلب الصورة من الإعدادات -->
+        <div class="union-logo" id="unionLogo">
             ن.ت
             <span class="sub-icon">⚡</span>
         </div>
 
-        <!-- العناوين -->
-        <h1 class="splash-title">نقابة تكنولوجيا المعلومات</h1>
+        <!-- العناوين - يتم جلبها من الإعدادات -->
+        <h1 class="splash-title" id="unionName">نقابة تكنولوجيا المعلومات</h1>
         <p class="splash-subtitle">منصة توثيق الشهادات التدريبية</p>
-        <p class="splash-committee">لجنة <span>التحول الرقمي والتدريب</span></p>
+        <p class="splash-committee">لجنة <span id="committeeName">التحول الرقمي والتدريب</span></p>
 
         <!-- شريط التحميل -->
         <div class="loading-container">
@@ -719,41 +719,83 @@
         // ============================================================
         const loadingBar = document.getElementById('loadingBar');
         const loadingPercent = document.getElementById('loadingPercent');
+        const unionNameEl = document.getElementById('unionName');
+        const committeeNameEl = document.getElementById('committeeName');
+        const unionLogoEl = document.getElementById('unionLogo');
 
         // ============================================================
-        // 3. مدة العرض (تأتي من الإعدادات لاحقاً)
+        // 3. جلب الإعدادات من Firestore
         // ============================================================
-        // القيمة الافتراضية 3 ثواني، سيتم جلبها من Firestore لاحقاً
-        const SPLASH_DURATION = 3500; // 3.5 ثانية
+        let splashDuration = 3500; // القيمة الافتراضية 3.5 ثانية
+
+        async function loadSettings() {
+            try {
+                const docRef = db.collection('settings').doc('system');
+                const doc = await docRef.get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+
+                    // جلب مدة العرض
+                    if (data.splashDuration) {
+                        splashDuration = data.splashDuration;
+                    }
+
+                    // جلب اسم النقابة
+                    if (data.unionName) {
+                        unionNameEl.textContent = data.unionName;
+                    }
+
+                    // جلب اسم اللجنة
+                    if (data.committeeName) {
+                        committeeNameEl.textContent = data.committeeName;
+                    }
+
+                    // جلب صورة اللوجو (إذا كانت موجودة)
+                    if (data.logoUrl) {
+                        unionLogoEl.style.backgroundImage = `url(${data.logoUrl})`;
+                        unionLogoEl.style.backgroundSize = 'cover';
+                        unionLogoEl.style.backgroundPosition = 'center';
+                        unionLogoEl.textContent = '';
+                    }
+
+                    console.log('✅ تم جلب الإعدادات من Firestore');
+                } else {
+                    console.log('ℹ️ لا توجد إعدادات مسجلة، سيتم استخدام القيم الافتراضية');
+                }
+            } catch (err) {
+                console.error('❌ خطأ في جلب الإعدادات:', err.message);
+            }
+        }
 
         // ============================================================
         // 4. تشغيل شريط التحميل
         // ============================================================
-        let progress = 0;
-        const interval = 30; // كل 30ms
-        const steps = SPLASH_DURATION / interval;
-        const increment = 100 / steps;
+        function startLoading() {
+            let progress = 0;
+            const interval = 30;
+            const steps = splashDuration / interval;
+            const increment = 100 / steps;
 
-        const loadingInterval = setInterval(() => {
-            progress += increment;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(loadingInterval);
-                // الانتقال إلى الصفحة الرئيسية
-                setTimeout(() => {
-                    window.location.href = 'home.html';
-                }, 500);
-            }
-            loadingBar.style.width = progress + '%';
-            loadingPercent.textContent = Math.round(progress) + '%';
-        }, interval);
+            const loadingInterval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    setTimeout(() => {
+                        window.location.href = 'home.html';
+                    }, 500);
+                }
+                loadingBar.style.width = progress + '%';
+                loadingPercent.textContent = Math.round(progress) + '%';
+            }, interval);
+        }
 
         // ============================================================
-        // 5. التحقق من حالة المستخدم (للانتقال السريع)
+        // 5. التحقق من حالة المستخدم
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
-                // مستخدم مسجل الدخول، نخزن معلوماته للاستخدام لاحقاً
                 db.collection('users').doc(user.uid).get().then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
@@ -766,7 +808,7 @@
                         }));
                     }
                 }).catch(function(err) {
-                    console.error('Error fetching user data:', err);
+                    console.error('❌ خطأ في جلب بيانات المستخدم:', err);
                 });
             } else {
                 sessionStorage.removeItem('userData');
@@ -774,13 +816,17 @@
         });
 
         // ============================================================
-        // 6. جلب إعدادات النظام (مدة العرض)
+        // 6. تشغيل الصفحة
         // ============================================================
-        // سيتم جلب مدة العرض من Firestore
-        // ملاحظة: هذه الدالة ستستدعى من home.html لاحقاً
+        async function init() {
+            await loadSettings();
+            startLoading();
+        }
+
+        init();
 
         console.log('✅ الصفحة الترحيبية - نقابة تكنولوجيا المعلومات');
-        console.log('⏳ جاري التحميل...');
+        console.log(`⏳ مدة العرض: ${splashDuration}ms`);
     </script>
 
 </body>
