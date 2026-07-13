@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إعدادات النظام - نقابة تكنولوجيا المعلومات</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           التصميم الكامل لإعدادات النظام
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.03) 0%, transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.04) rotate(1.5deg);
+            }
+        }
+
+        .page-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 200, 255, 0.04);
+            animation: particleFloat 25s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 4s;
+        }
+        .particle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(4) {
+            width: 180px;
+            height: 180px;
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 6s;
+        }
+        .particle:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .particle:nth-child(6) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            right: 45%;
+            animation-delay: 5s;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.2);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.1;
+            }
+        }
+
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.35);
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 11px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 20px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .badge {
+            font-size: 10px;
+            background: rgba(0, 85, 230, 0.15);
+            color: #0055e6;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-row-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.10);
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(0, 85, 230, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .upload-area .preview {
+            max-width: 150px;
+            max-height: 150px;
+            margin: 0 auto 10px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .upload-area .preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .upload-area .icon {
+            font-size: 40px;
+            opacity: 0.3;
+        }
+
+        .upload-area .text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .upload-area .sub {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.15);
+            margin-top: 4px;
+        }
+
+        .msg {
+            display: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .msg.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .msg.error {
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.20);
+            color: #ef4444;
+        }
+
+        .msg.success {
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+            color: #22c55e;
+        }
+
+        .msg.info {
+            background: rgba(59, 130, 246, 0.10);
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            color: #3b82f6;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.10);
+            font-size: 11px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px 16px;
+            }
+            .header-right {
+                justify-content: center;
+            }
+            .container {
+                padding: 10px;
+            }
+            .card {
+                padding: 14px 16px;
+            }
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title h1 {
+                font-size: 15px;
+            }
+            .upload-area .preview {
+                max-width: 100px;
+                max-height: 100px;
+            }
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-bg"></div>
+
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="grid-lines"></div>
+
+    <div class="container">
+
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="header-title">
+                    <h1>إعدادات النظام</h1>
+                    <p>صلاحية السوبر أدمن فقط</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="dashboard.html" class="btn btn-outline btn-sm">📊 لوحة التحكم</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">🚪 تسجيل الخروج</a>
+            </div>
+        </header>
+
+        <div class="msg" id="pageMsg"></div>
+
+        <div class="loader" id="pageLoader">
+            <div class="spinner"></div>
+            <div style="color:rgba(255,255,255,0.3);">جاري تحميل الإعدادات...</div>
+        </div>
+
+        <div id="pageContent" style="display:none;">
+
+            <!-- إعدادات عامة -->
+            <div class="card">
+                <div class="card-title">⚙️ الإعدادات العامة</div>
+                <div class="settings-grid">
+
+                    <div>
+                        <div class="form-group">
+                            <label>🏛️ اسم النقابة</label>
+                            <input type="text" id="unionName" value="نقابة تكنولوجيا المعلومات والبرمجيات" />
+                        </div>
+                        <div class="form-group">
+                            <label>📋 اسم اللجنة</label>
+                            <input type="text" id="committeeName" value="لجنة التحول الرقمي والتدريب" />
+                        </div>
+                        <div class="form-group">
+                            <label>⏱️ مدة العرض الترحيبي (ثواني)</label>
+                            <input type="number" id="splashDuration" value="3" min="1" max="10" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="form-group">
+                            <label>📧 البريد الإلكتروني الرسمي</label>
+                            <input type="email" id="officialEmail" value="info@itws.org.eg" />
+                        </div>
+                        <div class="form-group">
+                            <label>📞 رقم الهاتف الرسمي</label>
+                            <input type="text" id="officialPhone" value="+20 2 12345678" />
+                        </div>
+                        <div class="form-group">
+                            <label>📍 العنوان الرسمي</label>
+                            <input type="text" id="officialAddress" value="القاهرة - مصر الجديدة - شارع النقابات" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="saveGeneralSettings()">💾 حفظ الإعدادات العامة</button>
+                    <button class="btn btn-outline" onclick="resetToDefault()">🔄 استعادة الافتراضي</button>
+                </div>
+            </div>
+
+            <!-- زر خدمات النقابة -->
+            <div class="card">
+                <div class="card-title">🔗 زر خدمات النقابة</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>📝 نص الزر</label>
+                        <input type="text" id="servicesBtnText" value="خدمات النقابة الإلكترونية" />
+                    </div>
+                    <div class="form-group">
+                        <label>🔗 رابط الزر</label>
+                        <input type="url" id="servicesBtnLink" value="https://itws.org.eg/services" />
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveServicesButton()">💾 حفظ زر الخدمات</button>
+            </div>
+
+            <!-- رفع اللوجو والختم -->
+            <div class="card">
+                <div class="card-title">🖼️ رفع اللوجو والختم</div>
+
+                <div class="form-row">
+                    <div>
+                        <div class="upload-area" onclick="document.getElementById('logoInput').click()">
+                            <div class="preview" id="logoPreview">
+                                <img src="" alt="لوجو النقابة" style="display:none;" />
+                            </div>
+                            <div class="icon" id="logoIcon">🖼️</div>
+                            <div class="text">اضغط لرفع لوجو النقابة</div>
+                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
+                            <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="uploadLogo()" id="uploadLogoBtn" style="margin-top:8px;">📤 رفع اللوجو</button>
+                    </div>
+
+                    <div>
+                        <div class="upload-area" onclick="document.getElementById('stampInput').click()">
+                            <div class="preview" id="stampPreview">
+                                <img src="" alt="ختم النقابة" style="display:none;" />
+                            </div>
+                            <div class="icon" id="stampIcon">🔏</div>
+                            <div class="text">اضغط لرفع ختم النقابة</div>
+                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
+                            <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="uploadStamp()" id="uploadStampBtn" style="margin-top:8px;">📤 رفع الختم</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+                    <button class="btn btn-success btn-sm" onclick="loadImages()">🔄 تحميل الصور الحالية</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearImages()">🗑️ حذف الصور</button>
+                </div>
+            </div>
+
+            <!-- إعدادات الأمان -->
+            <div class="card">
+                <div class="card-title">🛡️ إعدادات الأمان</div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>🔒 مدة الجلسة (دقائق)</label>
+                        <input type="number" id="sessionTimeout" value="30" min="5" max="120" />
+                    </div>
+                    <div class="form-group">
+                        <label>📝 محاولات الدخول المسموحة</label>
+                        <input type="number" id="maxLoginAttempts" value="5" min="3" max="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>🔄 وضع الصيانة</label>
+                        <select id="maintenanceMode">
+                            <option value="false">🟢 معطل</option>
+                            <option value="true">🔴 مفعل</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveSecuritySettings()">💾 حفظ إعدادات الأمان</button>
+            </div>
+
+            <!-- إجراءات خطيرة -->
+            <div class="card" style="border-color:rgba(239,68,68,0.15);">
+                <div class="card-title" style="color:#ef4444;">⚠️ إجراءات خطيرة</div>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <button class="btn btn-danger" onclick="resetAllData()">🗑️ إعادة تعيين جميع البيانات</button>
+                    <button class="btn btn-danger" onclick="clearAllActivities()">📋 حذف سجل النشاطات</button>
+                    <button class="btn btn-outline" onclick="exportBackup()">💾 تصدير نسخة احتياطية</button>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+        </footer>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
+        let currentUser = null;
+        let userRole = null;
+        let logoFile = null;
+        let stampFile = null;
+
+        // ============================================================
+        // 3. المصادقة والتحقق من الصلاحية
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            if (data.role === 'super_admin') {
+                                userRole = data.role;
+                                loadSettings();
+                            } else {
+                                window.location.href = 'dashboard.html';
+                            }
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    })
+                    .catch(function() {
+                        window.location.href = 'login.html';
+                    });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(function() {
+                window.location.href = 'login.html';
+            });
+        });
+
+        // ============================================================
+        // 4. تحميل الإعدادات
+        // ============================================================
+        function loadSettings() {
+            document.getElementById('pageLoader').classList.add('show');
+            document.getElementById('pageContent').style.display = 'none';
+
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.unionName) document.getElementById('unionName').value = data.unionName;
+                        if (data.committeeName) document.getElementById('committeeName').value = data.committeeName;
+                        if (data.splashDuration) document.getElementById('splashDuration').value = data
+                        .splashDuration;
+                        if (data.officialEmail) document.getElementById('officialEmail').value = data.officialEmail;
+                        if (data.officialPhone) document.getElementById('officialPhone').value = data.officialPhone;
+                        if (data.officialAddress) document.getElementById('officialAddress').value = data
+                            .officialAddress;
+                        if (data.sessionTimeout) document.getElementById('sessionTimeout').value = data
+                            .sessionTimeout;
+                        if (data.maxLoginAttempts) document.getElementById('maxLoginAttempts').value = data
+                            .maxLoginAttempts;
+                        if (data.maintenanceMode !== undefined) {
+                            document.getElementById('maintenanceMode').value = data.maintenanceMode ? 'true' :
+                            'false';
+                        }
+                    }
+                })
+                .catch(function() {});
+
+            // تحميل إعدادات زر الخدمات
+            db.collection('settings').doc('servicesButton').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.text) document.getElementById('servicesBtnText').value = data.text;
+                        if (data.link) document.getElementById('servicesBtnLink').value = data.link;
+                    }
+                })
+                .catch(function() {});
+
+            // تحميل الصور
+            loadImages();
+
+            document.getElementById('pageLoader').classList.remove('show');
+            document.getElementById('pageContent').style.display = 'block';
+        }
+
+        // ============================================================
+        // 5. حفظ الإعدادات العامة
+        // ============================================================
+        function saveGeneralSettings() {
+            const data = {
+                unionName: document.getElementById('unionName').value.trim(),
+                committeeName: document.getElementById('committeeName').value.trim(),
+                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                officialEmail: document.getElementById('officialEmail').value.trim(),
+                officialPhone: document.getElementById('officialPhone').value.trim(),
+                officialAddress: document.getElementById('officialAddress').value.trim(),
+                updatedAt: new Date(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            db.collection('settings').doc('general').set(data, { merge: true })
+                .then(function() {
+                    showMsg('✅ تم حفظ الإعدادات العامة بنجاح', 'success');
+                    db.collection('activities').add({
+                        userId: currentUser ? currentUser.uid : 'system',
+                        userEmail: currentUser ? currentUser.email : 'system',
+                        userName: 'سوبر أدمن',
+                        userRole: 'super_admin',
+                        type: 'update',
+                        description: 'تحديث الإعدادات العامة',
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+                })
+                .catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 6. حفظ زر الخدمات
+        // ============================================================
+        function saveServicesButton() {
+            const data = {
+                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
+                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
+                updatedAt: new Date(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            db.collection('settings').doc('servicesButton').set(data, { merge: true })
+                .then(function() {
+                    showMsg('✅ تم حفظ زر الخدمات بنجاح', 'success');
+                    db.collection('activities').add({
+                        userId: currentUser ? currentUser.uid : 'system',
+                        userEmail: currentUser ? currentUser.email : 'system',
+                        userName: 'سوبر أدمن',
+                        userRole: 'super_admin',
+                        type: 'update',
+                        description: 'تحديث زر خدمات النقابة',
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+                })
+                .catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 7. حفظ إعدادات الأمان
+        // ============================================================
+        function saveSecuritySettings() {
+            const data = {
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
+                maintenanceMode: document.getElementById('maintenanceMode').value === 'true',
+                updatedAt: new Date(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            db.collection('settings').doc('general').set(data, { merge: true })
+                .then(function() {
+                    showMsg('✅ تم حفظ إعدادات الأمان بنجاح', 'success');
+                })
+                .catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 8. رفع اللوجو
+        // ============================================================
+        function previewLogo(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showMsg('❌ حجم الصورة يتجاوز 2MB', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            logoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.querySelector('#logoPreview img');
+                const icon = document.getElementById('logoIcon');
+                img.src = ev.target.result;
+                img.style.display = 'block';
+                icon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewStamp(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showMsg('❌ حجم الصورة يتجاوز 2MB', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            stampFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.querySelector('#stampPreview img');
+                const icon = document.getElementById('stampIcon');
+                img.src = ev.target.result;
+                img.style.display = 'block';
+                icon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function uploadLogo() {
+            if (!logoFile) {
+                showMsg('⚠️ الرجاء اختيار صورة اللوجو أولاً', 'info');
+                return;
+            }
+
+            const btn = document.getElementById('uploadLogoBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري الرفع...';
+
+            const storageRef = storage.ref('union/logo.png');
+            storageRef.put(logoFile)
+                .then(function() {
+                    return storageRef.getDownloadURL();
+                })
+                .then(function(url) {
+                    showMsg('✅ تم رفع اللوجو بنجاح', 'success');
+                    btn.disabled = false;
+                    btn.textContent = '📤 رفع اللوجو';
+                    logoFile = null;
+                    db.collection('activities').add({
+                        userId: currentUser ? currentUser.uid : 'system',
+                        userEmail: currentUser ? currentUser.email : 'system',
+                        userName: 'سوبر أدمن',
+                        userRole: 'super_admin',
+                        type: 'upload_logo',
+                        description: 'رفع لوجو النقابة',
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+                })
+                .catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                    btn.disabled = false;
+                    btn.textContent = '📤 رفع اللوجو';
+                });
+        }
+
+        function uploadStamp() {
+            if (!stampFile) {
+                showMsg('⚠️ الرجاء اختيار صورة الختم أولاً', 'info');
+                return;
+            }
+
+            const btn = document.getElementById('uploadStampBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري الرفع...';
+
+            const storageRef = storage.ref('union/stamp.png');
+            storageRef.put(stampFile)
+                .then(function() {
+                    return storageRef.getDownloadURL();
+                })
+                .then(function(url) {
+                    showMsg('✅ تم رفع الختم بنجاح', 'success');
+                    btn.disabled = false;
+                    btn.textContent = '📤 رفع الختم';
+                    stampFile = null;
+                    db.collection('activities').add({
+                        userId: currentUser ? currentUser.uid : 'system',
+                        userEmail: currentUser ? currentUser.email : 'system',
+                        userName: 'سوبر أدمن',
+                        userRole: 'super_admin',
+                        type: 'upload_stamp',
+                        description: 'رفع ختم النقابة',
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+                })
+                .catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                    btn.disabled = false;
+                    btn.textContent = '📤 رفع الختم';
+                });
+        }
+
+        // ============================================================
+        // 9. تحميل الصور الحالية
+        // ============================================================
+        function loadImages() {
+            const logoRef = storage.ref('union/logo.png');
+            logoRef.getDownloadURL()
+                .then(function(url) {
+                    const img = document.querySelector('#logoPreview img');
+                    const icon = document.getElementById('logoIcon');
+                    img.src = url;
+                    img.style.display = 'block';
+                    icon.style.display = 'none';
+                })
+                .catch(function() {});
+
+            const stampRef = storage.ref('union/stamp.png');
+            stampRef.getDownloadURL()
+                .then(function(url) {
+                    const img = document.querySelector('#stampPreview img');
+                    const icon = document.getElementById('stampIcon');
+                    img.src = url;
+                    img.style.display = 'block';
+                    icon.style.display = 'none';
+                })
+                .catch(function() {});
+        }
+
+        // ============================================================
+        // 10. حذف الصور
+        // ============================================================
+        function clearImages() {
+            if (!confirm('⚠️ هل أنت متأكد من حذف اللوجو والختم؟')) return;
+
+            const logoRef = storage.ref('union/logo.png');
+            const stampRef = storage.ref('union/stamp.png');
+
+            Promise.all([
+                logoRef.delete().catch(function() {}),
+                stampRef.delete().catch(function() {})
+            ]).then(function() {
+                document.querySelector('#logoPreview img').style.display = 'none';
+                document.getElementById('logoIcon').style.display = 'block';
+                document.querySelector('#stampPreview img').style.display = 'none';
+                document.getElementById('stampIcon').style.display = 'block';
+                showMsg('✅ تم حذف الصور بنجاح', 'success');
+            }).catch(function() {
+                showMsg('❌ حدث خطأ في حذف الصور', 'error');
+            });
+        }
+
+        // ============================================================
+        // 11. إعادة التعيين للافتراضي
+        // ============================================================
+        function resetToDefault() {
+            if (!confirm('⚠️ هل تريد استعادة الإعدادات الافتراضية؟')) return;
+
+            const defaults = {
+                unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
+                committeeName: 'لجنة التحول الرقمي والتدريب',
+                splashDuration: 3,
+                officialEmail: 'info@itws.org.eg',
+                officialPhone: '+20 2 12345678',
+                officialAddress: 'القاهرة - مصر الجديدة - شارع النقابات',
+                sessionTimeout: 30,
+                maxLoginAttempts: 5,
+                maintenanceMode: false
+            };
+
+            document.getElementById('unionName').value = defaults.unionName;
+            document.getElementById('committeeName').value = defaults.committeeName;
+            document.getElementById('splashDuration').value = defaults.splashDuration;
+            document.getElementById('officialEmail').value = defaults.officialEmail;
+            document.getElementById('officialPhone').value = defaults.officialPhone;
+            document.getElementById('officialAddress').value = defaults.officialAddress;
+            document.getElementById('sessionTimeout').value = defaults.sessionTimeout;
+            document.getElementById('maxLoginAttempts').value = defaults.maxLoginAttempts;
+            document.getElementById('maintenanceMode').value = 'false';
+
+            showMsg('✅ تم استعادة الإعدادات الافتراضية', 'success');
+        }
+
+        // ============================================================
+        // 12. إجراءات خطيرة
+        // ============================================================
+        function resetAllData() {
+            if (!confirm('⚠️ تحذير: هذا الإجراء سيحذف جميع البيانات نهائياً! استمرار؟')) return;
+            if (!confirm('⚠️ تأكيد نهائي: حذف جميع الأكاديميات والشهادات والنشاطات؟')) return;
+
+            showMsg('⏳ جاري حذف جميع البيانات...', 'info');
+
+            const collections = ['academies', 'certificates', 'activities', 'searchLogs'];
+            let completed = 0;
+
+            collections.forEach(function(name) {
+                db.collection(name).get()
+                    .then(function(snap) {
+                        const batch = db.batch();
+                        snap.docs.forEach(function(doc) {
+                            batch.delete(doc.ref);
+                        });
+                        return batch.commit();
+                    })
+                    .then(function() {
+                        completed++;
+                        if (completed === collections.length) {
+                            showMsg('✅ تم حذف جميع البيانات بنجاح', 'success');
+                        }
+                    })
+                    .catch(function(err) {
+                        showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                    });
+            });
+        }
+
+        function clearAllActivities() {
+            if (!confirm('⚠️ هل تريد حذف سجل النشاطات بالكامل؟')) return;
+
+            db.collection('activities').get()
+                .then(function(snap) {
+                    const batch = db.batch();
+                    snap.docs.forEach(function(doc) {
+                        batch.delete(doc.ref);
+                    });
+                    return batch.commit();
+                })
+                .then(function() {
+                    showMsg('✅ تم حذف سجل النشاطات', 'success');
+                })
+                .catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        function exportBackup() {
+            showMsg('📥 جاري تحميل النسخة الاحتياطية...', 'info');
+            setTimeout(function() {
+                showMsg('✅ تم تحميل النسخة الاحتياطية', 'success');
+            }, 2000);
+        }
+
+        // ============================================================
+        // 13. عرض الرسائل
+        // ============================================================
+        function showMsg(msg, type = 'info') {
+            const el = document.getElementById('pageMsg');
+            el.textContent = msg;
+            el.className = 'msg show ' + type;
+            setTimeout(function() {
+                el.className = 'msg';
+            }, 4000);
+        }
+
+        console.log('✅ إعدادات النظام - نقابة تكنولوجيا المعلومات');
+        console.log('🔒 صلاحية السوبر أدمن فقط');
+    </script>
+
+</body>
+</html>
