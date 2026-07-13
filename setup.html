@@ -570,7 +570,7 @@
 
             <!-- رفع اللوجو والختم -->
             <div class="border-top">
-                <div class="section-title">🖼️ رفع اللوجو والختم (Cloudinary)</div>
+                <div class="section-title">🖼️ رفع اللوجو والختم</div>
 
                 <div class="form-row">
                     <div>
@@ -656,14 +656,14 @@
         auth = firebase.auth(app);
 
         // ============================================================
-        // 2. إعدادات Cloudinary
+        // 2. إعدادات Cloudinary (تم تحديثها)
         // ============================================================
         const CLOUDINARY = {
             cloudName: 'dvxh9l4lv',
-            uploadPreset: 'itws_unsigned',
-            folder: 'itwsAcCertification',
             apiKey: '474397224442688',
-            apiSecret: 'CRhfgj7NWhic7m_5F33CZWUPQQg'
+            apiSecret: 'CRhfgj7NWhic7m_5F33CZWUPQQg',
+            uploadPreset: 'syndicate_upload',
+            folder: 'syndicate_system_logos'
         };
 
         // ============================================================
@@ -771,96 +771,45 @@
         }
 
         // ============================================================
-        // 7. رفع الصور إلى Cloudinary (طريقة مضمونة 100%)
+        // 7. رفع الصور إلى Cloudinary (طريقة مضمونة)
         // ============================================================
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
-
-                // المحاولة الأولى: Unsigned Upload (باستخدام upload_preset)
-                function tryUnsigned() {
-                    addLog('📤 محاولة الرفع بـ Unsigned...', 'info');
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('upload_preset', CLOUDINARY.uploadPreset);
-                    formData.append('folder', CLOUDINARY.folder);
-                    if (publicId) {
-                        formData.append('public_id', publicId);
-                    }
-
-                    const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
-
-                    fetch(url, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(function(response) {
-                        return response.json();
-                    })
-                    .then(function(data) {
-                        if (data.error) {
-                            addLog('⚠️ Unsigned فشل: ' + data.error.message, 'warning');
-                            trySigned();
-                        } else {
-                            addLog('✅ تم الرفع بـ Unsigned', 'success');
-                            resolve(data);
-                        }
-                    })
-                    .catch(function(err) {
-                        addLog('⚠️ Unsigned فشل: ' + err.message, 'warning');
-                        trySigned();
-                    });
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', CLOUDINARY.uploadPreset);
+                formData.append('folder', CLOUDINARY.folder);
+                if (publicId) {
+                    formData.append('public_id', publicId);
                 }
 
-                // المحاولة الثانية: Signed Upload (باستخدام api_key + api_secret)
-                function trySigned() {
-                    addLog('📤 محاولة الرفع بـ Signed...', 'info');
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('api_key', CLOUDINARY.apiKey);
-                    formData.append('api_secret', CLOUDINARY.apiSecret);
-                    formData.append('folder', CLOUDINARY.folder);
-                    if (publicId) {
-                        formData.append('public_id', publicId);
+                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
                     }
-
-                    const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
-
-                    fetch(url, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(function(response) {
-                        return response.json();
-                    })
-                    .then(function(data) {
-                        if (data.error) {
-                            addLog('⚠️ Signed فشل: ' + data.error.message, 'warning');
-                            tryXMLHttpRequest();
-                        } else {
-                            addLog('✅ تم الرفع بـ Signed', 'success');
-                            resolve(data);
-                        }
-                    })
-                    .catch(function(err) {
-                        addLog('⚠️ Signed فشل: ' + err.message, 'warning');
-                        tryXMLHttpRequest();
-                    });
-                }
-
-                // المحاولة الثالثة: XMLHttpRequest (بديل fetch)
-                function tryXMLHttpRequest() {
-                    addLog('📤 محاولة الرفع بـ XMLHttpRequest...', 'info');
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('api_key', CLOUDINARY.apiKey);
-                    formData.append('api_secret', CLOUDINARY.apiSecret);
-                    formData.append('folder', CLOUDINARY.folder);
-                    if (publicId) {
-                        formData.append('public_id', publicId);
-                    }
-
+                })
+                .catch(function(err) {
+                    // لو fetch فشل، جرب XMLHttpRequest
+                    addLog('⚠️ Fetch فشل، جرب XMLHttpRequest...', 'warning');
                     const xhr = new XMLHttpRequest();
-                    const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+                    const xhrFormData = new FormData();
+                    xhrFormData.append('file', file);
+                    xhrFormData.append('upload_preset', CLOUDINARY.uploadPreset);
+                    xhrFormData.append('folder', CLOUDINARY.folder);
+                    if (publicId) {
+                        xhrFormData.append('public_id', publicId);
+                    }
 
                     xhr.open('POST', url, true);
                     xhr.onload = function() {
@@ -868,10 +817,8 @@
                             try {
                                 const data = JSON.parse(xhr.responseText);
                                 if (data.error) {
-                                    addLog('❌ XMLHttpRequest فشل: ' + data.error.message, 'error');
                                     reject(data.error);
                                 } else {
-                                    addLog('✅ تم الرفع بـ XMLHttpRequest', 'success');
                                     resolve(data);
                                 }
                             } catch (e) {
@@ -884,11 +831,8 @@
                     xhr.onerror = function() {
                         reject('Network Error');
                     };
-                    xhr.send(formData);
-                }
-
-                // البدء بالمحاولة الأولى
-                tryUnsigned();
+                    xhr.send(xhrFormData);
+                });
             });
         }
 
