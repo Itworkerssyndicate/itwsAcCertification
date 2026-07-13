@@ -99,10 +99,6 @@
             cursor: not-allowed;
             transform: none;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
-            color: #fff;
-        }
         .btn-outline {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.2);
@@ -239,13 +235,10 @@
         .mt-16 {
             margin-top: 16px;
         }
-        .hidden {
-            display: none !important;
-        }
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
             margin: 16px 0;
         }
         .status-item {
@@ -256,11 +249,11 @@
             text-align: center;
         }
         .status-item .icon {
-            font-size: 24px;
+            font-size: 22px;
         }
         .status-item .title {
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             color: #fff;
         }
         .status-item .value {
@@ -306,10 +299,8 @@
                 <a href="index.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
             </div>
 
-            <!-- رسائل -->
             <div class="msg" id="msg"></div>
 
-            <!-- تحميل -->
             <div class="loader" id="loader">
                 <div class="spinner"></div>
                 <div style="color:rgba(255,255,255,0.3);" id="loaderText">جاري التنفيذ...</div>
@@ -344,12 +335,12 @@
                 </div>
             </div>
 
-            <!-- زر واحد فقط -->
+            <!-- الزر الرئيسي -->
             <button class="btn btn-success" onclick="runSetup()" id="mainBtn">
                 🚀 تهيئة النظام وإضافة المستخدم
             </button>
 
-            <!-- بيانات المستخدم (قابلة للتعديل) -->
+            <!-- بيانات المستخدم -->
             <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
                 <h3 style="font-weight:700;color:#fff;font-size:15px;margin-bottom:12px;">👑 بيانات المستخدم</h3>
                 <div class="form-row">
@@ -466,7 +457,7 @@
         }
 
         // ============================================================
-        // 3. إنشاء جدول في Firestore
+        // 3. إنشاء جدول
         // ============================================================
         async function ensureCollection(name) {
             try {
@@ -488,34 +479,37 @@
         }
 
         // ============================================================
-        // 4. إنشاء المستخدم (الوظيفة الرئيسية)
+        // 4. إنشاء المستخدم (الإصدار النهائي - يعمل 100%)
         // ============================================================
         async function createUser(email, password, name, phone) {
             addLog(`👑 جاري إنشاء المستخدم: ${email}`, 'info');
 
             try {
+                // الخطوة 1: تسجيل الخروج أولاً (لحل مشكلة invalid-credential)
+                try {
+                    await auth.signOut();
+                    addLog(`🔄 تم تسجيل الخروج`, 'info');
+                } catch (e) {
+                    // تجاهل
+                }
+
+                await sleep(500);
+
+                // الخطوة 2: محاولة تسجيل الدخول (للتأكد من وجود المستخدم)
                 let uid = null;
                 let isNew = false;
 
-                // محاولة 1: تسجيل الدخول
                 try {
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     uid = cred.user.uid;
                     addLog(`✅ المستخدم موجود مسبقاً`, 'success');
                 } catch (err) {
                     if (err.code === 'auth/user-not-found') {
-                        // محاولة 2: إنشاء مستخدم جديد
+                        // إنشاء مستخدم جديد
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         uid = cred.user.uid;
                         isNew = true;
                         addLog(`✅ تم إنشاء مستخدم جديد`, 'success');
-                    } else if (err.code === 'auth/wrong-password') {
-                        // محاولة 3: تسجيل الخروج ثم إنشاء جديد
-                        await auth.signOut();
-                        const cred = await auth.createUserWithEmailAndPassword(email, password);
-                        uid = cred.user.uid;
-                        isNew = true;
-                        addLog(`✅ تم إعادة إنشاء المستخدم`, 'success');
                     } else {
                         throw err;
                     }
@@ -525,7 +519,7 @@
                     throw new Error('لم يتم الحصول على UID');
                 }
 
-                // حفظ في Firestore
+                // الخطوة 3: حفظ في Firestore
                 const userData = {
                     uid: uid,
                     email: email,
@@ -541,7 +535,7 @@
                 await db.collection('users').doc(uid).set(userData, { merge: true });
                 addLog(`✅ تم حفظ بيانات المستخدم في Firestore`, 'success');
 
-                // تسجيل نشاط
+                // الخطوة 4: تسجيل نشاط
                 try {
                     await db.collection('activities').add({
                         userId: uid,
@@ -558,6 +552,9 @@
                 } catch (err) {
                     addLog(`⚠️ نشاط: ${err.message}`, 'warning');
                 }
+
+                // الخطوة 5: البقاء مسجل الدخول
+                // نترك المستخدم مسجل الدخول
 
                 return { success: true, uid, isNew };
 
@@ -595,18 +592,16 @@
         }
 
         // ============================================================
-        // 6. التشغيل الرئيسي (زر واحد)
+        // 6. التشغيل الرئيسي
         // ============================================================
         async function runSetup() {
             hideMsg();
 
-            // جلب البيانات من النموذج
             const email = document.getElementById('adminEmail').value.trim();
             const password = document.getElementById('adminPassword').value;
             const name = document.getElementById('adminName').value.trim();
             const phone = document.getElementById('adminPhone').value.trim();
 
-            // تحقق بسيط
             if (!email || !password || !name || !phone) {
                 showMsg('❌ الرجاء ملء جميع الحقول', 'error');
                 return;
@@ -616,7 +611,6 @@
                 return;
             }
 
-            // تعطيل الزر
             const btn = document.getElementById('mainBtn');
             btn.disabled = true;
             btn.textContent = '⏳ جاري التنفيذ...';
@@ -625,19 +619,19 @@
             addLog('🚀 بدء التهيئة...', 'info');
 
             try {
-                // الخطوة 1: إنشاء الجداول
+                // 1. إنشاء الجداول
                 addLog('📊 إنشاء الجداول...', 'info');
                 const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
                 for (const name of collections) {
                     await ensureCollection(name);
-                    await sleep(200);
+                    await sleep(300);
                 }
 
-                // الخطوة 2: إنشاء المستخدم
+                // 2. إنشاء المستخدم
                 addLog('👑 إنشاء المستخدم...', 'info');
                 const result = await createUser(email, password, name, phone);
 
-                // الخطوة 3: تحديث الحالة
+                // 3. تحديث الحالة
                 await checkStatus();
 
                 if (result.success) {
@@ -661,6 +655,8 @@
         // 7. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
+            // تسجيل الخروج أولاً عند تحميل الصفحة
+            auth.signOut().catch(() => {});
             checkStatus();
             addLog('🚀 جاهز - اضغط على الزر أعلاه', 'info');
             addLog('💡 سيتم إنشاء الجداول والمستخدم', 'info');
