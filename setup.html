@@ -26,7 +26,7 @@
             direction: rtl;
         }
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -35,8 +35,7 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
-            padding: 28px;
-            margin-bottom: 24px;
+            padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
         .header {
@@ -73,17 +72,19 @@
             color: rgba(255, 255, 255, 0.4);
         }
         .btn {
-            padding: 10px 24px;
+            padding: 14px 32px;
             border-radius: 12px;
             border: none;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             text-decoration: none;
+            width: 100%;
+            justify-content: center;
         }
         .btn-success {
             background: linear-gradient(135deg, #22c55e, #16a34a);
@@ -93,16 +94,13 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
         }
+        .btn-success:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
         .btn-primary {
             background: linear-gradient(135deg, #0055e6, #5c00e6);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.4);
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
         }
         .btn-outline {
@@ -110,38 +108,22 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             color: #fff;
         }
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .btn-lg {
-            padding: 14px 32px;
-            font-size: 16px;
-        }
         .btn-sm {
-            padding: 6px 14px;
+            padding: 8px 16px;
             font-size: 12px;
+            width: auto;
         }
-        .btn-block {
-            width: 100%;
-            justify-content: center;
+        .form-group {
+            margin-bottom: 16px;
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .form-grid .full {
-            grid-column: 1 / -1;
-        }
-        .form-grid label {
+        .form-group label {
             display: block;
             font-size: 13px;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.6);
             margin-bottom: 4px;
         }
-        .form-grid input,
-        .form-grid select {
+        .form-group input {
             width: 100%;
             padding: 12px 16px;
             border-radius: 12px;
@@ -152,17 +134,17 @@
             outline: none;
             transition: all 0.3s ease;
         }
-        .form-grid input:focus,
-        .form-grid select:focus {
+        .form-group input:focus {
             border-color: #0055e6;
             box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.15);
         }
-        .form-grid input::placeholder {
+        .form-group input::placeholder {
             color: rgba(255, 255, 255, 0.2);
         }
-        .form-grid select option {
-            background: #1a1a2e;
-            color: #fff;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
         .msg {
             display: none;
@@ -215,14 +197,14 @@
             background: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
             padding: 16px;
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
             font-family: monospace;
             font-size: 12px;
             color: rgba(255, 255, 255, 0.6);
             direction: ltr;
             text-align: left;
-            margin-top: 12px;
+            margin-top: 16px;
         }
         .log .line {
             padding: 2px 0;
@@ -239,41 +221,6 @@
         }
         .log .line.warning {
             color: #f59e0b;
-        }
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-            margin: 16px 0;
-        }
-        .status-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            padding: 14px;
-            text-align: center;
-        }
-        .status-item .icon {
-            font-size: 28px;
-        }
-        .status-item .title {
-            font-weight: 700;
-            font-size: 13px;
-            color: #fff;
-        }
-        .status-item .value {
-            font-size: 12px;
-            margin-top: 4px;
-            font-weight: 700;
-        }
-        .status-item .value.done {
-            color: #22c55e;
-        }
-        .status-item .value.pending {
-            color: #f59e0b;
-        }
-        .status-item .value.error {
-            color: #ef4444;
         }
         .footer {
             text-align: center;
@@ -292,33 +239,53 @@
         .mt-16 {
             margin-top: 16px;
         }
-        .mt-20 {
-            margin-top: 20px;
-        }
         .hidden {
             display: none !important;
         }
-        @media (max-width: 768px) {
-            .form-grid {
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .status-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .status-item .icon {
+            font-size: 24px;
+        }
+        .status-item .title {
+            font-weight: 700;
+            font-size: 12px;
+            color: #fff;
+        }
+        .status-item .value {
+            font-size: 11px;
+            margin-top: 4px;
+            font-weight: 700;
+        }
+        .status-item .value.done {
+            color: #22c55e;
+        }
+        .status-item .value.pending {
+            color: #f59e0b;
+        }
+        .status-item .value.error {
+            color: #ef4444;
+        }
+        @media (max-width: 600px) {
+            .form-row {
                 grid-template-columns: 1fr;
             }
-            .form-grid .full {
-                grid-column: 1;
-            }
-        }
-        @media (max-width: 480px) {
             .container {
                 padding: 12px;
             }
             .card {
                 padding: 16px;
-            }
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .status-grid {
-                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -333,13 +300,10 @@
                     <div class="logo-box">ن.ت</div>
                     <div>
                         <h1>تهيئة النظام</h1>
-                        <p>نقابة تكنولوجيا المعلومات - لجنة التحول الرقمي</p>
+                        <p>نقابة تكنولوجيا المعلومات</p>
                     </div>
                 </div>
-                <div>
-                    <a href="index.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
-                    <a href="login.html" class="btn btn-outline btn-sm">🔑 تسجيل الدخول</a>
-                </div>
+                <a href="index.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
             </div>
 
             <!-- رسائل -->
@@ -356,96 +320,75 @@
                 <div class="status-item">
                     <div class="icon">👤</div>
                     <div class="title">المستخدمين</div>
-                    <div class="value pending" id="sUsers">⏳ جاري...</div>
+                    <div class="value pending" id="sUsers">⏳</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🏛️</div>
                     <div class="title">الأكاديميات</div>
-                    <div class="value pending" id="sAcademies">⏳ جاري...</div>
+                    <div class="value pending" id="sAcademies">⏳</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📜</div>
                     <div class="title">الشهادات</div>
-                    <div class="value pending" id="sCertificates">⏳ جاري...</div>
+                    <div class="value pending" id="sCertificates">⏳</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📊</div>
-                    <div class="title">سجل النشاطات</div>
-                    <div class="value pending" id="sActivities">⏳ جاري...</div>
+                    <div class="title">النشاطات</div>
+                    <div class="value pending" id="sActivities">⏳</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🔍</div>
                     <div class="title">سجل البحث</div>
-                    <div class="value pending" id="sSearchLogs">⏳ جاري...</div>
-                </div>
-                <div class="status-item">
-                    <div class="icon">☁️</div>
-                    <div class="title">Cloudinary</div>
-                    <div class="value pending" id="sCloudinary">⏳ جاري...</div>
+                    <div class="value pending" id="sSearchLogs">⏳</div>
                 </div>
             </div>
 
-            <!-- زر التهيئة الرئيسي -->
-            <button class="btn btn-success btn-lg btn-block" onclick="runFullSetup()" id="mainBtn">
-                🚀 تهيئة النظام بالكامل
+            <!-- زر واحد فقط -->
+            <button class="btn btn-success" onclick="runSetup()" id="mainBtn">
+                🚀 تهيئة النظام وإضافة المستخدم
             </button>
 
-            <!-- نموذج بيانات السوبر أدمن -->
+            <!-- بيانات المستخدم (قابلة للتعديل) -->
             <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
-                <h3 style="font-weight:700;color:#fff;margin-bottom:12px;">👑 بيانات السوبر أدمن</h3>
-                <div class="form-grid" id="adminForm">
-                    <div class="full">
+                <h3 style="font-weight:700;color:#fff;font-size:15px;margin-bottom:12px;">👑 بيانات المستخدم</h3>
+                <div class="form-row">
+                    <div class="form-group">
                         <label>📧 البريد الإلكتروني</label>
                         <input type="email" id="adminEmail" value="superadmin@itws.com" />
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>🔒 كلمة المرور</label>
                         <input type="password" id="adminPassword" value="Admin@2026" />
                     </div>
-                    <div>
-                        <label>🔒 تأكيد كلمة المرور</label>
-                        <input type="password" id="adminPasswordConfirm" value="Admin@2026" />
-                    </div>
-                    <div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
                         <label>👤 الاسم الكامل</label>
                         <input type="text" id="adminName" value="سوبر أدمن النظام" />
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>📞 رقم الهاتف</label>
                         <input type="text" id="adminPhone" value="01234567890" />
                     </div>
-                    <div>
-                        <label>🔑 الدور</label>
-                        <select id="adminRole">
-                            <option value="super_admin">سوبر أدمن</option>
-                            <option value="admin">أدمن</option>
-                        </select>
-                    </div>
                 </div>
-            </div>
-
-            <!-- أزرار إضافية -->
-            <div class="flex mt-16">
-                <button class="btn btn-primary" onclick="checkStatus()">🔍 تحديث الحالة</button>
-                <button class="btn btn-danger" onclick="resetAll()">🗑️ حذف البيانات</button>
-                <button class="btn btn-outline" onclick="seedData()">🌱 بيانات تجريبية</button>
             </div>
 
             <!-- سجل العمليات -->
-            <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="margin-top:16px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                    <h3 style="font-weight:700;color:#fff;">📋 سجل العمليات</h3>
+                    <h3 style="font-weight:700;color:#fff;font-size:14px;">📋 سجل العمليات</h3>
                     <button class="btn btn-outline btn-sm" onclick="clearLog()">🗑️ مسح</button>
                 </div>
                 <div class="log" id="log">
-                    <div class="line info">⏳ جاهز لتهيئة النظام...</div>
+                    <div class="line info">⏳ جاهز - اضغط على الزر أعلاه</div>
                 </div>
             </div>
 
         </div>
 
         <div class="footer">
-            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - لجنة التحول الرقمي والتدريب
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات
         </div>
 
     </div>
@@ -523,7 +466,7 @@
         }
 
         // ============================================================
-        // 3. إنشاء جدول في Firestore (إذا لم يكن موجوداً)
+        // 3. إنشاء جدول في Firestore
         // ============================================================
         async function ensureCollection(name) {
             try {
@@ -545,174 +488,131 @@
         }
 
         // ============================================================
-        // 4. إنشاء المستخدم
+        // 4. إنشاء المستخدم (الوظيفة الرئيسية)
         // ============================================================
-        async function createUser(email, password, name, phone, role) {
+        async function createUser(email, password, name, phone) {
             addLog(`👑 جاري إنشاء المستخدم: ${email}`, 'info');
 
             try {
                 let uid = null;
                 let isNew = false;
 
-                // محاولة تسجيل الدخول
+                // محاولة 1: تسجيل الدخول
                 try {
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     uid = cred.user.uid;
-                    addLog(`✅ المستخدم موجود: ${uid}`, 'success');
+                    addLog(`✅ المستخدم موجود مسبقاً`, 'success');
                 } catch (err) {
                     if (err.code === 'auth/user-not-found') {
+                        // محاولة 2: إنشاء مستخدم جديد
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         uid = cred.user.uid;
                         isNew = true;
-                        addLog(`✅ تم إنشاء مستخدم جديد: ${uid}`, 'success');
+                        addLog(`✅ تم إنشاء مستخدم جديد`, 'success');
                     } else if (err.code === 'auth/wrong-password') {
-                        // تسجيل الخروج ثم إنشاء جديد
+                        // محاولة 3: تسجيل الخروج ثم إنشاء جديد
                         await auth.signOut();
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         uid = cred.user.uid;
                         isNew = true;
-                        addLog(`✅ تم إعادة إنشاء المستخدم: ${uid}`, 'success');
+                        addLog(`✅ تم إعادة إنشاء المستخدم`, 'success');
                     } else {
                         throw err;
                     }
                 }
 
+                if (!uid) {
+                    throw new Error('لم يتم الحصول على UID');
+                }
+
                 // حفظ في Firestore
-                const data = {
+                const userData = {
                     uid: uid,
                     email: email,
                     displayName: name,
                     phone: phone,
-                    role: role,
+                    role: 'super_admin',
                     isActive: true,
                     createdAt: getEgyptTime(),
                     lastLogin: getEgyptTime(),
                     updatedAt: getEgyptTime()
                 };
 
-                await db.collection('users').doc(uid).set(data, { merge: true });
-                addLog(`✅ تم حفظ بيانات المستخدم`, 'success');
+                await db.collection('users').doc(uid).set(userData, { merge: true });
+                addLog(`✅ تم حفظ بيانات المستخدم في Firestore`, 'success');
 
                 // تسجيل نشاط
-                await db.collection('activities').add({
-                    userId: uid,
-                    userEmail: email,
-                    userName: name,
-                    userRole: role,
-                    type: 'user_create',
-                    description: `${isNew ? 'إنشاء' : 'تحديث'} مستخدم: ${email}`,
-                    timestamp: getEgyptTime(),
-                    ipAddress: 'auto',
-                    userAgent: navigator.userAgent
-                });
+                try {
+                    await db.collection('activities').add({
+                        userId: uid,
+                        userEmail: email,
+                        userName: name,
+                        userRole: 'super_admin',
+                        type: 'user_create',
+                        description: `${isNew ? 'إنشاء' : 'تحديث'} مستخدم: ${email}`,
+                        timestamp: getEgyptTime(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    });
+                    addLog(`✅ تم تسجيل النشاط`, 'success');
+                } catch (err) {
+                    addLog(`⚠️ نشاط: ${err.message}`, 'warning');
+                }
 
                 return { success: true, uid, isNew };
 
             } catch (err) {
-                addLog(`❌ فشل إنشاء المستخدم: ${err.message}`, 'error');
+                addLog(`❌ فشل: ${err.message}`, 'error');
                 throw err;
             }
         }
 
         // ============================================================
-        // 5. فحص Cloudinary
-        // ============================================================
-        async function checkCloudinary() {
-            try {
-                const res = await fetch(
-                    `https://api.cloudinary.com/v1_1/dvxh9l4lv/resources/image/upload`,
-                    { headers: { 'Authorization': 'Basic ' + btoa('474397224442688:CRhfgj7NWhic7m_5F33CZWUPQQg') } }
-                );
-                if (res.ok) {
-                    setStatus('sCloudinary', '✅ متصل', 'done');
-                    addLog('☁️ Cloudinary متصل', 'success');
-                    return true;
-                }
-                setStatus('sCloudinary', '⚠️ غير متصل', 'pending');
-                addLog('☁️ Cloudinary غير متصل', 'warning');
-                return false;
-            } catch (err) {
-                setStatus('sCloudinary', '⚠️ غير متصل', 'pending');
-                addLog(`☁️ Cloudinary خطأ: ${err.message}`, 'warning');
-                return false;
-            }
-        }
-
-        // ============================================================
-        // 6. التحقق من الحالة
+        // 5. التحقق من الحالة
         // ============================================================
         async function checkStatus() {
-            hideMsg();
-            showLoader('جاري التحقق...');
-            addLog('🔍 جاري التحقق من الحالة...', 'info');
-
             try {
                 const collections = [
-                    { name: 'users', id: 'sUsers', label: 'المستخدمين' },
-                    { name: 'academies', id: 'sAcademies', label: 'الأكاديميات' },
-                    { name: 'certificates', id: 'sCertificates', label: 'الشهادات' },
-                    { name: 'activities', id: 'sActivities', label: 'النشاطات' },
-                    { name: 'searchLogs', id: 'sSearchLogs', label: 'سجل البحث' },
+                    { name: 'users', id: 'sUsers' },
+                    { name: 'academies', id: 'sAcademies' },
+                    { name: 'certificates', id: 'sCertificates' },
+                    { name: 'activities', id: 'sActivities' },
+                    { name: 'searchLogs', id: 'sSearchLogs' },
                 ];
 
                 for (const col of collections) {
                     try {
                         const snap = await db.collection(col.name).get();
                         const count = snap.size;
-                        const status = count > 0 ? 'done' : 'pending';
-                        const text = count > 0 ? `${count} سجل` : 'فارغ';
-                        setStatus(col.id, text, status);
-                        addLog(`📊 ${col.label}: ${count} سجل`, status === 'done' ? 'success' : 'info');
+                        setStatus(col.id, count > 0 ? `${count} سجل` : 'فارغ', count > 0 ? 'done' : 'pending');
                     } catch (err) {
-                        setStatus(col.id, '❌ خطأ', 'error');
-                        addLog(`❌ ${col.label}: ${err.message}`, 'error');
+                        setStatus(col.id, '❌', 'error');
                     }
                 }
-
-                await checkCloudinary();
-                showMsg('✅ تم التحقق من الحالة', 'success');
-                addLog('✅ اكتمل التحقق', 'success');
-
             } catch (err) {
-                showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
+                // تجاهل
             }
-
-            hideLoader();
         }
 
         // ============================================================
-        // 7. التهيئة الكاملة
+        // 6. التشغيل الرئيسي (زر واحد)
         // ============================================================
-        async function runFullSetup() {
+        async function runSetup() {
             hideMsg();
 
+            // جلب البيانات من النموذج
             const email = document.getElementById('adminEmail').value.trim();
             const password = document.getElementById('adminPassword').value;
-            const confirm = document.getElementById('adminPasswordConfirm').value;
             const name = document.getElementById('adminName').value.trim();
             const phone = document.getElementById('adminPhone').value.trim();
-            const role = document.getElementById('adminRole').value;
 
-            // تحقق
+            // تحقق بسيط
             if (!email || !password || !name || !phone) {
                 showMsg('❌ الرجاء ملء جميع الحقول', 'error');
                 return;
             }
-            if (password !== confirm) {
-                showMsg('❌ كلمة المرور غير متطابقة', 'error');
-                return;
-            }
             if (password.length < 6) {
                 showMsg('❌ كلمة المرور 6 أحرف على الأقل', 'error');
-                return;
-            }
-
-            if (!confirm('🚀 سيتم تهيئة النظام بالكامل:\n\n' +
-                    '1️⃣ إنشاء جميع الجداول\n' +
-                    '2️⃣ إنشاء مستخدم سوبر أدمن\n' +
-                    '3️⃣ إعداد التخزين\n\n' +
-                    'هل تريد المتابعة؟')) {
                 return;
             }
 
@@ -722,10 +622,10 @@
             btn.textContent = '⏳ جاري التنفيذ...';
 
             showLoader('جاري تهيئة النظام...');
-            addLog('🚀 بدء تهيئة النظام بالكامل...', 'info');
+            addLog('🚀 بدء التهيئة...', 'info');
 
             try {
-                // 1. إنشاء الجداول
+                // الخطوة 1: إنشاء الجداول
                 addLog('📊 إنشاء الجداول...', 'info');
                 const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
                 for (const name of collections) {
@@ -733,20 +633,19 @@
                     await sleep(200);
                 }
 
-                // 2. إنشاء المستخدم
-                addLog('👑 إنشاء السوبر أدمن...', 'info');
-                const userResult = await createUser(email, password, name, phone, role);
+                // الخطوة 2: إنشاء المستخدم
+                addLog('👑 إنشاء المستخدم...', 'info');
+                const result = await createUser(email, password, name, phone);
 
-                // 3. التحقق من Cloudinary
-                await checkCloudinary();
-
-                // 4. تحديث الحالة
+                // الخطوة 3: تحديث الحالة
                 await checkStatus();
 
-                showMsg('🎉 تم تهيئة النظام بالكامل بنجاح!', 'success');
-                addLog('🎉 اكتملت التهيئة', 'success');
-                addLog(`👑 ${email} / ${password}`, 'info');
-                addLog('🔑 يمكنك تسجيل الدخول الآن', 'info');
+                if (result.success) {
+                    showMsg(`✅ تمت التهيئة بنجاح!\n👑 ${email} / ${password}`, 'success');
+                    addLog(`🎉 اكتملت التهيئة`, 'success');
+                    addLog(`👑 ${email} / ${password}`, 'info');
+                    addLog(`🔑 يمكنك تسجيل الدخول الآن`, 'info');
+                }
 
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
@@ -755,127 +654,16 @@
 
             hideLoader();
             btn.disabled = false;
-            btn.textContent = '🚀 تهيئة النظام بالكامل';
+            btn.textContent = '🚀 تهيئة النظام وإضافة المستخدم';
         }
 
         // ============================================================
-        // 8. حذف جميع البيانات
-        // ============================================================
-        async function resetAll() {
-            if (!confirm('⚠️ حذف جميع البيانات؟ لا يمكن التراجع!')) return;
-            if (!confirm('⚠️ تأكيد نهائي؟')) return;
-
-            showLoader('جاري الحذف...');
-            addLog('🗑️ جاري حذف البيانات...', 'warning');
-
-            try {
-                const collections = ['academies', 'certificates', 'activities', 'searchLogs'];
-                for (const name of collections) {
-                    const snap = await db.collection(name).get();
-                    const batch = db.batch();
-                    snap.docs.forEach(doc => {
-                        if (doc.id !== '_init') {
-                            batch.delete(doc.ref);
-                        }
-                    });
-                    await batch.commit();
-                    addLog(`✅ حذف ${snap.size} من ${name}`, 'success');
-                }
-                showMsg('✅ تم حذف البيانات', 'success');
-                await checkStatus();
-            } catch (err) {
-                showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
-            }
-            hideLoader();
-        }
-
-        // ============================================================
-        // 9. بيانات تجريبية
-        // ============================================================
-        async function seedData() {
-            if (!confirm('🌱 تعبئة بيانات تجريبية؟')) return;
-
-            showLoader('جاري التعبئة...');
-            addLog('🌱 تعبئة بيانات تجريبية...', 'info');
-
-            try {
-                // أكاديميات
-                const acadSnap = await db.collection('academies').where('isDeleted', '==', false).get();
-                if (acadSnap.empty) {
-                    const academies = [
-                        { name: 'معهد القاهرة لتكنولوجيا المعلومات', taxNumber: '123-456-789',
-                        licenseNumber: 'NTI-2024-001',
-                            branches: [{ governorate: 'القاهرة', address: 'ميدان التحرير', phone: '0223456789',
-                                isMainBranch: true }] },
-                        { name: 'أكاديمية النيل للتدريب', taxNumber: '987-654-321', licenseNumber: 'NTI-2024-002',
-                            branches: [{ governorate: 'الإسكندرية', address: 'شارع سعد زغلول', phone: '0323456789',
-                                isMainBranch: true }] },
-                        { name: 'مركز التميز التقني', taxNumber: '555-666-777', licenseNumber: 'NTI-2024-003',
-                            branches: [{ governorate: 'الجيزة', address: 'شارع الهرم', phone: '0229876543',
-                                isMainBranch: true }] }
-                    ];
-                    for (const a of academies) {
-                        const ref = db.collection('academies').doc();
-                        await ref.set({ academyId: ref.id, ...a, createdAt: getEgyptTime(), createdBy: 'system',
-                            isDeleted: false });
-                        addLog(`✅ أكاديمية: ${a.name}`, 'success');
-                    }
-                }
-
-                // شهادات
-                const acadList = [];
-                const snap2 = await db.collection('academies').where('isDeleted', '==', false).get();
-                snap2.forEach(d => acadList.push({ id: d.id, ...d.data() }));
-
-                if (acadList.length > 0) {
-                    const names = ['أحمد علي', 'سارة محمود', 'خالد إبراهيم', 'فاطمة أحمد', 'عمر حسن'];
-                    const courses = ['أمن سيبراني', 'تطوير ويب', 'ذكاء اصطناعي', 'علم البيانات', 'هندسة برمجيات'];
-                    const grades = ['A+', 'A', 'A-', 'B+', 'B'];
-                    const year = new Date().getFullYear();
-
-                    for (let i = 0; i < 10; i++) {
-                        const acad = acadList[Math.floor(Math.random() * acadList.length)];
-                        const branch = acad.branches[Math.floor(Math.random() * acad.branches.length)];
-                        const code = `NTI-${year}-${String(i+1).padStart(4,'0')}`;
-                        await db.collection('certificates').doc(code).set({
-                            certificateCode: code,
-                            studentName: names[Math.floor(Math.random() * names.length)],
-                            courseName: courses[Math.floor(Math.random() * courses.length)],
-                            courseHours: Math.floor(Math.random() * 30) + 10,
-                            completionDate: getEgyptTime(),
-                            grade: grades[Math.floor(Math.random() * grades.length)],
-                            academyId: acad.id,
-                            branchId: branch.branchId || 'b1',
-                            academyName: acad.name,
-                            academyLicenseNumber: acad.licenseNumber,
-                            branchName: branch.governorate,
-                            issuedBy: 'system',
-                            issuedAt: getEgyptTime(),
-                            isActive: true
-                        });
-                        addLog(`✅ شهادة: ${code}`, 'success');
-                    }
-                }
-
-                showMsg('✅ تم تعبئة البيانات التجريبية', 'success');
-                addLog('🎉 اكتملت التعبئة', 'success');
-                await checkStatus();
-
-            } catch (err) {
-                showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
-            }
-            hideLoader();
-        }
-
-        // ============================================================
-        // 10. تحميل الصفحة
+        // 7. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             checkStatus();
-            addLog('🚀 جاهز', 'info');
-            addLog('💡 اضغط "تهيئة النظام بالكامل"', 'info');
+            addLog('🚀 جاهز - اضغط على الزر أعلاه', 'info');
+            addLog('💡 سيتم إنشاء الجداول والمستخدم', 'info');
         });
     </script>
 
