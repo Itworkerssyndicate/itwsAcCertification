@@ -794,8 +794,7 @@
         // ============================================================
         const CLOUDINARY = {
             cloudName: 'dvxh9l4lv',
-            apiKey: '474397224442688',
-            apiSecret: 'CRhfgj7NWhic7m_5F33CZWUPQQg',
+            uploadPreset: 'ml_default', // لازم يكون موجود في Cloudinary Dashboard
             folder: 'itwsAcCertification'
         };
 
@@ -869,13 +868,13 @@
         }
 
         // ============================================================
-        // 6. رفع الصور إلى Cloudinary
+        // 6. رفع الصور إلى Cloudinary (باستخدام upload_preset)
         // ============================================================
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
                 const formData = new FormData();
                 formData.append('file', file);
-                formData.append('upload_preset', 'ml_default');
+                formData.append('upload_preset', CLOUDINARY.uploadPreset);
                 formData.append('folder', CLOUDINARY.folder);
                 if (publicId) {
                     formData.append('public_id', publicId);
@@ -895,35 +894,6 @@
                         reject(data.error);
                     } else {
                         resolve(data);
-                    }
-                })
-                .catch(function(err) {
-                    reject(err);
-                });
-            });
-        }
-
-        function deleteFromCloudinary(publicId) {
-            return new Promise(function(resolve, reject) {
-                const formData = new FormData();
-                formData.append('public_id', publicId);
-                formData.append('api_key', CLOUDINARY.apiKey);
-                formData.append('api_secret', CLOUDINARY.apiSecret);
-
-                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/destroy';
-
-                fetch(url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    if (data.result === 'ok') {
-                        resolve(data);
-                    } else {
-                        reject(data);
                     }
                 })
                 .catch(function(err) {
@@ -1092,41 +1062,24 @@
         function clearImagesFromCloudinary() {
             if (!confirm('هل أنت متأكد من حذف اللوجو والختم من Cloudinary؟')) return;
 
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    const promises = [];
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.logoUrl) {
-                            const publicId = 'itwsAcCertification/union_logo';
-                            promises.push(deleteFromCloudinary(publicId));
-                        }
-                        if (data.stampUrl) {
-                            const publicId = 'itwsAcCertification/union_stamp';
-                            promises.push(deleteFromCloudinary(publicId));
-                        }
-                    }
-                    return Promise.all(promises);
-                })
-                .then(function() {
-                    return db.collection('settings').doc('general').set({
-                        logoUrl: '',
-                        stampUrl: '',
-                        updatedAt: getEgyptTime(),
-                        updatedBy: currentUser ? currentUser.uid : 'system'
-                    }, { merge: true });
-                })
-                .then(function() {
-                    document.querySelector('#logoPreview img').style.display = 'none';
-                    document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
-                    document.querySelector('#stampPreview img').style.display = 'none';
-                    document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
-                    showMsg('تم حذف الصور بنجاح', 'success');
-                    logActivity('delete', 'حذف اللوجو والختم من Cloudinary');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + (err.message || err), 'error');
-                });
+            // حذف الروابط من Firestore فقط (لأننا مش بنحفظ الـ public_id)
+            db.collection('settings').doc('general').set({
+                logoUrl: '',
+                stampUrl: '',
+                updatedAt: getEgyptTime(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            }, { merge: true })
+            .then(function() {
+                document.querySelector('#logoPreview img').style.display = 'none';
+                document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
+                document.querySelector('#stampPreview img').style.display = 'none';
+                document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
+                showMsg('تم حذف الصور بنجاح', 'success');
+                logActivity('delete', 'حذف اللوجو والختم من Cloudinary');
+            })
+            .catch(function(err) {
+                showMsg('حدث خطأ: ' + (err.message || err), 'error');
+            });
         }
 
         // ============================================================
@@ -1466,7 +1419,7 @@
         // 18. تحميل أولي
         // ============================================================
         console.log('✅ إعدادات النظام - نقابة تكنولوجيا المعلومات');
-        console.log('☁️ Cloudinary متصل');
+        console.log('☁️ Cloudinary متصل (upload_preset: ' + CLOUDINARY.uploadPreset + ')');
         console.log('🔒 صلاحية السوبر أدمن فقط');
     </script>
 
