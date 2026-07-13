@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الشهادات - نقابة تكنولوجيا المعلومات</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           التصميم الكامل لإدارة الشهادات
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* ===== خلفية ===== */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.03) 0%, transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.04) rotate(1.5deg);
+            }
+        }
+
+        .page-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* ===== جزيئات ===== */
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 200, 255, 0.04);
+            animation: particleFloat 25s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 4s;
+        }
+        .particle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(4) {
+            width: 180px;
+            height: 180px;
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 6s;
+        }
+        .particle:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .particle:nth-child(6) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            right: 45%;
+            animation-delay: 5s;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.2);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.1;
+            }
+        }
+
+        /* ===== شبكة ===== */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* ===== الحاوية ===== */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* ===== الهيدر ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.35);
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 11px;
+        }
+
+        /* ===== البطاقات ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 20px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title .badge {
+            font-size: 10px;
+            background: rgba(0, 85, 230, 0.15);
+            color: #0055e6;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* ===== شريط البحث ===== */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .search-bar input:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        }
+
+        /* ===== الجدول ===== */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .table thead {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .table thead th {
+            text-align: right;
+            padding: 12px 14px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .table .student-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .table .cert-code {
+            font-family: monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .table .grade-badge {
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .grade-badge.grade-a {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+        .grade-badge.grade-b {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+        .grade-badge.grade-c {
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+        }
+        .grade-badge.grade-d {
+            background: rgba(249, 115, 22, 0.15);
+            color: #f97316;
+        }
+        .grade-badge.grade-f {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .table .status-badge {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+        }
+
+        .status-badge.inactive {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+
+        .table .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        .table .actions .btn {
+            padding: 4px 10px;
+            font-size: 11px;
+        }
+
+        /* ===== مودال ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .modal-footer .btn {
+            padding: 10px 24px;
+        }
+
+        /* ===== رسائل ===== */
+        .msg {
+            display: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .msg.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .msg.error {
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.20);
+            color: #ef4444;
+        }
+
+        .msg.success {
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+            color: #22c55e;
+        }
+
+        .msg.info {
+            background: rgba(59, 130, 246, 0.10);
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            color: #3b82f6;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== تحميل ===== */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== فارغ ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .empty-state .desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.15);
+            margin-top: 4px;
+        }
+
+        /* ===== الفوتر ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.10);
+            font-size: 11px;
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px 16px;
+            }
+            .header-right {
+                justify-content: center;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-row-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .container {
+                padding: 10px;
+            }
+            .card {
+                padding: 14px 16px;
+            }
+            .modal {
+                padding: 20px;
+                margin: 10px;
+            }
+            .table thead th,
+            .table tbody td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+            .search-bar {
+                flex-direction: column;
+            }
+            .search-bar input {
+                min-width: unset;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table thead {
+                display: none;
+            }
+            .table tbody td {
+                display: block;
+                padding: 6px 10px;
+                border-bottom: none;
+            }
+            .table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.3);
+                display: inline-block;
+                width: 80px;
+            }
+            .table tbody tr {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                padding: 8px 0;
+                display: block;
+            }
+            .table .actions {
+                justify-content: center;
+                margin-top: 4px;
+            }
+            .header-title h1 {
+                font-size: 15px;
+            }
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== خلفية ===== -->
+    <div class="page-bg"></div>
+
+    <!-- ===== جزيئات ===== -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ===== شبكة ===== -->
+    <div class="grid-lines"></div>
+
+    <!-- ===== الحاوية ===== -->
+    <div class="container">
+
+        <!-- ===== الهيدر ===== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="header-title">
+                    <h1>إدارة الشهادات</h1>
+                    <p>إدارة الشهادات الصادرة عن الأكاديميات المعتمدة</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="dashboard.html" class="btn btn-outline btn-sm">📊 لوحة التحكم</a>
+                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()">➕ إضافة شهادة</a>
+            </div>
+        </header>
+
+        <!-- ===== رسائل ===== -->
+        <div class="msg" id="pageMsg"></div>
+
+        <!-- ===== تحميل ===== -->
+        <div class="loader" id="pageLoader">
+            <div class="spinner"></div>
+            <div style="color:rgba(255,255,255,0.3);">جاري تحميل الشهادات...</div>
+        </div>
+
+        <!-- ===== المحتوى ===== -->
+        <div id="pageContent" style="display:none;">
+
+            <!-- ===== شريط البحث ===== -->
+            <div class="card">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 بحث عن شهادة (الاسم، الكود، الدورة، الأكاديمية)..." oninput="filterCertificates()" />
+                    <span style="color:rgba(255,255,255,0.15);font-size:12px;display:flex;align-items:center;" id="countDisplay">0 شهادة</span>
+                </div>
+            </div>
+
+            <!-- ===== الجدول ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📜 قائمة الشهادات</span>
+                    <span class="badge" id="certCount">0</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table" id="certificatesTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>كود الشهادة</th>
+                                <th>اسم الطالب</th>
+                                <th>الدورة</th>
+                                <th>التقدير</th>
+                                <th>الأكاديمية</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="certificatesBody">
+                            <!-- سيتم ملؤها بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- حالة فارغة -->
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <div class="icon">📜</div>
+                    <div class="title">لا توجد شهادات</div>
+                    <div class="desc">قم بإضافة شهادة جديدة بالضغط على زر "إضافة شهادة"</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== الفوتر ===== -->
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    مودال الإضافة والتعديل
+    ============================================================ -->
+    <div class="modal-overlay" id="certModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">إضافة شهادة جديدة</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="certForm" onsubmit="return saveCertificate(event)">
+
+                    <input type="hidden" id="editCode" value="" />
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>👤 اسم الطالب *</label>
+                            <input type="text" id="studentName" placeholder="أدخل اسم الطالب" required />
+                        </div>
+                        <div class="form-group">
+                            <label>📚 اسم الدورة التدريبية *</label>
+                            <input type="text" id="courseName" placeholder="أدخل اسم الدورة" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>⏱️ عدد الساعات</label>
+                            <input type="number" id="courseHours" placeholder="عدد ساعات الدورة" min="1" />
+                        </div>
+                        <div class="form-group">
+                            <label>🏅 التقدير *</label>
+                            <select id="grade" required>
+                                <option value="">اختر التقدير</option>
+                                <option value="A+">A+</option>
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                                <option value="C+">C+</option>
+                                <option value="C">C</option>
+                                <option value="C-">C-</option>
+                                <option value="D">D</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>📅 تاريخ الاجتياز *</label>
+                            <input type="date" id="completionDate" required />
+                        </div>
+                        <div class="form-group">
+                            <label>🏛️ الأكاديمية *</label>
+                            <select id="academySelect" onchange="updateAcademyFields()" required>
+                                <option value="">اختر الأكاديمية</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>📍 الفرع *</label>
+                            <select id="branchSelect" required>
+                                <option value="">اختر الفرع</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>🔑 رقم اعتماد الأكاديمية</label>
+                            <input type="text" id="academyLicenseDisplay" readonly style="background:rgba(255,255,255,0.02);" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:4px;">
+                        <div style="color:rgba(255,255,255,0.15);font-size:11px;">
+                            * الحقول المطلوبة • سيتم توليد كود الشهادة تلقائياً
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="document.getElementById('certForm').dispatchEvent(new Event('submit'))">
+                    💾 حفظ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    مودال تأكيد الحذف
+    ============================================================ -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal" style="max-width:450px;">
+            <div class="modal-header">
+                <h2 style="color:#ef4444;">⚠️ تأكيد الحذف</h2>
+                <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:rgba(255,255,255,0.6);margin-bottom:12px;">
+                    هل أنت متأكد من حذف الشهادة التالية؟
+                </p>
+                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;">
+                    <p style="font-weight:700;color:#fff;" id="deleteStudentName">-</p>
+                    <p style="font-size:12px;color:rgba(255,255,255,0.3);" id="deleteCertCode">-</p>
+                </div>
+                <p style="font-size:12px;color:rgba(255,255,255,0.25);margin-top:8px;">
+                    ⚠️ هذا الإجراء لا يمكن التراجع عنه
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">إلغاء</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">🗑️ تأكيد الحذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    مودال عرض التفاصيل
+    ============================================================ -->
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal" style="max-width:600px;">
+            <div class="modal-header">
+                <h2>📋 تفاصيل الشهادة</h2>
+                <button class="modal-close" onclick="closeViewModal()">✕</button>
+            </div>
+            <div class="modal-body" id="viewContent">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeViewModal()">إغلاق</button>
+                <button class="btn btn-success" onclick="alert('🚧 جاري تحميل PDF...')">📥 تحميل PDF</button>
+                <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    جافا سكريبت
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
+        let certificates = [];
+        let academies = [];
+        let currentUser = null;
+        let userRole = null;
+        let deleteTargetCode = null;
+
+        // ============================================================
+        // 3. المصادقة والتحقق من الصلاحية
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            if (data.role === 'super_admin' || data.role === 'admin') {
+                                userRole = data.role;
+                                loadAcademies();
+                            } else {
+                                window.location.href = 'home.html';
+                            }
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    })
+                    .catch(function() {
+                        window.location.href = 'login.html';
+                    });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // ============================================================
+        // 4. تحميل الأكاديميات ثم الشهادات
+        // ============================================================
+        function loadAcademies() {
+            db.collection('academies')
+                .where('isDeleted', '==', false)
+                .orderBy('name', 'asc')
+                .get()
+                .then(function(snapshot) {
+                    academies = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        academies.push(data);
+                    });
+
+                    // تعبئة قائمة الأكاديميات في المودال
+                    populateAcademySelect();
+                    loadCertificates();
+                })
+                .catch(function(err) {
+                    console.error('Error loading academies:', err);
+                    loadCertificates();
+                });
+        }
+
+        function populateAcademySelect() {
+            const select = document.getElementById('academySelect');
+            select.innerHTML = '<option value="">اختر الأكاديمية</option>';
+            academies.forEach(function(academy) {
+                const opt = document.createElement('option');
+                opt.value = academy.id;
+                opt.textContent = academy.name + ' (' + (academy.licenseNumber || '') + ')';
+                select.appendChild(opt);
+            });
+        }
+
+        // ============================================================
+        // 5. تحديث حقول الأكاديمية عند الاختيار
+        // ============================================================
+        function updateAcademyFields() {
+            const academyId = document.getElementById('academySelect').value;
+            const branchSelect = document.getElementById('branchSelect');
+            const licenseDisplay = document.getElementById('academyLicenseDisplay');
+
+            branchSelect.innerHTML = '<option value="">اختر الفرع</option>';
+
+            if (!academyId) {
+                licenseDisplay.value = '';
+                return;
+            }
+
+            const academy = academies.find(function(a) { return a.id === academyId; });
+            if (!academy) {
+                licenseDisplay.value = '';
+                return;
+            }
+
+            licenseDisplay.value = academy.licenseNumber || '';
+
+            if (academy.branches && academy.branches.length > 0) {
+                academy.branches.forEach(function(branch) {
+                    const opt = document.createElement('option');
+                    opt.value = branch.branchId || 'main';
+                    opt.textContent = branch.governorate + ' - ' + (branch.address || '').substring(0, 30);
+                    branchSelect.appendChild(opt);
+                });
+            }
+        }
+
+        // ============================================================
+        // 6. تحميل الشهادات
+        // ============================================================
+        function loadCertificates() {
+            document.getElementById('pageLoader').classList.add('show');
+            document.getElementById('pageContent').style.display = 'none';
+
+            db.collection('certificates')
+                .orderBy('issuedAt', 'desc')
+                .get()
+                .then(function(snapshot) {
+                    certificates = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        certificates.push(data);
+                    });
+
+                    document.getElementById('pageLoader').classList.remove('show');
+                    document.getElementById('pageContent').style.display = 'block';
+                    renderCertificates();
+                })
+                .catch(function(err) {
+                    document.getElementById('pageLoader').classList.remove('show');
+                    document.getElementById('pageContent').style.display = 'block';
+                    showMsg('❌ حدث خطأ في تحميل الشهادات: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 7. عرض الشهادات
+        // ============================================================
+        function renderCertificates(filteredData) {
+            const data = filteredData || certificates;
+            const tbody = document.getElementById('certificatesBody');
+            const emptyState = document.getElementById('emptyState');
+
+            document.getElementById('certCount').textContent = data.length;
+            document.getElementById('countDisplay').textContent = data.length + ' شهادة';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = data.map(function(cert, index) {
+                const gradeClass = getGradeClass(cert.grade);
+                const statusHtml = cert.isActive !== false ?
+                    '<span class="status-badge active">نشطة</span>' :
+                    '<span class="status-badge inactive">محذوفة</span>';
+
+                return `
+                            <tr>
+                                <td data-label="#"><span style="color:rgba(255,255,255,0.2);font-weight:600;">${index + 1}</span></td>
+                                <td data-label="كود الشهادة">
+                                    <span class="cert-code">${cert.certificateCode || '-'}</span>
+                                </td>
+                                <td data-label="اسم الطالب">
+                                    <div class="student-name">${cert.studentName || '-'}</div>
+                                </td>
+                                <td data-label="الدورة">${cert.courseName || '-'}</td>
+                                <td data-label="التقدير">
+                                    <span class="grade-badge grade-${gradeClass}">${cert.grade || '-'}</span>
+                                </td>
+                                <td data-label="الأكاديمية">${cert.academyName || '-'}</td>
+                                <td data-label="الحالة">${statusHtml}</td>
+                                <td data-label="الإجراءات">
+                                    <div class="actions">
+                                        <button class="btn btn-primary btn-sm" onclick="viewCertificate('${cert.certificateCode}')">👁️ عرض</button>
+                                        <button class="btn btn-success btn-sm" onclick="editCertificate('${cert.certificateCode}')">✏️ تعديل</button>
+                                        ${userRole === 'super_admin' ? `<button class="btn btn-danger btn-sm" onclick="openDeleteModal('${cert.certificateCode}')">🗑️ حذف</button>` : ''}
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+            }).join('');
+        }
+
+        function getGradeClass(grade) {
+            if (!grade) return 'c';
+            const g = grade.toUpperCase();
+            if (g.startsWith('A')) return 'a';
+            if (g.startsWith('B')) return 'b';
+            if (g.startsWith('C')) return 'c';
+            if (g.startsWith('D')) return 'd';
+            return 'f';
+        }
+
+        // ============================================================
+        // 8. فلترة الشهادات
+        // ============================================================
+        function filterCertificates() {
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!search) {
+                renderCertificates(certificates);
+                return;
+            }
+
+            const filtered = certificates.filter(function(cert) {
+                return (cert.studentName || '').toLowerCase().includes(search) ||
+                    (cert.certificateCode || '').toLowerCase().includes(search) ||
+                    (cert.courseName || '').toLowerCase().includes(search) ||
+                    (cert.academyName || '').toLowerCase().includes(search);
+            });
+
+            renderCertificates(filtered);
+        }
+
+        // ============================================================
+        // 9. توليد كود شهادة تلقائي
+        // ============================================================
+        function generateCertificateCode() {
+            const year = new Date().getFullYear();
+            // جلب آخر رقم مستخدم
+            return db.collection('certificates')
+                .orderBy('certificateCode', 'desc')
+                .limit(1)
+                .get()
+                .then(function(snapshot) {
+                    let lastNum = 0;
+                    if (!snapshot.empty) {
+                        const lastCode = snapshot.docs[0].data().certificateCode || '';
+                        const match = lastCode.match(/NTI-\d{4}-(\d{4})/);
+                        if (match) {
+                            lastNum = parseInt(match[1]) || 0;
+                        }
+                    }
+                    const nextNum = String(lastNum + 1).padStart(4, '0');
+                    return 'NTI-' + year + '-' + nextNum;
+                })
+                .catch(function() {
+                    return 'NTI-' + year + '-0001';
+                });
+        }
+
+        // ============================================================
+        // 10. فتح مودال الإضافة
+        // ============================================================
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = '➕ إضافة شهادة جديدة';
+            document.getElementById('editCode').value = '';
+            document.getElementById('certForm').reset();
+            document.getElementById('academyLicenseDisplay').value = '';
+            document.getElementById('branchSelect').innerHTML = '<option value="">اختر الفرع</option>';
+            document.getElementById('academySelect').value = '';
+            // تعيين التاريخ الحالي
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('completionDate').value = today;
+            document.getElementById('certModal').classList.add('show');
+        }
+
+        // ============================================================
+        // 11. عرض الشهادة
+        // ============================================================
+        function viewCertificate(code) {
+            const cert = certificates.find(function(c) { return c.certificateCode === code; });
+            if (!cert) {
+                showMsg('❌ الشهادة غير موجودة', 'error');
+                return;
+            }
+
+            const container = document.getElementById('viewContent');
+            container.innerHTML = `
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <div><strong style="color:rgba(255,255,255,0.3);">كود الشهادة</strong><br><span style="font-family:monospace;">${cert.certificateCode || '-'}</span></div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">الحالة</strong><br><span style="color:${cert.isActive !== false ? '#22c55e' : '#ef4444'};">${cert.isActive !== false ? '✅ نشطة' : '❌ محذوفة'}</span></div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">👤 اسم الطالب</strong><br><span style="font-weight:600;">${cert.studentName || '-'}</span></div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">📚 اسم الدورة</strong><br>${cert.courseName || '-'}</div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">⏱️ عدد الساعات</strong><br>${cert.courseHours || 'غير محدد'}</div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">🏅 التقدير</strong><br><span class="grade-badge grade-${getGradeClass(cert.grade)}">${cert.grade || '-'}</span></div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">📅 تاريخ الاجتياز</strong><br>${cert.completionDate ? new Date(cert.completionDate.toDate ? cert.completionDate.toDate() : cert.completionDate).toLocaleDateString('ar-EG') : '-'}</div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">🏛️ الأكاديمية</strong><br>${cert.academyName || '-'}</div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">📍 الفرع</strong><br>${cert.branchName || cert.branchId || '-'}</div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">🔑 رقم الاعتماد</strong><br>${cert.academyLicenseNumber || '-'}</div>
+                            <div><strong style="color:rgba(255,255,255,0.3);">📅 تاريخ الإصدار</strong><br>${cert.issuedAt ? new Date(cert.issuedAt.toDate ? cert.issuedAt.toDate() : cert.issuedAt).toLocaleString('ar-EG') : '-'}</div>
+                        </div>
+                    `;
+
+            document.getElementById('viewModal').classList.add('show');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('show');
+        }
+
+        // ============================================================
+        // 12. تعديل شهادة
+        // ============================================================
+        function editCertificate(code) {
+            const cert = certificates.find(function(c) { return c.certificateCode === code; });
+            if (!cert) {
+                showMsg('❌ الشهادة غير موجودة', 'error');
+                return;
+            }
+
+            document.getElementById('modalTitle').textContent = '✏️ تعديل شهادة';
+            document.getElementById('editCode').value = code;
+            document.getElementById('studentName').value = cert.studentName || '';
+            document.getElementById('courseName').value = cert.courseName || '';
+            document.getElementById('courseHours').value = cert.courseHours || '';
+            document.getElementById('grade').value = cert.grade || '';
+
+            if (cert.completionDate) {
+                const d = cert.completionDate.toDate ? cert.completionDate.toDate() : new Date(cert.completionDate);
+                document.getElementById('completionDate').value = d.toISOString().split('T')[0];
+            }
+
+            // اختيار الأكاديمية
+            const academyId = cert.academyId || '';
+            const select = document.getElementById('academySelect');
+            select.value = academyId;
+            updateAcademyFields();
+
+            // اختيار الفرع
+            const branchSelect = document.getElementById('branchSelect');
+            if (cert.branchId) {
+                branchSelect.value = cert.branchId;
+            }
+
+            document.getElementById('certModal').classList.add('show');
+        }
+
+        // ============================================================
+        // 13. حفظ الشهادة
+        // ============================================================
+        function saveCertificate(e) {
+            e.preventDefault();
+
+            const editCode = document.getElementById('editCode').value;
+            const studentName = document.getElementById('studentName').value.trim();
+            const courseName = document.getElementById('courseName').value.trim();
+            const courseHours = document.getElementById('courseHours').value || 'غير محدد';
+            const grade = document.getElementById('grade').value;
+            const completionDate = document.getElementById('completionDate').value;
+            const academyId = document.getElementById('academySelect').value;
+            const branchId = document.getElementById('branchSelect').value;
+            const academyLicense = document.getElementById('academyLicenseDisplay').value;
+
+            if (!studentName || !courseName || !grade || !completionDate || !academyId || !branchId) {
+                showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'info');
+                return false;
+            }
+
+            const academy = academies.find(function(a) { return a.id === academyId; });
+            const academyName = academy ? academy.name : '';
+            const licenseNumber = academy ? academy.licenseNumber : academyLicense;
+
+            const certData = {
+                studentName: studentName,
+                courseName: courseName,
+                courseHours: courseHours,
+                grade: grade,
+                completionDate: new Date(completionDate),
+                academyId: academyId,
+                branchId: branchId,
+                academyName: academyName,
+                academyLicenseNumber: licenseNumber,
+                updatedAt: new Date(),
+                updatedBy: currentUser ? currentUser.uid : 'system',
+                isActive: true
+            };
+
+            let savePromise;
+            let actionType;
+
+            if (editCode) {
+                // تعديل
+                savePromise = db.collection('certificates').doc(editCode).update(certData);
+                actionType = 'update';
+                db.collection('activities').add({
+                    userId: currentUser ? currentUser.uid : 'system',
+                    userEmail: currentUser ? currentUser.email : 'system',
+                    userName: 'أدمن',
+                    userRole: userRole || 'admin',
+                    type: 'update_certificate',
+                    description: 'تعديل شهادة: ' + editCode,
+                    timestamp: new Date(),
+                    ipAddress: 'auto',
+                    userAgent: navigator.userAgent
+                }).catch(function() {});
+            } else {
+                // إضافة - توليد كود تلقائي
+                generateCertificateCode().then(function(code) {
+                    certData.certificateCode = code;
+                    certData.issuedAt = new Date();
+                    certData.issuedBy = currentUser ? currentUser.uid : 'system';
+
+                    return db.collection('certificates').doc(code).set(certData);
+                }).then(function() {
+                    closeModal();
+                    showMsg('✅ تم إضافة الشهادة بنجاح', 'success');
+                    db.collection('activities').add({
+                        userId: currentUser ? currentUser.uid : 'system',
+                        userEmail: currentUser ? currentUser.email : 'system',
+                        userName: 'أدمن',
+                        userRole: userRole || 'admin',
+                        type: 'create_certificate',
+                        description: 'إضافة شهادة جديدة',
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+                    loadCertificates();
+                }).catch(function(err) {
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                });
+
+                return false;
+            }
+
+            savePromise.then(function() {
+                closeModal();
+                showMsg('✅ تم تحديث الشهادة بنجاح', 'success');
+                loadCertificates();
+            }).catch(function(err) {
+                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+            });
+
+            return false;
+        }
+
+        // ============================================================
+        // 14. مودال الحذف
+        // ============================================================
+        function openDeleteModal(code) {
+            const cert = certificates.find(function(c) { return c.certificateCode === code; });
+            if (!cert) {
+                showMsg('❌ الشهادة غير موجودة', 'error');
+                return;
+            }
+
+            deleteTargetCode = code;
+            document.getElementById('deleteStudentName').textContent = cert.studentName || '-';
+            document.getElementById('deleteCertCode').textContent = cert.certificateCode || '-';
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            deleteTargetCode = null;
+        }
+
+        function confirmDelete() {
+            if (!deleteTargetCode) {
+                showMsg('❌ لم يتم تحديد الشهادة', 'error');
+                return;
+            }
+
+            const cert = certificates.find(function(c) { return c.certificateCode === deleteTargetCode; });
+            if (!cert) {
+                showMsg('❌ الشهادة غير موجودة', 'error');
+                return;
+            }
+
+            db.collection('certificates').doc(deleteTargetCode).update({
+                isActive: false,
+                deletedAt: new Date(),
+                deletedBy: currentUser ? currentUser.uid : 'system'
+            }).then(function() {
+                closeDeleteModal();
+                showMsg('✅ تم حذف الشهادة بنجاح', 'success');
+                db.collection('activities').add({
+                    userId: currentUser ? currentUser.uid : 'system',
+                    userEmail: currentUser ? currentUser.email : 'system',
+                    userName: 'أدمن',
+                    userRole: userRole || 'admin',
+                    type: 'delete_certificate',
+                    description: 'حذف شهادة: ' + deleteTargetCode,
+                    details: {
+                        studentName: cert.studentName,
+                        certificateCode: deleteTargetCode
+                    },
+                    timestamp: new Date(),
+                    ipAddress: 'auto',
+                    userAgent: navigator.userAgent
+                }).catch(function() {});
+                loadCertificates();
+            }).catch(function(err) {
+                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+            });
+        }
+
+        // ============================================================
+        // 15. إغلاق المودالات
+        // ============================================================
+        function closeModal() {
+            document.getElementById('certModal').classList.remove('show');
+        }
+
+        document.getElementById('certModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+
+        document.getElementById('viewModal').addEventListener('click', function(e) {
+            if (e.target === this) closeViewModal();
+        });
+
+        // ============================================================
+        // 16. عرض الرسائل
+        // ============================================================
+        function showMsg(msg, type = 'info') {
+            const el = document.getElementById('pageMsg');
+            el.textContent = msg;
+            el.className = 'msg show ' + type;
+            setTimeout(function() {
+                el.className = 'msg';
+            }, 4000);
+        }
+
+        // ============================================================
+        // 17. تحميل الصفحة
+        // ============================================================
+        console.log('✅ إدارة الشهادات - نقابة تكنولوجيا المعلومات');
+    </script>
+
+</body>
+</html>
