@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>التحقق من الشهادة - نقابة تكنولوجيا المعلومات</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           التصميم الكامل للتحقق من الشهادة
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.04) 0%, transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.04) rotate(1.5deg);
+            }
+        }
+
+        .page-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(10, 14, 26, 0.2) 100%);
+            pointer-events: none;
+        }
+
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 200, 255, 0.05);
+            animation: particleFloat 25s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 4s;
+        }
+        .particle:nth-child(3) {
+            width: 90px;
+            height: 90px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(4) {
+            width: 200px;
+            height: 200px;
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 6s;
+        }
+        .particle:nth-child(5) {
+            width: 70px;
+            height: 70px;
+            top: 20%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .particle:nth-child(6) {
+            width: 140px;
+            height: 140px;
+            top: 70%;
+            right: 45%;
+            animation-delay: 5s;
+        }
+        .particle:nth-child(7) {
+            width: 100px;
+            height: 100px;
+            bottom: 5%;
+            left: 40%;
+            animation-delay: 1s;
+        }
+        .particle:nth-child(8) {
+            width: 160px;
+            height: 160px;
+            top: 12%;
+            right: 55%;
+            animation-delay: 7s;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.2);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.1;
+            }
+        }
+
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 11px;
+        }
+
+        .btn-lg {
+            padding: 14px 28px;
+            font-size: 16px;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 24px 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-bottom: 24px;
+        }
+
+        .card-glow {
+            border-color: rgba(0, 85, 230, 0.15);
+            box-shadow: 0 0 40px rgba(0, 85, 230, 0.05);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .badge {
+            font-size: 10px;
+            background: rgba(0, 85, 230, 0.15);
+            color: #0055e6;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff 0%, #80b3ff 50%, #ffffff 80%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleShimmer 5s ease-in-out infinite;
+        }
+
+        @keyframes titleShimmer {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-row input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        .search-row input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+            font-family: 'Segoe UI', 'Tahoma', sans-serif;
+            letter-spacing: 0;
+        }
+
+        .search-row input:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 4px rgba(0, 85, 230, 0.10);
+        }
+
+        .search-hint {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.15);
+            text-align: center;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 24px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .certificate-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 85, 230, 0.04), transparent 50%);
+            pointer-events: none;
+        }
+
+        .certificate-card .watermark {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 60px;
+            opacity: 0.03;
+            font-weight: 900;
+            color: #0055e6;
+            pointer-events: none;
+            transform: rotate(-15deg);
+        }
+
+        .cert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .cert-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cert-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .cert-status.valid {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+
+        .cert-status.invalid {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+
+        .cert-code-display {
+            font-family: monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 14px;
+            border-radius: 8px;
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .cert-item {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+
+        .cert-item .label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .cert-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .cert-item .value.grade-a {
+            color: #22c55e;
+        }
+        .cert-item .value.grade-b {
+            color: #3b82f6;
+        }
+        .cert-item .value.grade-c {
+            color: #eab308;
+        }
+        .cert-item .value.grade-d {
+            color: #f97316;
+        }
+        .cert-item .value.grade-f {
+            color: #ef4444;
+        }
+
+        .cert-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 18px;
+        }
+
+        .cert-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        .msg {
+            display: none;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-top: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .msg.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .msg.error {
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.20);
+            color: #ef4444;
+        }
+
+        .msg.success {
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+            color: #22c55e;
+        }
+
+        .msg.info {
+            background: rgba(59, 130, 246, 0.10);
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            color: #3b82f6;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .verify-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .verify-stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .verify-stat .num {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .verify-stat .lbl {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.10);
+            font-size: 11px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px 16px;
+            }
+            .header-right {
+                justify-content: center;
+            }
+            .container {
+                padding: 10px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .hero-title {
+                font-size: 26px;
+            }
+            .search-row {
+                flex-direction: column;
+            }
+            .search-row input {
+                min-width: unset;
+            }
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+            .cert-actions {
+                flex-direction: column;
+            }
+            .cert-actions .btn {
+                flex: none;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 20px;
+            }
+            .hero-subtitle {
+                font-size: 13px;
+            }
+            .header-title h1 {
+                font-size: 15px;
+            }
+            .verify-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-bg"></div>
+
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="grid-lines"></div>
+
+    <div class="container">
+
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box" onclick="window.location.href='index.html'">ن.ت</div>
+                <div class="header-title">
+                    <h1>التحقق من الشهادة</h1>
+                    <p>نقابة تكنولوجيا المعلومات - توثيق الشهادات</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="index.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
+                <a href="home.html" class="btn btn-outline btn-sm">🔍 بحث</a>
+                <a href="login.html" class="btn btn-primary btn-sm" id="loginBtn">🔑 تسجيل الدخول</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn" style="display:none;">🚪 تسجيل الخروج</a>
+            </div>
+        </header>
+
+        <div class="hero-section">
+            <h1 class="hero-title">🔍 التحقق من صحة الشهادة</h1>
+            <p class="hero-subtitle">أدخل كود الشهادة للتحقق من صحتها بشكل فوري</p>
+        </div>
+
+        <div class="card card-glow">
+            <form id="verifyForm" onsubmit="return verifyCertificate(event)">
+                <div class="search-box">
+                    <div class="search-row">
+                        <input type="text" id="certCode" placeholder="أدخل كود الشهادة (مثال: NTI-2026-0001)" required autofocus />
+                        <button type="submit" class="btn btn-primary btn-lg" id="verifyBtn">🔍 تحقق</button>
+                    </div>
+                    <div class="search-hint">أدخل الكود المطبوع على الشهادة للتحقق من صحتها</div>
+                </div>
+            </form>
+
+            <div class="loader" id="verifyLoader">
+                <div class="spinner"></div>
+                <div style="color:rgba(255,255,255,0.3);">جاري التحقق...</div>
+            </div>
+
+            <div class="msg" id="verifyMsg"></div>
+
+            <div class="result-box" id="verifyResult">
+                <!-- سيتم عرض النتيجة هنا -->
+            </div>
+
+            <div class="verify-stats" id="statsContainer">
+                <div class="verify-stat">
+                    <div class="num" id="statVerified">0</div>
+                    <div class="lbl">شهادة تم التحقق منها</div>
+                </div>
+                <div class="verify-stat">
+                    <div class="num" id="statValid">0</div>
+                    <div class="lbl">صالحة</div>
+                </div>
+                <div class="verify-stat">
+                    <div class="num" id="statInvalid">0</div>
+                    <div class="lbl">غير صالحة</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="index.html" class="back-link">← العودة إلى الرئيسية</a>
+        </div>
+
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    جافا سكريبت
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
+        let currentUser = null;
+        let isAdmin = false;
+
+        // ============================================================
+        // 3. المصادقة
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'inline-flex';
+
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            if (data.role === 'super_admin' || data.role === 'admin') {
+                                isAdmin = true;
+                            }
+                        }
+                    })
+                    .catch(function() {});
+            } else {
+                currentUser = null;
+                isAdmin = false;
+                document.getElementById('loginBtn').style.display = 'inline-flex';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(function() {
+                window.location.href = 'login.html';
+            });
+        });
+
+        // ============================================================
+        // 4. التحقق من الشهادة
+        // ============================================================
+        function verifyCertificate(e) {
+            e.preventDefault();
+
+            const code = document.getElementById('certCode').value.trim();
+            if (!code) {
+                showMsg('الرجاء إدخال كود الشهادة', 'error');
+                return false;
+            }
+
+            hideMsg();
+            hideResult();
+            showLoader();
+
+            db.collection('certificates')
+                .where('certificateCode', '==', code)
+                .get()
+                .then(function(querySnapshot) {
+                    hideLoader();
+
+                    if (querySnapshot.empty) {
+                        showMsg('❌ لم يتم العثور على شهادة بهذا الكود', 'error');
+                        updateStats(false);
+                        return;
+                    }
+
+                    const doc = querySnapshot.docs[0];
+                    const data = doc.data();
+
+                    // عرض الشهادة
+                    renderCertificate(data);
+                    showResult();
+
+                    // تحديث الإحصائيات
+                    updateStats(data.isActive !== false);
+
+                    // تسجيل عملية البحث
+                    db.collection('searchLogs').add({
+                        searchType: 'certificate',
+                        searchValue: code,
+                        searcherName: 'زائر',
+                        searcherPhone: 'غير متاح',
+                        searcherEntity: 'مستخدم عام',
+                        searcherEntityType: 'فرد',
+                        governorate: 'غير محدد',
+                        resultCount: 1,
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+
+                })
+                .catch(function(err) {
+                    hideLoader();
+                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                });
+
+            return false;
+        }
+
+        // ============================================================
+        // 5. عرض الشهادة
+        // ============================================================
+        function renderCertificate(data) {
+            const container = document.getElementById('verifyResult');
+
+            const isValid = data.isActive !== false;
+            const statusHtml = isValid ?
+                '<span class="cert-status valid">✅ صالحة</span>' :
+                '<span class="cert-status invalid">❌ غير صالحة</span>';
+
+            const gradeClass = getGradeClass(data.grade);
+
+            container.innerHTML = `
+                        <div class="certificate-card">
+                            <div class="watermark">ن.ت</div>
+                            <div class="cert-header">
+                                <div class="cert-header-left">
+                                    <div style="font-size:24px;">📜</div>
+                                    <div>
+                                        <div style="font-weight:700;font-size:18px;color:#fff;">شهادة اجتياز دورة تدريبية</div>
+                                        <span class="cert-code-display">${data.certificateCode}</span>
+                                    </div>
+                                </div>
+                                ${statusHtml}
+                            </div>
+
+                            <div class="cert-grid">
+                                <div class="cert-item">
+                                    <div class="label">👤 اسم الطالب</div>
+                                    <div class="value">${data.studentName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📚 اسم الدورة التدريبية</div>
+                                    <div class="value">${data.courseName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">⏱️ عدد الساعات</div>
+                                    <div class="value">${data.courseHours || 'غير محدد'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🏅 تقدير الاجتياز</div>
+                                    <div class="value ${gradeClass}">${data.grade || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🏛️ الأكاديمية</div>
+                                    <div class="value">${data.academyName || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📍 الفرع</div>
+                                    <div class="value">${data.branchName || data.branchId || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">🔑 رقم اعتماد الأكاديمية</div>
+                                    <div class="value">${data.academyLicenseNumber || '-'}</div>
+                                </div>
+                                <div class="cert-item">
+                                    <div class="label">📅 تاريخ الحصول على الشهادة</div>
+                                    <div class="value">${formatDate(data.issuedAt)}</div>
+                                </div>
+                            </div>
+
+                            <div class="cert-actions">
+                                <button class="btn btn-success" onclick="window.print()">🖨️ طباعة</button>
+                                <button class="btn btn-primary" onclick="alert('🚧 جاري تحميل PDF...')">📥 تحميل PDF</button>
+                                <button class="btn btn-outline" onclick="shareCertificate('${data.certificateCode}')">📤 مشاركة</button>
+                                ${isAdmin ? `<a href="certificates.html" class="btn btn-outline">📊 إدارة</a>` : ''}
+                            </div>
+
+                            <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.04);font-size:10px;color:rgba(255,255,255,0.12);text-align:center;">
+                                تم التحقق بواسطة نقابة تكنولوجيا المعلومات - لجنة التحول الرقمي والتدريب
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // ============================================================
+        // 6. دوال مساعدة
+        // ============================================================
+        function getGradeClass(grade) {
+            if (!grade) return '';
+            const g = grade.toUpperCase();
+            if (g.startsWith('A')) return 'grade-a';
+            if (g.startsWith('B')) return 'grade-b';
+            if (g.startsWith('C')) return 'grade-c';
+            if (g.startsWith('D')) return 'grade-d';
+            return 'grade-f';
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('ar-EG', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function shareCertificate(code) {
+            const url = window.location.origin + window.location.pathname + '?code=' + code;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'شهادة معتمدة من نقابة تكنولوجيا المعلومات',
+                    text: 'تحقق من صحة الشهادة:',
+                    url: url
+                }).catch(function() {});
+            } else {
+                navigator.clipboard.writeText(url).then(function() {
+                    showMsg('✅ تم نسخ رابط التحقق إلى الحافظة', 'success');
+                }).catch(function() {
+                    prompt('انسخ رابط التحقق:', url);
+                });
+            }
+        }
+
+        // ============================================================
+        // 7. دوال التحكم بالواجهة
+        // ============================================================
+        function showLoader() {
+            document.getElementById('verifyLoader').classList.add('show');
+        }
+
+        function hideLoader() {
+            document.getElementById('verifyLoader').classList.remove('show');
+        }
+
+        function showMsg(msg, type = 'info') {
+            const el = document.getElementById('verifyMsg');
+            el.textContent = msg;
+            el.className = `msg show ${type}`;
+        }
+
+        function hideMsg() {
+            document.getElementById('verifyMsg').className = 'msg';
+        }
+
+        function showResult() {
+            document.getElementById('verifyResult').classList.add('active');
+        }
+
+        function hideResult() {
+            document.getElementById('verifyResult').classList.remove('active');
+        }
+
+        // ============================================================
+        // 8. الإحصائيات
+        // ============================================================
+        function updateStats(isValid) {
+            // جلب الإحصائيات من Firestore
+            db.collection('certificates').get()
+                .then(function(snap) {
+                    let total = 0;
+                    let valid = 0;
+                    let invalid = 0;
+
+                    snap.forEach(function(doc) {
+                        const data = doc.data();
+                        total++;
+                        if (data.isActive !== false) {
+                            valid++;
+                        } else {
+                            invalid++;
+                        }
+                    });
+
+                    document.getElementById('statVerified').textContent = total;
+                    document.getElementById('statValid').textContent = valid;
+                    document.getElementById('statInvalid').textContent = invalid;
+                })
+                .catch(function() {});
+        }
+
+        // ============================================================
+        // 9. تحميل الصفحة
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من وجود كود في الرابط
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            if (code) {
+                document.getElementById('certCode').value = code;
+                setTimeout(function() {
+                    document.getElementById('verifyForm').dispatchEvent(new Event('submit'));
+                }, 500);
+            }
+
+            // تحديث الإحصائيات
+            updateStats();
+
+            console.log('✅ صفحة التحقق من الشهادة - نقابة تكنولوجيا المعلومات');
+        });
+    </script>
+
+</body>
+</html>
