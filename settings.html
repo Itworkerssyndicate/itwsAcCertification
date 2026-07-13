@@ -12,8 +12,6 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js">
-    </script>
 
     <style>
         * {
@@ -689,9 +687,9 @@
                 <button class="btn btn-primary" onclick="saveServicesButton()">حفظ زر الخدمات</button>
             </div>
 
-            <!-- رفع اللوجو والختم -->
+            <!-- رفع اللوجو والختم - Cloudinary -->
             <div class="card">
-                <div class="card-title">رفع اللوجو والختم</div>
+                <div class="card-title">رفع اللوجو والختم (Cloudinary)</div>
 
                 <div class="form-row">
                     <div>
@@ -704,7 +702,7 @@
                             <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
                         </div>
                         <div class="flex-wrap" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadLogo()" id="uploadLogoBtn">رفع اللوجو</button>
+                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn">رفع اللوجو</button>
                             <span class="upload-status" id="logoStatus"></span>
                         </div>
                     </div>
@@ -719,15 +717,15 @@
                             <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
                         </div>
                         <div class="flex-wrap" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadStamp()" id="uploadStampBtn">رفع الختم</button>
+                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn">رفع الختم</button>
                             <span class="upload-status" id="stampStatus"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-wrap" style="gap:10px;margin-top:12px;">
-                    <button class="btn btn-success btn-sm" onclick="loadImages()">تحميل الصور الحالية</button>
-                    <button class="btn btn-danger btn-sm" onclick="clearImages()">حذف الصور</button>
+                    <button class="btn btn-success btn-sm" onclick="loadImagesFromCloudinary()">تحميل الصور الحالية</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearImagesFromCloudinary()">حذف الصور</button>
                 </div>
             </div>
 
@@ -790,10 +788,19 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-        const storage = firebase.storage();
 
         // ============================================================
-        // 2. متغيرات
+        // 2. إعدادات Cloudinary
+        // ============================================================
+        const CLOUDINARY = {
+            cloudName: 'dvxh9l4lv',
+            apiKey: '474397224442688',
+            apiSecret: 'CRhfgj7NWhic7m_5F33CZWUPQQg',
+            folder: 'itwsAcCertification'
+        };
+
+        // ============================================================
+        // 3. متغيرات
         // ============================================================
         let currentUser = null;
         let userRole = null;
@@ -801,7 +808,7 @@
         let stampFile = null;
 
         // ============================================================
-        // 3. المصادقة والتحقق من الصلاحية
+        // 4. المصادقة والتحقق من الصلاحية
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -836,7 +843,7 @@
         });
 
         // ============================================================
-        // 4. دوال مساعدة
+        // 5. دوال مساعدة
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
@@ -862,130 +869,72 @@
         }
 
         // ============================================================
-        // 5. تحميل الإعدادات
+        // 6. رفع الصور إلى Cloudinary
         // ============================================================
-        function loadSettings() {
-            document.getElementById('pageLoader').classList.add('show');
-            document.getElementById('pageContent').style.display = 'none';
+        function uploadToCloudinary(file, publicId) {
+            return new Promise(function(resolve, reject) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('api_key', CLOUDINARY.apiKey);
+                formData.append('upload_preset', 'ml_default');
+                formData.append('folder', CLOUDINARY.folder);
+                if (publicId) {
+                    formData.append('public_id', publicId);
+                }
 
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.unionName) document.getElementById('unionName').value = data.unionName;
-                        if (data.committeeName) document.getElementById('committeeName').value = data.committeeName;
-                        if (data.splashDuration) document.getElementById('splashDuration').value = data
-                            .splashDuration;
-                        if (data.infoBoxText) document.getElementById('infoBoxText').value = data.infoBoxText;
-                        if (data.footerText) document.getElementById('footerText').value = data.footerText;
-                        if (data.sessionTimeout) document.getElementById('sessionTimeout').value = data
-                            .sessionTimeout;
-                        if (data.maxLoginAttempts) document.getElementById('maxLoginAttempts').value = data
-                            .maxLoginAttempts;
-                        if (data.maintenanceMode !== undefined) {
-                            document.getElementById('maintenanceMode').value = data.maintenanceMode ? 'true' :
-                            'false';
-                        }
+                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
                     }
                 })
-                .catch(function() {});
+                .catch(function(err) {
+                    reject(err);
+                });
+            });
+        }
 
-            db.collection('settings').doc('servicesButton').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.text) document.getElementById('servicesBtnText').value = data.text;
-                        if (data.link) document.getElementById('servicesBtnLink').value = data.link;
+        function deleteFromCloudinary(publicId) {
+            return new Promise(function(resolve, reject) {
+                const formData = new FormData();
+                formData.append('public_id', publicId);
+                formData.append('api_key', CLOUDINARY.apiKey);
+                formData.append('api_secret', CLOUDINARY.apiSecret);
+
+                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/destroy';
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data.result === 'ok') {
+                        resolve(data);
+                    } else {
+                        reject(data);
                     }
                 })
-                .catch(function() {});
-
-            loadImages();
-            updateFooterText();
-
-            document.getElementById('pageLoader').classList.remove('show');
-            document.getElementById('pageContent').style.display = 'block';
-        }
-
-        function updateFooterText() {
-            const val = document.getElementById('footerText').value;
-            if (val) {
-                document.querySelector('.footer span').textContent = val;
-            }
-        }
-
-        // ============================================================
-        // 6. حفظ الإعدادات العامة
-        // ============================================================
-        function saveGeneralSettings() {
-            const data = {
-                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
-                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
-                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
-                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
-                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
-                footerText: document.getElementById('footerText').value.trim() ||
-                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
-            };
-
-            db.collection('settings').doc('general').set(data, { merge: true })
-                .then(function() {
-                    showMsg('تم حفظ الإعدادات العامة بنجاح', 'success');
-                    updateFooterText();
-                    logActivity('update', 'تحديث الإعدادات العامة');
-                })
                 .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
+                    reject(err);
                 });
+            });
         }
 
         // ============================================================
-        // 7. حفظ زر الخدمات
-        // ============================================================
-        function saveServicesButton() {
-            const data = {
-                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
-                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
-            };
-
-            db.collection('settings').doc('servicesButton').set(data, { merge: true })
-                .then(function() {
-                    showMsg('تم حفظ زر الخدمات بنجاح', 'success');
-                    logActivity('update', 'تحديث زر خدمات النقابة');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        // ============================================================
-        // 8. حفظ إعدادات الأمان
-        // ============================================================
-        function saveSecuritySettings() {
-            const data = {
-                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
-                maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
-                maintenanceMode: document.getElementById('maintenanceMode').value === 'true',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
-            };
-
-            db.collection('settings').doc('general').set(data, { merge: true })
-                .then(function() {
-                    showMsg('تم حفظ إعدادات الأمان بنجاح', 'success');
-                    logActivity('update', 'تحديث إعدادات الأمان');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        // ============================================================
-        // 9. رفع اللوجو
+        // 7. رفع اللوجو إلى Cloudinary
         // ============================================================
         function previewLogo(e) {
             const file = e.target.files[0];
@@ -1029,7 +978,7 @@
             reader.readAsDataURL(file);
         }
 
-        function uploadLogo() {
+        function uploadLogoToCloudinary() {
             if (!logoFile) {
                 showMsg('الرجاء اختيار صورة اللوجو أولاً', 'info');
                 return;
@@ -1039,10 +988,16 @@
             btn.disabled = true;
             btn.textContent = 'جاري الرفع...';
 
-            const storageRef = storage.ref('union/logo.png');
-            storageRef.put(logoFile)
-                .then(function() {
-                    return storageRef.getDownloadURL();
+            uploadToCloudinary(logoFile, 'union_logo')
+                .then(function(data) {
+                    const url = data.secure_url;
+                    return db.collection('settings').doc('general').set({
+                        logoUrl: url,
+                        updatedAt: getEgyptTime(),
+                        updatedBy: currentUser ? currentUser.uid : 'system'
+                    }, { merge: true }).then(function() {
+                        return url;
+                    });
                 })
                 .then(function(url) {
                     showMsg('تم رفع اللوجو بنجاح', 'success');
@@ -1050,17 +1005,18 @@
                     btn.disabled = false;
                     btn.textContent = 'رفع اللوجو';
                     logoFile = null;
-                    logActivity('upload_logo', 'رفع لوجو النقابة');
+                    logActivity('upload_logo', 'رفع لوجو النقابة إلى Cloudinary');
+                    loadImagesFromCloudinary();
                 })
                 .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
+                    showMsg('حدث خطأ: ' + (err.message || err), 'error');
                     showStatus('logoStatus', 'فشل الرفع', 'error');
                     btn.disabled = false;
                     btn.textContent = 'رفع اللوجو';
                 });
         }
 
-        function uploadStamp() {
+        function uploadStampToCloudinary() {
             if (!stampFile) {
                 showMsg('الرجاء اختيار صورة الختم أولاً', 'info');
                 return;
@@ -1070,10 +1026,16 @@
             btn.disabled = true;
             btn.textContent = 'جاري الرفع...';
 
-            const storageRef = storage.ref('union/stamp.png');
-            storageRef.put(stampFile)
-                .then(function() {
-                    return storageRef.getDownloadURL();
+            uploadToCloudinary(stampFile, 'union_stamp')
+                .then(function(data) {
+                    const url = data.secure_url;
+                    return db.collection('settings').doc('general').set({
+                        stampUrl: url,
+                        updatedAt: getEgyptTime(),
+                        updatedBy: currentUser ? currentUser.uid : 'system'
+                    }, { merge: true }).then(function() {
+                        return url;
+                    });
                 })
                 .then(function(url) {
                     showMsg('تم رفع الختم بنجاح', 'success');
@@ -1081,10 +1043,11 @@
                     btn.disabled = false;
                     btn.textContent = 'رفع الختم';
                     stampFile = null;
-                    logActivity('upload_stamp', 'رفع ختم النقابة');
+                    logActivity('upload_stamp', 'رفع ختم النقابة إلى Cloudinary');
+                    loadImagesFromCloudinary();
                 })
                 .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
+                    showMsg('حدث خطأ: ' + (err.message || err), 'error');
                     showStatus('stampStatus', 'فشل الرفع', 'error');
                     btn.disabled = false;
                     btn.textContent = 'رفع الختم';
@@ -1092,62 +1055,212 @@
         }
 
         // ============================================================
-        // 10. تحميل الصور الحالية
+        // 8. تحميل الصور من Cloudinary
         // ============================================================
-        function loadImages() {
-            const logoRef = storage.ref('union/logo.png');
-            logoRef.getDownloadURL()
-                .then(function(url) {
-                    const img = document.querySelector('#logoPreview img');
-                    img.src = url;
-                    img.style.display = 'block';
-                    document.getElementById('logoPlaceholder').textContent = 'لوجو موجود';
+        function loadImagesFromCloudinary() {
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+
+                        // اللوجو
+                        if (data.logoUrl) {
+                            const img = document.querySelector('#logoPreview img');
+                            img.src = data.logoUrl;
+                            img.style.display = 'block';
+                            document.getElementById('logoPlaceholder').textContent = 'لوجو موجود';
+                        } else {
+                            document.querySelector('#logoPreview img').style.display = 'none';
+                            document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
+                        }
+
+                        // الختم
+                        if (data.stampUrl) {
+                            const img = document.querySelector('#stampPreview img');
+                            img.src = data.stampUrl;
+                            img.style.display = 'block';
+                            document.getElementById('stampPlaceholder').textContent = 'ختم موجود';
+                        } else {
+                            document.querySelector('#stampPreview img').style.display = 'none';
+                            document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
+                        }
+                    }
                 })
-                .catch(function() {
+                .catch(function() {});
+        }
+
+        // ============================================================
+        // 9. حذف الصور من Cloudinary
+        // ============================================================
+        function clearImagesFromCloudinary() {
+            if (!confirm('هل أنت متأكد من حذف اللوجو والختم من Cloudinary؟')) return;
+
+            const promises = [];
+
+            // جلب الروابط الحالية
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.logoUrl) {
+                            // استخراج public_id من الرابط
+                            const publicId = data.logoUrl.split('/').pop().split('.')[0];
+                            promises.push(deleteFromCloudinary('itwsAcCertification/' + publicId));
+                        }
+                        if (data.stampUrl) {
+                            const publicId = data.stampUrl.split('/').pop().split('.')[0];
+                            promises.push(deleteFromCloudinary('itwsAcCertification/' + publicId));
+                        }
+                    }
+                    return Promise.all(promises);
+                })
+                .then(function() {
+                    // حذف الروابط من Firestore
+                    return db.collection('settings').doc('general').set({
+                        logoUrl: '',
+                        stampUrl: '',
+                        updatedAt: getEgyptTime(),
+                        updatedBy: currentUser ? currentUser.uid : 'system'
+                    }, { merge: true });
+                })
+                .then(function() {
                     document.querySelector('#logoPreview img').style.display = 'none';
                     document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
-                });
-
-            const stampRef = storage.ref('union/stamp.png');
-            stampRef.getDownloadURL()
-                .then(function(url) {
-                    const img = document.querySelector('#stampPreview img');
-                    img.src = url;
-                    img.style.display = 'block';
-                    document.getElementById('stampPlaceholder').textContent = 'ختم موجود';
-                })
-                .catch(function() {
                     document.querySelector('#stampPreview img').style.display = 'none';
                     document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
+                    showMsg('تم حذف الصور بنجاح', 'success');
+                    logActivity('delete', 'حذف اللوجو والختم من Cloudinary');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + (err.message || err), 'error');
                 });
         }
 
         // ============================================================
-        // 11. حذف الصور
+        // 10. تحميل الإعدادات
         // ============================================================
-        function clearImages() {
-            if (!confirm('هل أنت متأكد من حذف اللوجو والختم؟')) return;
+        function loadSettings() {
+            document.getElementById('pageLoader').classList.add('show');
+            document.getElementById('pageContent').style.display = 'none';
 
-            const logoRef = storage.ref('union/logo.png');
-            const stampRef = storage.ref('union/stamp.png');
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.unionName) document.getElementById('unionName').value = data.unionName;
+                        if (data.committeeName) document.getElementById('committeeName').value = data.committeeName;
+                        if (data.splashDuration) document.getElementById('splashDuration').value = data
+                            .splashDuration;
+                        if (data.infoBoxText) document.getElementById('infoBoxText').value = data.infoBoxText;
+                        if (data.footerText) document.getElementById('footerText').value = data.footerText;
+                        if (data.sessionTimeout) document.getElementById('sessionTimeout').value = data
+                            .sessionTimeout;
+                        if (data.maxLoginAttempts) document.getElementById('maxLoginAttempts').value = data
+                            .maxLoginAttempts;
+                        if (data.maintenanceMode !== undefined) {
+                            document.getElementById('maintenanceMode').value = data.maintenanceMode ? 'true' :
+                            'false';
+                        }
+                    }
+                })
+                .catch(function() {});
 
-            Promise.all([
-                logoRef.delete().catch(function() {}),
-                stampRef.delete().catch(function() {})
-            ]).then(function() {
-                document.querySelector('#logoPreview img').style.display = 'none';
-                document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
-                document.querySelector('#stampPreview img').style.display = 'none';
-                document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
-                showMsg('تم حذف الصور بنجاح', 'success');
-                logActivity('delete', 'حذف اللوجو والختم');
-            }).catch(function() {
-                showMsg('حدث خطأ في حذف الصور', 'error');
-            });
+            db.collection('settings').doc('servicesButton').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.text) document.getElementById('servicesBtnText').value = data.text;
+                        if (data.link) document.getElementById('servicesBtnLink').value = data.link;
+                    }
+                })
+                .catch(function() {});
+
+            loadImagesFromCloudinary();
+            updateFooterText();
+
+            document.getElementById('pageLoader').classList.remove('show');
+            document.getElementById('pageContent').style.display = 'block';
+        }
+
+        function updateFooterText() {
+            const val = document.getElementById('footerText').value;
+            if (val) {
+                document.querySelector('.footer span').textContent = val;
+            }
         }
 
         // ============================================================
-        // 12. تسجيل النشاطات
+        // 11. حفظ الإعدادات العامة
+        // ============================================================
+        function saveGeneralSettings() {
+            const data = {
+                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
+                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
+                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
+                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
+                footerText: document.getElementById('footerText').value.trim() ||
+                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+                updatedAt: getEgyptTime(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            db.collection('settings').doc('general').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ الإعدادات العامة بنجاح', 'success');
+                    updateFooterText();
+                    logActivity('update', 'تحديث الإعدادات العامة');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 12. حفظ زر الخدمات
+        // ============================================================
+        function saveServicesButton() {
+            const data = {
+                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
+                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
+                updatedAt: getEgyptTime(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            db.collection('settings').doc('servicesButton').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ زر الخدمات بنجاح', 'success');
+                    logActivity('update', 'تحديث زر خدمات النقابة');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 13. حفظ إعدادات الأمان
+        // ============================================================
+        function saveSecuritySettings() {
+            const data = {
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
+                maintenanceMode: document.getElementById('maintenanceMode').value === 'true',
+                updatedAt: getEgyptTime(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            db.collection('settings').doc('general').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ إعدادات الأمان بنجاح', 'success');
+                    logActivity('update', 'تحديث إعدادات الأمان');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 14. تسجيل النشاطات
         // ============================================================
         function logActivity(type, description) {
             db.collection('activities').add({
@@ -1164,7 +1277,7 @@
         }
 
         // ============================================================
-        // 13. إعادة التعيين للافتراضي
+        // 15. إعادة التعيين للافتراضي
         // ============================================================
         function resetToDefault() {
             if (!confirm('هل تريد استعادة الإعدادات الافتراضية؟')) return;
@@ -1194,7 +1307,7 @@
         }
 
         // ============================================================
-        // 14. إجراءات خطيرة
+        // 16. إجراءات خطيرة
         // ============================================================
         function resetAllData() {
             if (!confirm('تحذير: هذا الإجراء سيحذف جميع البيانات نهائياً! استمرار؟')) return;
@@ -1311,7 +1424,6 @@
 
                         showMsg('جاري استيراد البيانات...', 'info');
 
-                        // استيراد الإعدادات
                         if (data.settings) {
                             for (const key in data.settings) {
                                 db.collection('settings').doc(key).set(data.settings[key], { merge: true })
@@ -1319,7 +1431,6 @@
                             }
                         }
 
-                        // استيراد الأكاديميات
                         if (data.academies) {
                             data.academies.forEach(function(item) {
                                 const docRef = item.id ? db.collection('academies').doc(item.id) : db
@@ -1329,7 +1440,6 @@
                             });
                         }
 
-                        // استيراد الشهادات
                         if (data.certificates) {
                             data.certificates.forEach(function(item) {
                                 const docRef = item.id ? db.collection('certificates').doc(item.id) : db
@@ -1353,16 +1463,17 @@
         }
 
         // ============================================================
-        // 15. تحديث الفوتر عند تغيير النص
+        // 17. تحديث الفوتر عند تغيير النص
         // ============================================================
         document.getElementById('footerText').addEventListener('input', function() {
             updateFooterText();
         });
 
         // ============================================================
-        // 16. تحميل أولي
+        // 18. تحميل أولي
         // ============================================================
         console.log('✅ إعدادات النظام - نقابة تكنولوجيا المعلومات');
+        console.log('☁️ Cloudinary متصل');
         console.log('🔒 صلاحية السوبر أدمن فقط');
     </script>
 
