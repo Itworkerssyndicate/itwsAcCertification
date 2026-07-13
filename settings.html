@@ -808,7 +808,7 @@
         let stampFile = null;
 
         // ============================================================
-        // 4. المصادقة والتحقق من الصلاحية
+        // 4. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -875,7 +875,6 @@
             return new Promise(function(resolve, reject) {
                 const formData = new FormData();
                 formData.append('file', file);
-                formData.append('api_key', CLOUDINARY.apiKey);
                 formData.append('upload_preset', 'ml_default');
                 formData.append('folder', CLOUDINARY.folder);
                 if (publicId) {
@@ -934,7 +933,7 @@
         }
 
         // ============================================================
-        // 7. رفع اللوجو إلى Cloudinary
+        // 7. رفع اللوجو
         // ============================================================
         function previewLogo(e) {
             const file = e.target.files[0];
@@ -1063,7 +1062,6 @@
                     if (doc.exists) {
                         const data = doc.data();
 
-                        // اللوجو
                         if (data.logoUrl) {
                             const img = document.querySelector('#logoPreview img');
                             img.src = data.logoUrl;
@@ -1074,7 +1072,6 @@
                             document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
                         }
 
-                        // الختم
                         if (data.stampUrl) {
                             const img = document.querySelector('#stampPreview img');
                             img.src = data.stampUrl;
@@ -1095,27 +1092,23 @@
         function clearImagesFromCloudinary() {
             if (!confirm('هل أنت متأكد من حذف اللوجو والختم من Cloudinary؟')) return;
 
-            const promises = [];
-
-            // جلب الروابط الحالية
             db.collection('settings').doc('general').get()
                 .then(function(doc) {
+                    const promises = [];
                     if (doc.exists) {
                         const data = doc.data();
                         if (data.logoUrl) {
-                            // استخراج public_id من الرابط
-                            const publicId = data.logoUrl.split('/').pop().split('.')[0];
-                            promises.push(deleteFromCloudinary('itwsAcCertification/' + publicId));
+                            const publicId = 'itwsAcCertification/union_logo';
+                            promises.push(deleteFromCloudinary(publicId));
                         }
                         if (data.stampUrl) {
-                            const publicId = data.stampUrl.split('/').pop().split('.')[0];
-                            promises.push(deleteFromCloudinary('itwsAcCertification/' + publicId));
+                            const publicId = 'itwsAcCertification/union_stamp';
+                            promises.push(deleteFromCloudinary(publicId));
                         }
                     }
                     return Promise.all(promises);
                 })
                 .then(function() {
-                    // حذف الروابط من Firestore
                     return db.collection('settings').doc('general').set({
                         logoUrl: '',
                         stampUrl: '',
@@ -1463,7 +1456,7 @@
         }
 
         // ============================================================
-        // 17. تحديث الفوتر عند تغيير النص
+        // 17. تحديث الفوتر
         // ============================================================
         document.getElementById('footerText').addEventListener('input', function() {
             updateFooterText();
