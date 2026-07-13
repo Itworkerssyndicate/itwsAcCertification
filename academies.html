@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الأكاديميات - نقابة تكنولوجيا المعلومات</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           التصميم الكامل لإدارة الأكاديميات
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* ===== خلفية ===== */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.03) 0%, transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.04) rotate(1.5deg);
+            }
+        }
+
+        .page-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* ===== جزيئات ===== */
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 200, 255, 0.04);
+            animation: particleFloat 25s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 4s;
+        }
+        .particle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            left: 50%;
+            animation-delay: 2s;
+        }
+        .particle:nth-child(4) {
+            width: 180px;
+            height: 180px;
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 6s;
+        }
+        .particle:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .particle:nth-child(6) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            right: 45%;
+            animation-delay: 5s;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translate(30px, -50px) scale(1.2);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(-10px, 0) scale(1);
+                opacity: 0.1;
+            }
+        }
+
+        /* ===== شبكة ===== */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* ===== الحاوية ===== */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* ===== الهيدر ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.35);
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 11px;
+        }
+
+        .btn-lg {
+            padding: 12px 24px;
+            font-size: 15px;
+        }
+
+        /* ===== البطاقات ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 20px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title .badge {
+            font-size: 10px;
+            background: rgba(0, 85, 230, 0.15);
+            color: #0055e6;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* ===== شريط البحث ===== */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .search-bar input:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        }
+
+        /* ===== الجدول ===== */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .table thead {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .table thead th {
+            text-align: right;
+            padding: 12px 14px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .table .academy-name {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .table .academy-license {
+            font-family: monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .table .status-badge {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+        }
+
+        .status-badge.inactive {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+
+        .table .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        .table .actions .btn {
+            padding: 4px 10px;
+            font-size: 11px;
+        }
+
+        /* ===== مودال ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0055e6;
+            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .modal-footer .btn {
+            padding: 10px 24px;
+        }
+
+        /* ===== رسائل ===== */
+        .msg {
+            display: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .msg.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .msg.error {
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.20);
+            color: #ef4444;
+        }
+
+        .msg.success {
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+            color: #22c55e;
+        }
+
+        .msg.info {
+            background: rgba(59, 130, 246, 0.10);
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            color: #3b82f6;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== تحميل ===== */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #0055e6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== فارغ ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .empty-state .desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.15);
+            margin-top: 4px;
+        }
+
+        /* ===== الفوتر ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.10);
+            font-size: 11px;
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px 16px;
+            }
+            .header-right {
+                justify-content: center;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 10px;
+            }
+            .card {
+                padding: 14px 16px;
+            }
+            .modal {
+                padding: 20px;
+                margin: 10px;
+            }
+            .table thead th,
+            .table tbody td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+            .search-bar {
+                flex-direction: column;
+            }
+            .search-bar input {
+                min-width: unset;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table thead {
+                display: none;
+            }
+            .table tbody td {
+                display: block;
+                padding: 6px 10px;
+                border-bottom: none;
+            }
+            .table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.3);
+                display: inline-block;
+                width: 80px;
+            }
+            .table tbody tr {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                padding: 8px 0;
+                display: block;
+            }
+            .table .actions {
+                justify-content: center;
+                margin-top: 4px;
+            }
+            .header-title h1 {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== خلفية ===== -->
+    <div class="page-bg"></div>
+
+    <!-- ===== جزيئات ===== -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ===== شبكة ===== -->
+    <div class="grid-lines"></div>
+
+    <!-- ===== الحاوية ===== -->
+    <div class="container">
+
+        <!-- ===== الهيدر ===== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-box" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="header-title">
+                    <h1>إدارة الأكاديميات</h1>
+                    <p>إدارة الأكاديميات المعتمدة من النقابة</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="dashboard.html" class="btn btn-outline btn-sm">📊 لوحة التحكم</a>
+                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()">➕ إضافة أكاديمية</a>
+            </div>
+        </header>
+
+        <!-- ===== رسائل ===== -->
+        <div class="msg" id="pageMsg"></div>
+
+        <!-- ===== تحميل ===== -->
+        <div class="loader" id="pageLoader">
+            <div class="spinner"></div>
+            <div style="color:rgba(255,255,255,0.3);">جاري تحميل الأكاديميات...</div>
+        </div>
+
+        <!-- ===== المحتوى ===== -->
+        <div id="pageContent" style="display:none;">
+
+            <!-- ===== شريط البحث ===== -->
+            <div class="card">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 بحث عن أكاديمية (الاسم، الرقم الاعتمادي، البطاقة الضريبية)..." oninput="filterAcademies()" />
+                    <span style="color:rgba(255,255,255,0.15);font-size:12px;display:flex;align-items:center;" id="countDisplay">0 أكاديمية</span>
+                </div>
+            </div>
+
+            <!-- ===== الجدول ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>🏛️ قائمة الأكاديميات</span>
+                    <span class="badge" id="academyCount">0</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table" id="academiesTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>اسم الأكاديمية</th>
+                                <th>الرقم الاعتمادي</th>
+                                <th>البطاقة الضريبية</th>
+                                <th>الفروع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="academiesBody">
+                            <!-- سيتم ملؤها بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- حالة فارغة -->
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <div class="icon">🏛️</div>
+                    <div class="title">لا توجد أكاديميات</div>
+                    <div class="desc">قم بإضافة أكاديمية جديدة بالضغط على زر "إضافة أكاديمية"</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== الفوتر ===== -->
+        <footer class="footer">
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    مودال الإضافة والتعديل
+    ============================================================ -->
+    <div class="modal-overlay" id="academyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">إضافة أكاديمية جديدة</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="academyForm" onsubmit="return saveAcademy(event)">
+
+                    <input type="hidden" id="editId" value="" />
+
+                    <div class="form-group">
+                        <label>🏛️ اسم الأكاديمية *</label>
+                        <input type="text" id="academyName" placeholder="أدخل اسم الأكاديمية" required />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>🔑 الرقم الاعتمادي *</label>
+                            <input type="text" id="academyLicense" placeholder="مثال: NTI-2026-001" required />
+                        </div>
+                        <div class="form-group">
+                            <label>📋 البطاقة الضريبية *</label>
+                            <input type="text" id="academyTax" placeholder="مثال: 123-456-789" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📍 الفرع الرئيسي - المحافظة *</label>
+                        <select id="branchGovernorate" required>
+                            <option value="">اختر المحافظة</option>
+                            <option value="القاهرة">القاهرة</option>
+                            <option value="الإسكندرية">الإسكندرية</option>
+                            <option value="الجيزة">الجيزة</option>
+                            <option value="القليوبية">القليوبية</option>
+                            <option value="الشرقية">الشرقية</option>
+                            <option value="الدقهلية">الدقهلية</option>
+                            <option value="المنوفية">المنوفية</option>
+                            <option value="الغربية">الغربية</option>
+                            <option value="كفر الشيخ">كفر الشيخ</option>
+                            <option value="دمياط">دمياط</option>
+                            <option value="بورسعيد">بورسعيد</option>
+                            <option value="الإسماعيلية">الإسماعيلية</option>
+                            <option value="السويس">السويس</option>
+                            <option value="شمال سيناء">شمال سيناء</option>
+                            <option value="جنوب سيناء">جنوب سيناء</option>
+                            <option value="البحر الأحمر">البحر الأحمر</option>
+                            <option value="الأقصر">الأقصر</option>
+                            <option value="أسوان">أسوان</option>
+                            <option value="أسيوط">أسيوط</option>
+                            <option value="سوهاج">سوهاج</option>
+                            <option value="قنا">قنا</option>
+                            <option value="المنيا">المنيا</option>
+                            <option value="بني سويف">بني سويف</option>
+                            <option value="الفيوم">الفيوم</option>
+                            <option value="مطروح">مطروح</option>
+                            <option value="الوادي الجديد">الوادي الجديد</option>
+                            <option value="حلوان">حلوان</option>
+                            <option value="العاشر من رمضان">العاشر من رمضان</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📍 العنوان *</label>
+                        <input type="text" id="branchAddress" placeholder="أدخل عنوان الفرع الرئيسي" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>📞 رقم الهاتف *</label>
+                        <input type="text" id="branchPhone" placeholder="مثال: 0223456789" required />
+                    </div>
+
+                    <div style="color:rgba(255,255,255,0.15);font-size:11px;margin-top:4px;">
+                        * الحقول المطلوبة
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="document.getElementById('academyForm').dispatchEvent(new Event('submit'))">
+                    💾 حفظ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    مودال تأكيد الحذف
+    ============================================================ -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal" style="max-width:450px;">
+            <div class="modal-header">
+                <h2 style="color:#ef4444;">⚠️ تأكيد الحذف</h2>
+                <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:rgba(255,255,255,0.6);margin-bottom:12px;">
+                    هل أنت متأكد من حذف الأكاديمية التالية؟
+                </p>
+                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;">
+                    <p style="font-weight:700;color:#fff;" id="deleteAcademyName">-</p>
+                    <p style="font-size:12px;color:rgba(255,255,255,0.3);" id="deleteAcademyLicense">-</p>
+                </div>
+                <div class="form-group" style="margin-top:12px;">
+                    <label>📝 سبب الحذف *</label>
+                    <input type="text" id="deleteReason" placeholder="أدخل سبب الحذف (للإدارة)" required />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">إلغاء</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">🗑️ تأكيد الحذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    جافا سكريبت
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
+        let academies = [];
+        let currentUser = null;
+        let userRole = null;
+        let deleteTargetId = null;
+
+        // ============================================================
+        // 3. المصادقة والتحقق من الصلاحية
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            if (data.role === 'super_admin' || data.role === 'admin') {
+                                userRole = data.role;
+                                loadAcademies();
+                            } else {
+                                window.location.href = 'home.html';
+                            }
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    })
+                    .catch(function() {
+                        window.location.href = 'login.html';
+                    });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // ============================================================
+        // 4. تحميل الأكاديميات
+        // ============================================================
+        function loadAcademies() {
+            document.getElementById('pageLoader').classList.add('show');
+            document.getElementById('pageContent').style.display = 'none';
+
+            db.collection('academies')
+                .where('isDeleted', '==', false)
+                .orderBy('name', 'asc')
+                .get()
+                .then(function(snapshot) {
+                    academies = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        academies.push(data);
+                    });
+
+                    document.getElementById('pageLoader').classList.remove('show');
+                    document.getElementById('pageContent').style.display = 'block';
+                    renderAcademies();
+                })
+                .catch(function(err) {
+                    document.getElementById('pageLoader').classList.remove('show');
+                    document.getElementById('pageContent').style.display = 'block';
+                    showMsg('❌ حدث خطأ في تحميل الأكاديميات: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // 5. عرض الأكاديميات
+        // ============================================================
+        function renderAcademies(filteredData) {
+            const data = filteredData || academies;
+            const tbody = document.getElementById('academiesBody');
+            const emptyState = document.getElementById('emptyState');
+
+            document.getElementById('academyCount').textContent = data.length;
+            document.getElementById('countDisplay').textContent = data.length + ' أكاديمية';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = data.map(function(academy, index) {
+                const branchCount = academy.branches ? academy.branches.length : 0;
+                const statusHtml = academy.isDeleted ?
+                    '<span class="status-badge inactive">محذوفة</span>' :
+                    '<span class="status-badge active">نشطة</span>';
+
+                return `
+                            <tr>
+                                <td data-label="#"><span style="color:rgba(255,255,255,0.2);font-weight:600;">${index + 1}</span></td>
+                                <td data-label="اسم الأكاديمية">
+                                    <div class="academy-name">${academy.name || '-'}</div>
+                                </td>
+                                <td data-label="الرقم الاعتمادي">
+                                    <span class="academy-license">${academy.licenseNumber || '-'}</span>
+                                </td>
+                                <td data-label="البطاقة الضريبية">${academy.taxNumber || '-'}</td>
+                                <td data-label="الفروع">${branchCount}</td>
+                                <td data-label="الحالة">${statusHtml}</td>
+                                <td data-label="الإجراءات">
+                                    <div class="actions">
+                                        <button class="btn btn-primary btn-sm" onclick="editAcademy('${academy.id}')">✏️ تعديل</button>
+                                        <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">🗑️ حذف</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 6. فلترة الأكاديميات
+        // ============================================================
+        function filterAcademies() {
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!search) {
+                renderAcademies(academies);
+                return;
+            }
+
+            const filtered = academies.filter(function(academy) {
+                return (academy.name || '').toLowerCase().includes(search) ||
+                    (academy.licenseNumber || '').toLowerCase().includes(search) ||
+                    (academy.taxNumber || '').toLowerCase().includes(search);
+            });
+
+            renderAcademies(filtered);
+        }
+
+        // ============================================================
+        // 7. فتح مودال الإضافة
+        // ============================================================
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = '➕ إضافة أكاديمية جديدة';
+            document.getElementById('editId').value = '';
+            document.getElementById('academyForm').reset();
+            document.getElementById('academyModal').classList.add('show');
+        }
+
+        // ============================================================
+        // 8. تعديل أكاديمية
+        // ============================================================
+        function editAcademy(id) {
+            const academy = academies.find(function(a) { return a.id === id; });
+            if (!academy) {
+                showMsg('❌ الأكاديمية غير موجودة', 'error');
+                return;
+            }
+
+            document.getElementById('modalTitle').textContent = '✏️ تعديل أكاديمية';
+            document.getElementById('editId').value = id;
+            document.getElementById('academyName').value = academy.name || '';
+            document.getElementById('academyLicense').value = academy.licenseNumber || '';
+            document.getElementById('academyTax').value = academy.taxNumber || '';
+
+            // تعبئة الفرع الرئيسي إن وجد
+            const mainBranch = academy.branches ? academy.branches.find(function(b) { return b.isMainBranch; }) : null;
+            if (mainBranch) {
+                document.getElementById('branchGovernorate').value = mainBranch.governorate || '';
+                document.getElementById('branchAddress').value = mainBranch.address || '';
+                document.getElementById('branchPhone').value = mainBranch.phone || '';
+            } else {
+                document.getElementById('branchGovernorate').value = '';
+                document.getElementById('branchAddress').value = '';
+                document.getElementById('branchPhone').value = '';
+            }
+
+            document.getElementById('academyModal').classList.add('show');
+        }
+
+        // ============================================================
+        // 9. حفظ الأكاديمية
+        // ============================================================
+        function saveAcademy(e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('editId').value;
+            const name = document.getElementById('academyName').value.trim();
+            const licenseNumber = document.getElementById('academyLicense').value.trim();
+            const taxNumber = document.getElementById('academyTax').value.trim();
+            const governorate = document.getElementById('branchGovernorate').value;
+            const address = document.getElementById('branchAddress').value.trim();
+            const phone = document.getElementById('branchPhone').value.trim();
+
+            if (!name || !licenseNumber || !taxNumber || !governorate || !address || !phone) {
+                showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'info');
+                return false;
+            }
+
+            const branchData = {
+                branchId: 'main',
+                governorate: governorate,
+                address: address,
+                phone: phone,
+                isMainBranch: true
+            };
+
+            const academyData = {
+                name: name,
+                licenseNumber: licenseNumber,
+                taxNumber: taxNumber,
+                branches: [branchData],
+                updatedAt: new Date(),
+                updatedBy: currentUser ? currentUser.uid : 'system'
+            };
+
+            let savePromise;
+            let actionType;
+
+            if (editId) {
+                // تعديل
+                savePromise = db.collection('academies').doc(editId).update(academyData);
+                actionType = 'update';
+                // تسجيل النشاط
+                db.collection('activities').add({
+                    userId: currentUser ? currentUser.uid : 'system',
+                    userEmail: currentUser ? currentUser.email : 'system',
+                    userName: 'أدمن',
+                    userRole: userRole || 'admin',
+                    type: 'update_academy',
+                    description: 'تعديل أكاديمية: ' + name,
+                    timestamp: new Date(),
+                    ipAddress: 'auto',
+                    userAgent: navigator.userAgent
+                }).catch(function() {});
+            } else {
+                // إضافة
+                academyData.createdAt = new Date();
+                academyData.createdBy = currentUser ? currentUser.uid : 'system';
+                academyData.isDeleted = false;
+                savePromise = db.collection('academies').add(academyData);
+                actionType = 'create';
+                // تسجيل النشاط
+                db.collection('activities').add({
+                    userId: currentUser ? currentUser.uid : 'system',
+                    userEmail: currentUser ? currentUser.email : 'system',
+                    userName: 'أدمن',
+                    userRole: userRole || 'admin',
+                    type: 'create_academy',
+                    description: 'إضافة أكاديمية: ' + name,
+                    timestamp: new Date(),
+                    ipAddress: 'auto',
+                    userAgent: navigator.userAgent
+                }).catch(function() {});
+            }
+
+            savePromise.then(function() {
+                closeModal();
+                showMsg('✅ تم ' + (actionType === 'update' ? 'تحديث' : 'إضافة') + ' الأكاديمية بنجاح', 'success');
+                loadAcademies();
+            }).catch(function(err) {
+                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+            });
+
+            return false;
+        }
+
+        // ============================================================
+        // 10. مودال الحذف
+        // ============================================================
+        function openDeleteModal(id) {
+            const academy = academies.find(function(a) { return a.id === id; });
+            if (!academy) {
+                showMsg('❌ الأكاديمية غير موجودة', 'error');
+                return;
+            }
+
+            deleteTargetId = id;
+            document.getElementById('deleteAcademyName').textContent = academy.name || '-';
+            document.getElementById('deleteAcademyLicense').textContent = academy.licenseNumber || '-';
+            document.getElementById('deleteReason').value = '';
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            deleteTargetId = null;
+        }
+
+        function confirmDelete() {
+            const reason = document.getElementById('deleteReason').value.trim();
+            if (!reason) {
+                showMsg('⚠️ الرجاء إدخال سبب الحذف', 'info');
+                return;
+            }
+
+            if (!deleteTargetId) {
+                showMsg('❌ لم يتم تحديد الأكاديمية', 'error');
+                return;
+            }
+
+            const academy = academies.find(function(a) { return a.id === deleteTargetId; });
+            if (!academy) {
+                showMsg('❌ الأكاديمية غير موجودة', 'error');
+                return;
+            }
+
+            // حذف (Soft Delete)
+            db.collection('academies').doc(deleteTargetId).update({
+                isDeleted: true,
+                deletedAt: new Date(),
+                deletedBy: currentUser ? currentUser.uid : 'system',
+                deletionReason: reason
+            }).then(function() {
+                closeDeleteModal();
+                showMsg('✅ تم حذف الأكاديمية بنجاح', 'success');
+                // تسجيل النشاط
+                db.collection('activities').add({
+                    userId: currentUser ? currentUser.uid : 'system',
+                    userEmail: currentUser ? currentUser.email : 'system',
+                    userName: 'أدمن',
+                    userRole: userRole || 'admin',
+                    type: 'delete_academy',
+                    description: 'حذف أكاديمية: ' + (academy.name || ''),
+                    details: {
+                        reason: reason,
+                        academyId: deleteTargetId
+                    },
+                    timestamp: new Date(),
+                    ipAddress: 'auto',
+                    userAgent: navigator.userAgent
+                }).catch(function() {});
+                loadAcademies();
+            }).catch(function(err) {
+                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+            });
+        }
+
+        // ============================================================
+        // 11. إغلاق المودالات
+        // ============================================================
+        function closeModal() {
+            document.getElementById('academyModal').classList.remove('show');
+        }
+
+        // إغلاق عند النقر على الخلفية
+        document.getElementById('academyModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+
+        // ============================================================
+        // 12. عرض الرسائل
+        // ============================================================
+        function showMsg(msg, type = 'info') {
+            const el = document.getElementById('pageMsg');
+            el.textContent = msg;
+            el.className = 'msg show ' + type;
+            setTimeout(function() {
+                el.className = 'msg';
+            }, 4000);
+        }
+
+        // ============================================================
+        // 13. تحميل الصفحة
+        // ============================================================
+        console.log('✅ إدارة الأكاديميات - نقابة تكنولوجيا المعلومات');
+    </script>
+
+</body>
+</html>
