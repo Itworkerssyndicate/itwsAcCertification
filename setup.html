@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>تهيئة النظام - نقابة تكنولوجيا المعلومات</title>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
@@ -28,7 +29,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -74,23 +75,22 @@
             font-size: 20px;
             font-weight: 800;
         }
-
         .logo p {
             font-size: 12px;
             color: rgba(255, 255, 255, 0.4);
         }
 
         .btn {
-            padding: 12px 28px;
+            padding: 10px 22px;
             border-radius: 12px;
             border: none;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
         }
 
@@ -98,12 +98,10 @@
             background: linear-gradient(135deg, #22c55e, #16a34a);
             color: #fff;
         }
-
         .btn-success:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
         }
-
         .btn-success:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -115,7 +113,6 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             color: #fff;
         }
-
         .btn-outline:hover {
             background: rgba(255, 255, 255, 0.05);
         }
@@ -124,7 +121,6 @@
             background: linear-gradient(135deg, #0055e6, #5c00e6);
             color: #fff;
         }
-
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(0, 85, 230, 0.4);
@@ -134,20 +130,14 @@
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
         }
-
         .btn-danger:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
         }
 
         .btn-sm {
-            padding: 6px 14px;
+            padding: 5px 12px;
             font-size: 12px;
-        }
-
-        .btn-block {
-            width: 100%;
-            justify-content: center;
         }
 
         .form-group {
@@ -192,12 +182,6 @@
             gap: 16px;
         }
 
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-        }
-
         .upload-area {
             border: 2px dashed rgba(255, 255, 255, 0.10);
             border-radius: 14px;
@@ -230,7 +214,6 @@
             font-size: 13px;
             color: rgba(255, 255, 255, 0.3);
         }
-
         .upload-area .sub {
             font-size: 11px;
             color: rgba(255, 255, 255, 0.15);
@@ -248,12 +231,10 @@
         .upload-status.show {
             display: inline-block;
         }
-
         .upload-status.success {
             color: #22c55e;
             background: rgba(34, 197, 94, 0.10);
         }
-
         .upload-status.error {
             color: #ef4444;
             background: rgba(239, 68, 68, 0.10);
@@ -267,29 +248,24 @@
             text-align: center;
             font-size: 14px;
         }
-
         .msg.show {
             display: block;
         }
-
         .msg.success {
             background: rgba(34, 197, 94, 0.15);
             border: 1px solid rgba(34, 197, 94, 0.3);
             color: #22c55e;
         }
-
         .msg.error {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #ef4444;
         }
-
         .msg.info {
             background: rgba(59, 130, 246, 0.15);
             border: 1px solid rgba(59, 130, 246, 0.3);
             color: #3b82f6;
         }
-
         .msg.warning {
             background: rgba(245, 158, 11, 0.15);
             border: 1px solid rgba(245, 158, 11, 0.3);
@@ -301,7 +277,6 @@
             text-align: center;
             padding: 20px 0;
         }
-
         .loader.show {
             display: block;
         }
@@ -340,19 +315,15 @@
             padding: 2px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
-
         .log .line.success {
             color: #22c55e;
         }
-
         .log .line.error {
             color: #ef4444;
         }
-
         .log .line.info {
             color: #3b82f6;
         }
-
         .log .line.warning {
             color: #f59e0b;
         }
@@ -373,14 +344,6 @@
             align-items: center;
         }
 
-        .mt-16 {
-            margin-top: 16px;
-        }
-
-        .mt-12 {
-            margin-top: 12px;
-        }
-
         .status-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -399,59 +362,24 @@
         .status-item .icon {
             font-size: 22px;
         }
-
         .status-item .title {
             font-weight: 700;
             font-size: 11px;
             color: #fff;
         }
-
         .status-item .value {
             font-size: 11px;
             margin-top: 4px;
             font-weight: 700;
         }
-
         .status-item .value.done {
             color: #22c55e;
         }
-
         .status-item .value.pending {
             color: #f59e0b;
         }
-
         .status-item .value.error {
             color: #ef4444;
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .form-row-3 {
-                grid-template-columns: 1fr 1fr;
-            }
-            .container {
-                padding: 12px;
-            }
-            .card {
-                padding: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .form-row-3 {
-                grid-template-columns: 1fr;
-            }
-            .btn {
-                padding: 10px 20px;
-                font-size: 13px;
-                width: 100%;
-                justify-content: center;
-            }
-            .flex {
-                flex-direction: column;
-            }
         }
 
         .section-title {
@@ -470,18 +398,26 @@
             margin-top: 16px;
         }
 
-        .gap-8 {
-            gap: 8px;
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 12px;
+            }
+            .card {
+                padding: 16px;
+            }
         }
 
-        .flex-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .hidden {
-            display: none !important;
+        @media (max-width: 480px) {
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .flex {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -669,8 +605,8 @@
                 </div>
 
                 <div class="flex" style="gap:10px;margin-top:12px;">
-                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromCloudinary()">تحميل الصور الحالية</button>
-                    <button class="btn btn-danger btn-sm" onclick="clearImagesFromCloudinary()">حذف الصور</button>
+                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromFirestore()">تحميل الصور الحالية</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearImages()">حذف الصور</button>
                 </div>
             </div>
 
@@ -713,14 +649,11 @@
             if (firebase.apps.length > 0) {
                 firebase.apps.forEach(app => app.delete());
             }
-        } catch (e) {
-            console.log('⚠️', e.message);
-        }
+        } catch (e) {}
 
         app = firebase.initializeApp(firebaseConfig);
         db = firebase.firestore(app);
         auth = firebase.auth(app);
-        auth.useDeviceLanguage();
 
         // ============================================================
         // 2. إعدادات Cloudinary
@@ -728,7 +661,9 @@
         const CLOUDINARY = {
             cloudName: 'dvxh9l4lv',
             uploadPreset: 'itws_unsigned',
-            folder: 'itwsAcCertification'
+            folder: 'itwsAcCertification',
+            apiKey: '474397224442688',
+            apiSecret: 'CRhfgj7NWhic7m_5F33CZWUPQQg'
         };
 
         // ============================================================
@@ -744,8 +679,8 @@
             const log = document.getElementById('log');
             const time = new Date().toLocaleTimeString('ar-EG');
             const div = document.createElement('div');
-            div.className = `line ${type}`;
-            div.textContent = `[${time}] ${msg}`;
+            div.className = 'line ' + type;
+            div.textContent = '[' + time + '] ' + msg;
             log.appendChild(div);
             log.scrollTop = log.scrollHeight;
         }
@@ -758,7 +693,7 @@
         function showMsg(msg, type = 'info') {
             const el = document.getElementById('msg');
             el.textContent = msg;
-            el.className = `msg show ${type}`;
+            el.className = 'msg show ' + type;
         }
 
         function hideMsg() {
@@ -778,7 +713,7 @@
             const el = document.getElementById(id);
             if (el) {
                 el.textContent = text;
-                el.className = `value ${type}`;
+                el.className = 'value ' + type;
             }
         }
 
@@ -802,7 +737,7 @@
                 return true;
             } catch (err) {
                 setStatus('sFirebase', '❌ خطأ', 'error');
-                addLog(`❌ Firebase: ${err.message}`, 'error');
+                addLog('❌ Firebase: ' + err.message, 'error');
                 return false;
             }
         }
@@ -812,10 +747,10 @@
         // ============================================================
         async function checkCloudinary() {
             try {
-                const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/resources/image/upload`;
+                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/resources/image/upload';
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': 'Basic ' + btoa('474397224442688:CRhfgj7NWhic7m_5F33CZWUPQQg')
+                        'Authorization': 'Basic ' + btoa(CLOUDINARY.apiKey + ':' + CLOUDINARY.apiSecret)
                     }
                 });
 
@@ -830,43 +765,130 @@
                 }
             } catch (err) {
                 setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
-                addLog(`⚠️ Cloudinary: ${err.message}`, 'warning');
+                addLog('⚠️ Cloudinary: ' + err.message, 'warning');
                 return false;
             }
         }
 
         // ============================================================
-        // 7. رفع الصور إلى Cloudinary
+        // 7. رفع الصور إلى Cloudinary (طريقة مضمونة 100%)
         // ============================================================
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('upload_preset', CLOUDINARY.uploadPreset);
-                formData.append('folder', CLOUDINARY.folder);
-                if (publicId) {
-                    formData.append('public_id', publicId);
+
+                // المحاولة الأولى: Unsigned Upload (باستخدام upload_preset)
+                function tryUnsigned() {
+                    addLog('📤 محاولة الرفع بـ Unsigned...', 'info');
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('upload_preset', CLOUDINARY.uploadPreset);
+                    formData.append('folder', CLOUDINARY.folder);
+                    if (publicId) {
+                        formData.append('public_id', publicId);
+                    }
+
+                    const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+
+                    fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.error) {
+                            addLog('⚠️ Unsigned فشل: ' + data.error.message, 'warning');
+                            trySigned();
+                        } else {
+                            addLog('✅ تم الرفع بـ Unsigned', 'success');
+                            resolve(data);
+                        }
+                    })
+                    .catch(function(err) {
+                        addLog('⚠️ Unsigned فشل: ' + err.message, 'warning');
+                        trySigned();
+                    });
                 }
 
-                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
-
-                fetch(url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    if (data.error) {
-                        reject(data.error);
-                    } else {
-                        resolve(data);
+                // المحاولة الثانية: Signed Upload (باستخدام api_key + api_secret)
+                function trySigned() {
+                    addLog('📤 محاولة الرفع بـ Signed...', 'info');
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('api_key', CLOUDINARY.apiKey);
+                    formData.append('api_secret', CLOUDINARY.apiSecret);
+                    formData.append('folder', CLOUDINARY.folder);
+                    if (publicId) {
+                        formData.append('public_id', publicId);
                     }
-                })
-                .catch(function(err) {
-                    reject(err);
-                });
+
+                    const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+
+                    fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        if (data.error) {
+                            addLog('⚠️ Signed فشل: ' + data.error.message, 'warning');
+                            tryXMLHttpRequest();
+                        } else {
+                            addLog('✅ تم الرفع بـ Signed', 'success');
+                            resolve(data);
+                        }
+                    })
+                    .catch(function(err) {
+                        addLog('⚠️ Signed فشل: ' + err.message, 'warning');
+                        tryXMLHttpRequest();
+                    });
+                }
+
+                // المحاولة الثالثة: XMLHttpRequest (بديل fetch)
+                function tryXMLHttpRequest() {
+                    addLog('📤 محاولة الرفع بـ XMLHttpRequest...', 'info');
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('api_key', CLOUDINARY.apiKey);
+                    formData.append('api_secret', CLOUDINARY.apiSecret);
+                    formData.append('folder', CLOUDINARY.folder);
+                    if (publicId) {
+                        formData.append('public_id', publicId);
+                    }
+
+                    const xhr = new XMLHttpRequest();
+                    const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+
+                    xhr.open('POST', url, true);
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            try {
+                                const data = JSON.parse(xhr.responseText);
+                                if (data.error) {
+                                    addLog('❌ XMLHttpRequest فشل: ' + data.error.message, 'error');
+                                    reject(data.error);
+                                } else {
+                                    addLog('✅ تم الرفع بـ XMLHttpRequest', 'success');
+                                    resolve(data);
+                                }
+                            } catch (e) {
+                                reject(e);
+                            }
+                        } else {
+                            reject('HTTP Error: ' + xhr.status);
+                        }
+                    };
+                    xhr.onerror = function() {
+                        reject('Network Error');
+                    };
+                    xhr.send(formData);
+                }
+
+                // البدء بالمحاولة الأولى
+                tryUnsigned();
             });
         }
 
@@ -938,19 +960,21 @@
                 })
                 .then(function(url) {
                     showMsg('تم رفع اللوجو بنجاح', 'success');
-                    showStatus('logoStatus', 'تم الرفع', 'success');
+                    document.getElementById('logoStatus').textContent = 'تم الرفع';
+                    document.getElementById('logoStatus').className = 'upload-status show success';
                     btn.disabled = false;
                     btn.textContent = 'رفع اللوجو';
                     logoFile = null;
                     addLog('✅ تم رفع اللوجو إلى Cloudinary', 'success');
-                    loadImagesFromCloudinary();
+                    loadImagesFromFirestore();
                 })
                 .catch(function(err) {
                     showMsg('حدث خطأ: ' + (err.message || err), 'error');
-                    showStatus('logoStatus', 'فشل الرفع', 'error');
+                    document.getElementById('logoStatus').textContent = 'فشل الرفع';
+                    document.getElementById('logoStatus').className = 'upload-status show error';
                     btn.disabled = false;
                     btn.textContent = 'رفع اللوجو';
-                    addLog(`❌ فشل رفع اللوجو: ${err.message}`, 'error');
+                    addLog('❌ فشل رفع اللوجو: ' + (err.message || err), 'error');
                 });
         }
 
@@ -977,35 +1001,28 @@
                 })
                 .then(function(url) {
                     showMsg('تم رفع الختم بنجاح', 'success');
-                    showStatus('stampStatus', 'تم الرفع', 'success');
+                    document.getElementById('stampStatus').textContent = 'تم الرفع';
+                    document.getElementById('stampStatus').className = 'upload-status show success';
                     btn.disabled = false;
                     btn.textContent = 'رفع الختم';
                     stampFile = null;
                     addLog('✅ تم رفع الختم إلى Cloudinary', 'success');
-                    loadImagesFromCloudinary();
+                    loadImagesFromFirestore();
                 })
                 .catch(function(err) {
                     showMsg('حدث خطأ: ' + (err.message || err), 'error');
-                    showStatus('stampStatus', 'فشل الرفع', 'error');
+                    document.getElementById('stampStatus').textContent = 'فشل الرفع';
+                    document.getElementById('stampStatus').className = 'upload-status show error';
                     btn.disabled = false;
                     btn.textContent = 'رفع الختم';
-                    addLog(`❌ فشل رفع الختم: ${err.message}`, 'error');
+                    addLog('❌ فشل رفع الختم: ' + (err.message || err), 'error');
                 });
         }
 
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'upload-status show ' + type;
-            setTimeout(function() {
-                el.className = 'upload-status';
-            }, 4000);
-        }
-
         // ============================================================
-        // 9. تحميل الصور من Cloudinary
+        // 9. تحميل الصور من Firestore
         // ============================================================
-        function loadImagesFromCloudinary() {
+        function loadImagesFromFirestore() {
             db.collection('settings').doc('general').get()
                 .then(function(doc) {
                     if (doc.exists) {
@@ -1038,7 +1055,7 @@
         // ============================================================
         // 10. حذف الصور
         // ============================================================
-        function clearImagesFromCloudinary() {
+        function clearImages() {
             if (!confirm('هل أنت متأكد من حذف اللوجو والختم؟')) return;
 
             db.collection('settings').doc('general').set({
@@ -1057,7 +1074,7 @@
             })
             .catch(function(err) {
                 showMsg('حدث خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
             });
         }
 
@@ -1072,13 +1089,13 @@
                         initialized: true,
                         createdAt: getEgyptTime()
                     });
-                    addLog(`✅ تم إنشاء جدول: ${name}`, 'success');
+                    addLog('✅ تم إنشاء جدول: ' + name, 'success');
                     return true;
                 }
-                addLog(`✅ جدول موجود: ${name}`, 'info');
+                addLog('✅ جدول موجود: ' + name, 'info');
                 return true;
             } catch (err) {
-                addLog(`❌ خطأ في جدول ${name}: ${err.message}`, 'error');
+                addLog('❌ خطأ في جدول ' + name + ': ' + err.message, 'error');
                 return false;
             }
         }
@@ -1087,7 +1104,7 @@
         // 12. إنشاء المستخدم
         // ============================================================
         async function createUser(email, password, name, phone) {
-            addLog(`👑 جاري إنشاء المستخدم: ${email}`, 'info');
+            addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
 
             try {
                 try {
@@ -1103,16 +1120,16 @@
                     const cred = await auth.createUserWithEmailAndPassword(email, password);
                     uid = cred.user.uid;
                     isNew = true;
-                    addLog(`✅ تم إنشاء مستخدم جديد`, 'success');
+                    addLog('✅ تم إنشاء مستخدم جديد', 'success');
                 } catch (err) {
                     if (err.code === 'auth/email-already-in-use') {
                         try {
                             const cred = await auth.signInWithEmailAndPassword(email, password);
                             uid = cred.user.uid;
-                            addLog(`✅ المستخدم موجود مسبقاً`, 'success');
+                            addLog('✅ المستخدم موجود مسبقاً', 'success');
                         } catch (loginErr) {
                             if (loginErr.code === 'auth/wrong-password') {
-                                throw new Error('المستخدم موجود بكلمة مرور مختلفة. الرجاء تغيير كلمة المرور أو استخدام بريد آخر.');
+                                throw new Error('المستخدم موجود بكلمة مرور مختلفة');
                             }
                             throw loginErr;
                         }
@@ -1138,7 +1155,7 @@
                 };
 
                 await db.collection('users').doc(uid).set(userData, { merge: true });
-                addLog(`✅ تم حفظ بيانات المستخدم في Firestore`, 'success');
+                addLog('✅ تم حفظ بيانات المستخدم في Firestore', 'success');
 
                 try {
                     await db.collection('activities').add({
@@ -1147,20 +1164,20 @@
                         userName: name,
                         userRole: 'super_admin',
                         type: 'user_create',
-                        description: `${isNew ? 'إنشاء' : 'تحديث'} مستخدم: ${email}`,
+                        description: (isNew ? 'إنشاء' : 'تحديث') + ' مستخدم: ' + email,
                         timestamp: getEgyptTime(),
                         ipAddress: 'auto',
                         userAgent: navigator.userAgent
                     });
-                    addLog(`✅ تم تسجيل النشاط`, 'success');
+                    addLog('✅ تم تسجيل النشاط', 'success');
                 } catch (err) {
-                    addLog(`⚠️ نشاط: ${err.message}`, 'warning');
+                    addLog('⚠️ نشاط: ' + err.message, 'warning');
                 }
 
                 return { success: true, uid, isNew };
 
             } catch (err) {
-                addLog(`❌ فشل: ${err.message}`, 'error');
+                addLog('❌ فشل: ' + err.message, 'error');
                 throw err;
             }
         }
@@ -1174,7 +1191,7 @@
                 committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
                 splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
                 infoBoxText: document.getElementById('infoBoxText').value.trim() ||
-                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
+                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها',
                 footerText: document.getElementById('footerText').value.trim() ||
                     '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
                 sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
@@ -1222,7 +1239,7 @@
                     try {
                         const snap = await db.collection(col.name).get();
                         const count = snap.size;
-                        setStatus(col.id, count > 0 ? `${count} سجل` : 'فارغ', count > 0 ? 'done' : 'pending');
+                        setStatus(col.id, count > 0 ? count + ' سجل' : 'فارغ', count > 0 ? 'done' : 'pending');
                     } catch (err) {
                         setStatus(col.id, '❌', 'error');
                     }
@@ -1231,7 +1248,7 @@
                 addLog('✅ اكتمل التحقق', 'success');
 
             } catch (err) {
-                addLog(`❌ خطأ: ${err.message}`, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
             }
 
             hideLoader();
@@ -1263,7 +1280,7 @@
 
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
                 hideLoader();
             }
         }
@@ -1296,15 +1313,12 @@
             addLog('🚀 بدء التهيئة الكاملة للنظام...', 'info');
 
             try {
-                // 1. التحقق من Firebase
                 await checkFirebase();
                 await sleep(300);
 
-                // 2. التحقق من Cloudinary
                 await checkCloudinary();
                 await sleep(300);
 
-                // 3. إنشاء الجداول
                 addLog('📊 إنشاء الجداول...', 'info');
                 const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
                 for (const name of collections) {
@@ -1312,31 +1326,27 @@
                     await sleep(200);
                 }
 
-                // 4. حفظ الإعدادات
                 await saveSettings();
                 await sleep(300);
 
-                // 5. إنشاء المستخدم
                 await createUser(email, password, name, phone);
                 await sleep(300);
 
-                // 6. تحميل الصور إن وجدت
-                loadImagesFromCloudinary();
+                loadImagesFromFirestore();
 
-                // 7. تحديث الحالة
                 await checkAllStatus();
 
-                showMsg(`✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ${email} / ${password}`, 'success');
-                addLog(`🎉 اكتملت تهيئة النظام بالكامل`, 'success');
-                addLog(`👑 ${email} / ${password}`, 'info');
-                addLog(`🔑 يمكنك تسجيل الدخول الآن`, 'info');
+                showMsg('✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ' + email + ' / ' + password, 'success');
+                addLog('🎉 اكتملت تهيئة النظام بالكامل', 'success');
+                addLog('👑 ' + email + ' / ' + password, 'info');
+                addLog('🔑 يمكنك تسجيل الدخول الآن', 'info');
 
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
 
                 if (err.message.includes('credential') || err.message.includes('auth')) {
-                    addLog(`💡 حاول الضغط على "إعادة تعيين المصادقة" أولاً`, 'warning');
+                    addLog('💡 حاول الضغط على "إعادة تعيين المصادقة" أولاً', 'warning');
                 }
             }
 
@@ -1351,7 +1361,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             auth.signOut().catch(() => {});
             checkAllStatus();
-            loadImagesFromCloudinary();
+            loadImagesFromFirestore();
             addLog('🚀 جاهز', 'info');
             addLog('💡 اضغط "تهيئة النظام بالكامل" لإنشاء كل شيء', 'info');
             addLog('📌 يمكنك رفع اللوجو والختم بعد التهيئة', 'info');
