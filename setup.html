@@ -18,6 +18,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
             background: #0a0e1a;
@@ -25,11 +26,13 @@
             min-height: 100vh;
             direction: rtl;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
         }
+
         .card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
@@ -38,6 +41,7 @@
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -46,11 +50,13 @@
             gap: 12px;
             margin-bottom: 20px;
         }
+
         .logo {
             display: flex;
             align-items: center;
             gap: 14px;
         }
+
         .logo-box {
             width: 48px;
             height: 48px;
@@ -63,59 +69,91 @@
             font-size: 20px;
             color: #fff;
         }
+
         .logo h1 {
             font-size: 20px;
             font-weight: 800;
         }
+
         .logo p {
             font-size: 12px;
             color: rgba(255, 255, 255, 0.4);
         }
+
         .btn {
-            padding: 14px 32px;
+            padding: 12px 28px;
             border-radius: 12px;
             border: none;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            width: 100%;
-            justify-content: center;
         }
+
         .btn-success {
             background: linear-gradient(135deg, #22c55e, #16a34a);
             color: #fff;
         }
+
         .btn-success:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
         }
+
         .btn-success:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
+
         .btn-outline {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.2);
             color: #fff;
         }
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 12px;
-            width: auto;
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.4);
+        }
+
         .btn-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
         }
-        .form-group {
-            margin-bottom: 16px;
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
         }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
         .form-group label {
             display: block;
             font-size: 13px;
@@ -123,9 +161,11 @@
             color: rgba(255, 255, 255, 0.6);
             margin-bottom: 4px;
         }
-        .form-group input {
+
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.05);
@@ -134,48 +174,138 @@
             outline: none;
             transition: all 0.3s ease;
         }
-        .form-group input:focus {
+
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: #0055e6;
             box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.15);
         }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.10);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(0, 85, 230, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .upload-area .preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 0 auto 8px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .upload-area .preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .upload-area .text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .upload-area .sub {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.15);
+            margin-top: 4px;
+        }
+
+        .upload-status {
+            display: none;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+        }
+
+        .upload-status.show {
+            display: inline-block;
+        }
+
+        .upload-status.success {
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.10);
+        }
+
+        .upload-status.error {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.10);
+        }
+
         .msg {
             display: none;
             border-radius: 14px;
-            padding: 16px 20px;
+            padding: 14px 18px;
             margin-bottom: 16px;
             text-align: center;
+            font-size: 14px;
         }
+
         .msg.show {
             display: block;
         }
+
         .msg.success {
             background: rgba(34, 197, 94, 0.15);
             border: 1px solid rgba(34, 197, 94, 0.3);
             color: #22c55e;
         }
+
         .msg.error {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #ef4444;
         }
+
         .msg.info {
             background: rgba(59, 130, 246, 0.15);
             border: 1px solid rgba(59, 130, 246, 0.3);
             color: #3b82f6;
         }
+
+        .msg.warning {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+        }
+
         .loader {
             display: none;
             text-align: center;
             padding: 20px 0;
         }
+
         .loader.show {
             display: block;
         }
+
         .spinner {
             width: 40px;
             height: 40px;
@@ -185,11 +315,13 @@
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
         }
+
         @keyframes spin {
             to {
                 transform: rotate(360deg);
             }
         }
+
         .log {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
@@ -201,24 +333,30 @@
             color: rgba(255, 255, 255, 0.6);
             direction: ltr;
             text-align: left;
-            margin-top: 16px;
+            margin-top: 12px;
         }
+
         .log .line {
             padding: 2px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
+
         .log .line.success {
             color: #22c55e;
         }
+
         .log .line.error {
             color: #ef4444;
         }
+
         .log .line.info {
             color: #3b82f6;
         }
+
         .log .line.warning {
             color: #f59e0b;
         }
+
         .footer {
             text-align: center;
             padding: 20px 0 10px;
@@ -227,21 +365,29 @@
             font-size: 12px;
             margin-top: 20px;
         }
+
         .flex {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            justify-content: center;
+            align-items: center;
         }
+
         .mt-16 {
             margin-top: 16px;
         }
+
+        .mt-12 {
+            margin-top: 12px;
+        }
+
         .status-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 10px;
             margin: 16px 0;
         }
+
         .status-item {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -249,31 +395,41 @@
             padding: 12px;
             text-align: center;
         }
+
         .status-item .icon {
             font-size: 22px;
         }
+
         .status-item .title {
             font-weight: 700;
             font-size: 11px;
             color: #fff;
         }
+
         .status-item .value {
             font-size: 11px;
             margin-top: 4px;
             font-weight: 700;
         }
+
         .status-item .value.done {
             color: #22c55e;
         }
+
         .status-item .value.pending {
             color: #f59e0b;
         }
+
         .status-item .value.error {
             color: #ef4444;
         }
-        @media (max-width: 600px) {
+
+        @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
+            }
+            .form-row-3 {
+                grid-template-columns: 1fr 1fr;
             }
             .container {
                 padding: 12px;
@@ -281,6 +437,47 @@
             .card {
                 padding: 16px;
             }
+        }
+
+        @media (max-width: 480px) {
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
+                width: 100%;
+                justify-content: center;
+            }
+            .flex {
+                flex-direction: column;
+            }
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .border-top {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 16px;
+            margin-top: 16px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -297,7 +494,9 @@
                         <p>نقابة تكنولوجيا المعلومات</p>
                     </div>
                 </div>
-                <a href="index.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
+                <div class="flex" style="gap:8px;">
+                    <a href="index.html" class="btn btn-outline btn-sm">الرئيسية</a>
+                </div>
             </div>
 
             <div class="msg" id="msg"></div>
@@ -307,78 +506,178 @@
                 <div style="color:rgba(255,255,255,0.3);" id="loaderText">جاري التنفيذ...</div>
             </div>
 
-            <!-- حالة الجداول -->
+            <!-- حالة الاتصالات -->
             <div class="status-grid" id="statusGrid">
+                <div class="status-item">
+                    <div class="icon">🔥</div>
+                    <div class="title">Firebase</div>
+                    <div class="value pending" id="sFirebase">⏳ جاري...</div>
+                </div>
+                <div class="status-item">
+                    <div class="icon">☁️</div>
+                    <div class="title">Cloudinary</div>
+                    <div class="value pending" id="sCloudinary">⏳ جاري...</div>
+                </div>
                 <div class="status-item">
                     <div class="icon">👤</div>
                     <div class="title">المستخدمين</div>
-                    <div class="value pending" id="sUsers">⏳</div>
+                    <div class="value pending" id="sUsers">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🏛️</div>
                     <div class="title">الأكاديميات</div>
-                    <div class="value pending" id="sAcademies">⏳</div>
+                    <div class="value pending" id="sAcademies">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📜</div>
                     <div class="title">الشهادات</div>
-                    <div class="value pending" id="sCertificates">⏳</div>
+                    <div class="value pending" id="sCertificates">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📊</div>
                     <div class="title">النشاطات</div>
-                    <div class="value pending" id="sActivities">⏳</div>
+                    <div class="value pending" id="sActivities">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🔍</div>
                     <div class="title">سجل البحث</div>
-                    <div class="value pending" id="sSearchLogs">⏳</div>
+                    <div class="value pending" id="sSearchLogs">⏳ جاري...</div>
                 </div>
             </div>
 
-            <!-- زر إعادة تعيين Auth (جديد) -->
-            <button class="btn btn-danger" onclick="resetAuth()" id="resetAuthBtn" style="margin-bottom:12px;">
-                🔄 إعادة تعيين المصادقة
-            </button>
-
-            <!-- الزر الرئيسي -->
-            <button class="btn btn-success" onclick="runSetup()" id="mainBtn">
-                🚀 تهيئة النظام وإضافة المستخدم
-            </button>
+            <!-- الأزرار الرئيسية -->
+            <div class="flex" style="gap:10px;margin-bottom:16px;">
+                <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="flex:1;">
+                    🚀 تهيئة النظام بالكامل
+                </button>
+                <button class="btn btn-outline" onclick="checkAllStatus()" id="checkBtn">
+                    🔄 تحديث الحالة
+                </button>
+                <button class="btn btn-danger" onclick="resetAuth()" id="resetAuthBtn">
+                    🔄 إعادة تعيين المصادقة
+                </button>
+            </div>
 
             <!-- بيانات المستخدم -->
-            <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
-                <h3 style="font-weight:700;color:#fff;font-size:15px;margin-bottom:12px;">👑 بيانات المستخدم</h3>
+            <div class="border-top">
+                <div class="section-title">👑 بيانات السوبر أدمن</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>📧 البريد الإلكتروني</label>
+                        <label>البريد الإلكتروني</label>
                         <input type="email" id="adminEmail" value="superadmin@itws.com" />
                     </div>
                     <div class="form-group">
-                        <label>🔒 كلمة المرور</label>
+                        <label>كلمة المرور</label>
                         <input type="password" id="adminPassword" value="Admin@2026" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>👤 الاسم الكامل</label>
+                        <label>الاسم الكامل</label>
                         <input type="text" id="adminName" value="سوبر أدمن النظام" />
                     </div>
                     <div class="form-group">
-                        <label>📞 رقم الهاتف</label>
+                        <label>رقم الهاتف</label>
                         <input type="text" id="adminPhone" value="01234567890" />
                     </div>
                 </div>
             </div>
 
+            <!-- إعدادات النظام -->
+            <div class="border-top">
+                <div class="section-title">⚙️ إعدادات النظام</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم النقابة</label>
+                        <input type="text" id="unionName" value="نقابة تكنولوجيا المعلومات والبرمجيات" />
+                    </div>
+                    <div class="form-group">
+                        <label>اسم اللجنة</label>
+                        <input type="text" id="committeeName" value="لجنة التحول الرقمي والتدريب" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>مدة العرض الترحيبي (ثواني)</label>
+                        <input type="number" id="splashDuration" value="3" min="1" max="15" />
+                    </div>
+                    <div class="form-group">
+                        <label>مدة الجلسة (دقائق)</label>
+                        <input type="number" id="sessionTimeout" value="30" min="5" max="120" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص البوكس تحت البحث</label>
+                        <input type="text" id="infoBoxText" value="يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها." />
+                    </div>
+                    <div class="form-group">
+                        <label>نص تذييل الصفحة</label>
+                        <input type="text" id="footerText" value="© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر الخدمات</label>
+                        <input type="text" id="servicesBtnText" value="خدمات النقابة الإلكترونية" />
+                    </div>
+                    <div class="form-group">
+                        <label>رابط زر الخدمات</label>
+                        <input type="url" id="servicesBtnLink" value="https://itws.org.eg/services" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- رفع اللوجو والختم -->
+            <div class="border-top">
+                <div class="section-title">🖼️ رفع اللوجو والختم (Cloudinary)</div>
+
+                <div class="form-row">
+                    <div>
+                        <div class="upload-area" onclick="document.getElementById('logoInput').click()">
+                            <div class="preview" id="logoPreview">
+                                <img src="" alt="لوجو النقابة" style="display:none;" />
+                            </div>
+                            <div class="text" id="logoPlaceholder">اضغط لرفع لوجو النقابة</div>
+                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
+                            <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
+                        </div>
+                        <div class="flex" style="gap:8px;margin-top:8px;">
+                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn">رفع اللوجو</button>
+                            <span class="upload-status" id="logoStatus"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="upload-area" onclick="document.getElementById('stampInput').click()">
+                            <div class="preview" id="stampPreview">
+                                <img src="" alt="ختم النقابة" style="display:none;" />
+                            </div>
+                            <div class="text" id="stampPlaceholder">اضغط لرفع ختم النقابة</div>
+                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
+                            <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
+                        </div>
+                        <div class="flex" style="gap:8px;margin-top:8px;">
+                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn">رفع الختم</button>
+                            <span class="upload-status" id="stampStatus"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex" style="gap:10px;margin-top:12px;">
+                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromCloudinary()">تحميل الصور الحالية</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearImagesFromCloudinary()">حذف الصور</button>
+                </div>
+            </div>
+
             <!-- سجل العمليات -->
-            <div style="margin-top:16px;">
+            <div class="border-top">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                    <h3 style="font-weight:700;color:#fff;font-size:14px;">📋 سجل العمليات</h3>
+                    <div class="section-title" style="margin-bottom:0;">📋 سجل العمليات</div>
                     <button class="btn btn-outline btn-sm" onclick="clearLog()">🗑️ مسح</button>
                 </div>
                 <div class="log" id="log">
-                    <div class="line info">⏳ جاهز - اضغط على الزر أعلاه</div>
+                    <div class="line info">⏳ جاهز - اضغط على زر التهيئة</div>
                 </div>
             </div>
 
@@ -404,9 +703,9 @@
             measurementId: "G-JBMGW74DV4"
         };
 
-        // إعادة تهيئة Firebase (حل المشكلة)
+        let app, db, auth;
+
         try {
-            // محاولة حذف التطبيق القديم
             if (firebase.apps.length > 0) {
                 firebase.apps.forEach(app => app.delete());
             }
@@ -414,16 +713,28 @@
             console.log('⚠️', e.message);
         }
 
-        // تهيئة جديدة
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
-        const auth = firebase.auth(app);
-
-        // إعدادات إضافية لـ Auth
+        app = firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore(app);
+        auth = firebase.auth(app);
         auth.useDeviceLanguage();
 
         // ============================================================
-        // 2. دوال مساعدة
+        // 2. إعدادات Cloudinary
+        // ============================================================
+        const CLOUDINARY = {
+            cloudName: 'dvxh9l4lv',
+            uploadPreset: 'ml_default',
+            folder: 'itwsAcCertification'
+        };
+
+        // ============================================================
+        // 3. متغيرات
+        // ============================================================
+        let logoFile = null;
+        let stampFile = null;
+
+        // ============================================================
+        // 4. دوال مساعدة
         // ============================================================
         function addLog(msg, type = 'info') {
             const log = document.getElementById('log');
@@ -477,41 +788,277 @@
         }
 
         // ============================================================
-        // 3. إعادة تعيين المصادقة (حل المشكلة)
+        // 5. التحقق من Firebase
         // ============================================================
-        async function resetAuth() {
-            hideMsg();
-            showLoader('جاري إعادة تعيين المصادقة...');
-            addLog('🔄 جاري إعادة تعيين المصادقة...', 'warning');
-
+        async function checkFirebase() {
             try {
-                // تسجيل الخروج
-                await auth.signOut();
-                addLog('✅ تم تسجيل الخروج', 'success');
-
-                // مسح التخزين المحلي
-                localStorage.clear();
-                sessionStorage.clear();
-                addLog('✅ تم مسح التخزين المحلي', 'success');
-
-                // إعادة تحميل الصفحة بعد 1 ثانية
-                await sleep(1000);
-                showMsg('✅ تم إعادة تعيين المصادقة بنجاح! سيتم تحديث الصفحة...', 'success');
-                addLog('🔄 جاري تحديث الصفحة...', 'info');
-
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
-
+                await db.collection('users').limit(1).get();
+                setStatus('sFirebase', '✅ متصل', 'done');
+                addLog('🔥 Firebase متصل بنجاح', 'success');
+                return true;
             } catch (err) {
-                showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog(`❌ خطأ: ${err.message}`, 'error');
-                hideLoader();
+                setStatus('sFirebase', '❌ خطأ', 'error');
+                addLog(`❌ Firebase: ${err.message}`, 'error');
+                return false;
             }
         }
 
         // ============================================================
-        // 4. إنشاء جدول
+        // 6. التحقق من Cloudinary
+        // ============================================================
+        async function checkCloudinary() {
+            try {
+                const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/resources/image/upload`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('474397224442688:CRhfgj7NWhic7m_5F33CZWUPQQg')
+                    }
+                });
+
+                if (response.ok) {
+                    setStatus('sCloudinary', '✅ متصل', 'done');
+                    addLog('☁️ Cloudinary متصل بنجاح', 'success');
+                    return true;
+                } else {
+                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                    addLog('⚠️ Cloudinary غير متصل (تحقق من الإعدادات)', 'warning');
+                    return false;
+                }
+            } catch (err) {
+                setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                addLog(`⚠️ Cloudinary: ${err.message}`, 'warning');
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 7. رفع الصور إلى Cloudinary
+        // ============================================================
+        function uploadToCloudinary(file, publicId) {
+            return new Promise(function(resolve, reject) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', CLOUDINARY.uploadPreset);
+                formData.append('folder', CLOUDINARY.folder);
+                if (publicId) {
+                    formData.append('public_id', publicId);
+                }
+
+                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
+
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data.error) {
+                        reject(data.error);
+                    } else {
+                        resolve(data);
+                    }
+                })
+                .catch(function(err) {
+                    reject(err);
+                });
+            });
+        }
+
+        // ============================================================
+        // 8. رفع اللوجو
+        // ============================================================
+        function previewLogo(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showMsg('حجم الصورة يتجاوز 2MB', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            logoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.querySelector('#logoPreview img');
+                img.src = ev.target.result;
+                img.style.display = 'block';
+                document.getElementById('logoPlaceholder').textContent = file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewStamp(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showMsg('حجم الصورة يتجاوز 2MB', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            stampFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.querySelector('#stampPreview img');
+                img.src = ev.target.result;
+                img.style.display = 'block';
+                document.getElementById('stampPlaceholder').textContent = file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function uploadLogoToCloudinary() {
+            if (!logoFile) {
+                showMsg('الرجاء اختيار صورة اللوجو أولاً', 'info');
+                return;
+            }
+
+            const btn = document.getElementById('uploadLogoBtn');
+            btn.disabled = true;
+            btn.textContent = 'جاري الرفع...';
+
+            uploadToCloudinary(logoFile, 'union_logo')
+                .then(function(data) {
+                    const url = data.secure_url;
+                    return db.collection('settings').doc('general').set({
+                        logoUrl: url,
+                        updatedAt: getEgyptTime(),
+                        updatedBy: 'system'
+                    }, { merge: true }).then(function() {
+                        return url;
+                    });
+                })
+                .then(function(url) {
+                    showMsg('تم رفع اللوجو بنجاح', 'success');
+                    showStatus('logoStatus', 'تم الرفع', 'success');
+                    btn.disabled = false;
+                    btn.textContent = 'رفع اللوجو';
+                    logoFile = null;
+                    addLog('✅ تم رفع اللوجو إلى Cloudinary', 'success');
+                    loadImagesFromCloudinary();
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + (err.message || err), 'error');
+                    showStatus('logoStatus', 'فشل الرفع', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'رفع اللوجو';
+                    addLog(`❌ فشل رفع اللوجو: ${err.message}`, 'error');
+                });
+        }
+
+        function uploadStampToCloudinary() {
+            if (!stampFile) {
+                showMsg('الرجاء اختيار صورة الختم أولاً', 'info');
+                return;
+            }
+
+            const btn = document.getElementById('uploadStampBtn');
+            btn.disabled = true;
+            btn.textContent = 'جاري الرفع...';
+
+            uploadToCloudinary(stampFile, 'union_stamp')
+                .then(function(data) {
+                    const url = data.secure_url;
+                    return db.collection('settings').doc('general').set({
+                        stampUrl: url,
+                        updatedAt: getEgyptTime(),
+                        updatedBy: 'system'
+                    }, { merge: true }).then(function() {
+                        return url;
+                    });
+                })
+                .then(function(url) {
+                    showMsg('تم رفع الختم بنجاح', 'success');
+                    showStatus('stampStatus', 'تم الرفع', 'success');
+                    btn.disabled = false;
+                    btn.textContent = 'رفع الختم';
+                    stampFile = null;
+                    addLog('✅ تم رفع الختم إلى Cloudinary', 'success');
+                    loadImagesFromCloudinary();
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + (err.message || err), 'error');
+                    showStatus('stampStatus', 'فشل الرفع', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'رفع الختم';
+                    addLog(`❌ فشل رفع الختم: ${err.message}`, 'error');
+                });
+        }
+
+        function showStatus(id, msg, type) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.className = 'upload-status show ' + type;
+            setTimeout(function() {
+                el.className = 'upload-status';
+            }, 4000);
+        }
+
+        // ============================================================
+        // 9. تحميل الصور من Cloudinary
+        // ============================================================
+        function loadImagesFromCloudinary() {
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+
+                        if (data.logoUrl) {
+                            const img = document.querySelector('#logoPreview img');
+                            img.src = data.logoUrl;
+                            img.style.display = 'block';
+                            document.getElementById('logoPlaceholder').textContent = 'لوجو موجود';
+                        } else {
+                            document.querySelector('#logoPreview img').style.display = 'none';
+                            document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
+                        }
+
+                        if (data.stampUrl) {
+                            const img = document.querySelector('#stampPreview img');
+                            img.src = data.stampUrl;
+                            img.style.display = 'block';
+                            document.getElementById('stampPlaceholder').textContent = 'ختم موجود';
+                        } else {
+                            document.querySelector('#stampPreview img').style.display = 'none';
+                            document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
+                        }
+                    }
+                })
+                .catch(function() {});
+        }
+
+        // ============================================================
+        // 10. حذف الصور
+        // ============================================================
+        function clearImagesFromCloudinary() {
+            if (!confirm('هل أنت متأكد من حذف اللوجو والختم؟')) return;
+
+            db.collection('settings').doc('general').set({
+                logoUrl: '',
+                stampUrl: '',
+                updatedAt: getEgyptTime(),
+                updatedBy: 'system'
+            }, { merge: true })
+            .then(function() {
+                document.querySelector('#logoPreview img').style.display = 'none';
+                document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
+                document.querySelector('#stampPreview img').style.display = 'none';
+                document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
+                showMsg('تم حذف الصور بنجاح', 'success');
+                addLog('✅ تم حذف الصور', 'success');
+            })
+            .catch(function(err) {
+                showMsg('حدث خطأ: ' + err.message, 'error');
+                addLog(`❌ خطأ: ${err.message}`, 'error');
+            });
+        }
+
+        // ============================================================
+        // 11. إنشاء الجداول
         // ============================================================
         async function ensureCollection(name) {
             try {
@@ -533,45 +1080,34 @@
         }
 
         // ============================================================
-        // 5. إنشاء المستخدم (الحل النهائي)
+        // 12. إنشاء المستخدم
         // ============================================================
         async function createUser(email, password, name, phone) {
             addLog(`👑 جاري إنشاء المستخدم: ${email}`, 'info');
 
             try {
-                // الخطوة 1: تسجيل الخروج
                 try {
                     await auth.signOut();
-                    addLog(`🔄 تم تسجيل الخروج`, 'info');
-                } catch (e) {
-                    // تجاهل
-                }
+                } catch (e) {}
 
                 await sleep(500);
 
-                // الخطوة 2: محاولة إنشاء المستخدم (بدون تسجيل دخول مسبق)
                 let uid = null;
                 let isNew = false;
 
                 try {
-                    // محاولة إنشاء مستخدم جديد مباشرة
                     const cred = await auth.createUserWithEmailAndPassword(email, password);
                     uid = cred.user.uid;
                     isNew = true;
                     addLog(`✅ تم إنشاء مستخدم جديد`, 'success');
                 } catch (err) {
                     if (err.code === 'auth/email-already-in-use') {
-                        // المستخدم موجود - جرب تسجيل الدخول
                         try {
                             const cred = await auth.signInWithEmailAndPassword(email, password);
                             uid = cred.user.uid;
                             addLog(`✅ المستخدم موجود مسبقاً`, 'success');
                         } catch (loginErr) {
                             if (loginErr.code === 'auth/wrong-password') {
-                                // حذف المستخدم وإعادة إنشائه (حل جذري)
-                                addLog(`⚠️ كلمة المرور غير صحيحة، جاري حذف المستخدم...`, 'warning');
-                                // لا يمكن حذف المستخدم من العميل، نستخدم حل بديل
-                                // نطلب من المستخدم تغيير كلمة المرور
                                 throw new Error('المستخدم موجود بكلمة مرور مختلفة. الرجاء تغيير كلمة المرور أو استخدام بريد آخر.');
                             }
                             throw loginErr;
@@ -585,7 +1121,6 @@
                     throw new Error('لم يتم الحصول على UID');
                 }
 
-                // الخطوة 3: حفظ في Firestore
                 const userData = {
                     uid: uid,
                     email: email,
@@ -601,7 +1136,6 @@
                 await db.collection('users').doc(uid).set(userData, { merge: true });
                 addLog(`✅ تم حفظ بيانات المستخدم في Firestore`, 'success');
 
-                // الخطوة 4: تسجيل نشاط
                 try {
                     await db.collection('activities').add({
                         userId: uid,
@@ -628,10 +1162,50 @@
         }
 
         // ============================================================
-        // 6. التحقق من الحالة
+        // 13. حفظ الإعدادات
         // ============================================================
-        async function checkStatus() {
+        async function saveSettings() {
+            const data = {
+                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
+                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
+                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
+                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
+                footerText: document.getElementById('footerText').value.trim() ||
+                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                updatedAt: getEgyptTime(),
+                updatedBy: 'system'
+            };
+
+            await db.collection('settings').doc('general').set(data, { merge: true });
+            addLog('✅ تم حفظ الإعدادات العامة', 'success');
+
+            const servicesData = {
+                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
+                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
+                updatedAt: getEgyptTime(),
+                updatedBy: 'system'
+            };
+
+            await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
+            addLog('✅ تم حفظ زر الخدمات', 'success');
+
+            return true;
+        }
+
+        // ============================================================
+        // 14. التحقق من الحالة الكاملة
+        // ============================================================
+        async function checkAllStatus() {
+            hideMsg();
+            showLoader('جاري التحقق...');
+            addLog('🔍 جاري التحقق من حالة النظام...', 'info');
+
             try {
+                await checkFirebase();
+                await checkCloudinary();
+
                 const collections = [
                     { name: 'users', id: 'sUsers' },
                     { name: 'academies', id: 'sAcademies' },
@@ -649,15 +1223,51 @@
                         setStatus(col.id, '❌', 'error');
                     }
                 }
+
+                addLog('✅ اكتمل التحقق', 'success');
+
             } catch (err) {
-                // تجاهل
+                addLog(`❌ خطأ: ${err.message}`, 'error');
+            }
+
+            hideLoader();
+        }
+
+        // ============================================================
+        // 15. إعادة تعيين المصادقة
+        // ============================================================
+        async function resetAuth() {
+            hideMsg();
+            showLoader('جاري إعادة تعيين المصادقة...');
+            addLog('🔄 جاري إعادة تعيين المصادقة...', 'warning');
+
+            try {
+                await auth.signOut();
+                addLog('✅ تم تسجيل الخروج', 'success');
+
+                localStorage.clear();
+                sessionStorage.clear();
+                addLog('✅ تم مسح التخزين المحلي', 'success');
+
+                await sleep(1000);
+                showMsg('✅ تم إعادة تعيين المصادقة بنجاح! سيتم تحديث الصفحة...', 'success');
+                addLog('🔄 جاري تحديث الصفحة...', 'info');
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+
+            } catch (err) {
+                showMsg('❌ خطأ: ' + err.message, 'error');
+                addLog(`❌ خطأ: ${err.message}`, 'error');
+                hideLoader();
             }
         }
 
         // ============================================================
-        // 7. التشغيل الرئيسي
+        // 16. التشغيل الكامل
         // ============================================================
-        async function runSetup() {
+        async function runFullSetup() {
             hideMsg();
 
             const email = document.getElementById('adminEmail').value.trim();
@@ -676,39 +1286,51 @@
 
             const btn = document.getElementById('mainBtn');
             btn.disabled = true;
-            btn.textContent = '⏳ جاري التنفيذ...';
+            btn.textContent = '⏳ جاري التهيئة...';
 
-            showLoader('جاري تهيئة النظام...');
-            addLog('🚀 بدء التهيئة...', 'info');
+            showLoader('جاري تهيئة النظام بالكامل...');
+            addLog('🚀 بدء التهيئة الكاملة للنظام...', 'info');
 
             try {
-                // 1. إنشاء الجداول
+                // 1. التحقق من Firebase
+                await checkFirebase();
+                await sleep(300);
+
+                // 2. التحقق من Cloudinary
+                await checkCloudinary();
+                await sleep(300);
+
+                // 3. إنشاء الجداول
                 addLog('📊 إنشاء الجداول...', 'info');
                 const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
                 for (const name of collections) {
                     await ensureCollection(name);
-                    await sleep(300);
+                    await sleep(200);
                 }
 
-                // 2. إنشاء المستخدم
-                addLog('👑 إنشاء المستخدم...', 'info');
-                const result = await createUser(email, password, name, phone);
+                // 4. حفظ الإعدادات
+                await saveSettings();
+                await sleep(300);
 
-                // 3. تحديث الحالة
-                await checkStatus();
+                // 5. إنشاء المستخدم
+                await createUser(email, password, name, phone);
+                await sleep(300);
 
-                if (result.success) {
-                    showMsg(`✅ تمت التهيئة بنجاح!\n👑 ${email} / ${password}`, 'success');
-                    addLog(`🎉 اكتملت التهيئة`, 'success');
-                    addLog(`👑 ${email} / ${password}`, 'info');
-                    addLog(`🔑 يمكنك تسجيل الدخول الآن`, 'info');
-                }
+                // 6. تحميل الصور إن وجدت
+                loadImagesFromCloudinary();
+
+                // 7. تحديث الحالة
+                await checkAllStatus();
+
+                showMsg(`✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ${email} / ${password}`, 'success');
+                addLog(`🎉 اكتملت تهيئة النظام بالكامل`, 'success');
+                addLog(`👑 ${email} / ${password}`, 'info');
+                addLog(`🔑 يمكنك تسجيل الدخول الآن`, 'info');
 
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
                 addLog(`❌ خطأ: ${err.message}`, 'error');
 
-                // إذا كان الخطأ بسبب المصادقة، اقترح إعادة التعيين
                 if (err.message.includes('credential') || err.message.includes('auth')) {
                     addLog(`💡 حاول الضغط على "إعادة تعيين المصادقة" أولاً`, 'warning');
                 }
@@ -716,18 +1338,19 @@
 
             hideLoader();
             btn.disabled = false;
-            btn.textContent = '🚀 تهيئة النظام وإضافة المستخدم';
+            btn.textContent = '🚀 تهيئة النظام بالكامل';
         }
 
         // ============================================================
-        // 8. تحميل الصفحة
+        // 17. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // تسجيل الخروج عند التحميل
             auth.signOut().catch(() => {});
-            checkStatus();
+            checkAllStatus();
+            loadImagesFromCloudinary();
             addLog('🚀 جاهز', 'info');
-            addLog('💡 إذا ظهر خطأ مصادقة، اضغط "إعادة تعيين المصادقة" أولاً', 'info');
+            addLog('💡 اضغط "تهيئة النظام بالكامل" لإنشاء كل شيء', 'info');
+            addLog('📌 يمكنك رفع اللوجو والختم بعد التهيئة', 'info');
         });
     </script>
 
