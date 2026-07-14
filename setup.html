@@ -947,13 +947,15 @@
         }
 
         // ============================================================
-        // 9. التحقق من Cloudinary عبر API Route
+        // 9. التحقق من Cloudinary
         // ============================================================
         async function checkCloudinary() {
             try {
+                // محاولة الاتصال بـ API Route
                 const response = await fetch('/api/upload', {
-                    method: 'HEAD'
+                    method: 'GET'
                 });
+                
                 if (response.ok) {
                     setStatus('sCloudinary', '✅ متصل', 'done');
                     addLog('☁️ Cloudinary متصل', 'success');
