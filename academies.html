@@ -14,9 +14,6 @@
     </script>
 
     <style>
-        /* ============================================================
-           التصميم الكامل لإدارة الأكاديميات
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -25,32 +22,27 @@
 
         body {
             font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #0a0e1a;
+            background: #050a18;
             color: #ffffff;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
         }
 
-        /* ===== خلفية ===== */
         .page-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.03) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
             animation: bgPulse 15s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-            100% {
-                transform: scale(1.04) rotate(1.5deg);
-            }
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(1.04) rotate(1.5deg); opacity: 0.9; }
         }
 
         .page-bg::before {
@@ -58,11 +50,10 @@
             position: absolute;
             inset: 0;
             background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
-        /* ===== جزيئات ===== */
         .particles-container {
             position: fixed;
             inset: 0;
@@ -74,104 +65,128 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(100, 200, 255, 0.04);
-            animation: particleFloat 25s infinite ease-in-out;
+            animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            top: 5%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-        .particle:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            bottom: 10%;
-            right: 5%;
-            animation-delay: 4s;
-        }
-        .particle:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            top: 50%;
-            left: 50%;
-            animation-delay: 2s;
-        }
-        .particle:nth-child(4) {
-            width: 180px;
-            height: 180px;
-            bottom: 30%;
-            left: 10%;
-            animation-delay: 6s;
-        }
-        .particle:nth-child(5) {
-            width: 60px;
-            height: 60px;
-            top: 20%;
-            right: 25%;
-            animation-delay: 3s;
-        }
-        .particle:nth-child(6) {
-            width: 120px;
-            height: 120px;
-            top: 70%;
-            right: 45%;
-            animation-delay: 5s;
-        }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
 
         @keyframes particleFloat {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.1;
-            }
-            50% {
-                transform: translate(30px, -50px) scale(1.2);
-                opacity: 0.4;
-            }
-            100% {
-                transform: translate(-10px, 0) scale(1);
-                opacity: 0.1;
-            }
+            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+            20% { transform: translate(40px, -30px) scale(1.3); opacity: 0.6; }
+            40% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.3; }
+            60% { transform: translate(50px, -20px) scale(1.4); opacity: 0.7; }
+            80% { transform: translate(-30px, -80px) scale(0.8); opacity: 0.4; }
+            100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
-        /* ===== شبكة ===== */
         .grid-lines {
             position: fixed;
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
+            animation: gridMove 25s linear infinite;
         }
 
-        /* ===== الحاوية ===== */
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(30px) translateX(30px); }
+        }
+
+        .orbital-ring {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 100, 255, 0.05);
+            animation: ringSpin 40s linear infinite;
+        }
+
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
+        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 18s ease-in-out infinite alternate;
+        }
+
+        .glow-orb:nth-child(1) {
+            width: 450px;
+            height: 450px;
+            top: -150px;
+            right: -150px;
+            background: rgba(0, 100, 255, 0.08);
+        }
+
+        .glow-orb:nth-child(2) {
+            width: 550px;
+            height: 550px;
+            bottom: -200px;
+            left: -200px;
+            background: rgba(138, 43, 226, 0.06);
+            animation-delay: 6s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
+        }
+
         .container {
             position: relative;
             z-index: 10;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 14px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            flex-wrap: wrap;
-            gap: 12px;
+            animation: headerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes headerFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
 
         .header-left {
@@ -181,29 +196,41 @@
         }
 
         .logo-box {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 18px;
             color: #fff;
             cursor: pointer;
             transition: all 0.3s ease;
+            animation: logoSpin 20s linear infinite;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo-box:hover {
+            animation-duration: 3s;
+            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
         }
 
         .header-title h1 {
             font-size: 18px;
             font-weight: 800;
             color: #fff;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-title p {
@@ -219,8 +246,8 @@
         }
 
         .btn {
-            padding: 8px 18px;
-            border-radius: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
             border: none;
             font-weight: 700;
             font-size: 13px;
@@ -231,79 +258,67 @@
             gap: 8px;
             text-decoration: none;
             white-space: nowrap;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
 
         .btn-outline {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.12);
             color: #fff;
         }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
 
         .btn-success {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: linear-gradient(135deg, #10b981, #22c55e);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
         }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
-        }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
 
         .btn-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
         }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4); }
 
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.35);
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
         }
+        .btn-ghost:hover { background: rgba(255, 255, 255, 0.10); transform: translateY(-2px); }
 
-        .btn-sm {
-            padding: 5px 12px;
-            font-size: 11px;
-        }
+        .btn-sm { padding: 5px 14px; font-size: 12px; }
 
-        .btn-lg {
-            padding: 12px 24px;
-            font-size: 15px;
-        }
-
-        /* ===== البطاقات ===== */
         .card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 20px 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 100, 255, 0.10);
         }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -313,44 +328,62 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 85, 230, 0.15);
-            color: #0055e6;
-            padding: 2px 10px;
+            background: rgba(0, 100, 255, 0.15);
+            color: #60a5fa;
+            padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
         }
 
-        /* ===== شريط البحث ===== */
-        .search-bar {
-            display: flex;
+        .filters-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 12px;
-            flex-wrap: wrap;
             margin-bottom: 16px;
         }
 
-        .search-bar input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 18px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .filters-grid .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .filters-grid .filter-group label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .filters-grid .filter-group input,
+        .filters-grid .filter-group select {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
             transition: all 0.3s ease;
+            font-family: inherit;
+            width: 100%;
         }
 
-        .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.25);
+        .filters-grid .filter-group input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
         }
 
-        .search-bar input:focus {
-            border-color: #0055e6;
-            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+        .filters-grid .filter-group input:focus,
+        .filters-grid .filter-group select:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
         }
 
-        /* ===== الجدول ===== */
+        .filters-grid .filter-group select option {
+            background: #0a0f1f;
+            color: #fff;
+        }
+
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -397,26 +430,28 @@
         }
 
         .table .academy-license {
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 12px;
             color: rgba(255, 255, 255, 0.3);
         }
 
         .table .status-badge {
-            padding: 3px 12px;
+            padding: 3px 14px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
         }
 
         .status-badge.active {
-            background: rgba(34, 197, 94, 0.12);
-            color: #22c55e;
+            background: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.1);
         }
 
         .status-badge.inactive {
             background: rgba(239, 68, 68, 0.12);
             color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.1);
         }
 
         .table .actions {
@@ -426,19 +461,18 @@
         }
 
         .table .actions .btn {
-            padding: 4px 10px;
+            padding: 4px 12px;
             font-size: 11px;
+            border-radius: 20px;
         }
 
-        /* ===== مودال ===== */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 1000;
             background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(20px);
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -451,12 +485,12 @@
 
         .modal {
             background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 32px;
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -464,22 +498,25 @@
             animation: slideUp 0.3s ease;
         }
 
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
+        .modal::-webkit-scrollbar-thumb { background: rgba(0, 100, 255, 0.3); border-radius: 4px; }
+
         @keyframes slideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.96);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
@@ -488,34 +525,46 @@
             font-size: 20px;
             font-weight: 800;
             color: #fff;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .modal-close {
-            background: none;
-            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: rgba(255, 255, 255, 0.3);
-            font-size: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close:hover {
-            color: #fff;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
         }
 
         .modal-body {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(255, 255, 255, 0.45);
             margin-bottom: 4px;
         }
 
@@ -523,26 +572,27 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
             color: #fff;
             font-size: 14px;
             outline: none;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         .form-group input::placeholder,
         .form-group textarea::placeholder {
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.15);
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #0055e6;
-            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.10);
+            border-color: #0066ff;
+            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
         }
 
         .form-group textarea {
@@ -551,14 +601,105 @@
         }
 
         .form-group select option {
-            background: #1a1a2e;
+            background: #0a0f1f;
             color: #fff;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
+        }
+
+        /* ===== حاوية الفروع ===== */
+        .branches-container {
+            margin-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 12px;
+        }
+
+        .branches-container .branch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .branches-container .branch-header h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .branch-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .branch-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 100, 255, 0.1);
+        }
+
+        .branch-item .branch-remove {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .branch-item .branch-remove:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .branch-item .branch-main-badge {
+            font-size: 10px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            background: rgba(0, 100, 255, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(0, 100, 255, 0.1);
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .branch-item .branch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .branch-item .branch-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .branch-item .branch-grid .form-group label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .branch-item .branch-grid .form-group input,
+        .branch-item .branch-grid .form-group select {
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 10px;
         }
 
         .modal-footer {
@@ -572,9 +713,9 @@
 
         .modal-footer .btn {
             padding: 10px 24px;
+            border-radius: 30px;
         }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: 12px;
@@ -584,92 +725,35 @@
             font-size: 14px;
         }
 
-        .msg.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .msg.show { display: block; animation: fadeIn 0.3s ease; }
+        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
+        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
+        .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
 
-        .msg.error {
-            background: rgba(239, 68, 68, 0.10);
-            border: 1px solid rgba(239, 68, 68, 0.20);
-            color: #ef4444;
-        }
-
-        .msg.success {
-            background: rgba(34, 197, 94, 0.10);
-            border: 1px solid rgba(34, 197, 94, 0.20);
-            color: #22c55e;
-        }
-
-        .msg.info {
-            background: rgba(59, 130, 246, 0.10);
-            border: 1px solid rgba(59, 130, 246, 0.20);
-            color: #3b82f6;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== تحميل ===== */
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .loader.show {
-            display: block;
-        }
-
+        .loader { display: none; text-align: center; padding: 30px 0; }
+        .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
             border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0055e6;
+            border-top-color: #0066ff;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== فارغ ===== */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
             color: rgba(255, 255, 255, 0.2);
         }
 
-        .empty-state .icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+        .empty-state .title { font-size: 18px; font-weight: 700; color: rgba(255, 255, 255, 0.4); }
+        .empty-state .desc { font-size: 13px; color: rgba(255, 255, 255, 0.15); margin-top: 4px; }
 
-        .empty-state .title {
-            font-size: 18px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .empty-state .desc {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.15);
-            margin-top: 4px;
-        }
-
-        /* ===== الفوتر ===== */
         .footer {
             text-align: center;
             padding: 20px 0 10px;
@@ -679,80 +763,88 @@
             font-size: 11px;
         }
 
-        /* ===== استجابة ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stats-row .stat-mini {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .stats-row .stat-mini .num {
+            font-size: 20px;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+
+        .stats-row .stat-mini .label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        @media (max-width: 992px) {
+            .filters-grid { grid-template-columns: 1fr 1fr; }
+            .branch-item .branch-grid { grid-template-columns: 1fr 1fr; }
+        }
+
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-                padding: 12px 16px;
-            }
-            .header-right {
-                justify-content: center;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .container {
-                padding: 10px;
-            }
-            .card {
-                padding: 14px 16px;
-            }
-            .modal {
-                padding: 20px;
-                margin: 10px;
-            }
+            .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
+            .header-right { justify-content: center; }
+            .form-row { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+            .card { padding: 14px 16px; }
+            .modal { padding: 20px; margin: 10px; border-radius: 20px; }
             .table thead th,
-            .table tbody td {
-                padding: 8px 10px;
-                font-size: 12px;
-            }
-            .search-bar {
-                flex-direction: column;
-            }
-            .search-bar input {
-                min-width: unset;
-            }
+            .table tbody td { padding: 8px 10px; font-size: 12px; }
+            .filters-grid { grid-template-columns: 1fr; }
+            .branch-item .branch-grid { grid-template-columns: 1fr; }
+            .glow-orb { display: none; }
+            .ring { display: none; }
+            .header-left { justify-content: center; }
+            .header-title { text-align: center; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 480px) {
-            .table thead {
-                display: none;
-            }
-            .table tbody td {
-                display: block;
-                padding: 6px 10px;
-                border-bottom: none;
-            }
-            .table tbody td::before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: rgba(255, 255, 255, 0.3);
-                display: inline-block;
-                width: 80px;
-            }
-            .table tbody tr {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-                padding: 8px 0;
-                display: block;
-            }
-            .table .actions {
+            .table thead { display: none; }
+            .table tbody td { display: block; padding: 6px 10px; border-bottom: none; }
+            .table tbody td::before { content: attr(data-label); font-weight: 600; color: rgba(255, 255, 255, 0.3); display: inline-block; width: 80px; }
+            .table tbody tr { border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 8px 0; display: block; }
+            .table .actions { justify-content: center; margin-top: 4px; }
+            .header-title h1 { font-size: 15px; }
+            .modal { padding: 16px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media print {
+            * { display: none !important; }
+            body::before {
+                content: 'لا يمكن طباعة هذه الصفحة';
+                display: flex;
+                align-items: center;
                 justify-content: center;
-                margin-top: 4px;
-            }
-            .header-title h1 {
-                font-size: 15px;
+                position: fixed;
+                inset: 0;
+                background: #050a18;
+                color: #ef4444;
+                font-size: 28px;
+                z-index: 999999;
+                font-family: 'Segoe UI', 'Tahoma', sans-serif;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== خلفية ===== -->
     <div class="page-bg"></div>
 
-    <!-- ===== جزيئات ===== -->
     <div class="particles-container">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -760,126 +852,80 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
 
-    <!-- ===== شبكة ===== -->
     <div class="grid-lines"></div>
 
-    <!-- ===== الحاوية ===== -->
+    <div class="orbital-ring">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
     <div class="container">
 
-        <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
                 <div class="header-title">
                     <h1>إدارة الأكاديميات</h1>
-                    <p>إدارة الأكاديميات المعتمدة من النقابة</p>
+                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">📊 لوحة التحكم</a>
-                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()">➕ إضافة أكاديمية</a>
+                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
+                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()">إضافة أكاديمية</a>
             </div>
         </header>
 
-        <!-- ===== رسائل ===== -->
         <div class="msg" id="pageMsg"></div>
 
-        <!-- ===== تحميل ===== -->
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
             <div style="color:rgba(255,255,255,0.3);">جاري تحميل الأكاديميات...</div>
         </div>
 
-        <!-- ===== المحتوى ===== -->
         <div id="pageContent" style="display:none;">
 
-            <!-- ===== شريط البحث ===== -->
             <div class="card">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="🔍 بحث عن أكاديمية (الاسم، الرقم الاعتمادي، البطاقة الضريبية)..." oninput="filterAcademies()" />
-                    <span style="color:rgba(255,255,255,0.15);font-size:12px;display:flex;align-items:center;" id="countDisplay">0 أكاديمية</span>
-                </div>
-            </div>
-
-            <!-- ===== الجدول ===== -->
-            <div class="card">
-                <div class="card-title">
-                    <span>🏛️ قائمة الأكاديميات</span>
-                    <span class="badge" id="academyCount">0</span>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table" id="academiesTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>اسم الأكاديمية</th>
-                                <th>الرقم الاعتمادي</th>
-                                <th>البطاقة الضريبية</th>
-                                <th>الفروع</th>
-                                <th>الحالة</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="academiesBody">
-                            <!-- سيتم ملؤها بواسطة JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- حالة فارغة -->
-                <div class="empty-state" id="emptyState" style="display:none;">
-                    <div class="icon">🏛️</div>
-                    <div class="title">لا توجد أكاديميات</div>
-                    <div class="desc">قم بإضافة أكاديمية جديدة بالضغط على زر "إضافة أكاديمية"</div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- ===== الفوتر ===== -->
-        <footer class="footer">
-            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
-        </footer>
-
-    </div>
-
-    <!-- ============================================================
-    مودال الإضافة والتعديل
-    ============================================================ -->
-    <div class="modal-overlay" id="academyModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 id="modalTitle">إضافة أكاديمية جديدة</h2>
-                <button class="modal-close" onclick="closeModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <form id="academyForm" onsubmit="return saveAcademy(event)">
-
-                    <input type="hidden" id="editId" value="" />
-
-                    <div class="form-group">
-                        <label>🏛️ اسم الأكاديمية *</label>
-                        <input type="text" id="academyName" placeholder="أدخل اسم الأكاديمية" required />
+                <div class="stats-row" id="statsRow">
+                    <div class="stat-mini">
+                        <div class="num" id="statTotal">0</div>
+                        <div class="label">إجمالي الأكاديميات</div>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>🔑 الرقم الاعتمادي *</label>
-                            <input type="text" id="academyLicense" placeholder="مثال: NTI-2026-001" required />
-                        </div>
-                        <div class="form-group">
-                            <label>📋 البطاقة الضريبية *</label>
-                            <input type="text" id="academyTax" placeholder="مثال: 123-456-789" required />
-                        </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statActive">0</div>
+                        <div class="label">نشطة</div>
                     </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statBranches">0</div>
+                        <div class="label">إجمالي الفروع</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statGovernorates">0</div>
+                        <div class="label">محافظات</div>
+                    </div>
+                </div>
 
-                    <div class="form-group">
-                        <label>📍 الفرع الرئيسي - المحافظة *</label>
-                        <select id="branchGovernorate" required>
-                            <option value="">اختر المحافظة</option>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>اسم الأكاديمية</label>
+                        <input type="text" id="filterName" placeholder="بحث بالاسم..." oninput="applyFilters()" />
+                    </div>
+                    <div class="filter-group">
+                        <label>الرقم الاعتمادي</label>
+                        <input type="text" id="filterLicense" placeholder="بحث بالرقم..." oninput="applyFilters()" />
+                    </div>
+                    <div class="filter-group">
+                        <label>المحافظة</label>
+                        <select id="filterGovernorate" onchange="applyFilters()">
+                            <option value="">جميع المحافظات</option>
                             <option value="القاهرة">القاهرة</option>
                             <option value="الإسكندرية">الإسكندرية</option>
                             <option value="الجيزة">الجيزة</option>
@@ -910,18 +956,135 @@
                             <option value="العاشر من رمضان">العاشر من رمضان</option>
                         </select>
                     </div>
+                    <div class="filter-group" style="justify-content:flex-end;">
+                        <button class="btn btn-ghost btn-sm" onclick="resetFilters()" style="width:100%;">إعادة ضبط</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>قائمة الأكاديميات</span>
+                    <span class="badge" id="academyCount">0</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table" id="academiesTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>اسم الأكاديمية</th>
+                                <th>الرقم الاعتمادي</th>
+                                <th>الفروع</th>
+                                <th>المحافظات</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="academiesBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <div class="icon">🏛️</div>
+                    <div class="title">لا توجد أكاديميات</div>
+                    <div class="desc">قم بإضافة أكاديمية جديدة بالضغط على زر "إضافة أكاديمية"</div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+        </footer>
+
+    </div>
+
+    <!-- ===== مودال الإضافة والتعديل ===== -->
+    <div class="modal-overlay" id="academyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">إضافة أكاديمية جديدة</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="academyForm" onsubmit="return saveAcademy(event)">
+
+                    <input type="hidden" id="editId" value="" />
 
                     <div class="form-group">
-                        <label>📍 العنوان *</label>
-                        <input type="text" id="branchAddress" placeholder="أدخل عنوان الفرع الرئيسي" required />
+                        <label>اسم الأكاديمية *</label>
+                        <input type="text" id="academyName" placeholder="أدخل اسم الأكاديمية" required />
                     </div>
 
-                    <div class="form-group">
-                        <label>📞 رقم الهاتف *</label>
-                        <input type="text" id="branchPhone" placeholder="مثال: 0223456789" required />
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الرقم الاعتمادي *</label>
+                            <input type="text" id="academyLicense" placeholder="مثال: NTI-2026-001" required />
+                        </div>
+                        <div class="form-group">
+                            <label>البطاقة الضريبية *</label>
+                            <input type="text" id="academyTax" placeholder="مثال: 123-456-789" required />
+                        </div>
                     </div>
 
-                    <div style="color:rgba(255,255,255,0.15);font-size:11px;margin-top:4px;">
+                    <div class="branches-container">
+                        <div class="branch-header">
+                            <h4>الفروع</h4>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addBranchField()">
+                                + إضافة فرع
+                            </button>
+                        </div>
+                        <div id="branchesContainer">
+                            <div class="branch-item" id="branchTemplate">
+                                <div class="branch-main-badge">الفرع الرئيسي</div>
+                                <div class="branch-grid">
+                                    <div class="form-group">
+                                        <label>المحافظة *</label>
+                                        <select class="branch-governorate" required>
+                                            <option value="">اختر</option>
+                                            <option value="القاهرة">القاهرة</option>
+                                            <option value="الإسكندرية">الإسكندرية</option>
+                                            <option value="الجيزة">الجيزة</option>
+                                            <option value="القليوبية">القليوبية</option>
+                                            <option value="الشرقية">الشرقية</option>
+                                            <option value="الدقهلية">الدقهلية</option>
+                                            <option value="المنوفية">المنوفية</option>
+                                            <option value="الغربية">الغربية</option>
+                                            <option value="كفر الشيخ">كفر الشيخ</option>
+                                            <option value="دمياط">دمياط</option>
+                                            <option value="بورسعيد">بورسعيد</option>
+                                            <option value="الإسماعيلية">الإسماعيلية</option>
+                                            <option value="السويس">السويس</option>
+                                            <option value="شمال سيناء">شمال سيناء</option>
+                                            <option value="جنوب سيناء">جنوب سيناء</option>
+                                            <option value="البحر الأحمر">البحر الأحمر</option>
+                                            <option value="الأقصر">الأقصر</option>
+                                            <option value="أسوان">أسوان</option>
+                                            <option value="أسيوط">أسيوط</option>
+                                            <option value="سوهاج">سوهاج</option>
+                                            <option value="قنا">قنا</option>
+                                            <option value="المنيا">المنيا</option>
+                                            <option value="بني سويف">بني سويف</option>
+                                            <option value="الفيوم">الفيوم</option>
+                                            <option value="مطروح">مطروح</option>
+                                            <option value="الوادي الجديد">الوادي الجديد</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>العنوان *</label>
+                                        <input type="text" class="branch-address" placeholder="العنوان" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>رقم الهاتف *</label>
+                                        <input type="text" class="branch-phone" placeholder="رقم الهاتف" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="color:rgba(255,255,255,0.12);font-size:11px;margin-top:8px;">
                         * الحقول المطلوبة
                     </div>
                 </form>
@@ -929,37 +1092,35 @@
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal()">إلغاء</button>
                 <button class="btn btn-primary" onclick="document.getElementById('academyForm').dispatchEvent(new Event('submit'))">
-                    💾 حفظ
+                    حفظ
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================
-    مودال تأكيد الحذف
-    ============================================================ -->
+    <!-- ===== مودال تأكيد الحذف ===== -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal" style="max-width:450px;">
             <div class="modal-header">
-                <h2 style="color:#ef4444;">⚠️ تأكيد الحذف</h2>
+                <h2 style="color:#ef4444;">تأكيد الحذف</h2>
                 <button class="modal-close" onclick="closeDeleteModal()">✕</button>
             </div>
             <div class="modal-body">
                 <p style="color:rgba(255,255,255,0.6);margin-bottom:12px;">
                     هل أنت متأكد من حذف الأكاديمية التالية؟
                 </p>
-                <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;">
+                <div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:14px;">
                     <p style="font-weight:700;color:#fff;" id="deleteAcademyName">-</p>
                     <p style="font-size:12px;color:rgba(255,255,255,0.3);" id="deleteAcademyLicense">-</p>
                 </div>
                 <div class="form-group" style="margin-top:12px;">
-                    <label>📝 سبب الحذف *</label>
+                    <label>سبب الحذف *</label>
                     <input type="text" id="deleteReason" placeholder="أدخل سبب الحذف (للإدارة)" required />
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeDeleteModal()">إلغاء</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">🗑️ تأكيد الحذف</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">تأكيد الحذف</button>
             </div>
         </div>
     </div>
@@ -992,9 +1153,47 @@
         let currentUser = null;
         let userRole = null;
         let deleteTargetId = null;
+        let branchCount = 1;
+
+        let settings = {
+            unionName: 'نقابة تكنولوجيا المعلومات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
+            logoUrl: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة'
+        };
 
         // ============================================================
-        // 3. المصادقة والتحقق من الصلاحية
+        // 3. جلب الإعدادات
+        // ============================================================
+        function loadSettings() {
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.unionName) settings.unionName = data.unionName;
+                        if (data.committeeName) settings.committeeName = data.committeeName;
+                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                        if (data.footerText) settings.footerText = data.footerText;
+                        applySettings();
+                    }
+                })
+                .catch(function() {});
+        }
+
+        function applySettings() {
+            document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
+            document.getElementById('footerText').textContent = settings.footerText;
+            if (settings.logoUrl) {
+                const logo = document.getElementById('logoBox');
+                logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                logo.style.backgroundSize = 'cover';
+                logo.style.backgroundPosition = 'center';
+                logo.textContent = '';
+            }
+        }
+
+        // ============================================================
+        // 4. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1022,7 +1221,7 @@
         });
 
         // ============================================================
-        // 4. تحميل الأكاديميات
+        // 5. تحميل الأكاديميات (بدون orderBy لتجنب مشكلة الـ index)
         // ============================================================
         function loadAcademies() {
             document.getElementById('pageLoader').classList.add('show');
@@ -1030,7 +1229,6 @@
 
             db.collection('academies')
                 .where('isDeleted', '==', false)
-                .orderBy('name', 'asc')
                 .get()
                 .then(function(snapshot) {
                     academies = [];
@@ -1040,19 +1238,49 @@
                         academies.push(data);
                     });
 
+                    // ترتيب يدوي حسب الاسم
+                    academies.sort(function(a, b) {
+                        return (a.name || '').localeCompare(b.name || '');
+                    });
+
                     document.getElementById('pageLoader').classList.remove('show');
                     document.getElementById('pageContent').style.display = 'block';
+                    updateStats();
                     renderAcademies();
                 })
                 .catch(function(err) {
                     document.getElementById('pageLoader').classList.remove('show');
                     document.getElementById('pageContent').style.display = 'block';
-                    showMsg('❌ حدث خطأ في تحميل الأكاديميات: ' + err.message, 'error');
+                    showMsg('حدث خطأ في تحميل الأكاديميات: ' + err.message, 'error');
                 });
         }
 
         // ============================================================
-        // 5. عرض الأكاديميات
+        // 6. تحديث الإحصائيات
+        // ============================================================
+        function updateStats() {
+            const total = academies.length;
+            const active = academies.filter(function(a) { return !a.isDeleted; }).length;
+
+            let branches = 0;
+            const govs = new Set();
+            academies.forEach(function(a) {
+                if (a.branches) {
+                    branches += a.branches.length;
+                    a.branches.forEach(function(b) {
+                        if (b.governorate) govs.add(b.governorate);
+                    });
+                }
+            });
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statActive').textContent = active;
+            document.getElementById('statBranches').textContent = branches;
+            document.getElementById('statGovernorates').textContent = govs.size;
+        }
+
+        // ============================================================
+        // 7. عرض الأكاديميات
         // ============================================================
         function renderAcademies(filteredData) {
             const data = filteredData || academies;
@@ -1060,7 +1288,6 @@
             const emptyState = document.getElementById('emptyState');
 
             document.getElementById('academyCount').textContent = data.length;
-            document.getElementById('countDisplay').textContent = data.length + ' أكاديمية';
 
             if (data.length === 0) {
                 tbody.innerHTML = '';
@@ -1072,95 +1299,239 @@
 
             tbody.innerHTML = data.map(function(academy, index) {
                 const branchCount = academy.branches ? academy.branches.length : 0;
+                const govs = academy.branches ? academy.branches.map(function(b) { return b.governorate; }).filter(
+                    function(g) { return g; }) : [];
+                const govsStr = govs.length > 0 ? govs.join('، ') : '-';
                 const statusHtml = academy.isDeleted ?
                     '<span class="status-badge inactive">محذوفة</span>' :
                     '<span class="status-badge active">نشطة</span>';
 
                 return `
-                            <tr>
-                                <td data-label="#"><span style="color:rgba(255,255,255,0.2);font-weight:600;">${index + 1}</span></td>
-                                <td data-label="اسم الأكاديمية">
-                                    <div class="academy-name">${academy.name || '-'}</div>
-                                </td>
-                                <td data-label="الرقم الاعتمادي">
-                                    <span class="academy-license">${academy.licenseNumber || '-'}</span>
-                                </td>
-                                <td data-label="البطاقة الضريبية">${academy.taxNumber || '-'}</td>
-                                <td data-label="الفروع">${branchCount}</td>
-                                <td data-label="الحالة">${statusHtml}</td>
-                                <td data-label="الإجراءات">
-                                    <div class="actions">
-                                        <button class="btn btn-primary btn-sm" onclick="editAcademy('${academy.id}')">✏️ تعديل</button>
-                                        <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">🗑️ حذف</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `;
+                    <tr>
+                        <td data-label="#"><span style="color:rgba(255,255,255,0.2);font-weight:600;">${index + 1}</span></td>
+                        <td data-label="اسم الأكاديمية">
+                            <div class="academy-name">${academy.name || '-'}</div>
+                            <div style="font-size:11px;color:rgba(255,255,255,0.2);">${academy.licenseNumber || '-'}</div>
+                        </td>
+                        <td data-label="الرقم الاعتمادي">
+                            <span class="academy-license">${academy.licenseNumber || '-'}</span>
+                        </td>
+                        <td data-label="الفروع">${branchCount}</td>
+                        <td data-label="المحافظات" style="font-size:12px;">${govsStr}</td>
+                        <td data-label="الحالة">${statusHtml}</td>
+                        <td data-label="الإجراءات">
+                            <div class="actions">
+                                <button class="btn btn-primary btn-sm" onclick="editAcademy('${academy.id}')">تعديل</button>
+                                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">حذف</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
             }).join('');
         }
 
         // ============================================================
-        // 6. فلترة الأكاديميات
+        // 8. الفلاتر
         // ============================================================
-        function filterAcademies() {
-            const search = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (!search) {
-                renderAcademies(academies);
-                return;
-            }
+        function applyFilters() {
+            const nameFilter = document.getElementById('filterName').value.trim().toLowerCase();
+            const licenseFilter = document.getElementById('filterLicense').value.trim().toLowerCase();
+            const govFilter = document.getElementById('filterGovernorate').value;
 
             const filtered = academies.filter(function(academy) {
-                return (academy.name || '').toLowerCase().includes(search) ||
-                    (academy.licenseNumber || '').toLowerCase().includes(search) ||
-                    (academy.taxNumber || '').toLowerCase().includes(search);
+                let match = true;
+
+                if (nameFilter) {
+                    match = match && (academy.name || '').toLowerCase().includes(nameFilter);
+                }
+
+                if (licenseFilter) {
+                    match = match && (academy.licenseNumber || '').toLowerCase().includes(licenseFilter);
+                }
+
+                if (govFilter) {
+                    let hasGov = false;
+                    if (academy.branches) {
+                        for (var i = 0; i < academy.branches.length; i++) {
+                            if (academy.branches[i].governorate === govFilter) {
+                                hasGov = true;
+                                break;
+                            }
+                        }
+                    }
+                    match = match && hasGov;
+                }
+
+                return match;
             });
 
             renderAcademies(filtered);
         }
 
+        function resetFilters() {
+            document.getElementById('filterName').value = '';
+            document.getElementById('filterLicense').value = '';
+            document.getElementById('filterGovernorate').value = '';
+            renderAcademies();
+        }
+
         // ============================================================
-        // 7. فتح مودال الإضافة
+        // 9. إدارة الفروع في المودال
+        // ============================================================
+        function addBranchField() {
+            const container = document.getElementById('branchesContainer');
+            const template = document.getElementById('branchTemplate');
+
+            const newBranch = template.cloneNode(true);
+            newBranch.id = 'branch_' + branchCount;
+            newBranch.querySelector('.branch-main-badge').textContent = 'فرع ' + branchCount;
+
+            // إضافة زر حذف
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'branch-remove';
+            removeBtn.textContent = '✕';
+            removeBtn.onclick = function() { removeBranch(newBranch.id); };
+            newBranch.appendChild(removeBtn);
+
+            // إعادة تعيين القيم
+            newBranch.querySelectorAll('input').forEach(function(input) { input.value = ''; });
+            newBranch.querySelectorAll('select').forEach(function(select) { select.value = ''; });
+
+            container.appendChild(newBranch);
+            branchCount++;
+        }
+
+        function removeBranch(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const branches = document.querySelectorAll('.branch-item');
+                if (branches.length > 1) {
+                    element.remove();
+                } else {
+                    showMsg('يجب أن يكون هناك فرع رئيسي واحد على الأقل', 'info');
+                }
+            }
+        }
+
+        function getBranchesData() {
+            const items = document.querySelectorAll('.branch-item');
+            const branches = [];
+
+            items.forEach(function(item, index) {
+                const gov = item.querySelector('.branch-governorate').value;
+                const address = item.querySelector('.branch-address').value.trim();
+                const phone = item.querySelector('.branch-phone').value.trim();
+
+                if (gov && address && phone) {
+                    branches.push({
+                        branchId: 'branch_' + (index + 1),
+                        governorate: gov,
+                        address: address,
+                        phone: phone,
+                        isMainBranch: index === 0
+                    });
+                }
+            });
+
+            return branches;
+        }
+
+        // ============================================================
+        // 10. فتح مودال الإضافة
         // ============================================================
         function openAddModal() {
-            document.getElementById('modalTitle').textContent = '➕ إضافة أكاديمية جديدة';
+            document.getElementById('modalTitle').textContent = 'إضافة أكاديمية جديدة';
             document.getElementById('editId').value = '';
             document.getElementById('academyForm').reset();
+
+            // إعادة تعيين الفروع إلى فرع رئيسي واحد
+            const container = document.getElementById('branchesContainer');
+            container.innerHTML = '';
+            const template = document.getElementById('branchTemplate');
+            const newBranch = template.cloneNode(true);
+            newBranch.id = 'branch_1';
+            newBranch.querySelector('.branch-main-badge').textContent = 'الفرع الرئيسي';
+            newBranch.querySelectorAll('input').forEach(function(input) { input.value = ''; });
+            newBranch.querySelectorAll('select').forEach(function(select) { select.value = ''; });
+            // إزالة زر الحذف من الفرع الرئيسي
+            const removeBtn = newBranch.querySelector('.branch-remove');
+            if (removeBtn) removeBtn.remove();
+            container.appendChild(newBranch);
+            branchCount = 2;
+
             document.getElementById('academyModal').classList.add('show');
         }
 
         // ============================================================
-        // 8. تعديل أكاديمية
+        // 11. تعديل أكاديمية
         // ============================================================
         function editAcademy(id) {
             const academy = academies.find(function(a) { return a.id === id; });
             if (!academy) {
-                showMsg('❌ الأكاديمية غير موجودة', 'error');
+                showMsg('الأكاديمية غير موجودة', 'error');
                 return;
             }
 
-            document.getElementById('modalTitle').textContent = '✏️ تعديل أكاديمية';
+            document.getElementById('modalTitle').textContent = 'تعديل أكاديمية';
             document.getElementById('editId').value = id;
             document.getElementById('academyName').value = academy.name || '';
             document.getElementById('academyLicense').value = academy.licenseNumber || '';
             document.getElementById('academyTax').value = academy.taxNumber || '';
 
-            // تعبئة الفرع الرئيسي إن وجد
-            const mainBranch = academy.branches ? academy.branches.find(function(b) { return b.isMainBranch; }) : null;
-            if (mainBranch) {
-                document.getElementById('branchGovernorate').value = mainBranch.governorate || '';
-                document.getElementById('branchAddress').value = mainBranch.address || '';
-                document.getElementById('branchPhone').value = mainBranch.phone || '';
+            // إعادة تعيين الفروع
+            const container = document.getElementById('branchesContainer');
+            container.innerHTML = '';
+
+            const branches = academy.branches || [];
+            if (branches.length === 0) {
+                // إضافة فرع افتراضي
+                const template = document.getElementById('branchTemplate');
+                const newBranch = template.cloneNode(true);
+                newBranch.id = 'branch_1';
+                newBranch.querySelector('.branch-main-badge').textContent = 'الفرع الرئيسي';
+                newBranch.querySelectorAll('input').forEach(function(input) { input.value = ''; });
+                newBranch.querySelectorAll('select').forEach(function(select) { select.value = ''; });
+                const removeBtn = newBranch.querySelector('.branch-remove');
+                if (removeBtn) removeBtn.remove();
+                container.appendChild(newBranch);
+                branchCount = 2;
             } else {
-                document.getElementById('branchGovernorate').value = '';
-                document.getElementById('branchAddress').value = '';
-                document.getElementById('branchPhone').value = '';
+                branches.forEach(function(branch, index) {
+                    const template = document.getElementById('branchTemplate');
+                    const newBranch = template.cloneNode(true);
+                    const id = 'branch_' + (index + 1);
+                    newBranch.id = id;
+                    newBranch.querySelector('.branch-main-badge').textContent = branch.isMainBranch ?
+                        'الفرع الرئيسي' :
+                        'فرع ' + (index + 1);
+
+                    newBranch.querySelector('.branch-governorate').value = branch.governorate || '';
+                    newBranch.querySelector('.branch-address').value = branch.address || '';
+                    newBranch.querySelector('.branch-phone').value = branch.phone || '';
+
+                    if (!branch.isMainBranch) {
+                        const removeBtn = document.createElement('button');
+                        removeBtn.type = 'button';
+                        removeBtn.className = 'branch-remove';
+                        removeBtn.textContent = '✕';
+                        removeBtn.onclick = function() { removeBranch(id); };
+                        newBranch.appendChild(removeBtn);
+                    } else {
+                        const removeBtn = newBranch.querySelector('.branch-remove');
+                        if (removeBtn) removeBtn.remove();
+                    }
+
+                    container.appendChild(newBranch);
+                    branchCount = branches.length + 1;
+                });
             }
 
             document.getElementById('academyModal').classList.add('show');
         }
 
         // ============================================================
-        // 9. حفظ الأكاديمية
+        // 12. حفظ الأكاديمية
         // ============================================================
         function saveAcademy(e) {
             e.preventDefault();
@@ -1169,28 +1540,23 @@
             const name = document.getElementById('academyName').value.trim();
             const licenseNumber = document.getElementById('academyLicense').value.trim();
             const taxNumber = document.getElementById('academyTax').value.trim();
-            const governorate = document.getElementById('branchGovernorate').value;
-            const address = document.getElementById('branchAddress').value.trim();
-            const phone = document.getElementById('branchPhone').value.trim();
 
-            if (!name || !licenseNumber || !taxNumber || !governorate || !address || !phone) {
-                showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'info');
+            if (!name || !licenseNumber || !taxNumber) {
+                showMsg('الرجاء ملء جميع الحقول المطلوبة', 'info');
                 return false;
             }
 
-            const branchData = {
-                branchId: 'main',
-                governorate: governorate,
-                address: address,
-                phone: phone,
-                isMainBranch: true
-            };
+            const branches = getBranchesData();
+            if (branches.length === 0) {
+                showMsg('يجب إضافة فرع واحد على الأقل', 'info');
+                return false;
+            }
 
             const academyData = {
                 name: name,
                 licenseNumber: licenseNumber,
                 taxNumber: taxNumber,
-                branches: [branchData],
+                branches: branches,
                 updatedAt: new Date(),
                 updatedBy: currentUser ? currentUser.uid : 'system'
             };
@@ -1199,10 +1565,8 @@
             let actionType;
 
             if (editId) {
-                // تعديل
                 savePromise = db.collection('academies').doc(editId).update(academyData);
                 actionType = 'update';
-                // تسجيل النشاط
                 db.collection('activities').add({
                     userId: currentUser ? currentUser.uid : 'system',
                     userEmail: currentUser ? currentUser.email : 'system',
@@ -1215,13 +1579,11 @@
                     userAgent: navigator.userAgent
                 }).catch(function() {});
             } else {
-                // إضافة
                 academyData.createdAt = new Date();
                 academyData.createdBy = currentUser ? currentUser.uid : 'system';
                 academyData.isDeleted = false;
                 savePromise = db.collection('academies').add(academyData);
                 actionType = 'create';
-                // تسجيل النشاط
                 db.collection('activities').add({
                     userId: currentUser ? currentUser.uid : 'system',
                     userEmail: currentUser ? currentUser.email : 'system',
@@ -1237,22 +1599,22 @@
 
             savePromise.then(function() {
                 closeModal();
-                showMsg('✅ تم ' + (actionType === 'update' ? 'تحديث' : 'إضافة') + ' الأكاديمية بنجاح', 'success');
+                showMsg('تم ' + (actionType === 'update' ? 'تحديث' : 'إضافة') + ' الأكاديمية بنجاح', 'success');
                 loadAcademies();
             }).catch(function(err) {
-                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                showMsg('حدث خطأ: ' + err.message, 'error');
             });
 
             return false;
         }
 
         // ============================================================
-        // 10. مودال الحذف
+        // 13. مودال الحذف
         // ============================================================
         function openDeleteModal(id) {
             const academy = academies.find(function(a) { return a.id === id; });
             if (!academy) {
-                showMsg('❌ الأكاديمية غير موجودة', 'error');
+                showMsg('الأكاديمية غير موجودة', 'error');
                 return;
             }
 
@@ -1271,22 +1633,21 @@
         function confirmDelete() {
             const reason = document.getElementById('deleteReason').value.trim();
             if (!reason) {
-                showMsg('⚠️ الرجاء إدخال سبب الحذف', 'info');
+                showMsg('الرجاء إدخال سبب الحذف', 'info');
                 return;
             }
 
             if (!deleteTargetId) {
-                showMsg('❌ لم يتم تحديد الأكاديمية', 'error');
+                showMsg('لم يتم تحديد الأكاديمية', 'error');
                 return;
             }
 
             const academy = academies.find(function(a) { return a.id === deleteTargetId; });
             if (!academy) {
-                showMsg('❌ الأكاديمية غير موجودة', 'error');
+                showMsg('الأكاديمية غير موجودة', 'error');
                 return;
             }
 
-            // حذف (Soft Delete)
             db.collection('academies').doc(deleteTargetId).update({
                 isDeleted: true,
                 deletedAt: new Date(),
@@ -1294,8 +1655,7 @@
                 deletionReason: reason
             }).then(function() {
                 closeDeleteModal();
-                showMsg('✅ تم حذف الأكاديمية بنجاح', 'success');
-                // تسجيل النشاط
+                showMsg('تم حذف الأكاديمية بنجاح', 'success');
                 db.collection('activities').add({
                     userId: currentUser ? currentUser.uid : 'system',
                     userEmail: currentUser ? currentUser.email : 'system',
@@ -1303,28 +1663,24 @@
                     userRole: userRole || 'admin',
                     type: 'delete_academy',
                     description: 'حذف أكاديمية: ' + (academy.name || ''),
-                    details: {
-                        reason: reason,
-                        academyId: deleteTargetId
-                    },
+                    details: { reason: reason, academyId: deleteTargetId },
                     timestamp: new Date(),
                     ipAddress: 'auto',
                     userAgent: navigator.userAgent
                 }).catch(function() {});
                 loadAcademies();
             }).catch(function(err) {
-                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                showMsg('حدث خطأ: ' + err.message, 'error');
             });
         }
 
         // ============================================================
-        // 11. إغلاق المودالات
+        // 14. إغلاق المودالات
         // ============================================================
         function closeModal() {
             document.getElementById('academyModal').classList.remove('show');
         }
 
-        // إغلاق عند النقر على الخلفية
         document.getElementById('academyModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
@@ -1334,21 +1690,24 @@
         });
 
         // ============================================================
-        // 12. عرض الرسائل
+        // 15. عرض الرسائل
         // ============================================================
-        function showMsg(msg, type = 'info') {
+        function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
             el.textContent = msg;
             el.className = 'msg show ' + type;
-            setTimeout(function() {
-                el.className = 'msg';
-            }, 4000);
+            setTimeout(function() { el.className = 'msg'; }, 4000);
         }
 
         // ============================================================
-        // 13. تحميل الصفحة
+        // 16. تحميل الصفحة
         // ============================================================
-        console.log('✅ إدارة الأكاديميات - نقابة تكنولوجيا المعلومات');
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            console.log('✅ إدارة الأكاديميات - نقابة تكنولوجيا المعلومات');
+            console.log('🔒 نظام أمني متطور');
+            console.log('🧠 محسّن بالذكاء الاصطناعي');
+        });
     </script>
 
 </body>
