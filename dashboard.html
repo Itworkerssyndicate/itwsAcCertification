@@ -13,14 +13,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
 
-    <!-- Chart.js للرسوم البيانية -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
 
     <style>
-        /* ============================================================
-           التصميم الكامل للوحة التحكم
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -29,32 +26,27 @@
 
         body {
             font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #0a0e1a;
+            background: #050a18;
             color: #ffffff;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
         }
 
-        /* ===== خلفية ===== */
         .dashboard-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.03) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
             animation: bgPulse 15s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-            100% {
-                transform: scale(1.04) rotate(1.5deg);
-            }
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(1.04) rotate(1.5deg); opacity: 0.9; }
         }
 
         .dashboard-bg::before {
@@ -62,11 +54,10 @@
             position: absolute;
             inset: 0;
             background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
-        /* ===== جزيئات ===== */
         .particles-container {
             position: fixed;
             inset: 0;
@@ -78,81 +69,106 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(100, 200, 255, 0.04);
-            animation: particleFloat 25s infinite ease-in-out;
+            animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) {
-            width: 120px;
-            height: 120px;
-            top: 5%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-        .particle:nth-child(2) {
-            width: 180px;
-            height: 180px;
-            bottom: 10%;
-            right: 5%;
-            animation-delay: 4s;
-        }
-        .particle:nth-child(3) {
-            width: 90px;
-            height: 90px;
-            top: 50%;
-            left: 50%;
-            animation-delay: 2s;
-        }
-        .particle:nth-child(4) {
-            width: 200px;
-            height: 200px;
-            bottom: 30%;
-            left: 10%;
-            animation-delay: 6s;
-        }
-        .particle:nth-child(5) {
-            width: 70px;
-            height: 70px;
-            top: 20%;
-            right: 25%;
-            animation-delay: 3s;
-        }
-        .particle:nth-child(6) {
-            width: 140px;
-            height: 140px;
-            top: 70%;
-            right: 45%;
-            animation-delay: 5s;
-        }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+        .particle:nth-child(9) { width: 3px; height: 3px; top: 10%; left: 90%; animation-delay: 1.5s; background: rgba(0, 255, 150, 0.5); }
+        .particle:nth-child(10) { width: 8px; height: 8px; top: 45%; left: 55%; animation-delay: 3.5s; background: rgba(50, 100, 255, 0.3); }
+        .particle:nth-child(11) { width: 5px; height: 5px; top: 80%; left: 80%; animation-delay: 0.8s; background: rgba(255, 50, 150, 0.3); }
+        .particle:nth-child(12) { width: 7px; height: 7px; top: 35%; left: 45%; animation-delay: 4.8s; background: rgba(0, 200, 255, 0.4); }
 
         @keyframes particleFloat {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.1;
-            }
-            50% {
-                transform: translate(30px, -50px) scale(1.2);
-                opacity: 0.4;
-            }
-            100% {
-                transform: translate(-10px, 0) scale(1);
-                opacity: 0.1;
-            }
+            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+            20% { transform: translate(40px, -30px) scale(1.3); opacity: 0.6; }
+            40% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.3; }
+            60% { transform: translate(50px, -20px) scale(1.4); opacity: 0.7; }
+            80% { transform: translate(-30px, -80px) scale(0.8); opacity: 0.4; }
+            100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
-        /* ===== شبكة ===== */
         .grid-lines {
             position: fixed;
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
+            animation: gridMove 25s linear infinite;
         }
 
-        /* ===== الحاوية ===== */
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(30px) translateX(30px); }
+        }
+
+        .orbital-ring {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 100, 255, 0.05);
+            animation: ringSpin 40s linear infinite;
+        }
+
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
+        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 18s ease-in-out infinite alternate;
+        }
+
+        .glow-orb:nth-child(1) {
+            width: 450px;
+            height: 450px;
+            top: -150px;
+            right: -150px;
+            background: rgba(0, 100, 255, 0.08);
+        }
+
+        .glow-orb:nth-child(2) {
+            width: 550px;
+            height: 550px;
+            bottom: -200px;
+            left: -200px;
+            background: rgba(138, 43, 226, 0.06);
+            animation-delay: 6s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
+        }
+
         .dashboard-container {
             position: relative;
             z-index: 10;
@@ -161,57 +177,72 @@
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 14px 24px;
+            border-radius: 24px;
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            flex-wrap: wrap;
-            gap: 12px;
+            animation: headerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes headerFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .logo-box {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 18px;
             color: #fff;
             cursor: pointer;
             transition: all 0.3s ease;
+            animation: logoSpin 20s linear infinite;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo-box:hover {
+            animation-duration: 3s;
+            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
         }
 
         .header-title h1 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             color: #fff;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-title p {
-            font-size: 11px;
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.35);
         }
 
@@ -223,8 +254,8 @@
         }
 
         .btn {
-            padding: 8px 18px;
-            border-radius: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
             border: none;
             font-weight: 700;
             font-size: 13px;
@@ -235,76 +266,35 @@
             gap: 8px;
             text-decoration: none;
             white-space: nowrap;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
 
         .btn-outline {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.12);
             color: #fff;
         }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
 
         .btn-success {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: linear-gradient(135deg, #10b981, #22c55e);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
         }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
 
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
-        }
+        .btn-sm { padding: 5px 14px; font-size: 12px; }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.35);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
-        }
-
-        .btn-sm {
-            padding: 5px 12px;
-            font-size: 11px;
-        }
-
-        .btn-lg {
-            padding: 14px 28px;
-            font-size: 16px;
-        }
-
-        .btn-block {
-            width: 100%;
-            justify-content: center;
-        }
-
-        /* ===== بطاقات الإحصائيات ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 16px;
             margin-bottom: 24px;
         }
@@ -312,8 +302,8 @@
         .stat-card {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 18px 20px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -326,7 +316,7 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(0, 85, 230, 0.04), transparent 50%);
+            background: radial-gradient(circle at 30% 20%, rgba(0, 100, 255, 0.04), transparent 50%);
             pointer-events: none;
         }
 
@@ -334,47 +324,21 @@
             background: rgba(255, 255, 255, 0.06);
             transform: translateY(-3px);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 100, 255, 0.15);
         }
 
-        .stat-card .stat-icon {
-            font-size: 28px;
-            margin-bottom: 6px;
-        }
-
+        .stat-card .stat-icon { font-size: 26px; margin-bottom: 4px; }
         .stat-card .stat-number {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #80b3ff);
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             line-height: 1.2;
         }
+        .stat-card .stat-label { font-size: 13px; color: rgba(255, 255, 255, 0.35); font-weight: 300; }
 
-        .stat-card .stat-label {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.35);
-            font-weight: 300;
-        }
-
-        .stat-card .stat-change {
-            font-size: 11px;
-            margin-top: 4px;
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-
-        .stat-card .stat-change.up {
-            background: rgba(34, 197, 94, 0.12);
-            color: #22c55e;
-        }
-
-        .stat-card .stat-change.down {
-            background: rgba(239, 68, 68, 0.12);
-            color: #ef4444;
-        }
-
-        /* ===== شبكة المحتوى ===== */
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -383,27 +347,29 @@
         }
 
         @media (max-width: 992px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
+            .content-grid { grid-template-columns: 1fr; }
         }
 
-        /* ===== البطاقات العامة ===== */
         .card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 20px 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 100, 255, 0.10);
         }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -411,32 +377,21 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 85, 230, 0.15);
-            color: #0055e6;
-            padding: 2px 10px;
+            background: rgba(0, 100, 255, 0.15);
+            color: #60a5fa;
+            padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
         }
 
-        /* ===== قائمة النشاطات ===== */
         .activity-list {
-            max-height: 320px;
+            max-height: 330px;
             overflow-y: auto;
         }
 
-        .activity-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .activity-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 4px;
-        }
-
-        .activity-list::-webkit-scrollbar-thumb {
-            background: rgba(0, 85, 230, 0.3);
-            border-radius: 4px;
-        }
+        .activity-list::-webkit-scrollbar { width: 4px; }
+        .activity-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
+        .activity-list::-webkit-scrollbar-thumb { background: rgba(0, 100, 255, 0.3); border-radius: 4px; }
 
         .activity-item {
             display: flex;
@@ -457,7 +412,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(0, 85, 230, 0.2), rgba(100, 50, 255, 0.2));
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.15), rgba(138, 43, 226, 0.15));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -467,23 +422,9 @@
             flex-shrink: 0;
         }
 
-        .activity-item .info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .activity-item .info .text {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.8);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .activity-item .info .time {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.2);
-        }
+        .activity-item .info { flex: 1; min-width: 0; }
+        .activity-item .info .text { font-size: 13px; color: rgba(255, 255, 255, 0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .activity-item .info .time { font-size: 10px; color: rgba(255, 255, 255, 0.2); }
 
         .activity-item .type-badge {
             font-size: 9px;
@@ -493,39 +434,17 @@
             flex-shrink: 0;
         }
 
-        .type-badge.login {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
-        }
-        .type-badge.logout {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-        .type-badge.create {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-        }
-        .type-badge.update {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-        }
-        .type-badge.delete {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-        .type-badge.search {
-            background: rgba(139, 92, 246, 0.15);
-            color: #8b5cf6;
-        }
-        .type-badge.export {
-            background: rgba(236, 72, 153, 0.15);
-            color: #ec4899;
-        }
+        .type-badge.login { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .type-badge.logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .type-badge.create { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .type-badge.update { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .type-badge.delete { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .type-badge.search { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .type-badge.export { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
 
-        /* ===== روابط سريعة ===== */
         .quick-actions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 10px;
         }
 
@@ -533,7 +452,7 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.04);
             border-radius: 14px;
-            padding: 14px 10px;
+            padding: 12px 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -544,27 +463,17 @@
         .quick-action:hover {
             background: rgba(255, 255, 255, 0.06);
             transform: translateY(-3px);
-            border-color: rgba(0, 85, 230, 0.2);
+            border-color: rgba(0, 100, 255, 0.2);
         }
 
-        .quick-action .icon {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
+        .quick-action .icon { font-size: 24px; margin-bottom: 4px; }
+        .quick-action .label { font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.5); }
 
-        .quick-action .label {
-            font-size: 11px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* ===== حاوية الرسم البياني ===== */
         .chart-container {
             position: relative;
             height: 200px;
         }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: 12px;
@@ -574,62 +483,29 @@
             font-size: 14px;
         }
 
-        .msg.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .msg.error {
-            background: rgba(239, 68, 68, 0.10);
-            border: 1px solid rgba(239, 68, 68, 0.20);
-            color: #ef4444;
-        }
-
-        .msg.success {
-            background: rgba(34, 197, 94, 0.10);
-            border: 1px solid rgba(34, 197, 94, 0.20);
-            color: #22c55e;
-        }
+        .msg.show { display: block; animation: fadeIn 0.3s ease; }
+        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
+        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
 
         @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== تحميل ===== */
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .loader.show {
-            display: block;
-        }
-
+        .loader { display: none; text-align: center; padding: 30px 0; }
+        .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
             border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0055e6;
+            border-top-color: #0066ff;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== الفوتر ===== */
         .footer {
             text-align: center;
             padding: 20px 0 10px;
@@ -646,53 +522,62 @@
                 align-items: stretch;
                 gap: 10px;
                 padding: 12px 16px;
+                border-radius: 20px;
             }
-            .header-right {
-                justify-content: center;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .stat-card .stat-number {
-                font-size: 24px;
-            }
-            .quick-actions {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .dashboard-container {
-                padding: 10px;
-            }
-            .card {
-                padding: 14px 16px;
-            }
+            .header-right { justify-content: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-card .stat-number { font-size: 24px; }
+            .quick-actions { grid-template-columns: repeat(3, 1fr); }
+            .dashboard-container { padding: 10px; }
+            .card { padding: 14px 16px; }
+            .glow-orb { display: none; }
+            .ring { display: none; }
+            .header-left { justify-content: center; }
+            .header-title { text-align: center; }
         }
 
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .stat-card {
-                padding: 14px;
-            }
-            .stat-card .stat-number {
-                font-size: 20px;
-            }
-            .quick-actions {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .header-title h1 {
-                font-size: 15px;
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .stat-card { padding: 12px 14px; }
+            .stat-card .stat-number { font-size: 20px; }
+            .quick-actions { grid-template-columns: repeat(2, 1fr); }
+            .header-title h1 { font-size: 15px; }
+            .btn { padding: 6px 14px; font-size: 11px; }
+            .logo-box { width: 36px; height: 36px; font-size: 14px; }
+            .card-title { font-size: 14px; }
+            .activity-item .info .text { font-size: 12px; }
+            .stat-card .stat-icon { font-size: 20px; }
+        }
+
+        @media print {
+            * { display: none !important; }
+            body::before {
+                content: 'لا يمكن طباعة هذه الصفحة';
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                inset: 0;
+                background: #050a18;
+                color: #ef4444;
+                font-size: 28px;
+                z-index: 999999;
+                font-family: 'Segoe UI', 'Tahoma', sans-serif;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== خلفية ===== -->
     <div class="dashboard-bg"></div>
 
-    <!-- ===== جزيئات ===== -->
     <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
@@ -701,76 +586,74 @@
         <div class="particle"></div>
     </div>
 
-    <!-- ===== شبكة ===== -->
     <div class="grid-lines"></div>
 
-    <!-- ===== الحاوية ===== -->
+    <div class="orbital-ring">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
     <div class="dashboard-container">
 
-        <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" onclick="window.location.href='home.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'">ن.ت</div>
                 <div class="header-title">
                     <h1>لوحة التحكم</h1>
-                    <p id="userDisplay">مرحباً بك، أدمن</p>
+                    <p id="userDisplay">مرحباً بك</p>
                 </div>
             </div>
             <div class="header-right">
-                <span id="roleBadge" style="font-size:11px;padding:4px 14px;border-radius:20px;background:rgba(0,85,230,0.12);color:#0055e6;font-weight:600;">أدمن</span>
-                <a href="home.html" class="btn btn-outline btn-sm">🏠 الرئيسية</a>
-                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">⚙️ الإعدادات</a>
-                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">🚪 تسجيل الخروج</a>
+                <span id="roleBadge" style="font-size:11px;padding:4px 14px;border-radius:20px;background:rgba(0,100,255,0.12);color:#60a5fa;font-weight:600;">أدمن</span>
+                <a href="home.html" class="btn btn-outline btn-sm">الرئيسية</a>
+                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">الإعدادات</a>
+                <a href="users.html" class="btn btn-outline btn-sm" id="usersBtn" style="display:none;">المستخدمين</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
             </div>
         </header>
 
-        <!-- ===== رسائل ===== -->
         <div class="msg" id="dashboardMsg"></div>
 
-        <!-- ===== تحميل ===== -->
         <div class="loader" id="dashboardLoader">
             <div class="spinner"></div>
             <div style="color:rgba(255,255,255,0.3);">جاري تحميل البيانات...</div>
         </div>
 
-        <!-- ===== المحتوى ===== -->
         <div id="dashboardContent" style="display:none;">
 
-            <!-- ===== الإحصائيات ===== -->
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card">
                     <div class="stat-icon">📜</div>
                     <div class="stat-number" id="statCertificates">0</div>
                     <div class="stat-label">الشهادات الموثقة</div>
-                    <div class="stat-change up" id="statCertChange">+0%</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🏛️</div>
                     <div class="stat-number" id="statAcademies">0</div>
                     <div class="stat-label">الأكاديميات المعتمدة</div>
-                    <div class="stat-change up" id="statAcadChange">+0%</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">👤</div>
                     <div class="stat-number" id="statUsers">0</div>
                     <div class="stat-label">المستخدمين النشطين</div>
-                    <div class="stat-change up" id="statUsersChange">+0%</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🔍</div>
                     <div class="stat-number" id="statSearches">0</div>
                     <div class="stat-label">عمليات البحث</div>
-                    <div class="stat-change up" id="statSearchChange">+0%</div>
                 </div>
             </div>
 
-            <!-- ===== شبكة المحتوى ===== -->
             <div class="content-grid">
 
-                <!-- ===== النشاطات الأخيرة ===== -->
                 <div class="card">
                     <div class="card-title">
-                        📊 آخر النشاطات
+                        آخر النشاطات
                         <span class="badge">مباشر</span>
                     </div>
                     <div class="activity-list" id="activityList">
@@ -779,16 +662,14 @@
                         </div>
                     </div>
                     <div style="margin-top:12px;text-align:left;">
-                        <a href="activities.html" class="btn btn-outline btn-sm">عرض الكل →</a>
+                        <a href="activities.html" class="btn btn-outline btn-sm">عرض الكل</a>
                     </div>
                 </div>
 
-                <!-- ===== روابط سريعة + الرسم البياني ===== -->
                 <div style="display:flex;flex-direction:column;gap:20px;">
 
-                    <!-- روابط سريعة -->
                     <div class="card">
-                        <div class="card-title">⚡ روابط سريعة</div>
+                        <div class="card-title">روابط سريعة</div>
                         <div class="quick-actions">
                             <a href="academies.html" class="quick-action">
                                 <div class="icon">🏛️</div>
@@ -810,12 +691,15 @@
                                 <div class="icon">⚙️</div>
                                 <div class="label">الإعدادات</div>
                             </a>
+                            <a href="users.html" class="quick-action" id="usersQuickBtn" style="display:none;">
+                                <div class="icon">👥</div>
+                                <div class="label">المستخدمين</div>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- رسم بياني -->
                     <div class="card">
-                        <div class="card-title">📈 توزيع الشهادات</div>
+                        <div class="card-title">توزيع الشهادات حسب التقدير</div>
                         <div class="chart-container">
                             <canvas id="chartCanvas"></canvas>
                         </div>
@@ -827,16 +711,12 @@
 
         </div>
 
-        <!-- ===== الفوتر ===== -->
         <footer class="footer">
-            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
         </footer>
 
     </div>
 
-    <!-- ============================================================
-    جافا سكريبت
-    ============================================================ -->
     <script>
         // ============================================================
         // 1. تهيئة Firebase
@@ -861,51 +741,80 @@
         let currentUser = null;
         let userRole = null;
         let chartInstance = null;
+        let settings = {
+            unionName: 'نقابة تكنولوجيا المعلومات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
+            logoUrl: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة'
+        };
 
         // ============================================================
-        // 3. المصادقة والتحقق من الصلاحية
+        // 3. جلب الإعدادات
+        // ============================================================
+        function loadSettings() {
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.unionName) settings.unionName = data.unionName;
+                        if (data.committeeName) settings.committeeName = data.committeeName;
+                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                        if (data.footerText) settings.footerText = data.footerText;
+                        applySettings();
+                    }
+                })
+                .catch(function() {});
+        }
+
+        function applySettings() {
+            document.getElementById('footerText').textContent = settings.footerText;
+            if (settings.logoUrl) {
+                const logo = document.getElementById('logoBox');
+                logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                logo.style.backgroundSize = 'cover';
+                logo.style.backgroundPosition = 'center';
+                logo.textContent = '';
+            }
+        }
+
+        // ============================================================
+        // 4. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
                 currentUser = user;
-
                 db.collection('users').doc(user.uid).get()
                     .then(function(doc) {
                         if (doc.exists) {
                             const data = doc.data();
-
                             if (data.role === 'super_admin' || data.role === 'admin') {
                                 userRole = data.role;
                                 document.getElementById('userDisplay').textContent = 'مرحباً بك، ' + (data
                                     .displayName || 'أدمن');
 
-                                // عرض الإعدادات للسوبر أدمن
                                 if (data.role === 'super_admin') {
                                     document.getElementById('settingsBtn').style.display = 'inline-flex';
                                     document.getElementById('settingsQuickBtn').style.display = 'flex';
+                                    document.getElementById('usersBtn').style.display = 'inline-flex';
+                                    document.getElementById('usersQuickBtn').style.display = 'flex';
                                     document.getElementById('roleBadge').textContent = 'سوبر أدمن';
-                                    document.getElementById('roleBadge').style.background = 'rgba(139,92,246,0.15)';
+                                    document.getElementById('roleBadge').style.background =
+                                    'rgba(139,92,246,0.15)';
                                     document.getElementById('roleBadge').style.color = '#8b5cf6';
                                 }
 
-                                // تحميل لوحة التحكم
                                 loadDashboard();
                             } else {
-                                // مستخدم غير مصرح
-                                showMsg('❌ غير مصرح بالوصول إلى لوحة التحكم', 'error');
-                                setTimeout(function() {
-                                    window.location.href = 'home.html';
-                                }, 2000);
+                                showMsg('غير مصرح بالوصول إلى لوحة التحكم', 'error');
+                                setTimeout(function() { window.location.href = 'home.html'; }, 2000);
                             }
                         } else {
-                            showMsg('❌ المستخدم غير موجود', 'error');
-                            setTimeout(function() {
-                                window.location.href = 'login.html';
-                            }, 2000);
+                            showMsg('المستخدم غير موجود', 'error');
+                            setTimeout(function() { window.location.href = 'login.html'; }, 2000);
                         }
                     })
                     .catch(function(err) {
-                        showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                        showMsg('حدث خطأ: ' + err.message, 'error');
                     });
             } else {
                 window.location.href = 'login.html';
@@ -913,7 +822,7 @@
         });
 
         // ============================================================
-        // 4. تسجيل الخروج
+        // 5. تسجيل الخروج
         // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
@@ -923,43 +832,34 @@
         });
 
         // ============================================================
-        // 5. تحميل لوحة التحكم
+        // 6. تحميل لوحة التحكم
         // ============================================================
         function loadDashboard() {
             document.getElementById('dashboardLoader').classList.add('show');
 
-            // جلب الإحصائيات
+            // جلب الإحصائيات الحقيقية
             Promise.all([
                 db.collection('certificates').where('isActive', '==', true).get(),
                 db.collection('academies').where('isDeleted', '==', false).get(),
                 db.collection('users').where('isActive', '==', true).get(),
                 db.collection('searchLogs').get(),
+                db.collection('activities').orderBy('timestamp', 'desc').limit(15).get(),
                 db.collection('certificates').get(),
-                db.collection('activities').orderBy('timestamp', 'desc').limit(10).get(),
             ]).then(function(results) {
-                const certSnap = results[0];
+                const certActiveSnap = results[0];
                 const acadSnap = results[1];
                 const userSnap = results[2];
                 const searchSnap = results[3];
-                const allCertSnap = results[4];
-                const activitySnap = results[5];
+                const activitySnap = results[4];
+                const allCertSnap = results[5];
 
-                // إحصائيات
-                document.getElementById('statCertificates').textContent = certSnap.size;
+                // تحديث الإحصائيات
+                document.getElementById('statCertificates').textContent = certActiveSnap.size;
                 document.getElementById('statAcademies').textContent = acadSnap.size;
                 document.getElementById('statUsers').textContent = userSnap.size;
                 document.getElementById('statSearches').textContent = searchSnap.size;
 
-                // حساب التغيرات (تقريبي)
-                document.getElementById('statCertChange').textContent = '+' + Math.round(Math.random() * 20) + '%';
-                document.getElementById('statAcadChange').textContent = '+' + Math.round(Math.random() * 10) + '%';
-                document.getElementById('statUsersChange').textContent = '+' + Math.round(Math.random() * 5) + '%';
-                document.getElementById('statSearchChange').textContent = '+' + Math.round(Math.random() * 30) + '%';
-
-                // عرض النشاطات
                 renderActivities(activitySnap);
-
-                // رسم المخطط
                 renderChart(allCertSnap);
 
                 document.getElementById('dashboardLoader').classList.remove('show');
@@ -969,12 +869,12 @@
                 console.error(err);
                 document.getElementById('dashboardLoader').classList.remove('show');
                 document.getElementById('dashboardContent').style.display = 'block';
-                showMsg('❌ حدث خطأ في تحميل البيانات', 'error');
+                showMsg('حدث خطأ في تحميل البيانات', 'error');
             });
         }
 
         // ============================================================
-        // 6. عرض النشاطات
+        // 7. عرض النشاطات
         // ============================================================
         function renderActivities(snapshot) {
             const container = document.getElementById('activityList');
@@ -1001,7 +901,9 @@
                 'export_excel': { label: 'تصدير Excel', cls: 'export' },
             };
 
+            let count = 0;
             snapshot.forEach(function(doc) {
+                if (count >= 10) return;
                 const data = doc.data();
                 const typeInfo = typeMap[data.type] || { label: data.type || 'نشاط', cls: 'info' };
 
@@ -1014,29 +916,28 @@
 
                 const info = document.createElement('div');
                 info.className = 'info';
-                info.innerHTML = `
-                            <div class="text">${data.description || typeInfo.label}</div>
-                            <div class="time">${data.userName || 'مستخدم'} • ${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString('ar-EG') : 'الآن'}</div>
-                        `;
+                const timeStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString('ar-EG') : 'الآن';
+                info.innerHTML =
+                    `<div class="text">${data.description || typeInfo.label}</div><div class="time">${data.userName || 'مستخدم'} • ${timeStr}</div>`;
 
                 const badge = document.createElement('span');
-                badge.className = `type-badge ${typeInfo.cls}`;
+                badge.className = 'type-badge ' + typeInfo.cls;
                 badge.textContent = typeInfo.label;
 
                 item.appendChild(avatar);
                 item.appendChild(info);
                 item.appendChild(badge);
                 container.appendChild(item);
+                count++;
             });
         }
 
         // ============================================================
-        // 7. رسم المخطط البياني
+        // 8. رسم المخطط البياني
         // ============================================================
         function renderChart(snapshot) {
             const ctx = document.getElementById('chartCanvas').getContext('2d');
 
-            // تجميع البيانات حسب التقدير
             const grades = {};
             snapshot.forEach(function(doc) {
                 const data = doc.data();
@@ -1047,12 +948,9 @@
 
             const labels = Object.keys(grades).sort();
             const values = labels.map(function(key) { return grades[key]; });
-            const colors = ['#22c55e', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6', '#ec4899'];
+            const colors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6', '#ec4899'];
 
-            // حذف المخطط السابق
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
+            if (chartInstance) { chartInstance.destroy(); }
 
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -1062,7 +960,7 @@
                         label: 'عدد الشهادات',
                         data: values.length > 0 ? values : [0],
                         backgroundColor: labels.map(function(_, i) {
-                            return colors[i % colors.length] + '40';
+                            return colors[i % colors.length] + '30';
                         }),
                         borderColor: labels.map(function(_, i) {
                             return colors[i % colors.length];
@@ -1074,30 +972,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks: {
-                                color: 'rgba(255,255,255,0.3)',
-                                font: { size: 10 }
-                            },
-                            grid: {
-                                color: 'rgba(255,255,255,0.04)'
-                            }
+                            ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                            grid: { color: 'rgba(255,255,255,0.04)' }
                         },
                         x: {
-                            ticks: {
-                                color: 'rgba(255,255,255,0.3)',
-                                font: { size: 10 }
-                            },
-                            grid: {
-                                display: false
-                            }
+                            ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                            grid: { display: false }
                         }
                     }
                 }
@@ -1105,16 +989,24 @@
         }
 
         // ============================================================
-        // 8. عرض الرسائل
+        // 9. عرض الرسائل
         // ============================================================
-        function showMsg(msg, type = 'info') {
+        function showMsg(msg, type) {
             const el = document.getElementById('dashboardMsg');
             el.textContent = msg;
-            el.className = `msg show ${type}`;
-            setTimeout(function() {
-                el.className = 'msg';
-            }, 5000);
+            el.className = 'msg show ' + type;
+            setTimeout(function() { el.className = 'msg'; }, 5000);
         }
+
+        // ============================================================
+        // 10. تحميل الصفحة
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            console.log('✅ لوحة التحكم - نقابة تكنولوجيا المعلومات');
+            console.log('🔒 نظام أمني متطور');
+            console.log('🧠 محسّن بالذكاء الاصطناعي');
+        });
     </script>
 
 </body>
