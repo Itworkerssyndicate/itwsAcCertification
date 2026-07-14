@@ -656,13 +656,13 @@
         auth = firebase.auth(app);
 
         // ============================================================
-        // 2. إعدادات Cloudinary (تم تحديثها)
+        // 2. إعدادات Cloudinary (تم التحديث)
         // ============================================================
         const CLOUDINARY = {
             cloudName: 'dvxh9l4lv',
-            apiKey: '474397224442688',
-            apiSecret: 'CRhfgj7NWhic7m_5F33CZWUPQQg',
-            uploadPreset: 'syndicate_upload',
+            apiKey: '222419775879144',
+            apiSecret: 'GO3jNf_MgelRHHtr2cy_myYGnEE',
+            uploadPreset: 'itwsAcaCertification',
             folder: 'syndicate_system_logos'
         };
 
@@ -771,7 +771,7 @@
         }
 
         // ============================================================
-        // 7. رفع الصور إلى Cloudinary (طريقة مضمونة)
+        // 7. رفع الصور إلى Cloudinary
         // ============================================================
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
@@ -800,7 +800,6 @@
                     }
                 })
                 .catch(function(err) {
-                    // لو fetch فشل، جرب XMLHttpRequest
                     addLog('⚠️ Fetch فشل، جرب XMLHttpRequest...', 'warning');
                     const xhr = new XMLHttpRequest();
                     const xhrFormData = new FormData();
