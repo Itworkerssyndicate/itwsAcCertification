@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
         const file = formData.get('file') as File;
         const publicId = formData.get('publicId') as string || 'union_logo';
 
-        // التحقق من وجود الملف
         if (!file) {
             return NextResponse.json(
                 { error: 'No file uploaded' },
@@ -27,16 +26,9 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // التحقق من حجم الملف (حد أقصى 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            return NextResponse.json(
-                { error: 'File size exceeds 5MB limit' },
-                { status: 400 }
-            );
-        }
-
         // تحويل الملف إلى Buffer
-        const buffer = Buffer.from(await file.arrayBuffer());
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
 
         // رفع الملف إلى Cloudinary
         const result = await new Promise((resolve, reject) => {
@@ -54,7 +46,6 @@ export async function POST(request: NextRequest) {
             ).end(buffer);
         });
 
-        // إرجاع النتيجة
         return NextResponse.json({
             success: true,
             data: result,
@@ -81,19 +72,5 @@ export async function GET() {
             folder: 'syndicate_system_logos',
         },
         timestamp: new Date().toISOString(),
-    });
-}
-
-// ============================================================
-// OPTIONS: التعامل مع CORS (اختياري)
-// ============================================================
-export async function OPTIONS() {
-    return new NextResponse(null, {
-        status: 204,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
     });
 }
