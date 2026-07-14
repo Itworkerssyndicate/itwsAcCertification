@@ -454,6 +454,11 @@
                     <div class="value pending" id="sFirebase">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
+                    <div class="icon">📤</div>
+                    <div class="title">رفع الصور</div>
+                    <div class="value pending" id="sCloudinary">⏳ جاري...</div>
+                </div>
+                <div class="status-item">
                     <div class="icon">👤</div>
                     <div class="title">المستخدمين</div>
                     <div class="value pending" id="sUsers">⏳ جاري...</div>
@@ -477,11 +482,6 @@
                     <div class="icon">🔍</div>
                     <div class="title">سجل البحث</div>
                     <div class="value pending" id="sSearchLogs">⏳ جاري...</div>
-                </div>
-                <div class="status-item">
-                    <div class="icon">☁️</div>
-                    <div class="title">رفع الصور</div>
-                    <div class="value pending" id="sCloudinary">⏳ جاري...</div>
                 </div>
             </div>
 
@@ -716,7 +716,7 @@
         }
 
         // ============================================================
-        // 4. رفع الصور عبر API Route (Backend)
+        // 4. رفع الصور عبر API Route
         // ============================================================
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
@@ -947,7 +947,7 @@
         }
 
         // ============================================================
-        // 9. التحقق من رفع الصور (API Route)
+        // 9. التحقق من API رفع الصور
         // ============================================================
         async function checkUploadAPI() {
             try {
@@ -955,9 +955,16 @@
                     method: 'GET'
                 });
                 if (response.ok) {
-                    setStatus('sCloudinary', '✅ جاهز', 'done');
-                    addLog('☁️ API رفع الصور جاهز', 'success');
-                    return true;
+                    const data = await response.json();
+                    if (data.success) {
+                        setStatus('sCloudinary', '✅ جاهز', 'done');
+                        addLog('📤 API رفع الصور جاهز', 'success');
+                        return true;
+                    } else {
+                        setStatus('sCloudinary', '⚠️ غير متاح', 'warning');
+                        addLog('⚠️ API رفع الصور غير متاح', 'warning');
+                        return false;
+                    }
                 } else {
                     setStatus('sCloudinary', '⚠️ غير متاح', 'warning');
                     addLog('⚠️ API رفع الصور غير متاح', 'warning');
