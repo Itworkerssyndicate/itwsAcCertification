@@ -611,7 +611,6 @@
             gap: 14px;
         }
 
-        /* ===== حاوية الفروع ===== */
         .branches-container {
             margin-top: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -765,28 +764,36 @@
 
         .stats-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
             margin-bottom: 16px;
         }
 
         .stats-row .stat-mini {
             text-align: center;
-            padding: 10px;
+            padding: 10px 12px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .stats-row .stat-mini:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 100, 255, 0.08);
         }
 
         .stats-row .stat-mini .num {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             color: #60a5fa;
+            line-height: 1.2;
         }
 
         .stats-row .stat-mini .label {
             font-size: 11px;
             color: rgba(255, 255, 255, 0.25);
+            margin-top: 2px;
         }
 
         @media (max-width: 992px) {
@@ -900,12 +907,12 @@
                         <div class="label">إجمالي الأكاديميات</div>
                     </div>
                     <div class="stat-mini">
-                        <div class="num" id="statActive">0</div>
-                        <div class="label">نشطة</div>
+                        <div class="num" id="statMain">0</div>
+                        <div class="label">أكاديميات رئيسية</div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statBranches">0</div>
-                        <div class="label">إجمالي الفروع</div>
+                        <div class="label">فروع فرعية</div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statGovernorates">0</div>
@@ -1036,51 +1043,7 @@
                             </button>
                         </div>
                         <div id="branchesContainer">
-                            <div class="branch-item" id="branchTemplate">
-                                <div class="branch-main-badge">الفرع الرئيسي</div>
-                                <div class="branch-grid">
-                                    <div class="form-group">
-                                        <label>المحافظة *</label>
-                                        <select class="branch-governorate" required>
-                                            <option value="">اختر</option>
-                                            <option value="القاهرة">القاهرة</option>
-                                            <option value="الإسكندرية">الإسكندرية</option>
-                                            <option value="الجيزة">الجيزة</option>
-                                            <option value="القليوبية">القليوبية</option>
-                                            <option value="الشرقية">الشرقية</option>
-                                            <option value="الدقهلية">الدقهلية</option>
-                                            <option value="المنوفية">المنوفية</option>
-                                            <option value="الغربية">الغربية</option>
-                                            <option value="كفر الشيخ">كفر الشيخ</option>
-                                            <option value="دمياط">دمياط</option>
-                                            <option value="بورسعيد">بورسعيد</option>
-                                            <option value="الإسماعيلية">الإسماعيلية</option>
-                                            <option value="السويس">السويس</option>
-                                            <option value="شمال سيناء">شمال سيناء</option>
-                                            <option value="جنوب سيناء">جنوب سيناء</option>
-                                            <option value="البحر الأحمر">البحر الأحمر</option>
-                                            <option value="الأقصر">الأقصر</option>
-                                            <option value="أسوان">أسوان</option>
-                                            <option value="أسيوط">أسيوط</option>
-                                            <option value="سوهاج">سوهاج</option>
-                                            <option value="قنا">قنا</option>
-                                            <option value="المنيا">المنيا</option>
-                                            <option value="بني سويف">بني سويف</option>
-                                            <option value="الفيوم">الفيوم</option>
-                                            <option value="مطروح">مطروح</option>
-                                            <option value="الوادي الجديد">الوادي الجديد</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>العنوان *</label>
-                                        <input type="text" class="branch-address" placeholder="العنوان" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>رقم الهاتف *</label>
-                                        <input type="text" class="branch-phone" placeholder="رقم الهاتف" required />
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- سيتم إنشاء الفروع بواسطة JavaScript -->
                         </div>
                     </div>
 
@@ -1153,7 +1116,7 @@
         let currentUser = null;
         let userRole = null;
         let deleteTargetId = null;
-        let branchCount = 1;
+        let branchCounter = 1;
 
         let settings = {
             unionName: 'نقابة تكنولوجيا المعلومات',
@@ -1221,7 +1184,7 @@
         });
 
         // ============================================================
-        // 5. تحميل الأكاديميات (بدون orderBy لتجنب مشكلة الـ index)
+        // 5. تحميل الأكاديميات
         // ============================================================
         function loadAcademies() {
             document.getElementById('pageLoader').classList.add('show');
@@ -1238,7 +1201,6 @@
                         academies.push(data);
                     });
 
-                    // ترتيب يدوي حسب الاسم
                     academies.sort(function(a, b) {
                         return (a.name || '').localeCompare(b.name || '');
                     });
@@ -1260,13 +1222,14 @@
         // ============================================================
         function updateStats() {
             const total = academies.length;
-            const active = academies.filter(function(a) { return !a.isDeleted; }).length;
-
-            let branches = 0;
+            let mainCount = 0;
+            let branchesCount = 0;
             const govs = new Set();
+
             academies.forEach(function(a) {
-                if (a.branches) {
-                    branches += a.branches.length;
+                if (a.branches && a.branches.length > 0) {
+                    mainCount++;
+                    branchesCount += a.branches.length;
                     a.branches.forEach(function(b) {
                         if (b.governorate) govs.add(b.governorate);
                     });
@@ -1274,8 +1237,8 @@
             });
 
             document.getElementById('statTotal').textContent = total;
-            document.getElementById('statActive').textContent = active;
-            document.getElementById('statBranches').textContent = branches;
+            document.getElementById('statMain').textContent = mainCount;
+            document.getElementById('statBranches').textContent = branchesCount;
             document.getElementById('statGovernorates').textContent = govs.size;
         }
 
@@ -1378,28 +1341,100 @@
         // ============================================================
         // 9. إدارة الفروع في المودال
         // ============================================================
+        function getBranchTemplate(isMain) {
+            const div = document.createElement('div');
+            div.className = 'branch-item';
+            div.id = 'branch_' + branchCounter;
+
+            const badge = document.createElement('div');
+            badge.className = 'branch-main-badge';
+            badge.textContent = isMain ? 'الفرع الرئيسي' : 'فرع ' + branchCounter;
+            div.appendChild(badge);
+
+            const grid = document.createElement('div');
+            grid.className = 'branch-grid';
+
+            // المحافظة
+            const govGroup = document.createElement('div');
+            govGroup.className = 'form-group';
+            const govLabel = document.createElement('label');
+            govLabel.textContent = 'المحافظة *';
+            const govSelect = document.createElement('select');
+            govSelect.className = 'branch-governorate';
+            govSelect.required = true;
+            const govOptions = [
+                '', 'القاهرة', 'الإسكندرية', 'الجيزة', 'القليوبية', 'الشرقية',
+                'الدقهلية', 'المنوفية', 'الغربية', 'كفر الشيخ', 'دمياط',
+                'بورسعيد', 'الإسماعيلية', 'السويس', 'شمال سيناء', 'جنوب سيناء',
+                'البحر الأحمر', 'الأقصر', 'أسوان', 'أسيوط', 'سوهاج',
+                'قنا', 'المنيا', 'بني سويف', 'الفيوم', 'مطروح', 'الوادي الجديد',
+                'حلوان', 'العاشر من رمضان'
+            ];
+            govOptions.forEach(function(opt) {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt || 'اختر المحافظة';
+                govSelect.appendChild(option);
+            });
+            govGroup.appendChild(govLabel);
+            govGroup.appendChild(govSelect);
+            grid.appendChild(govGroup);
+
+            // العنوان
+            const addrGroup = document.createElement('div');
+            addrGroup.className = 'form-group';
+            const addrLabel = document.createElement('label');
+            addrLabel.textContent = 'العنوان *';
+            const addrInput = document.createElement('input');
+            addrInput.type = 'text';
+            addrInput.className = 'branch-address';
+            addrInput.placeholder = 'العنوان';
+            addrInput.required = true;
+            addrGroup.appendChild(addrLabel);
+            addrGroup.appendChild(addrInput);
+            grid.appendChild(addrGroup);
+
+            // الهاتف
+            const phoneGroup = document.createElement('div');
+            phoneGroup.className = 'form-group';
+            const phoneLabel = document.createElement('label');
+            phoneLabel.textContent = 'رقم الهاتف *';
+            const phoneInput = document.createElement('input');
+            phoneInput.type = 'text';
+            phoneInput.className = 'branch-phone';
+            phoneInput.placeholder = 'رقم الهاتف';
+            phoneInput.required = true;
+            phoneGroup.appendChild(phoneLabel);
+            phoneGroup.appendChild(phoneInput);
+            grid.appendChild(phoneGroup);
+
+            div.appendChild(grid);
+
+            // زر حذف (للفروع غير الرئيسية)
+            if (!isMain) {
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'branch-remove';
+                removeBtn.textContent = '✕';
+                removeBtn.onclick = function() { removeBranch(div.id); };
+                div.appendChild(removeBtn);
+            }
+
+            branchCounter++;
+            return div;
+        }
+
+        function initializeBranches() {
+            const container = document.getElementById('branchesContainer');
+            container.innerHTML = '';
+            const mainBranch = getBranchTemplate(true);
+            container.appendChild(mainBranch);
+        }
+
         function addBranchField() {
             const container = document.getElementById('branchesContainer');
-            const template = document.getElementById('branchTemplate');
-
-            const newBranch = template.cloneNode(true);
-            newBranch.id = 'branch_' + branchCount;
-            newBranch.querySelector('.branch-main-badge').textContent = 'فرع ' + branchCount;
-
-            // إضافة زر حذف
-            const removeBtn = document.createElement('button');
-            removeBtn.type = 'button';
-            removeBtn.className = 'branch-remove';
-            removeBtn.textContent = '✕';
-            removeBtn.onclick = function() { removeBranch(newBranch.id); };
-            newBranch.appendChild(removeBtn);
-
-            // إعادة تعيين القيم
-            newBranch.querySelectorAll('input').forEach(function(input) { input.value = ''; });
-            newBranch.querySelectorAll('select').forEach(function(select) { select.value = ''; });
-
+            const newBranch = getBranchTemplate(false);
             container.appendChild(newBranch);
-            branchCount++;
         }
 
         function removeBranch(id) {
@@ -1444,22 +1479,7 @@
             document.getElementById('modalTitle').textContent = 'إضافة أكاديمية جديدة';
             document.getElementById('editId').value = '';
             document.getElementById('academyForm').reset();
-
-            // إعادة تعيين الفروع إلى فرع رئيسي واحد
-            const container = document.getElementById('branchesContainer');
-            container.innerHTML = '';
-            const template = document.getElementById('branchTemplate');
-            const newBranch = template.cloneNode(true);
-            newBranch.id = 'branch_1';
-            newBranch.querySelector('.branch-main-badge').textContent = 'الفرع الرئيسي';
-            newBranch.querySelectorAll('input').forEach(function(input) { input.value = ''; });
-            newBranch.querySelectorAll('select').forEach(function(select) { select.value = ''; });
-            // إزالة زر الحذف من الفرع الرئيسي
-            const removeBtn = newBranch.querySelector('.branch-remove');
-            if (removeBtn) removeBtn.remove();
-            container.appendChild(newBranch);
-            branchCount = 2;
-
+            initializeBranches();
             document.getElementById('academyModal').classList.add('show');
         }
 
@@ -1479,51 +1499,20 @@
             document.getElementById('academyLicense').value = academy.licenseNumber || '';
             document.getElementById('academyTax').value = academy.taxNumber || '';
 
-            // إعادة تعيين الفروع
             const container = document.getElementById('branchesContainer');
             container.innerHTML = '';
 
             const branches = academy.branches || [];
             if (branches.length === 0) {
-                // إضافة فرع افتراضي
-                const template = document.getElementById('branchTemplate');
-                const newBranch = template.cloneNode(true);
-                newBranch.id = 'branch_1';
-                newBranch.querySelector('.branch-main-badge').textContent = 'الفرع الرئيسي';
-                newBranch.querySelectorAll('input').forEach(function(input) { input.value = ''; });
-                newBranch.querySelectorAll('select').forEach(function(select) { select.value = ''; });
-                const removeBtn = newBranch.querySelector('.branch-remove');
-                if (removeBtn) removeBtn.remove();
-                container.appendChild(newBranch);
-                branchCount = 2;
+                initializeBranches();
             } else {
                 branches.forEach(function(branch, index) {
-                    const template = document.getElementById('branchTemplate');
-                    const newBranch = template.cloneNode(true);
-                    const id = 'branch_' + (index + 1);
-                    newBranch.id = id;
-                    newBranch.querySelector('.branch-main-badge').textContent = branch.isMainBranch ?
-                        'الفرع الرئيسي' :
-                        'فرع ' + (index + 1);
-
-                    newBranch.querySelector('.branch-governorate').value = branch.governorate || '';
-                    newBranch.querySelector('.branch-address').value = branch.address || '';
-                    newBranch.querySelector('.branch-phone').value = branch.phone || '';
-
-                    if (!branch.isMainBranch) {
-                        const removeBtn = document.createElement('button');
-                        removeBtn.type = 'button';
-                        removeBtn.className = 'branch-remove';
-                        removeBtn.textContent = '✕';
-                        removeBtn.onclick = function() { removeBranch(id); };
-                        newBranch.appendChild(removeBtn);
-                    } else {
-                        const removeBtn = newBranch.querySelector('.branch-remove');
-                        if (removeBtn) removeBtn.remove();
-                    }
-
-                    container.appendChild(newBranch);
-                    branchCount = branches.length + 1;
+                    const isMain = index === 0;
+                    const div = getBranchTemplate(isMain);
+                    div.querySelector('.branch-governorate').value = branch.governorate || '';
+                    div.querySelector('.branch-address').value = branch.address || '';
+                    div.querySelector('.branch-phone').value = branch.phone || '';
+                    container.appendChild(div);
                 });
             }
 
