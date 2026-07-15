@@ -422,14 +422,6 @@
             color: #fff;
         }
 
-        .filters-grid .filter-group .btn-ghost {
-            padding: 8px 12px;
-            font-size: 12px;
-            border-radius: 12px;
-            width: 100%;
-            justify-content: center;
-        }
-
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -473,6 +465,12 @@
         .table .student-name {
             font-weight: 600;
             color: #fff;
+        }
+
+        .table .student-national-id {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .table .cert-code {
@@ -745,130 +743,6 @@
             z-index: 9999;
         }
 
-        /* ===== تصميم تقرير PDF ===== */
-        .report-print-wrapper {
-            width: 780px;
-            padding: 30px 35px;
-            background: #ffffff;
-            color: #1a1a2e;
-            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            direction: rtl;
-            border: 3px solid #0066ff;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            position: relative;
-            margin: 0 auto;
-        }
-
-        .report-print-wrapper .report-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid #0066ff;
-            padding-bottom: 14px;
-            margin-bottom: 16px;
-        }
-
-        .report-print-wrapper .report-header .left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .report-print-wrapper .report-header .left .logo-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #0066ff;
-        }
-
-        .report-print-wrapper .report-header .left .text h1 {
-            font-size: 18px;
-            font-weight: 800;
-            color: #0066ff;
-            margin: 0;
-        }
-
-        .report-print-wrapper .report-header .left .text p {
-            font-size: 11px;
-            color: #666;
-            margin: 1px 0 0;
-        }
-
-        .report-print-wrapper .report-title {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 800;
-            color: #0066ff;
-            margin: 6px 0 2px;
-        }
-
-        .report-print-wrapper .report-subtitle {
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 14px;
-        }
-
-        .report-print-wrapper .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-
-        .report-print-wrapper .report-table th {
-            background: #0066ff;
-            color: #fff;
-            padding: 8px 10px;
-            text-align: center;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .report-print-wrapper .report-table td {
-            padding: 6px 10px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-            font-size: 11px;
-        }
-
-        .report-print-wrapper .report-table tr:nth-child(even) {
-            background: #f8faff;
-        }
-
-        .report-print-wrapper .report-footer {
-            text-align: center;
-            margin-top: 14px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-            font-size: 10px;
-            color: #999;
-        }
-
-        .report-print-wrapper .report-footer .signature {
-            margin-top: 6px;
-            font-size: 12px;
-            color: #0066ff;
-            font-weight: 700;
-        }
-
-        .report-print-wrapper .report-stats {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 8px 0 12px;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .report-print-wrapper .report-stats span {
-            background: #f0f4ff;
-            padding: 4px 14px;
-            border-radius: 20px;
-        }
-
         .certificate-print-wrapper {
             width: 780px;
             padding: 35px 40px;
@@ -1080,6 +954,130 @@
             text-decoration: none;
         }
 
+        .report-print-wrapper {
+            width: 780px;
+            padding: 30px 35px;
+            background: #ffffff;
+            color: #1a1a2e;
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            direction: rtl;
+            border: 3px solid #0066ff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .report-print-wrapper .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #0066ff;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+
+        .report-print-wrapper .report-header .left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .report-print-wrapper .report-header .left .logo-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0066ff;
+        }
+
+        .report-print-wrapper .report-header .left .text h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0066ff;
+            margin: 0;
+        }
+
+        .report-print-wrapper .report-header .left .text p {
+            font-size: 11px;
+            color: #666;
+            margin: 1px 0 0;
+        }
+
+        .report-print-wrapper .report-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: #0066ff;
+            margin: 6px 0 2px;
+        }
+
+        .report-print-wrapper .report-subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 14px;
+        }
+
+        .report-print-wrapper .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .report-print-wrapper .report-table th {
+            background: #0066ff;
+            color: #fff;
+            padding: 6px 8px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .report-print-wrapper .report-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .report-print-wrapper .report-table tr:nth-child(even) {
+            background: #f8faff;
+        }
+
+        .report-print-wrapper .report-footer {
+            text-align: center;
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 10px;
+            color: #999;
+        }
+
+        .report-print-wrapper .report-footer .signature {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #0066ff;
+            font-weight: 700;
+        }
+
+        .report-print-wrapper .report-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 6px 0 10px;
+            font-size: 11px;
+            color: #666;
+            flex-wrap: wrap;
+        }
+
+        .report-print-wrapper .report-stats span {
+            background: #f0f4ff;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+
         @media (max-width: 992px) {
             .filters-grid { grid-template-columns: 1fr 1fr 1fr; }
         }
@@ -1125,7 +1123,7 @@
             .cert-print-details .item .value-print { font-size: 13px; }
             .cert-print-header .left .logo-img { width: 50px; height: 50px; }
             .report-print-wrapper .report-table th,
-            .report-print-wrapper .report-table td { font-size: 10px; padding: 4px 6px; }
+            .report-print-wrapper .report-table td { font-size: 9px; padding: 3px 4px; }
             .report-print-wrapper .report-title { font-size: 18px; }
             .report-print-wrapper .report-stats { flex-direction: column; gap: 4px; align-items: center; }
         }
@@ -1230,6 +1228,10 @@
                         <input type="text" id="filterStudent" placeholder="بحث بالاسم..." oninput="applyFilters()" />
                     </div>
                     <div class="filter-group">
+                        <label>الرقم القومي</label>
+                        <input type="text" id="filterNationalId" placeholder="بحث بالرقم القومي..." oninput="applyFilters()" />
+                    </div>
+                    <div class="filter-group">
                         <label>كود الشهادة</label>
                         <input type="text" id="filterCode" placeholder="بحث بالكود..." oninput="applyFilters()" />
                     </div>
@@ -1264,9 +1266,7 @@
                     <span>قائمة الشهادات</span>
                     <div style="display:flex;gap:8px;align-items:center;">
                         <span class="badge" id="certCount">0</span>
-                        <button class="btn btn-success btn-sm" onclick="exportSearchResultsPDF()">
-                            📄 طباعة البحث
-                        </button>
+                        <button class="btn btn-success btn-sm" onclick="exportSearchResultsPDF()">طباعة البحث</button>
                     </div>
                 </div>
 
@@ -1277,6 +1277,7 @@
                                 <th>#</th>
                                 <th>كود الشهادة</th>
                                 <th>اسم الطالب</th>
+                                <th>الرقم القومي</th>
                                 <th>الدورة</th>
                                 <th>التقدير</th>
                                 <th>الأكاديمية</th>
@@ -1307,7 +1308,7 @@
     <!-- ===== حاوية الطباعة ===== -->
     <div id="print-container"></div>
 
-    <!-- ===== مودال الإضافة ===== -->
+    <!-- ===== مودال الإضافة والتعديل ===== -->
     <div class="modal-overlay" id="certModal">
         <div class="modal">
             <div class="modal-header">
@@ -1316,6 +1317,7 @@
             </div>
             <div class="modal-body">
                 <form id="certForm" onsubmit="return saveCertificate(event)">
+
                     <input type="hidden" id="editCode" value="" />
 
                     <div class="form-row">
@@ -1324,16 +1326,24 @@
                             <input type="text" id="studentName" placeholder="أدخل اسم الطالب" required />
                         </div>
                         <div class="form-group">
-                            <label>اسم الدورة التدريبية *</label>
-                            <input type="text" id="courseName" placeholder="أدخل اسم الدورة" required />
+                            <label>الرقم القومي</label>
+                            <input type="text" id="studentNationalId" placeholder="14 رقم" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
+                            <div style="font-size:10px;color:rgba(255,255,255,0.2);">14 رقم (اختياري)</div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
+                            <label>اسم الدورة التدريبية *</label>
+                            <input type="text" id="courseName" placeholder="أدخل اسم الدورة" required />
+                        </div>
+                        <div class="form-group">
                             <label>عدد الساعات</label>
                             <input type="number" id="courseHours" placeholder="عدد ساعات الدورة" min="1" />
                         </div>
+                    </div>
+
+                    <div class="form-row">
                         <div class="form-group">
                             <label>التقدير *</label>
                             <select id="grade" required>
@@ -1351,6 +1361,10 @@
                                 <option value="F">F</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>تاريخ الاجتياز *</label>
+                            <input type="date" id="completionDate" required />
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -1361,34 +1375,23 @@
                             <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:2px;">يمكنك تعديل الكود يدوياً</div>
                         </div>
                         <div class="form-group">
-                            <label>تاريخ الاجتياز *</label>
-                            <input type="date" id="completionDate" required />
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
                             <label>الأكاديمية *</label>
                             <select id="academySelect" onchange="updateAcademyFields()" required>
                                 <option value="">اختر الأكاديمية</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="form-row">
                         <div class="form-group">
                             <label>الفرع *</label>
                             <select id="branchSelect" required>
                                 <option value="">اختر الفرع</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="form-row">
                         <div class="form-group">
                             <label>رقم اعتماد الأكاديمية</label>
                             <input type="text" id="academyLicenseDisplay" readonly style="background:rgba(255,255,255,0.02);" />
-                        </div>
-                        <div class="form-group">
-                            <label>اسم الأكاديمية</label>
-                            <input type="text" id="academyNameDisplay" readonly style="background:rgba(255,255,255,0.02);" />
                         </div>
                     </div>
 
@@ -1406,7 +1409,7 @@
         </div>
     </div>
 
-    <!-- ===== مودال الحذف ===== -->
+    <!-- ===== مودال تأكيد الحذف ===== -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal" style="max-width:450px;">
             <div class="modal-header">
@@ -1420,6 +1423,7 @@
                 <div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:14px;">
                     <p style="font-weight:700;color:#fff;" id="deleteStudentName">-</p>
                     <p style="font-size:12px;color:rgba(255,255,255,0.3);" id="deleteCertCode">-</p>
+                    <p style="font-size:12px;color:rgba(255,255,255,0.2);" id="deleteNationalId">-</p>
                 </div>
                 <p style="font-size:12px;color:rgba(255,255,255,0.2);margin-top:8px;">
                     هذا الإجراء لا يمكن التراجع عنه
@@ -1432,7 +1436,7 @@
         </div>
     </div>
 
-    <!-- ===== مودال العرض ===== -->
+    <!-- ===== مودال عرض التفاصيل ===== -->
     <div class="modal-overlay" id="viewModal">
         <div class="modal" style="max-width:650px;">
             <div class="modal-header">
@@ -1577,6 +1581,7 @@
         }
 
         function populateSelects() {
+            // أكاديميات
             const select = document.getElementById('academySelect');
             select.innerHTML = '<option value="">اختر الأكاديمية</option>';
             academies.forEach(function(academy) {
@@ -1586,6 +1591,7 @@
                 select.appendChild(opt);
             });
 
+            // فلتر الأكاديمية
             const filterAcad = document.getElementById('filterAcademy');
             filterAcad.innerHTML = '<option value="">جميع الأكاديميات</option>';
             academies.forEach(function(academy) {
@@ -1595,6 +1601,7 @@
                 filterAcad.appendChild(opt);
             });
 
+            // فلتر المحافظات
             const filterGov = document.getElementById('filterGovernorate');
             filterGov.innerHTML = '<option value="">جميع المحافظات</option>';
             const govs = new Set();
@@ -1620,25 +1627,21 @@
             const academyId = document.getElementById('academySelect').value;
             const branchSelect = document.getElementById('branchSelect');
             const licenseDisplay = document.getElementById('academyLicenseDisplay');
-            const nameDisplay = document.getElementById('academyNameDisplay');
 
             branchSelect.innerHTML = '<option value="">اختر الفرع</option>';
 
             if (!academyId) {
                 licenseDisplay.value = '';
-                nameDisplay.value = '';
                 return;
             }
 
             const academy = academies.find(function(a) { return a.id === academyId; });
             if (!academy) {
                 licenseDisplay.value = '';
-                nameDisplay.value = '';
                 return;
             }
 
             licenseDisplay.value = academy.licenseNumber || '';
-            nameDisplay.value = academy.name || '';
 
             if (academy.branches && academy.branches.length > 0) {
                 academy.branches.forEach(function(branch) {
@@ -1770,6 +1773,7 @@
                     '<span class="status-badge inactive">محذوفة</span>';
 
                 const branchName = cert.branchName || cert.branchId || '-';
+                const nationalId = cert.studentNationalId || '-';
 
                 return `
                     <tr>
@@ -1779,6 +1783,9 @@
                         </td>
                         <td data-label="اسم الطالب">
                             <div class="student-name">${cert.studentName || '-'}</div>
+                        </td>
+                        <td data-label="الرقم القومي">
+                            <span class="student-national-id">${nationalId}</span>
                         </td>
                         <td data-label="الدورة">${cert.courseName || '-'}</td>
                         <td data-label="التقدير">
@@ -1814,6 +1821,7 @@
         // ============================================================
         function applyFilters() {
             const studentFilter = document.getElementById('filterStudent').value.trim().toLowerCase();
+            const nationalIdFilter = document.getElementById('filterNationalId').value.trim();
             const codeFilter = document.getElementById('filterCode').value.trim().toLowerCase();
             const academyFilter = document.getElementById('filterAcademy').value;
             const govFilter = document.getElementById('filterGovernorate').value;
@@ -1825,6 +1833,10 @@
 
                 if (studentFilter) {
                     match = match && (cert.studentName || '').toLowerCase().includes(studentFilter);
+                }
+
+                if (nationalIdFilter) {
+                    match = match && (cert.studentNationalId || '').includes(nationalIdFilter);
                 }
 
                 if (codeFilter) {
@@ -1872,6 +1884,7 @@
 
         function resetFilters() {
             document.getElementById('filterStudent').value = '';
+            document.getElementById('filterNationalId').value = '';
             document.getElementById('filterCode').value = '';
             document.getElementById('filterAcademy').value = '';
             document.getElementById('filterGovernorate').value = '';
@@ -1902,7 +1915,6 @@
             document.getElementById('editCode').value = '';
             document.getElementById('certForm').reset();
             document.getElementById('academyLicenseDisplay').value = '';
-            document.getElementById('academyNameDisplay').value = '';
             document.getElementById('branchSelect').innerHTML = '<option value="">اختر الفرع</option>';
             document.getElementById('academySelect').value = '';
 
@@ -1940,6 +1952,7 @@
                     <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">كود الشهادة</strong><br><span style="font-family:'Courier New',monospace;font-size:16px;color:#60a5fa;">${cert.certificateCode || '-'}</span></div>
                     <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">الحالة</strong><br><span style="color:${statusColor};font-weight:600;">${statusText}</span></div>
                     <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">اسم الطالب</strong><br><span style="font-weight:600;font-size:16px;">${cert.studentName || '-'}</span></div>
+                    <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">الرقم القومي</strong><br><span style="font-family:'Courier New',monospace;font-size:14px;color:rgba(255,255,255,0.5);">${cert.studentNationalId || '-'}</span></div>
                     <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">اسم الدورة</strong><br><span>${cert.courseName || '-'}</span></div>
                     <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">عدد الساعات</strong><br><span>${cert.courseHours || 'غير محدد'}</span></div>
                     <div><strong style="color:rgba(255,255,255,0.3);font-size:12px;">التقدير</strong><br><span class="grade-badge grade-${gradeClass}" style="font-size:16px;padding:4px 16px;">${cert.grade || '-'}</span></div>
@@ -2027,6 +2040,7 @@
 
                     <div class="cert-print-details">
                         <div class="item"><div class="label-print">اسم الطالب</div><div class="value-print">${cert.studentName || '-'}</div></div>
+                        <div class="item"><div class="label-print">الرقم القومي</div><div class="value-print" style="font-family:'Courier New',monospace;">${cert.studentNationalId || '-'}</div></div>
                         <div class="item"><div class="label-print">اسم الدورة</div><div class="value-print">${cert.courseName || '-'}</div></div>
                         <div class="item"><div class="label-print">عدد الساعات</div><div class="value-print">${cert.courseHours || 'غير محدد'}</div></div>
                         <div class="item"><div class="label-print">تقدير الاجتياز</div><div class="value-print ${gradeClass}">${cert.grade || '-'}</div></div>
@@ -2140,8 +2154,6 @@
         // 18. تصدير نتائج البحث كـ PDF
         // ============================================================
         function exportSearchResultsPDF() {
-            // الحصول على البيانات المعروضة حالياً (المفلترة)
-            const table = document.getElementById('certificatesTable');
             const tbody = document.getElementById('certificatesBody');
             const rows = tbody.querySelectorAll('tr');
 
@@ -2150,7 +2162,6 @@
                 return;
             }
 
-            // جمع البيانات من الجدول
             const data = [];
             rows.forEach(function(row, index) {
                 const cells = row.querySelectorAll('td');
@@ -2159,11 +2170,12 @@
                         num: index + 1,
                         code: cells[1]?.textContent.trim() || '-',
                         student: cells[2]?.textContent.trim() || '-',
-                        course: cells[3]?.textContent.trim() || '-',
-                        grade: cells[4]?.textContent.trim() || '-',
-                        academy: cells[5]?.textContent.trim() || '-',
-                        branch: cells[6]?.textContent.trim() || '-',
-                        status: cells[7]?.textContent.trim() || '-'
+                        nationalId: cells[3]?.textContent.trim() || '-',
+                        course: cells[4]?.textContent.trim() || '-',
+                        grade: cells[5]?.textContent.trim() || '-',
+                        academy: cells[6]?.textContent.trim() || '-',
+                        branch: cells[7]?.textContent.trim() || '-',
+                        status: cells[8]?.textContent.trim() || '-'
                     });
                 }
             });
@@ -2173,7 +2185,6 @@
             const dateStr = now.toLocaleDateString('ar-EG');
             const timeStr = now.toLocaleTimeString('ar-EG');
 
-            // بناء HTML التقرير
             const logoHtml = settings.logoUrl ?
                 `<img src="${settings.logoUrl}" class="logo-img" alt="لوجو النقابة" />` :
                 '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;">ن.ت</div>';
@@ -2186,6 +2197,7 @@
                         <td>${item.num}</td>
                         <td>${item.code}</td>
                         <td>${item.student}</td>
+                        <td>${item.nationalId}</td>
                         <td>${item.course}</td>
                         <td><span style="font-weight:700;color:${item.grade.startsWith('A') ? '#10b981' : item.grade.startsWith('B') ? '#3b82f6' : item.grade.startsWith('C') ? '#eab308' : '#ef4444'};">${item.grade}</span></td>
                         <td>${item.academy}</td>
@@ -2225,6 +2237,7 @@
                                 <th>#</th>
                                 <th>كود الشهادة</th>
                                 <th>اسم الطالب</th>
+                                <th>الرقم القومي</th>
                                 <th>الدورة</th>
                                 <th>التقدير</th>
                                 <th>الأكاديمية</th>
@@ -2284,6 +2297,7 @@
             document.getElementById('modalTitle').textContent = 'تعديل شهادة';
             document.getElementById('editCode').value = code;
             document.getElementById('studentName').value = cert.studentName || '';
+            document.getElementById('studentNationalId').value = cert.studentNationalId || '';
             document.getElementById('courseName').value = cert.courseName || '';
             document.getElementById('courseHours').value = cert.courseHours || '';
             document.getElementById('grade').value = cert.grade || '';
@@ -2319,6 +2333,7 @@
 
             const editCode = document.getElementById('editCode').value;
             const studentName = document.getElementById('studentName').value.trim();
+            const studentNationalId = document.getElementById('studentNationalId').value.trim();
             const courseName = document.getElementById('courseName').value.trim();
             const courseHours = document.getElementById('courseHours').value || 'غير محدد';
             const grade = document.getElementById('grade').value;
@@ -2353,6 +2368,7 @@
 
             const certData = {
                 studentName: studentName,
+                studentNationalId: studentNationalId || '',
                 courseName: courseName,
                 courseHours: courseHours,
                 grade: grade,
@@ -2455,6 +2471,7 @@
             deleteTargetCode = code;
             document.getElementById('deleteStudentName').textContent = cert.studentName || '-';
             document.getElementById('deleteCertCode').textContent = cert.certificateCode || '-';
+            document.getElementById('deleteNationalId').textContent = cert.studentNationalId || '-';
             document.getElementById('deleteModal').classList.add('show');
         }
 
@@ -2491,7 +2508,8 @@
                     description: 'حذف شهادة: ' + deleteTargetCode,
                     details: {
                         studentName: cert.studentName,
-                        certificateCode: deleteTargetCode
+                        certificateCode: deleteTargetCode,
+                        nationalId: cert.studentNationalId
                     },
                     timestamp: new Date(),
                     ipAddress: 'auto',
@@ -2540,6 +2558,7 @@
             console.log('✅ إدارة الشهادات - نقابة تكنولوجيا المعلومات');
             console.log('🔒 نظام أمني متطور');
             console.log('🧠 محسّن بالذكاء الاصطناعي');
+            console.log('📋 دعم الرقم القومي للطلاب');
         });
     </script>
 
