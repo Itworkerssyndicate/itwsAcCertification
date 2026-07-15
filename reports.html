@@ -17,10 +17,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
 
+    <!-- html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+    </script>
+
     <style>
-        /* ============================================================
-           التصميم الكامل للتقارير
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -29,32 +30,27 @@
 
         body {
             font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #0a0e1a;
+            background: #050a18;
             color: #ffffff;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
         }
 
-        /* ===== خلفية ===== */
         .page-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.03) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
             animation: bgPulse 15s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-            100% {
-                transform: scale(1.04) rotate(1.5deg);
-            }
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(1.04) rotate(1.5deg); opacity: 0.9; }
         }
 
         .page-bg::before {
@@ -62,11 +58,10 @@
             position: absolute;
             inset: 0;
             background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
-        /* ===== جزيئات ===== */
         .particles-container {
             position: fixed;
             inset: 0;
@@ -78,104 +73,128 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(100, 200, 255, 0.04);
-            animation: particleFloat 25s infinite ease-in-out;
+            animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            top: 5%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-        .particle:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            bottom: 10%;
-            right: 5%;
-            animation-delay: 4s;
-        }
-        .particle:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            top: 50%;
-            left: 50%;
-            animation-delay: 2s;
-        }
-        .particle:nth-child(4) {
-            width: 180px;
-            height: 180px;
-            bottom: 30%;
-            left: 10%;
-            animation-delay: 6s;
-        }
-        .particle:nth-child(5) {
-            width: 60px;
-            height: 60px;
-            top: 20%;
-            right: 25%;
-            animation-delay: 3s;
-        }
-        .particle:nth-child(6) {
-            width: 120px;
-            height: 120px;
-            top: 70%;
-            right: 45%;
-            animation-delay: 5s;
-        }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
 
         @keyframes particleFloat {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.1;
-            }
-            50% {
-                transform: translate(30px, -50px) scale(1.2);
-                opacity: 0.4;
-            }
-            100% {
-                transform: translate(-10px, 0) scale(1);
-                opacity: 0.1;
-            }
+            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+            20% { transform: translate(40px, -30px) scale(1.3); opacity: 0.6; }
+            40% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.3; }
+            60% { transform: translate(50px, -20px) scale(1.4); opacity: 0.7; }
+            80% { transform: translate(-30px, -80px) scale(0.8); opacity: 0.4; }
+            100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
-        /* ===== شبكة ===== */
         .grid-lines {
             position: fixed;
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.015) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
+            animation: gridMove 25s linear infinite;
         }
 
-        /* ===== الحاوية ===== */
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(30px) translateX(30px); }
+        }
+
+        .orbital-ring {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 100, 255, 0.05);
+            animation: ringSpin 40s linear infinite;
+        }
+
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
+        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 18s ease-in-out infinite alternate;
+        }
+
+        .glow-orb:nth-child(1) {
+            width: 450px;
+            height: 450px;
+            top: -150px;
+            right: -150px;
+            background: rgba(0, 100, 255, 0.08);
+        }
+
+        .glow-orb:nth-child(2) {
+            width: 550px;
+            height: 550px;
+            bottom: -200px;
+            left: -200px;
+            background: rgba(138, 43, 226, 0.06);
+            animation-delay: 6s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
+        }
+
         .container {
             position: relative;
             z-index: 10;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 14px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            flex-wrap: wrap;
-            gap: 12px;
+            animation: headerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes headerFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
 
         .header-left {
@@ -185,29 +204,41 @@
         }
 
         .logo-box {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 18px;
             color: #fff;
             cursor: pointer;
             transition: all 0.3s ease;
+            animation: logoSpin 20s linear infinite;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo-box:hover {
+            animation-duration: 3s;
+            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 85, 230, 0.3);
         }
 
         .header-title h1 {
             font-size: 18px;
             font-weight: 800;
             color: #fff;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-title p {
@@ -223,8 +254,8 @@
         }
 
         .btn {
-            padding: 8px 18px;
-            border-radius: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
             border: none;
             font-weight: 700;
             font-size: 13px;
@@ -235,69 +266,67 @@
             gap: 8px;
             text-decoration: none;
             white-space: nowrap;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 85, 230, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.35);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
 
         .btn-outline {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.12);
             color: #fff;
         }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
 
         .btn-success {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: linear-gradient(135deg, #10b981, #22c55e);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
         }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.35);
-        }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
 
         .btn-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
         }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4); }
 
-        .btn-sm {
-            padding: 5px 12px;
-            font-size: 11px;
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
         }
+        .btn-ghost:hover { background: rgba(255, 255, 255, 0.10); transform: translateY(-2px); }
 
-        /* ===== البطاقات ===== */
+        .btn-sm { padding: 5px 14px; font-size: 12px; }
+
         .card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 20px 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 100, 255, 0.10);
         }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -307,87 +336,108 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 85, 230, 0.15);
-            color: #0055e6;
-            padding: 2px 10px;
+            background: rgba(0, 100, 255, 0.15);
+            color: #60a5fa;
+            padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
         }
 
-        /* ===== شبكة الإحصائيات ===== */
-        .stats-grid {
+        .filters-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
-        .stat-card {
+        .filters-row .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .filters-row .filter-group label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .filters-row .filter-group input,
+        .filters-row .filter-group select {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 16px 18px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .filters-row .filter-group input::placeholder {
+            color: rgba(255, 255, 255, 0.12);
+        }
+
+        .filters-row .filter-group input:focus,
+        .filters-row .filter-group select:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
+        }
+
+        .filters-row .filter-group select option {
+            background: #0a0f1f;
+            color: #fff;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stats-row .stat-mini {
             text-align: center;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
             transition: all 0.3s ease;
         }
 
-        .stat-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-2px);
+        .stats-row .stat-mini:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 100, 255, 0.08);
         }
 
-        .stat-card .number {
-            font-size: 28px;
+        .stats-row .stat-mini .num {
+            font-size: 22px;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #80b3ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #60a5fa;
+            line-height: 1.2;
         }
 
-        .stat-card .label {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.35);
+        .stats-row .stat-mini .label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
             margin-top: 2px;
         }
 
-        .stat-card .change {
-            font-size: 11px;
-            margin-top: 4px;
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-
-        .stat-card .change.up {
-            background: rgba(34, 197, 94, 0.12);
-            color: #22c55e;
-        }
-
-        .stat-card .change.down {
-            background: rgba(239, 68, 68, 0.12);
-            color: #ef4444;
-        }
-
-        /* ===== شبكة الرسوم البيانية ===== */
         .charts-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
-        @media (max-width: 992px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .chart-container {
+        .charts-grid .chart-container {
             position: relative;
-            height: 220px;
+            height: 200px;
         }
 
-        /* ===== الجدول ===== */
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -406,7 +456,7 @@
         .table thead th {
             text-align: right;
             padding: 10px 12px;
-            color: rgba(255, 255, 255, 0.35);
+            color: rgba(255, 255, 255, 0.3);
             font-weight: 600;
             font-size: 11px;
             text-transform: uppercase;
@@ -424,39 +474,22 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
-        .table .type-badge {
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 12px;
         }
 
-        .type-badge.login {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
-        }
-        .type-badge.create {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-        }
-        .type-badge.update {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-        }
-        .type-badge.delete {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-        .type-badge.search {
-            background: rgba(139, 92, 246, 0.15);
-            color: #8b5cf6;
-        }
-        .type-badge.export {
-            background: rgba(236, 72, 153, 0.15);
-            color: #ec4899;
-        }
+        .rank-badge.gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
+        .rank-badge.silver { background: linear-gradient(135deg, #9ca3af, #6b7280); color: #fff; }
+        .rank-badge.bronze { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
+        .rank-badge.normal { background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.4); }
 
-        /* ===== أزرار التصدير ===== */
         .export-actions {
             display: flex;
             gap: 12px;
@@ -466,7 +499,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: 12px;
@@ -476,86 +508,25 @@
             font-size: 14px;
         }
 
-        .msg.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .msg.show { display: block; animation: fadeIn 0.3s ease; }
+        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
+        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
+        .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
 
-        .msg.error {
-            background: rgba(239, 68, 68, 0.10);
-            border: 1px solid rgba(239, 68, 68, 0.20);
-            color: #ef4444;
-        }
-
-        .msg.success {
-            background: rgba(34, 197, 94, 0.10);
-            border: 1px solid rgba(34, 197, 94, 0.20);
-            color: #22c55e;
-        }
-
-        .msg.info {
-            background: rgba(59, 130, 246, 0.10);
-            border: 1px solid rgba(59, 130, 246, 0.20);
-            color: #3b82f6;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== تحميل ===== */
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .loader.show {
-            display: block;
-        }
-
+        .loader { display: none; text-align: center; padding: 30px 0; }
+        .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
             border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0055e6;
+            border-top-color: #0066ff;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== فارغ ===== */
-        .empty-state {
-            text-align: center;
-            padding: 30px 20px;
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .empty-state .icon {
-            font-size: 40px;
-            margin-bottom: 8px;
-        }
-
-        .empty-state .title {
-            font-size: 16px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* ===== الفوتر ===== */
         .footer {
             text-align: center;
             padding: 20px 0 10px;
@@ -565,62 +536,194 @@
             font-size: 11px;
         }
 
-        /* ===== استجابة ===== */
+        #print-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            z-index: 9999;
+        }
+
+        .report-print-wrapper {
+            width: 780px;
+            padding: 30px 35px;
+            background: #ffffff;
+            color: #1a1a2e;
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            direction: rtl;
+            border: 3px solid #0066ff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .report-print-wrapper .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #0066ff;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+
+        .report-print-wrapper .report-header .left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .report-print-wrapper .report-header .left .logo-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0066ff;
+        }
+
+        .report-print-wrapper .report-header .left .text h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0066ff;
+            margin: 0;
+        }
+
+        .report-print-wrapper .report-header .left .text p {
+            font-size: 11px;
+            color: #666;
+            margin: 1px 0 0;
+        }
+
+        .report-print-wrapper .report-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: #0066ff;
+            margin: 6px 0 2px;
+        }
+
+        .report-print-wrapper .report-subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 14px;
+        }
+
+        .report-print-wrapper .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .report-print-wrapper .report-table th {
+            background: #0066ff;
+            color: #fff;
+            padding: 6px 8px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .report-print-wrapper .report-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .report-print-wrapper .report-table tr:nth-child(even) {
+            background: #f8faff;
+        }
+
+        .report-print-wrapper .report-footer {
+            text-align: center;
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 10px;
+            color: #999;
+        }
+
+        .report-print-wrapper .report-footer .signature {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #0066ff;
+            font-weight: 700;
+        }
+
+        .report-print-wrapper .report-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 6px 0 10px;
+            font-size: 11px;
+            color: #666;
+            flex-wrap: wrap;
+        }
+
+        .report-print-wrapper .report-stats span {
+            background: #f0f4ff;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .filters-row { grid-template-columns: 1fr 1fr; }
+            .charts-grid { grid-template-columns: 1fr 1fr; }
+        }
+
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-                padding: 12px 16px;
-            }
-            .header-right {
-                justify-content: center;
-            }
-            .container {
-                padding: 10px;
-            }
-            .card {
-                padding: 14px 16px;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            .table thead th,
-            .table tbody td {
-                padding: 6px 8px;
-                font-size: 12px;
-            }
+            .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
+            .header-right { justify-content: center; }
+            .container { padding: 10px; }
+            .card { padding: 14px 16px; }
+            .filters-row { grid-template-columns: 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .glow-orb { display: none; }
+            .ring { display: none; }
+            .header-left { justify-content: center; }
+            .header-title { text-align: center; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .report-print-wrapper { padding: 20px; width: 95%; }
+            .report-print-wrapper .report-header { flex-direction: column; text-align: center; }
+            .report-print-wrapper .report-header .left { flex-direction: column; }
         }
 
         @media (max-width: 480px) {
-            .header-title h1 {
-                font-size: 15px;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .stat-card .number {
-                font-size: 20px;
-            }
-            .export-actions {
-                flex-direction: column;
-            }
-            .export-actions .btn {
-                width: 100%;
+            .header-title h1 { font-size: 15px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .stat-mini .num { font-size: 18px; }
+            .export-actions { flex-direction: column; }
+            .export-actions .btn { width: 100%; justify-content: center; }
+            .report-print-wrapper .report-table th,
+            .report-print-wrapper .report-table td { font-size: 9px; padding: 3px 4px; }
+            .report-print-wrapper .report-title { font-size: 18px; }
+            .report-print-wrapper .report-stats { flex-direction: column; gap: 4px; align-items: center; }
+        }
+
+        @media print {
+            * { display: none !important; }
+            body::before {
+                content: 'لا يمكن طباعة هذه الصفحة';
+                display: flex;
+                align-items: center;
                 justify-content: center;
+                position: fixed;
+                inset: 0;
+                background: #050a18;
+                color: #ef4444;
+                font-size: 28px;
+                z-index: 999999;
+                font-family: 'Segoe UI', 'Tahoma', sans-serif;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== خلفية ===== -->
     <div class="page-bg"></div>
 
-    <!-- ===== جزيئات ===== -->
     <div class="particles-container">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -628,141 +731,251 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
 
-    <!-- ===== شبكة ===== -->
     <div class="grid-lines"></div>
 
-    <!-- ===== الحاوية ===== -->
+    <div class="orbital-ring">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
     <div class="container">
 
-        <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
                 <div class="header-title">
-                    <h1>التقارير</h1>
-                    <p>تقارير تفصيلية وإحصائيات المنصة</p>
+                    <h1>التقارير التحليلية</h1>
+                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">📊 لوحة التحكم</a>
-                <a href="#" class="btn btn-primary btn-sm" onclick="refreshData()">🔄 تحديث</a>
+                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
+                <button class="btn btn-primary btn-sm" onclick="loadReports()">تحديث</button>
             </div>
         </header>
 
-        <!-- ===== رسائل ===== -->
         <div class="msg" id="pageMsg"></div>
 
-        <!-- ===== تحميل ===== -->
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
             <div style="color:rgba(255,255,255,0.3);">جاري تحميل التقارير...</div>
         </div>
 
-        <!-- ===== المحتوى ===== -->
         <div id="pageContent" style="display:none;">
 
-            <!-- ===== الإحصائيات العامة ===== -->
-            <div class="stats-grid" id="statsGrid">
-                <div class="stat-card">
-                    <div class="number" id="statCertificates">0</div>
-                    <div class="label">📜 إجمالي الشهادات</div>
-                    <div class="change up" id="statCertChange">+0%</div>
+            <!-- الفلاتر -->
+            <div class="card">
+                <div class="card-title">
+                    <span>فلترة التقارير</span>
+                    <span class="badge">اختر الفترة</span>
                 </div>
-                <div class="stat-card">
-                    <div class="number" id="statAcademies">0</div>
-                    <div class="label">🏛️ إجمالي الأكاديميات</div>
-                    <div class="change up" id="statAcadChange">+0%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number" id="statUsers">0</div>
-                    <div class="label">👤 المستخدمين النشطين</div>
-                    <div class="change up" id="statUsersChange">+0%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number" id="statSearches">0</div>
-                    <div class="label">🔍 عمليات البحث</div>
-                    <div class="change up" id="statSearchChange">+0%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number" id="statActivities">0</div>
-                    <div class="label">📊 إجمالي النشاطات</div>
-                    <div class="change up" id="statActChange">+0%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="number" id="statStudents">0</div>
-                    <div class="label">🎓 الخريجين المسجلين</div>
-                    <div class="change up" id="statStudentChange">+0%</div>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label>من تاريخ</label>
+                        <input type="date" id="filterDateFrom" />
+                    </div>
+                    <div class="filter-group">
+                        <label>إلى تاريخ</label>
+                        <input type="date" id="filterDateTo" />
+                    </div>
+                    <div class="filter-group">
+                        <label>الأكاديمية</label>
+                        <select id="filterAcademy">
+                            <option value="">جميع الأكاديميات</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>المحافظة</label>
+                        <select id="filterGovernorate">
+                            <option value="">جميع المحافظات</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" style="justify-content:flex-end;">
+                        <button class="btn btn-primary btn-sm" onclick="applyFilters()" style="width:100%;">تطبيق الفلترة</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- ===== الرسوم البيانية ===== -->
+            <!-- الإحصائيات السريعة -->
+            <div class="stats-row" id="statsRow">
+                <div class="stat-mini">
+                    <div class="num" id="statTotal">0</div>
+                    <div class="label">إجمالي الشهادات</div>
+                </div>
+                <div class="stat-mini">
+                    <div class="num" id="statActive">0</div>
+                    <div class="label">شهادات نشطة</div>
+                </div>
+                <div class="stat-mini">
+                    <div class="num" id="statGovernorates">0</div>
+                    <div class="label">محافظات</div>
+                </div>
+                <div class="stat-mini">
+                    <div class="num" id="statAcademies">0</div>
+                    <div class="label">أكاديميات</div>
+                </div>
+                <div class="stat-mini">
+                    <div class="num" id="statBranches">0</div>
+                    <div class="label">فروع نشطة</div>
+                </div>
+                <div class="stat-mini">
+                    <div class="num" id="statStudents">0</div>
+                    <div class="label">خريجين</div>
+                </div>
+            </div>
+
+            <!-- الرسوم البيانية -->
             <div class="charts-grid">
-                <!-- رسم بياني 1: الشهادات حسب التقدير -->
                 <div class="card">
-                    <div class="card-title">📊 توزيع الشهادات حسب التقدير</div>
+                    <div class="card-title">الشهادات حسب المحافظة</div>
+                    <div class="chart-container">
+                        <canvas id="governorateChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">الشهادات حسب الأكاديمية</div>
+                    <div class="chart-container">
+                        <canvas id="academyChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">الشهادات حسب التقدير</div>
                     <div class="chart-container">
                         <canvas id="gradeChart"></canvas>
                     </div>
                 </div>
-
-                <!-- رسم بياني 2: النشاطات حسب النوع -->
-                <div class="card">
-                    <div class="card-title">📊 النشاطات حسب النوع</div>
-                    <div class="chart-container">
-                        <canvas id="activityChart"></canvas>
-                    </div>
-                </div>
             </div>
 
-            <!-- ===== أحدث النشاطات ===== -->
+            <!-- TOP 10 الطلاب -->
             <div class="card">
                 <div class="card-title">
-                    <span>📋 أحدث النشاطات</span>
-                    <span class="badge">آخر 10</span>
+                    <span>🏆 أفضل 10 طلاب من حيث عدد الشهادات</span>
+                    <span class="badge" id="topCount">0 طالب</span>
+                    <button class="btn btn-success btn-sm" onclick="exportReport('topStudents')">طباعة</button>
                 </div>
-
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>المستخدم</th>
-                                <th>النوع</th>
-                                <th>الوصف</th>
-                                <th>التاريخ</th>
+                                <th>الترتيب</th>
+                                <th>اسم الطالب</th>
+                                <th>الرقم القومي</th>
+                                <th>عدد الشهادات</th>
+                                <th>النسبة المئوية</th>
                             </tr>
                         </thead>
-                        <tbody id="activitiesBody">
-                            <!-- سيتم ملؤها بواسطة JavaScript -->
-                        </tbody>
+                        <tbody id="topStudentsBody"></tbody>
                     </table>
                 </div>
+            </div>
 
-                <div class="empty-state" id="emptyActivities" style="display:none;">
-                    <div class="icon">📋</div>
-                    <div class="title">لا توجد نشاطات مسجلة</div>
+            <!-- تفاصيل المحافظات -->
+            <div class="card">
+                <div class="card-title">
+                    <span>تفاصيل المحافظات</span>
+                    <span class="badge" id="govCount">0 محافظة</span>
+                    <button class="btn btn-success btn-sm" onclick="exportReport('governorates')">طباعة</button>
                 </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>المحافظة</th>
+                                <th>عدد الشهادات</th>
+                                <th>النسبة المئوية</th>
+                            </tr>
+                        </thead>
+                        <tbody id="governoratesBody"></tbody>
+                    </table>
+                </div>
+            </div>
 
-                <!-- أزرار التصدير -->
+            <!-- تفاصيل الأكاديميات -->
+            <div class="card">
+                <div class="card-title">
+                    <span>تفاصيل الأكاديميات</span>
+                    <span class="badge" id="acadCount">0 أكاديمية</span>
+                    <button class="btn btn-success btn-sm" onclick="exportReport('academies')">طباعة</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الأكاديمية</th>
+                                <th>الرقم الاعتمادي</th>
+                                <th>عدد الشهادات</th>
+                                <th>الفروع النشطة</th>
+                                <th>النسبة المئوية</th>
+                            </tr>
+                        </thead>
+                        <tbody id="academiesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- تفاصيل الفروع -->
+            <div class="card">
+                <div class="card-title">
+                    <span>تفاصيل الفروع</span>
+                    <span class="badge" id="branchCount">0 فرع</span>
+                    <button class="btn btn-success btn-sm" onclick="exportReport('branches')">طباعة</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الفرع</th>
+                                <th>الأكاديمية</th>
+                                <th>المحافظة</th>
+                                <th>عدد الشهادات</th>
+                                <th>النسبة المئوية</th>
+                            </tr>
+                        </thead>
+                        <tbody id="branchesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- أزرار التصدير -->
+            <div class="card">
+                <div class="card-title">
+                    <span>تصدير التقارير</span>
+                    <span class="badge">جميع البيانات</span>
+                </div>
                 <div class="export-actions">
-                    <button class="btn btn-success btn-sm" onclick="exportReport('pdf')">📥 تصدير PDF</button>
-                    <button class="btn btn-success btn-sm" onclick="exportReport('excel')">📊 تصدير Excel</button>
-                    <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
-                    <span style="flex:1;text-align:left;font-size:11px;color:rgba(255,255,255,0.15);">
-                        تقرير شامل عن المنصة
+                    <button class="btn btn-success btn-sm" onclick="exportReport('all')">تصدير الكل PDF</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportReport('topStudents')">أفضل الطلاب PDF</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportReport('governorates')">المحافظات PDF</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportReport('academies')">الأكاديميات PDF</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportReport('branches')">الفروع PDF</button>
+                    <span style="flex:1;text-align:left;font-size:11px;color:rgba(255,255,255,0.12);">
+                        تقارير تحليلية شاملة
                     </span>
                 </div>
             </div>
 
         </div>
 
-        <!-- ===== الفوتر ===== -->
         <footer class="footer">
-            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
+            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
         </footer>
 
     </div>
+
+    <!-- ===== حاوية الطباعة ===== -->
+    <div id="print-container"></div>
 
     <!-- ============================================================
     جافا سكريبت
@@ -790,11 +1003,59 @@
         // ============================================================
         let currentUser = null;
         let userRole = null;
-        let gradeChartInstance = null;
-        let activityChartInstance = null;
+        let chartInstances = {};
+
+        let settings = {
+            unionName: 'نقابة تكنولوجيا المعلومات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
+            logoUrl: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل'
+        };
+
+        let reportData = {
+            certificates: [],
+            academies: {},
+            governorates: {},
+            academyStats: {},
+            branchStats: {},
+            gradeStats: {},
+            topStudents: []
+        };
 
         // ============================================================
-        // 3. المصادقة والتحقق من الصلاحية
+        // 3. جلب الإعدادات
+        // ============================================================
+        function loadSettings() {
+            db.collection('settings').doc('general').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.unionName) settings.unionName = data.unionName;
+                        if (data.committeeName) settings.committeeName = data.committeeName;
+                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                        if (data.footerText) settings.footerText = data.footerText;
+                        if (data.presidentName) settings.presidentName = data.presidentName;
+                        applySettings();
+                    }
+                })
+                .catch(function() {});
+        }
+
+        function applySettings() {
+            document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
+            document.getElementById('footerText').textContent = settings.footerText;
+            if (settings.logoUrl) {
+                const logo = document.getElementById('logoBox');
+                logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                logo.style.backgroundSize = 'cover';
+                logo.style.backgroundPosition = 'center';
+                logo.textContent = '';
+            }
+        }
+
+        // ============================================================
+        // 4. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -805,7 +1066,7 @@
                             const data = doc.data();
                             if (data.role === 'super_admin' || data.role === 'admin') {
                                 userRole = data.role;
-                                loadReports();
+                                loadAcademiesAndGovernorates();
                             } else {
                                 window.location.href = 'home.html';
                             }
@@ -822,202 +1083,404 @@
         });
 
         // ============================================================
-        // 4. تحميل التقارير
+        // 5. تحميل الأكاديميات والمحافظات للفلاتر
+        // ============================================================
+        function loadAcademiesAndGovernorates() {
+            Promise.all([
+                db.collection('academies').where('isDeleted', '==', false).get(),
+                db.collection('certificates').get()
+            ]).then(function(results) {
+                const acadSnap = results[0];
+                const certSnap = results[1];
+
+                // الأكاديميات
+                const acadSelect = document.getElementById('filterAcademy');
+                acadSelect.innerHTML = '<option value="">جميع الأكاديميات</option>';
+                acadSnap.forEach(function(doc) {
+                    const data = doc.data();
+                    const opt = document.createElement('option');
+                    opt.value = doc.id;
+                    opt.textContent = data.name || '';
+                    acadSelect.appendChild(opt);
+                });
+
+                // المحافظات
+                const govSelect = document.getElementById('filterGovernorate');
+                govSelect.innerHTML = '<option value="">جميع المحافظات</option>';
+                const govs = new Set();
+                certSnap.forEach(function(doc) {
+                    const data = doc.data();
+                    if (data.branchGovernorate) govs.add(data.branchGovernorate);
+                });
+                govs.forEach(function(g) {
+                    const opt = document.createElement('option');
+                    opt.value = g;
+                    opt.textContent = g;
+                    govSelect.appendChild(opt);
+                });
+
+                loadReports();
+            }).catch(function() {
+                loadReports();
+            });
+        }
+
+        // ============================================================
+        // 6. تحميل التقارير
         // ============================================================
         function loadReports() {
             document.getElementById('pageLoader').classList.add('show');
             document.getElementById('pageContent').style.display = 'none';
 
-            Promise.all([
-                db.collection('certificates').get(),
-                db.collection('academies').where('isDeleted', '==', false).get(),
-                db.collection('users').where('isActive', '==', true).get(),
-                db.collection('searchLogs').get(),
-                db.collection('activities').orderBy('timestamp', 'desc').limit(10).get(),
-            ]).then(function(results) {
-                const certSnap = results[0];
-                const acadSnap = results[1];
-                const userSnap = results[2];
-                const searchSnap = results[3];
-                const actSnap = results[4];
+            db.collection('certificates').get()
+                .then(function(snapshot) {
+                    reportData.certificates = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        reportData.certificates.push(data);
+                    });
 
-                // إحصائيات
-                const totalCerts = certSnap.size;
-                const activeCerts = certSnap.docs.filter(function(d) { return d.data().isActive !== false; }).length;
-                const totalAcads = acadSnap.size;
-                const totalUsers = userSnap.size;
-                const totalSearches = searchSnap.size;
-                const totalActivities = actSnap.size;
+                    // تحليل البيانات
+                    analyzeData();
 
-                document.getElementById('statCertificates').textContent = activeCerts;
-                document.getElementById('statAcademies').textContent = totalAcads;
-                document.getElementById('statUsers').textContent = totalUsers;
-                document.getElementById('statSearches').textContent = totalSearches;
-                document.getElementById('statActivities').textContent = totalActivities;
+                    document.getElementById('pageLoader').classList.remove('show');
+                    document.getElementById('pageContent').style.display = 'block';
 
-                // عدد الخريجين (أسماء فريدة)
-                const studentNames = new Set();
-                certSnap.forEach(function(doc) {
-                    const data = doc.data();
-                    if (data.studentName && data.isActive !== false) {
-                        studentNames.add(data.studentName);
-                    }
+                }).catch(function(err) {
+                    document.getElementById('pageLoader').classList.remove('show');
+                    document.getElementById('pageContent').style.display = 'block';
+                    showMsg('حدث خطأ في تحميل التقارير: ' + err.message, 'error');
                 });
-                document.getElementById('statStudents').textContent = studentNames.size;
-
-                // تحديثات وهمية للـ change (يمكن جلبها من بيانات سابقة)
-                document.getElementById('statCertChange').textContent = '+' + Math.round(Math.random() * 20) + '%';
-                document.getElementById('statAcadChange').textContent = '+' + Math.round(Math.random() * 10) + '%';
-                document.getElementById('statUsersChange').textContent = '+' + Math.round(Math.random() * 5) + '%';
-                document.getElementById('statSearchChange').textContent = '+' + Math.round(Math.random() * 30) + '%';
-                document.getElementById('statActChange').textContent = '+' + Math.round(Math.random() * 15) + '%';
-                document.getElementById('statStudentChange').textContent = '+' + Math.round(Math.random() * 12) + '%';
-
-                // رسم المخططات
-                renderGradeChart(certSnap);
-                renderActivityChart(actSnap);
-
-                // عرض النشاطات
-                renderActivities(actSnap);
-
-                document.getElementById('pageLoader').classList.remove('show');
-                document.getElementById('pageContent').style.display = 'block';
-
-            }).catch(function(err) {
-                document.getElementById('pageLoader').classList.remove('show');
-                document.getElementById('pageContent').style.display = 'block';
-                showMsg('❌ حدث خطأ في تحميل التقارير: ' + err.message, 'error');
-            });
         }
 
         // ============================================================
-        // 5. تحديث البيانات
+        // 7. تحليل البيانات
         // ============================================================
-        function refreshData() {
-            loadReports();
-            showMsg('🔄 تم تحديث البيانات', 'success');
-        }
+        function analyzeData() {
+            const certs = reportData.certificates;
+            const total = certs.length;
 
-        // ============================================================
-        // 6. رسم مخطط التقديرات
-        // ============================================================
-        function renderGradeChart(snapshot) {
-            const ctx = document.getElementById('gradeChart').getContext('2d');
+            // إحصائيات عامة
+            const active = certs.filter(function(c) { return c.isActive !== false; }).length;
 
-            const grades = {};
-            snapshot.forEach(function(doc) {
-                const data = doc.data();
-                if (data.grade && data.isActive !== false) {
-                    grades[data.grade] = (grades[data.grade] || 0) + 1;
+            // المحافظات
+            const govStats = {};
+            const acadStats = {};
+            const branchStats = {};
+            const gradeStats = {};
+            const studentStats = {};
+
+            certs.forEach(function(cert) {
+                // التقديرات
+                if (cert.grade) {
+                    gradeStats[cert.grade] = (gradeStats[cert.grade] || 0) + 1;
+                }
+
+                // الطلاب (للـ Top 10)
+                if (cert.studentName && cert.isActive !== false) {
+                    const key = cert.studentName + '|' + (cert.studentNationalId || '');
+                    if (!studentStats[key]) {
+                        studentStats[key] = {
+                            name: cert.studentName,
+                            nationalId: cert.studentNationalId || 'غير محدد',
+                            count: 0
+                        };
+                    }
+                    studentStats[key].count++;
+                }
+
+                // الأكاديميات
+                const acadId = cert.academyId;
+                if (acadId) {
+                    if (!acadStats[acadId]) {
+                        acadStats[acadId] = {
+                            name: cert.academyName || acadId,
+                            license: cert.academyLicenseNumber || '',
+                            count: 0,
+                            branches: {}
+                        };
+                    }
+                    acadStats[acadId].count++;
+
+                    // الفروع والمحافظات
+                    const branchId = cert.branchId || 'main';
+                    const branchName = cert.branchName || cert.branchId || 'الفرع الرئيسي';
+                    const gov = cert.branchGovernorate || 'غير محدد';
+
+                    if (!acadStats[acadId].branches[branchId]) {
+                        acadStats[acadId].branches[branchId] = {
+                            name: branchName,
+                            governorate: gov,
+                            count: 0
+                        };
+                    }
+                    acadStats[acadId].branches[branchId].count++;
+
+                    // المحافظات
+                    if (gov) {
+                        govStats[gov] = (govStats[gov] || 0) + 1;
+                    }
                 }
             });
 
-            const labels = Object.keys(grades).sort();
-            const values = labels.map(function(key) { return grades[key]; });
-            const colors = ['#22c55e', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6', '#ec4899'];
+            reportData.governorates = govStats;
+            reportData.academyStats = acadStats;
+            reportData.gradeStats = gradeStats;
 
-            if (gradeChartInstance) {
-                gradeChartInstance.destroy();
+            // Top 10 الطلاب
+            const sortedStudents = Object.keys(studentStats).sort(function(a, b) {
+                return studentStats[b].count - studentStats[a].count;
+            }).slice(0, 10);
+
+            reportData.topStudents = sortedStudents.map(function(key) {
+                return studentStats[key];
+            });
+
+            // بناء الفروع
+            const branchStatsFlat = {};
+            Object.keys(acadStats).forEach(function(acadId) {
+                const acad = acadStats[acadId];
+                Object.keys(acad.branches).forEach(function(branchId) {
+                    const branch = acad.branches[branchId];
+                    const key = acadId + '_' + branchId;
+                    branchStatsFlat[key] = {
+                        name: branch.name,
+                        academyName: acad.name,
+                        governorate: branch.governorate,
+                        count: branch.count
+                    };
+                });
+            });
+            reportData.branchStats = branchStatsFlat;
+
+            // عرض البيانات
+            renderStats(total, active);
+            renderTopStudents(reportData.topStudents, total);
+            renderGovernorates(govStats, total);
+            renderAcademies(acadStats, total);
+            renderBranches(branchStatsFlat, total);
+            renderCharts(govStats, acadStats, gradeStats);
+        }
+
+        // ============================================================
+        // 8. عرض الإحصائيات
+        // ============================================================
+        function renderStats(total, active) {
+            const govCount = Object.keys(reportData.governorates).length;
+            const acadCount = Object.keys(reportData.academyStats).length;
+            const branchCount = Object.keys(reportData.branchStats).length;
+
+            const students = new Set();
+            reportData.certificates.forEach(function(c) {
+                if (c.studentName && c.isActive !== false) {
+                    students.add(c.studentName);
+                }
+            });
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statActive').textContent = active;
+            document.getElementById('statGovernorates').textContent = govCount;
+            document.getElementById('statAcademies').textContent = acadCount;
+            document.getElementById('statBranches').textContent = branchCount;
+            document.getElementById('statStudents').textContent = students.size;
+        }
+
+        // ============================================================
+        // 9. عرض Top 10 الطلاب
+        // ============================================================
+        function renderTopStudents(topStudents, total) {
+            const tbody = document.getElementById('topStudentsBody');
+            document.getElementById('topCount').textContent = topStudents.length + ' طالب';
+
+            if (topStudents.length === 0) {
+                tbody.innerHTML =
+                    '<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
+                return;
             }
 
-            gradeChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels.length > 0 ? labels : ['لا توجد بيانات'],
-                    datasets: [{
-                        label: 'عدد الشهادات',
-                        data: values.length > 0 ? values : [0],
-                        backgroundColor: labels.map(function(_, i) {
-                            return colors[i % colors.length] + '40';
-                        }),
-                        borderColor: labels.map(function(_, i) {
-                            return colors[i % colors.length];
-                        }),
-                        borderWidth: 2,
-                        borderRadius: 6,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: 'rgba(255,255,255,0.3)',
-                                font: { size: 10 }
-                            },
-                            grid: {
-                                color: 'rgba(255,255,255,0.04)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: 'rgba(255,255,255,0.3)',
-                                font: { size: 10 }
-                            },
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
+            tbody.innerHTML = topStudents.map(function(student, index) {
+                const rank = index + 1;
+                let rankClass = 'normal';
+                let rankLabel = rank;
+                if (rank === 1) { rankClass = 'gold';
+                    rankLabel = '🥇'; } else if (rank === 2) { rankClass = 'silver';
+                    rankLabel = '🥈'; } else if (rank === 3) { rankClass = 'bronze';
+                    rankLabel = '🥉'; }
+
+                const percentage = total > 0 ? ((student.count / total) * 100).toFixed(1) : 0;
+
+                return `
+                    <tr>
+                        <td><span class="rank-badge ${rankClass}">${rankLabel}</span></td>
+                        <td><strong>${student.name}</strong></td>
+                        <td style="font-family:monospace;font-size:12px;color:rgba(255,255,255,0.3);">${student.nationalId}</td>
+                        <td><span style="font-size:18px;font-weight:700;color:#60a5fa;">${student.count}</span></td>
+                        <td>${percentage}%</td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         // ============================================================
-        // 7. رسم مخطط النشاطات
+        // 10. عرض المحافظات
         // ============================================================
-        function renderActivityChart(snapshot) {
-            const ctx = document.getElementById('activityChart').getContext('2d');
-
-            const types = {};
-            const typeLabels = {
-                'login': 'تسجيل دخول',
-                'logout': 'تسجيل خروج',
-                'create_academy': 'إضافة أكاديمية',
-                'update_academy': 'تعديل أكاديمية',
-                'delete_academy': 'حذف أكاديمية',
-                'create_certificate': 'إضافة شهادة',
-                'update_certificate': 'تعديل شهادة',
-                'delete_certificate': 'حذف شهادة',
-                'search_certificate': 'بحث شهادة',
-                'search_academy': 'بحث أكاديمية',
-                'export_pdf': 'تصدير PDF',
-                'export_excel': 'تصدير Excel',
-            };
-
-            snapshot.forEach(function(doc) {
-                const data = doc.data();
-                if (data.type) {
-                    types[data.type] = (types[data.type] || 0) + 1;
-                }
+        function renderGovernorates(govStats, total) {
+            const tbody = document.getElementById('governoratesBody');
+            const sorted = Object.keys(govStats).sort(function(a, b) {
+                return govStats[b] - govStats[a];
             });
 
-            const labels = Object.keys(types);
-            const values = labels.map(function(key) { return types[key]; });
-            const colors = ['#3b82f6', '#ef4444', '#22c55e', '#f59e0b', '#ef4444', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6',
-                '#8b5cf6', '#ec4899', '#ec4899'
+            document.getElementById('govCount').textContent = sorted.length + ' محافظة';
+
+            if (sorted.length === 0) {
+                tbody.innerHTML =
+                    '<tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sorted.map(function(gov, index) {
+                const count = govStats[gov];
+                const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${gov}</strong></td>
+                        <td>${count}</td>
+                        <td>${percentage}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 11. عرض الأكاديميات
+        // ============================================================
+        function renderAcademies(acadStats, total) {
+            const tbody = document.getElementById('academiesBody');
+            const sorted = Object.keys(acadStats).sort(function(a, b) {
+                return acadStats[b].count - acadStats[a].count;
+            });
+
+            document.getElementById('acadCount').textContent = sorted.length + ' أكاديمية';
+
+            if (sorted.length === 0) {
+                tbody.innerHTML =
+                    '<tr><td colspan="6" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sorted.map(function(acadId, index) {
+                const acad = acadStats[acadId];
+                const percentage = total > 0 ? ((acad.count / total) * 100).toFixed(1) : 0;
+                const branchesCount = Object.keys(acad.branches).length;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${acad.name}</strong></td>
+                        <td style="font-family:monospace;font-size:12px;color:rgba(255,255,255,0.3);">${acad.license}</td>
+                        <td>${acad.count}</td>
+                        <td>${branchesCount}</td>
+                        <td>${percentage}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 12. عرض الفروع
+        // ============================================================
+        function renderBranches(branchStats, total) {
+            const tbody = document.getElementById('branchesBody');
+            const sorted = Object.keys(branchStats).sort(function(a, b) {
+                return branchStats[b].count - branchStats[a].count;
+            });
+
+            document.getElementById('branchCount').textContent = sorted.length + ' فرع';
+
+            if (sorted.length === 0) {
+                tbody.innerHTML =
+                    '<tr><td colspan="6" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sorted.map(function(key, index) {
+                const branch = branchStats[key];
+                const percentage = total > 0 ? ((branch.count / total) * 100).toFixed(1) : 0;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${branch.name}</strong></td>
+                        <td>${branch.academyName}</td>
+                        <td>${branch.governorate}</td>
+                        <td>${branch.count}</td>
+                        <td>${percentage}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 13. عرض الرسوم البيانية
+        // ============================================================
+        function renderCharts(govStats, acadStats, gradeStats) {
+            const colors = ['#0066ff', '#8b5cf6', '#10b981', '#eab308', '#f97316', '#ef4444', '#ec4899', '#06b6d4', '#84cc16',
+                '#8b5cf6'
             ];
 
-            if (activityChartInstance) {
-                activityChartInstance.destroy();
+            // محافظات
+            const govLabels = Object.keys(govStats).slice(0, 10);
+            const govValues = govLabels.map(function(key) { return govStats[key]; });
+
+            renderChart('governorateChart', govLabels, govValues, 'الشهادات حسب المحافظة', colors);
+
+            // أكاديميات
+            const acadLabels = Object.keys(acadStats).slice(0, 8);
+            const acadValues = acadLabels.map(function(key) { return acadStats[key].count; });
+            const acadColors = acadLabels.map(function(_, i) { return colors[i % colors.length]; });
+
+            renderChart('academyChart', acadLabels.map(function(key) { return acadStats[key].name; }), acadValues,
+                'الشهادات حسب الأكاديمية', acadColors);
+
+            // تقديرات
+            const gradeLabels = Object.keys(gradeStats).sort();
+            const gradeValues = gradeLabels.map(function(key) { return gradeStats[key]; });
+            const gradeColors = gradeLabels.map(function(key) {
+                if (key.startsWith('A')) return '#10b981';
+                if (key.startsWith('B')) return '#3b82f6';
+                if (key.startsWith('C')) return '#eab308';
+                if (key.startsWith('D')) return '#f97316';
+                return '#ef4444';
+            });
+
+            renderChart('gradeChart', gradeLabels, gradeValues, 'الشهادات حسب التقدير', gradeColors);
+        }
+
+        function renderChart(canvasId, labels, values, label, colors) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+
+            if (chartInstances[canvasId]) {
+                chartInstances[canvasId].destroy();
             }
 
-            activityChartInstance = new Chart(ctx, {
-                type: 'doughnut',
+            if (labels.length === 0) {
+                labels = ['لا توجد بيانات'];
+                values = [0];
+                colors = ['rgba(255,255,255,0.1)'];
+            }
+
+            chartInstances[canvasId] = new Chart(ctx, {
+                type: values.length <= 5 ? 'doughnut' : 'bar',
                 data: {
-                    labels: labels.map(function(key) { return typeLabels[key] || key; }),
+                    labels: labels,
                     datasets: [{
+                        label: label,
                         data: values,
-                        backgroundColor: labels.map(function(_, i) {
-                            return colors[i % colors.length] + '60';
-                        }),
-                        borderColor: labels.map(function(_, i) {
-                            return colors[i % colors.length];
-                        }),
+                        backgroundColor: colors.map(function(c) { return c + '60'; }),
+                        borderColor: colors,
                         borderWidth: 2,
+                        borderRadius: 6,
                     }]
                 },
                 options: {
@@ -1027,11 +1490,22 @@
                         legend: {
                             position: 'bottom',
                             labels: {
-                                color: 'rgba(255,255,255,0.5)',
+                                color: 'rgba(255,255,255,0.4)',
                                 font: { size: 9 },
-                                padding: 8,
+                                padding: 6,
                                 boxWidth: 12,
                             }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: 'rgba(255,255,255,0.2)', font: { size: 9 } },
+                            grid: { color: 'rgba(255,255,255,0.04)' }
+                        },
+                        x: {
+                            ticks: { color: 'rgba(255,255,255,0.2)', font: { size: 8 } },
+                            grid: { display: false }
                         }
                     }
                 }
@@ -1039,109 +1513,262 @@
         }
 
         // ============================================================
-        // 8. عرض النشاطات
+        // 14. تطبيق الفلاتر
         // ============================================================
-        function renderActivities(snapshot) {
-            const tbody = document.getElementById('activitiesBody');
-            const emptyState = document.getElementById('emptyActivities');
+        function applyFilters() {
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const academyFilter = document.getElementById('filterAcademy').value;
+            const govFilter = document.getElementById('filterGovernorate').value;
 
-            if (snapshot.empty) {
-                tbody.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
+            let filtered = reportData.certificates;
+
+            if (dateFrom) {
+                const from = new Date(dateFrom);
+                filtered = filtered.filter(function(c) {
+                    const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) : null;
+                    return d && d >= from;
+                });
             }
 
-            emptyState.style.display = 'none';
+            if (dateTo) {
+                const to = new Date(dateTo);
+                to.setHours(23, 59, 59, 999);
+                filtered = filtered.filter(function(c) {
+                    const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) : null;
+                    return d && d <= to;
+                });
+            }
 
-            const typeLabels = {
-                'login': 'تسجيل دخول',
-                'logout': 'تسجيل خروج',
-                'create_academy': 'إضافة أكاديمية',
-                'update_academy': 'تعديل أكاديمية',
-                'delete_academy': 'حذف أكاديمية',
-                'create_certificate': 'إضافة شهادة',
-                'update_certificate': 'تعديل شهادة',
-                'delete_certificate': 'حذف شهادة',
-                'search_certificate': 'بحث شهادة',
-                'search_academy': 'بحث أكاديمية',
-                'export_pdf': 'تصدير PDF',
-                'export_excel': 'تصدير Excel',
-            };
+            if (academyFilter) {
+                filtered = filtered.filter(function(c) { return c.academyId === academyFilter; });
+            }
 
-            const typeClasses = {
-                'login': 'login',
-                'logout': 'delete',
-                'create_academy': 'create',
-                'update_academy': 'update',
-                'delete_academy': 'delete',
-                'create_certificate': 'create',
-                'update_certificate': 'update',
-                'delete_certificate': 'delete',
-                'search_certificate': 'search',
-                'search_academy': 'search',
-                'export_pdf': 'export',
-                'export_excel': 'export',
-            };
+            if (govFilter) {
+                filtered = filtered.filter(function(c) { return c.branchGovernorate === govFilter; });
+            }
 
-            tbody.innerHTML = '';
-            snapshot.forEach(function(doc) {
-                const data = doc.data();
-                const typeLabel = typeLabels[data.type] || data.type || 'نشاط';
-                const typeClass = typeClasses[data.type] || '';
+            const tempCerts = reportData.certificates;
+            reportData.certificates = filtered;
+            analyzeData();
+            reportData.certificates = tempCerts;
 
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                            <td>${data.userName || 'مستخدم'}</td>
-                            <td><span class="type-badge ${typeClass}">${typeLabel}</span></td>
-                            <td>${data.description || '-'}</td>
-                            <td>${data.timestamp ? new Date(data.timestamp.toDate ? data.timestamp.toDate() : data.timestamp).toLocaleString('ar-EG') : '-'}</td>
-                        `;
-                tbody.appendChild(tr);
-            });
+            showMsg('تم تطبيق الفلترة بنجاح', 'success');
         }
 
         // ============================================================
-        // 9. تصدير التقرير
+        // 15. تصدير التقارير
         // ============================================================
-        function exportReport(format) {
-            const type = format === 'pdf' ? 'PDF' : 'Excel';
-            showMsg('📥 جاري تحميل تقرير ' + type + '...', 'info');
+        function exportReport(type) {
+            const logoHtml = settings.logoUrl ?
+                `<img src="${settings.logoUrl}" class="logo-img" alt="لوجو النقابة" />` :
+                '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;">ن.ت</div>';
 
-            // تسجيل نشاط التصدير
-            db.collection('activities').add({
-                userId: currentUser ? currentUser.uid : 'system',
-                userEmail: currentUser ? currentUser.email : 'system',
-                userName: 'أدمن',
-                userRole: userRole || 'admin',
-                type: format === 'pdf' ? 'export_pdf' : 'export_excel',
-                description: 'تصدير تقرير ' + type,
-                timestamp: new Date(),
-                ipAddress: 'auto',
-                userAgent: navigator.userAgent
-            }).catch(function() {});
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-EG');
+            const timeStr = now.toLocaleTimeString('ar-EG');
 
-            // محاكاة التحميل
-            setTimeout(function() {
-                showMsg('✅ تم تحميل تقرير ' + type + ' بنجاح', 'success');
-            }, 1500);
+            let title = 'تقرير تحليلي شامل';
+            let filename = 'تقرير_تحليلي_' + now.toISOString().split('T')[0];
+            let content = '';
+
+            const buildReport = function() {
+                const total = reportData.certificates.length;
+                let html = `
+                    <div class="report-print-wrapper" id="report-print-content">
+                        <div class="report-header">
+                            <div class="left">
+                                ${logoHtml}
+                                <div class="text">
+                                    <h1>${settings.unionName}</h1>
+                                    <p>${settings.committeeName}</p>
+                                </div>
+                            </div>
+                            <div style="text-align:left;font-size:12px;color:#666;">
+                                <div>التاريخ: ${dateStr}</div>
+                                <div>الوقت: ${timeStr}</div>
+                            </div>
+                        </div>
+                        <div class="report-title">${title}</div>
+                        <div class="report-subtitle">تقرير تحليلي عن أداء المنصة</div>
+                `;
+
+                // إحصائيات سريعة
+                const active = reportData.certificates.filter(function(c) { return c.isActive !== false; }).length;
+                const govCount = Object.keys(reportData.governorates).length;
+                const acadCount = Object.keys(reportData.academyStats).length;
+
+                html += `
+                    <div class="report-stats">
+                        <span>إجمالي الشهادات: ${total}</span>
+                        <span>شهادات نشطة: ${active}</span>
+                        <span>المحافظات: ${govCount}</span>
+                        <span>الأكاديميات: ${acadCount}</span>
+                    </div>
+                `;
+
+                // Top 10 الطلاب
+                if (type === 'all' || type === 'topStudents') {
+                    const topStudents = reportData.topStudents;
+                    html += `
+                        <h4 style="margin:12px 0 6px;color:#0066ff;">أفضل 10 طلاب</h4>
+                        <table class="report-table">
+                            <thead><tr><th>#</th><th>اسم الطالب</th><th>الرقم القومي</th><th>عدد الشهادات</th><th>النسبة</th></tr></thead>
+                            <tbody>
+                    `;
+                    topStudents.forEach(function(student, i) {
+                        const pct = total > 0 ? ((student.count / total) * 100).toFixed(1) : 0;
+                        html +=
+                            `<tr><td>${i+1}</td><td>${student.name}</td><td>${student.nationalId}</td><td>${student.count}</td><td>${pct}%</td></tr>`;
+                    });
+                    html += `</tbody></table>`;
+                }
+
+                // المحافظات
+                if (type === 'all' || type === 'governorates') {
+                    const govs = Object.keys(reportData.governorates).sort(function(a, b) {
+                        return reportData.governorates[b] - reportData.governorates[a];
+                    });
+                    html += `
+                        <h4 style="margin:12px 0 6px;color:#0066ff;">المحافظات</h4>
+                        <table class="report-table">
+                            <thead><tr><th>#</th><th>المحافظة</th><th>عدد الشهادات</th><th>النسبة</th></tr></thead>
+                            <tbody>
+                    `;
+                    govs.forEach(function(gov, i) {
+                        const count = reportData.governorates[gov];
+                        const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+                        html += `<tr><td>${i+1}</td><td>${gov}</td><td>${count}</td><td>${pct}%</td></tr>`;
+                    });
+                    html += `</tbody></table>`;
+                }
+
+                // الأكاديميات
+                if (type === 'all' || type === 'academies') {
+                    const acads = Object.keys(reportData.academyStats).sort(function(a, b) {
+                        return reportData.academyStats[b].count - reportData.academyStats[a].count;
+                    });
+                    html += `
+                        <h4 style="margin:12px 0 6px;color:#0066ff;">الأكاديميات</h4>
+                        <table class="report-table">
+                            <thead><tr><th>#</th><th>الأكاديمية</th><th>الرقم الاعتمادي</th><th>عدد الشهادات</th><th>الفروع</th><th>النسبة</th></tr></thead>
+                            <tbody>
+                    `;
+                    acads.forEach(function(acadId, i) {
+                        const acad = reportData.academyStats[acadId];
+                        const pct = total > 0 ? ((acad.count / total) * 100).toFixed(1) : 0;
+                        const branches = Object.keys(acad.branches).length;
+                        html +=
+                            `<tr><td>${i+1}</td><td>${acad.name}</td><td>${acad.license}</td><td>${acad.count}</td><td>${branches}</td><td>${pct}%</td></tr>`;
+                    });
+                    html += `</tbody></table>`;
+                }
+
+                // الفروع
+                if (type === 'all' || type === 'branches') {
+                    const branches = Object.keys(reportData.branchStats).sort(function(a, b) {
+                        return reportData.branchStats[b].count - reportData.branchStats[a].count;
+                    });
+                    html += `
+                        <h4 style="margin:12px 0 6px;color:#0066ff;">الفروع</h4>
+                        <table class="report-table">
+                            <thead><tr><th>#</th><th>الفرع</th><th>الأكاديمية</th><th>المحافظة</th><th>عدد الشهادات</th><th>النسبة</th></tr></thead>
+                            <tbody>
+                    `;
+                    branches.forEach(function(key, i) {
+                        const branch = reportData.branchStats[key];
+                        const pct = total > 0 ? ((branch.count / total) * 100).toFixed(1) : 0;
+                        html +=
+                            `<tr><td>${i+1}</td><td>${branch.name}</td><td>${branch.academyName}</td><td>${branch.governorate}</td><td>${branch.count}</td><td>${pct}%</td></tr>`;
+                    });
+                    html += `</tbody></table>`;
+                }
+
+                html += `
+                        <div class="report-footer">
+                            <div>تم إنشاء هذا التقرير بواسطة نظام نقابة تكنولوجيا المعلومات</div>
+                            <div class="signature">النقيب العام: ${settings.presidentName}</div>
+                            <div style="font-size:9px;color:#aaa;margin-top:4px;">${settings.footerText} | الإصدار 1.0</div>
+                        </div>
+                    </div>
+                `;
+
+                return html;
+            };
+
+            // تحديث العنوان واسم الملف حسب النوع
+            if (type === 'topStudents') {
+                title = 'تقرير أفضل 10 طلاب';
+                filename = 'تقرير_افضل_الطلاب_' + now.toISOString().split('T')[0];
+            } else if (type === 'governorates') {
+                title = 'تقرير المحافظات';
+                filename = 'تقرير_المحافظات_' + now.toISOString().split('T')[0];
+            } else if (type === 'academies') {
+                title = 'تقرير الأكاديميات';
+                filename = 'تقرير_الأكاديميات_' + now.toISOString().split('T')[0];
+            } else if (type === 'branches') {
+                title = 'تقرير الفروع';
+                filename = 'تقرير_الفروع_' + now.toISOString().split('T')[0];
+            }
+
+            const html = buildReport();
+            const container = document.getElementById('print-container');
+            container.innerHTML = html;
+
+            const element = document.getElementById('report-print-content');
+
+            const opt = {
+                margin: 10,
+                filename: filename + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save()
+                .then(function() {
+                    container.innerHTML = '';
+                    showMsg('تم تصدير التقرير بنجاح', 'success');
+
+                    db.collection('activities').add({
+                        userId: currentUser ? currentUser.uid : 'system',
+                        userEmail: currentUser ? currentUser.email : 'system',
+                        userName: 'أدمن',
+                        userRole: userRole || 'admin',
+                        type: 'export_pdf',
+                        description: 'تصدير تقرير: ' + title,
+                        timestamp: new Date(),
+                        ipAddress: 'auto',
+                        userAgent: navigator.userAgent
+                    }).catch(function() {});
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ في تصدير التقرير: ' + err.message, 'error');
+                    container.innerHTML = '';
+                });
         }
 
         // ============================================================
-        // 10. عرض الرسائل
+        // 16. عرض الرسائل
         // ============================================================
-        function showMsg(msg, type = 'info') {
+        function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
             el.textContent = msg;
             el.className = 'msg show ' + type;
-            setTimeout(function() {
-                el.className = 'msg';
-            }, 4000);
+            setTimeout(function() { el.className = 'msg'; }, 4000);
         }
 
         // ============================================================
-        // 11. تحميل الصفحة
+        // 17. تحميل الصفحة
         // ============================================================
-        console.log('✅ التقارير - نقابة تكنولوجيا المعلومات');
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            console.log('✅ التقارير التحليلية - نقابة تكنولوجيا المعلومات');
+            console.log('🔒 نظام أمني متطور');
+            console.log('🧠 محسّن بالذكاء الاصطناعي');
+            console.log('📊 تقارير تحليلية متقدمة');
+            console.log('🏆 أفضل 10 طلاب');
+        });
     </script>
 
 </body>
