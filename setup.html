@@ -25,7 +25,7 @@
         }
 
         body {
-            font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', 'Tahoma', Arial, sans-serif;
             background: #0a0e1a;
             color: #fff;
             min-height: 100vh;
@@ -33,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* خلفية متحركة */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -1179,10 +1178,10 @@
         }
 
         // ============================================================
-        // 11. مسح جميع البيانات من Firestore
+        // 11. مسح جميع البيانات من Firestore (باستثناء settings)
         // ============================================================
         async function clearAllCollections() {
-            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs', 'settings'];
+            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
             let cleared = 0;
 
             for (const name of collections) {
@@ -1206,7 +1205,7 @@
 
                     await sleep(200);
 
-                    // إعادة إنشاء وثيقة _init للحفاظ على وجود الجدول
+                    // إعادة إنشاء وثيقة _init
                     await db.collection(name).doc('_init').set({
                         initialized: true,
                         createdAt: getEgyptTime(),
@@ -1223,19 +1222,34 @@
         }
 
         // ============================================================
-        // 12. إنشاء المستخدم
+        // 12. إنشاء المستخدم (بشكل نظيف)
         // ============================================================
         async function createUser(email, password, name, phone) {
             addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
 
             try {
+                // تنظيف المصادقة أولاً
                 try { await auth.signOut(); } catch(e) {}
                 await sleep(500);
 
+                // حذف أي مستخدم موجود بنفس البريد
+                try {
+                    const existingUsers = await db.collection('users').where('email', '==', email).get();
+                    if (!existingUsers.empty) {
+                        existingUsers.forEach(async function(doc) {
+                            await db.collection('users').doc(doc.id).delete();
+                        });
+                        addLog('🗑️ تم حذف المستخدم القديم', 'warning');
+                    }
+                } catch(err) {
+                    // تجاهل
+                }
+
+                // محاولة تسجيل الدخول أولاً
                 try {
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     const uid = cred.user.uid;
-                    addLog('✅ المستخدم موجود مسبقاً', 'success');
+                    addLog('✅ المستخدم موجود، جاري تحديث البيانات', 'success');
                     
                     await db.collection('users').doc(uid).set({
                         uid: uid,
@@ -1250,6 +1264,7 @@
                     
                     return { success: true, uid, isNew: false };
                 } catch (loginErr) {
+                    // إذا كان المستخدم غير موجود، نقوم بإنشائه
                     if (loginErr.code === 'auth/user-not-found') {
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         const uid = cred.user.uid;
@@ -1290,6 +1305,7 @@
                 footerText: document.getElementById('footerText').value.trim() ||
                     '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
                 sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                presidentName: 'المهندس / محمود جميل',
                 updatedAt: getEgyptTime(),
                 updatedBy: 'system'
             };
@@ -1343,7 +1359,6 @@
                     }
                 }
 
-                // التحقق من الإعدادات
                 try {
                     const settingsSnap = await db.collection('settings').doc('general').get();
                     if (settingsSnap.exists) {
@@ -1421,13 +1436,14 @@
             }
 
             if (!confirm('⚠️ تحذير: هذا الإجراء سيمسح جميع البيانات الحالية في Firebase\n' +
+                         '(المستخدمين، الأكاديميات، الشهادات، النشاطات، سجل البحث)\n' +
                          'ويقوم بإنشاء قاعدة بيانات جديدة مهيأة للمنصة.\n\n' +
                          'المستخدم الجديد: ' + email + '\n' +
                          'هل أنت متأكد؟')) {
                 return;
             }
 
-            if (!confirm('⚠️ تأكيد نهائي: سيتم حذف جميع الأكاديميات، الشهادات، المستخدمين، والنشاطات!')) {
+            if (!confirm('⚠️ تأكيد نهائي: سيتم حذف جميع البيانات!')) {
                 return;
             }
 
@@ -1447,29 +1463,26 @@
                 await checkCloudinary();
                 await sleep(300);
 
-                // 2. مسح جميع الجداول
+                // 2. مسح جميع الجداول (ما عدا settings)
                 addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
                 await clearAllCollections();
                 await sleep(500);
 
-                // 3. إنشاء الجداول وإعداداتها
-                addLog('📊 جاري إنشاء هيكل النظام...', 'info');
-                
-                // 4. حفظ الإعدادات
+                // 3. حفظ الإعدادات (بما فيها بيانات السوبر أدمن)
                 await saveSettings();
                 await sleep(300);
 
-                // 5. إنشاء المستخدم
+                // 4. إنشاء المستخدم (مع تنظيف مسبق)
                 await createUser(email, password, name, phone);
                 await sleep(300);
 
-                // 6. تحميل الصور إن وجدت
+                // 5. تحميل الصور إن وجدت
                 loadImagesFromFirestore();
 
-                // 7. تحديث الحالة
+                // 6. تحديث الحالة
                 await checkAllStatus();
 
-                // 8. عرض النتيجة
+                // 7. عرض النتيجة
                 showMsg('✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ' + email + ' / ' + password, 'success');
                 addLog('🎉 اكتملت تهيئة النظام بالكامل', 'success');
                 addLog('👑 ' + email + ' / ' + password, 'info');
@@ -1503,7 +1516,8 @@
             addLog('🚀 جاهز', 'info');
             addLog('💡 اضغط "تهيئة النظام بالكامل" لمسح كل البيانات وإعادة إنشائها', 'info');
             addLog('📌 رفع الصور يتم عبر Cloudinary Widget', 'info');
-            addLog('⚠️ تحذير: التهيئة تمسح جميع البيانات الحالية', 'warning');
+            addLog('⚠️ تحذير: التهيئة تمسح جميع البيانات الحالية (عدا الإعدادات)', 'warning');
+            addLog('✅ تم إصلاح مشكلة المصادقة', 'success');
         });
     </script>
 
