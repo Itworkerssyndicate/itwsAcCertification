@@ -40,8 +40,8 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي للصفحة الرئيسية
-           كل حرف من الإعدادات + مظهر محلي للمستخدم
+           التصميم الخرافي للصفحة الرئيسية - النسخة النهائية
+           مع إزالة سجل الخريجين ودمج كل حاجة في بحث المتدرب
            ============================================================ */
         * {
             margin: 0;
@@ -230,7 +230,6 @@
             padding: 20px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -350,7 +349,6 @@
             z-index: 2;
         }
 
-        /* ===== الأزرار ===== */
         .btn {
             padding: 8px 20px;
             border-radius: 30px;
@@ -400,7 +398,6 @@
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
-        /* ===== المحتوى ===== */
         .hero-section {
             text-align: center;
             margin-bottom: 25px;
@@ -467,7 +464,6 @@
             line-height: 1.7;
         }
 
-        /* ===== تبويبات ===== */
         .tabs {
             display: flex;
             gap: 6px;
@@ -475,7 +471,7 @@
             border-radius: var(--radius);
             padding: 6px;
             margin-bottom: 24px;
-            max-width: 800px;
+            max-width: 700px;
             margin-right: auto;
             margin-left: auto;
             backdrop-filter: blur(12px);
@@ -1217,7 +1213,6 @@
             <button class="tab-btn active" data-tab="tabCertificate" id="tabCertBtn">بحث عن شهادة</button>
             <button class="tab-btn" data-tab="tabStudent" id="tabStudentBtn">بحث عن متدرب</button>
             <button class="tab-btn" data-tab="tabAcademy" id="tabAcademyBtn">بحث عن أكاديمية</button>
-            <button class="tab-btn" data-tab="tabGraduates" id="tabGraduatesBtn">سجل الخريجين</button>
         </div>
 
         <!-- ===== تبويب الشهادة ===== -->
@@ -1245,17 +1240,17 @@
             </div>
         </div>
 
-        <!-- ===== تبويب المتدرب ===== -->
+        <!-- ===== تبويب المتدرب (الشامل) ===== -->
         <div class="tab-content" id="tabStudent">
             <div class="search-card">
                 <form id="studentSearchForm" onsubmit="return searchStudent(event)">
                     <div class="search-box">
                         <div class="search-row">
                             <input type="text" id="studentName" placeholder="اسم المتدرب" />
-                            <input type="text" id="studentNationalId" placeholder="الرقم القومي" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
+                            <input type="text" id="studentNationalId" placeholder="الرقم القومي (14 رقم)" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
                             <button type="submit" class="btn btn-primary" id="searchStudentBtn">بحث</button>
                         </div>
-                        <div class="search-hint" id="studentHint"></div>
+                        <div class="search-hint" id="studentHint">ابحث باسم المتدرب أو الرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل</div>
                     </div>
                 </form>
 
@@ -1271,7 +1266,7 @@
             </div>
         </div>
 
-        <!-- ===== تبويب الأكاديمية ===== -->
+        <!-- ===== تبويب الأكاديمية مع زر عرض جميع الأكاديميات ===== -->
         <div class="tab-content" id="tabAcademy">
             <div class="search-card">
                 <form id="academySearchForm" onsubmit="return searchAcademy(event)">
@@ -1284,6 +1279,13 @@
                     </div>
                 </form>
 
+                <!-- ===== زر عرض جميع الأكاديميات مع فلاتر ===== -->
+                <div style="text-align:center;margin-top:16px;">
+                    <button class="btn btn-primary" onclick="openAcademiesModal()" id="showAllAcademiesBtn" style="padding:10px 30px;font-size:14px;">
+                        عرض جميع الأكاديميات المعتمدة
+                    </button>
+                </div>
+
                 <div class="loader" id="academyLoader">
                     <div class="spinner"></div>
                     <div style="color:var(--text-muted);" id="academyLoaderText">جاري البحث...</div>
@@ -1293,29 +1295,6 @@
                 <div class="msg" id="academySuccess"></div>
 
                 <div class="result-box" id="academyResult"></div>
-            </div>
-        </div>
-
-        <!-- ===== تبويب سجل الخريجين ===== -->
-        <div class="tab-content" id="tabGraduates">
-            <div class="search-card">
-                <div class="search-box">
-                    <div class="search-row">
-                        <input type="text" id="graduatesSearchInput" placeholder="اسم الخريج" />
-                        <button class="btn btn-primary" onclick="searchGraduates()" id="graduatesSearchBtn">بحث</button>
-                    </div>
-                    <div class="search-hint" id="graduatesHint"></div>
-                </div>
-
-                <div class="loader" id="graduatesLoader">
-                    <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="graduatesLoaderText">جاري البحث...</div>
-                </div>
-
-                <div class="msg" id="graduatesError"></div>
-                <div class="msg" id="graduatesSuccess"></div>
-
-                <div class="result-box" id="graduatesResult"></div>
             </div>
         </div>
 
@@ -1346,6 +1325,15 @@
             <div class="modal-header">
                 <h2 id="modalAcademiesTitle">جميع الأكاديميات المعتمدة</h2>
                 <button class="close-btn" onclick="closeAcademiesModal()">✕</button>
+            </div>
+
+            <!-- فلاتر البحث داخل المودال -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+                <input type="text" id="modalFilterName" placeholder="بحث باسم الأكاديمية..." oninput="applyModalFilters()" style="padding:10px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg-hover);color:var(--text-color);font-family:inherit;outline:none;" />
+                <input type="text" id="modalFilterLicense" placeholder="بحث بالرقم الاعتمادي..." oninput="applyModalFilters()" style="padding:10px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg-hover);color:var(--text-color);font-family:inherit;outline:none;" />
+                <select id="modalFilterGovernorate" onchange="applyModalFilters()" style="padding:10px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg-hover);color:var(--text-color);font-family:inherit;outline:none;">
+                    <option value="">جميع المحافظات</option>
+                </select>
             </div>
 
             <div id="modalAcademiesContainer">
@@ -1405,9 +1393,8 @@
             heroTitle: '',
             heroSubtitle: '',
             certHint: '',
-            studentHint: '',
-            academyHint: '',
-            graduatesHint: '',
+            studentHint: 'ابحث باسم المتدرب أو الرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل',
+            academyHint: 'أدخل اسم الأكاديمية أو الرقم الاعتمادي',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1448,7 +1435,6 @@
                         if (data.certHint) settings.certHint = data.certHint;
                         if (data.studentHint) settings.studentHint = data.studentHint;
                         if (data.academyHint) settings.academyHint = data.academyHint;
-                        if (data.graduatesHint) settings.graduatesHint = data.graduatesHint;
 
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
@@ -1464,7 +1450,6 @@
                     applyColors(settings.colors);
                 });
 
-            // جلب الإعدادات المحلية للمستخدم
             loadLocalSettings();
         }
 
@@ -1483,7 +1468,6 @@
             const certHintEl = document.getElementById('certHint');
             const studentHintEl = document.getElementById('studentHint');
             const academyHintEl = document.getElementById('academyHint');
-            const graduatesHintEl = document.getElementById('graduatesHint');
 
             if (unionNameEl) unionNameEl.textContent = settings.unionName;
             if (committeeNameEl) committeeNameEl.textContent = settings.committeeName;
@@ -1499,9 +1483,7 @@
             if (certHintEl) certHintEl.textContent = settings.certHint;
             if (studentHintEl) studentHintEl.textContent = settings.studentHint;
             if (academyHintEl) academyHintEl.textContent = settings.academyHint;
-            if (graduatesHintEl) graduatesHintEl.textContent = settings.graduatesHint;
 
-            // Logo
             if (settings.logoUrl) {
                 const logoBox = document.getElementById('logoBox');
                 if (logoBox) {
@@ -1561,7 +1543,6 @@
 
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
 
@@ -1579,7 +1560,6 @@
                 if (localSettings) {
                     const parsed = JSON.parse(localSettings);
                     if (parsed.theme && parsed.theme.colors) {
-                        // تطبيق الثيم المحلي دون التأثير على باقي المستخدمين
                         const root = document.documentElement;
                         const colors = parsed.theme.colors;
                         if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
@@ -1613,21 +1593,7 @@
         }
 
         // ============================================================
-        // 5. حفظ الإعدادات المحلية
-        // ============================================================
-        function saveLocalSettings(themeColors) {
-            try {
-                const currentSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
-                currentSettings.theme = { colors: themeColors };
-                localStorage.setItem('userSettings', JSON.stringify(currentSettings));
-                console.log('✅ تم حفظ الإعدادات المحلية');
-            } catch (e) {
-                console.error('❌ خطأ في حفظ الإعدادات المحلية', e);
-            }
-        }
-
-        // ============================================================
-        // 6. دوال مساعدة
+        // 5. دوال مساعدة
         // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
@@ -1662,7 +1628,7 @@
         }
 
         // ============================================================
-        // 7. المصادقة
+        // 6. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1706,7 +1672,7 @@
         });
 
         // ============================================================
-        // 8. تحميل البيانات
+        // 7. تحميل البيانات
         // ============================================================
         function loadData() {
             Promise.all([
@@ -1731,6 +1697,7 @@
                 });
 
                 filteredAcademies = [...allAcademies];
+                populateModalGovernorates();
                 console.log('✅ تم تحميل البيانات: ' + allAcademies.length + ' أكاديمية، ' + allCertificates.length + ' شهادة');
                 loadModalAcademies();
             }).catch(function(err) {
@@ -1739,7 +1706,7 @@
         }
 
         // ============================================================
-        // 9. البحث عن شهادة
+        // 8. البحث عن شهادة
         // ============================================================
         function searchCertificate(e) {
             e.preventDefault();
@@ -1816,7 +1783,7 @@
         }
 
         // ============================================================
-        // 10. طباعة الشهادة
+        // 9. طباعة الشهادة
         // ============================================================
         function printCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -1940,7 +1907,7 @@
         }
 
         // ============================================================
-        // 11. تحميل PDF
+        // 10. تحميل PDF
         // ============================================================
         function downloadCertificatePDF(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -1949,7 +1916,6 @@
                 return;
             }
 
-            // نفس الكود الخاص بالطباعة مع تحويل إلى PDF
             const logoHtml = settings.logoUrl ?
                 `<img src="${settings.logoUrl}" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);box-shadow:0 0 30px var(--primary-glow);" />` :
                 '<div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--primary-color),var(--accent-color));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#fff;">ن.ت</div>';
@@ -2044,7 +2010,7 @@
         }
 
         // ============================================================
-        // 12. مشاركة الشهادة
+        // 11. مشاركة الشهادة
         // ============================================================
         function shareCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2078,7 +2044,7 @@
         }
 
         // ============================================================
-        // 13. البحث عن متدرب
+        // 12. البحث عن متدرب (الشامل - كل حاجة في مكان واحد)
         // ============================================================
         function searchStudent(e) {
             e.preventDefault();
@@ -2118,7 +2084,28 @@
                     return;
                 }
 
-                renderStudentResults(results);
+                // تجميع بيانات المتدرب
+                const studentData = {
+                    name: results[0]?.studentName || 'متدرب',
+                    nationalId: results[0]?.studentNationalId || '-',
+                    certificates: results,
+                    total: results.length,
+                    grades: results.filter(c => c.grade).map(c => c.grade),
+                    firstDate: results.reduce((min, c) => {
+                        const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) :
+                        null;
+                        if (!d) return min;
+                        return !min || d < min ? d : min;
+                    }, null),
+                    lastDate: results.reduce((max, c) => {
+                        const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) :
+                        null;
+                        if (!d) return max;
+                        return !max || d > max ? d : max;
+                    }, null)
+                };
+
+                renderStudentResults(studentData);
                 showResult('studentResult');
                 showMsg('studentSuccess', 'تم العثور على ' + results.length + ' شهادة للمتدرب', 'success');
             }, 500);
@@ -2126,13 +2113,14 @@
             return false;
         }
 
-        function renderStudentResults(certificates) {
+        function renderStudentResults(data) {
             const container = document.getElementById('studentResult');
 
-            const studentName = certificates[0]?.studentName || 'متدرب';
-            const nationalId = certificates[0]?.studentNationalId || '-';
+            const avgGrade = data.grades.length > 0 ? data.grades.join('، ') : '-';
+            const firstDate = data.firstDate ? data.firstDate.toLocaleDateString('ar-EG') : '-';
+            const lastDate = data.lastDate ? data.lastDate.toLocaleDateString('ar-EG') : '-';
 
-            let certsHtml = certificates.map(function(cert) {
+            let certsHtml = data.certificates.map(function(cert) {
                 const gradeClass = getGradeClass(cert.grade);
                 return `
                     <div class="student-cert-item">
@@ -2155,18 +2143,25 @@
                 <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
                         <div>
-                            <h3 style="font-size:20px;font-weight:700;color:var(--text-color);">${studentName}</h3>
-                            <p style="font-size:13px;color:var(--text-muted);">الرقم القومي: ${nationalId}</p>
+                            <h3 style="font-size:20px;font-weight:700;color:var(--text-color);">${data.name}</h3>
+                            <p style="font-size:13px;color:var(--text-muted);">الرقم القومي: ${data.nationalId}</p>
                         </div>
-                        <span style="font-size:14px;color:var(--primary-color);font-weight:600;">${certificates.length} شهادة</span>
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <span style="font-size:14px;color:var(--primary-color);font-weight:600;">${data.total} شهادة</span>
+                            <span style="font-size:11px;background:var(--success-bg);color:var(--success);padding:2px 12px;border-radius:20px;border:1px solid rgba(16,185,129,0.2);">🏅 وسام النقابة</span>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;background:var(--bg-hover);padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-light);">
+                        <div><span style="font-size:10px;color:var(--text-muted);">أول شهادة</span><br><span style="font-weight:600;">${firstDate}</span></div>
+                        <div><span style="font-size:10px;color:var(--text-muted);">آخر شهادة</span><br><span style="font-weight:600;">${lastDate}</span></div>
+                        <div><span style="font-size:10px;color:var(--text-muted);">التقديرات</span><br><span style="font-weight:600;">${avgGrade}</span></div>
                     </div>
                     <div class="student-certificates-list">
                         ${certsHtml}
                     </div>
                     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;">
-                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${studentName}')">طباعة الكل</button>
-                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${studentName}')">تحميل الكل PDF</button>
-                        <a href="graduates.html?student=${encodeURIComponent(studentName)}" class="btn btn-glow btn-sm">عرض سجل الخريجين الكامل</a>
+                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${data.name}')">طباعة الكل</button>
+                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${data.name}')">تحميل الكل PDF</button>
                     </div>
                 </div>
             `;
@@ -2199,7 +2194,7 @@
         }
 
         // ============================================================
-        // 14. البحث عن أكاديمية
+        // 13. البحث عن أكاديمية
         // ============================================================
         function searchAcademy(e) {
             e.preventDefault();
@@ -2303,7 +2298,7 @@
         }
 
         // ============================================================
-        // 15. مودال الأكاديميات
+        // 14. مودال الأكاديميات مع فلاتر
         // ============================================================
         function openAcademiesModal() {
             document.getElementById('academiesModal').classList.add('active');
@@ -2314,6 +2309,57 @@
         function closeAcademiesModal() {
             document.getElementById('academiesModal').classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        function populateModalGovernorates() {
+            const select = document.getElementById('modalFilterGovernorate');
+            if (!select) return;
+            const govs = new Set();
+            allAcademies.forEach(function(a) {
+                if (a.branches) {
+                    a.branches.forEach(function(b) {
+                        if (b.governorate) govs.add(b.governorate);
+                    });
+                }
+            });
+            govs.forEach(function(g) {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.textContent = g;
+                select.appendChild(opt);
+            });
+        }
+
+        function applyModalFilters() {
+            const nameFilter = document.getElementById('modalFilterName').value.trim().toLowerCase();
+            const licenseFilter = document.getElementById('modalFilterLicense').value.trim().toLowerCase();
+            const govFilter = document.getElementById('modalFilterGovernorate').value;
+
+            filteredAcademies = allAcademies.filter(function(item) {
+                let match = true;
+                if (nameFilter) {
+                    match = match && (item.name || '').toLowerCase().includes(nameFilter);
+                }
+                if (licenseFilter) {
+                    match = match && (item.licenseNumber || '').toLowerCase().includes(licenseFilter);
+                }
+                if (govFilter) {
+                    let hasGov = false;
+                    if (item.branches) {
+                        for (var i = 0; i < item.branches.length; i++) {
+                            if (item.branches[i].governorate === govFilter) {
+                                hasGov = true;
+                                break;
+                            }
+                        }
+                    }
+                    match = match && hasGov;
+                }
+                return match;
+            });
+
+            modalPage = 1;
+            renderModalAcademies();
         }
 
         function loadModalAcademies() {
@@ -2336,7 +2382,7 @@
             const container = document.getElementById('modalAcademiesContent');
 
             if (filteredAcademies.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:30px;">لا توجد أكاديميات</div>';
+                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:30px;">لا توجد أكاديميات تطابق معايير البحث</div>';
             } else {
                 container.innerHTML = pageItems.map(function(item) {
                     const certCount = allCertificates.filter(function(c) {
@@ -2396,125 +2442,7 @@
         });
 
         // ============================================================
-        // 16. سجل الخريجين
-        // ============================================================
-        function searchGraduates() {
-            const searchValue = document.getElementById('graduatesSearchInput').value.trim();
-
-            hideMsg('graduatesError');
-            hideMsg('graduatesSuccess');
-            hideResult('graduatesResult');
-            showLoader('graduatesLoader');
-
-            let results = [];
-
-            if (searchValue) {
-                const graduatesMap = {};
-                allCertificates.forEach(function(cert) {
-                    if (cert.studentName && cert.studentName.includes(searchValue)) {
-                        if (!graduatesMap[cert.studentName]) {
-                            graduatesMap[cert.studentName] = {
-                                name: cert.studentName,
-                                nationalId: cert.studentNationalId || '-',
-                                certificates: [],
-                                total: 0,
-                                grades: [],
-                                lastDate: null
-                            };
-                        }
-                        graduatesMap[cert.studentName].certificates.push(cert);
-                        graduatesMap[cert.studentName].total++;
-                        if (cert.grade) graduatesMap[cert.studentName].grades.push(cert.grade);
-                        if (cert.issuedAt) {
-                            const date = cert.issuedAt.toDate ? cert.issuedAt.toDate() : new Date(cert.issuedAt);
-                            if (!graduatesMap[cert.studentName].lastDate || date > graduatesMap[cert.studentName].lastDate) {
-                                graduatesMap[cert.studentName].lastDate = date;
-                            }
-                        }
-                    }
-                });
-
-                results = Object.values(graduatesMap);
-            } else {
-                const graduatesMap = {};
-                allCertificates.forEach(function(cert) {
-                    if (cert.studentName) {
-                        if (!graduatesMap[cert.studentName]) {
-                            graduatesMap[cert.studentName] = {
-                                name: cert.studentName,
-                                nationalId: cert.studentNationalId || '-',
-                                certificates: [],
-                                total: 0,
-                                grades: [],
-                                lastDate: null
-                            };
-                        }
-                        graduatesMap[cert.studentName].certificates.push(cert);
-                        graduatesMap[cert.studentName].total++;
-                        if (cert.grade) graduatesMap[cert.studentName].grades.push(cert.grade);
-                        if (cert.issuedAt) {
-                            const date = cert.issuedAt.toDate ? cert.issuedAt.toDate() : new Date(cert.issuedAt);
-                            if (!graduatesMap[cert.studentName].lastDate || date > graduatesMap[cert.studentName].lastDate) {
-                                graduatesMap[cert.studentName].lastDate = date;
-                            }
-                        }
-                    }
-                });
-                results = Object.values(graduatesMap);
-            }
-
-            setTimeout(function() {
-                hideLoader('graduatesLoader');
-
-                if (results.length === 0) {
-                    showMsg('graduatesError', 'لم يتم العثور على خريجين', 'error');
-                    return;
-                }
-
-                renderGraduates(results);
-                showResult('graduatesResult');
-                showMsg('graduatesSuccess', 'تم العثور على ' + results.length + ' خريج', 'success');
-            }, 500);
-        }
-
-        function renderGraduates(graduates) {
-            const container = document.getElementById('graduatesResult');
-
-            let graduatesHtml = graduates.map(function(grad, index) {
-                const avgGrade = grad.grades.length > 0 ? grad.grades.join('، ') : '-';
-                const lastDate = grad.lastDate ? grad.lastDate.toLocaleDateString('ar-EG') : '-';
-
-                return `
-                    <div class="student-cert-item" onclick="window.location.href='graduates.html?student=${encodeURIComponent(grad.name)}'">
-                        <div>
-                            <span style="font-weight:700;color:var(--text-color);font-size:16px;">${grad.name}</span>
-                            <span style="font-size:12px;color:var(--text-muted);margin-right:8px;">${grad.nationalId}</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                            <span class="badge" style="background:var(--primary-glow);color:var(--primary-color);padding:2px 12px;border-radius:20px;font-size:11px;">${grad.total} شهادة</span>
-                            <span style="font-size:11px;color:var(--text-muted);">آخر شهادة: ${lastDate}</span>
-                            <span style="font-size:11px;color:var(--text-muted);">التقديرات: ${avgGrade}</span>
-                            <span style="font-size:11px;color:var(--success);">وسام النقابة</span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            container.innerHTML = `
-                <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
-                        <h3 style="font-size:20px;font-weight:700;color:var(--text-color);">سجل الخريجين</h3>
-                        <span style="font-size:14px;color:var(--primary-color);font-weight:600;">${graduates.length} خريج</span>
-                    </div>
-                    <div class="student-certificates-list">
-                        ${graduatesHtml}
-                    </div>
-                </div>
-            `;
-        }
-
-        // ============================================================
-        // 17. علامات التبويب
+        // 15. علامات التبويب
         // ============================================================
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -2530,7 +2458,7 @@
         });
 
         // ============================================================
-        // 18. التحميل الأولي
+        // 16. التحميل الأولي
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
@@ -2545,10 +2473,12 @@
                 }, 500);
             }
 
-            console.log('✅ الصفحة الرئيسية - كل حرف من الإعدادات');
+            console.log('✅ الصفحة الرئيسية - النسخة النهائية');
             console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎓 سجل الخريجين متكامل');
+            console.log('📋 تبويب المتدرب شامل كل حاجة (الشهادات، الوسام، الإحصائيات)');
+            console.log('🏛️ مودال الأكاديميات مع فلاتر بحث متقدمة');
+            console.log('🗑️ تم إزالة تبويب سجل الخريجين (مدمج في بحث المتدرب)');
         });
     </script>
 
