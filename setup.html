@@ -3,28 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="keywords" id="metaKeywords" content="" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="" />
-    <meta property="og:description" id="ogDescription" content="" />
-    <meta property="og:image" id="ogImage" content="" />
-    <meta property="og:url" id="ogUrl" content="" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="" />
-    <meta property="og:locale" content="ar_EG" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="" />
-    <meta name="twitter:description" id="twitterDescription" content="" />
-    <meta name="twitter:image" id="twitterImage" content="" />
-
-    <!-- Icons -->
-    <link rel="icon" id="favicon" href="" />
-    <link rel="apple-touch-icon" id="appleIcon" href="" />
+    <title>تهيئة النظام - نقابة تكنولوجيا المعلومات</title>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -405,6 +384,12 @@
             gap: 16px;
         }
 
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
         .upload-area {
             border: 2px dashed rgba(255,255,255,0.10);
             border-radius: var(--radius-sm);
@@ -598,6 +583,7 @@
 
         @media (max-width: 768px) {
             .form-row { grid-template-columns: 1fr; }
+            .form-row-3 { grid-template-columns: 1fr 1fr; }
             .container { padding: 12px; }
             .card { padding: 18px; border-radius: 20px; }
             .header { flex-direction: column; align-items: stretch; text-align: center; }
@@ -610,6 +596,7 @@
             .status-grid { grid-template-columns: repeat(2, 1fr); }
             .logo h1 { font-size: 18px; }
             .logo-box { width: 44px; height: 44px; font-size: 16px; }
+            .form-row-3 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -647,12 +634,12 @@
                 <div class="logo">
                     <div class="logo-box">ن.ت</div>
                     <div>
-                        <h1 id="pageTitleHeader"></h1>
-                        <p id="pageSubtitle"></p>
+                        <h1>تهيئة النظام</h1>
+                        <p>نقابة تكنولوجيا المعلومات والبرمجيات</p>
                     </div>
                 </div>
                 <div class="flex" style="gap:8px;">
-                    <a href="index.html" class="btn btn-outline btn-sm" id="homeBtn"></a>
+                    <a href="index.html" class="btn btn-outline btn-sm">الرئيسية</a>
                 </div>
             </div>
 
@@ -660,134 +647,396 @@
 
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <div style="color:var(--text-muted);" id="loaderText"></div>
+                <div style="color:var(--text-muted);" id="loaderText">جاري التنفيذ...</div>
             </div>
 
             <div class="status-grid" id="statusGrid">
                 <div class="status-item">
                     <div class="icon">🔥</div>
-                    <div class="title" id="statusFirebaseTitle"></div>
-                    <div class="value pending" id="sFirebase"></div>
+                    <div class="title">Firebase</div>
+                    <div class="value pending" id="sFirebase">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">☁️</div>
-                    <div class="title" id="statusCloudTitle"></div>
-                    <div class="value pending" id="sCloudinary"></div>
+                    <div class="title">Cloudinary</div>
+                    <div class="value pending" id="sCloudinary">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">👤</div>
-                    <div class="title" id="statusUsersTitle"></div>
-                    <div class="value pending" id="sUsers"></div>
+                    <div class="title">المستخدمين</div>
+                    <div class="value pending" id="sUsers">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🏛️</div>
-                    <div class="title" id="statusAcademiesTitle"></div>
-                    <div class="value pending" id="sAcademies"></div>
+                    <div class="title">الأكاديميات</div>
+                    <div class="value pending" id="sAcademies">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📜</div>
-                    <div class="title" id="statusCertificatesTitle"></div>
-                    <div class="value pending" id="sCertificates"></div>
+                    <div class="title">الشهادات</div>
+                    <div class="value pending" id="sCertificates">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📊</div>
-                    <div class="title" id="statusActivitiesTitle"></div>
-                    <div class="value pending" id="sActivities"></div>
+                    <div class="title">النشاطات</div>
+                    <div class="value pending" id="sActivities">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🔍</div>
-                    <div class="title" id="statusSearchTitle"></div>
-                    <div class="value pending" id="sSearchLogs"></div>
+                    <div class="title">سجل البحث</div>
+                    <div class="value pending" id="sSearchLogs">⏳ جاري...</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">⚙️</div>
-                    <div class="title" id="statusSettingsTitle"></div>
-                    <div class="value pending" id="sSettings"></div>
+                    <div class="title">الإعدادات</div>
+                    <div class="value pending" id="sSettings">⏳ جاري...</div>
                 </div>
             </div>
 
             <div style="text-align:center;margin-bottom:16px;position:relative;z-index:2;">
                 <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="font-size:18px;padding:16px 40px;">
-                    <span id="mainBtnText"></span>
+                    🚀 تهيئة النظام بالكامل
                 </button>
             </div>
 
-            <div style="font-size:12px;color:var(--text-dim);text-align:center;margin-bottom:16px;position:relative;z-index:2;" id="mainBtnDesc"></div>
+            <div style="font-size:12px;color:var(--text-dim);text-align:center;margin-bottom:16px;position:relative;z-index:2;">
+                سيتم إنشاء قاعدة البيانات بالكامل مع مستخدم سوبر أدمن
+            </div>
 
+            <!-- ===== بيانات السوبر أدمن ===== -->
             <div class="border-top">
-                <div class="section-title" id="adminSectionTitle"></div>
+                <div class="section-title">👑 بيانات السوبر أدمن</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="adminEmailLabel"></label>
+                        <label>البريد الإلكتروني</label>
                         <input type="email" id="adminEmail" value="superadmin@itws.com" />
                     </div>
                     <div class="form-group">
-                        <label id="adminPasswordLabel"></label>
+                        <label>كلمة المرور</label>
                         <input type="password" id="adminPassword" value="Admin@2026" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="adminNameLabel"></label>
+                        <label>الاسم الكامل</label>
                         <input type="text" id="adminName" value="سوبر أدمن النظام" />
                     </div>
                     <div class="form-group">
-                        <label id="adminPhoneLabel"></label>
+                        <label>رقم الهاتف</label>
                         <input type="text" id="adminPhone" value="01234567890" />
                     </div>
                 </div>
             </div>
 
+            <!-- ===== الإعدادات العامة ===== -->
             <div class="border-top">
-                <div class="section-title" id="settingsSectionTitle"></div>
+                <div class="section-title">⚙️ الإعدادات العامة</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="unionNameLabel"></label>
+                        <label>اسم النقابة</label>
                         <input type="text" id="unionName" value="نقابة تكنولوجيا المعلومات والبرمجيات" />
                     </div>
                     <div class="form-group">
-                        <label id="committeeNameLabel"></label>
+                        <label>اسم اللجنة</label>
                         <input type="text" id="committeeName" value="لجنة التحول الرقمي والتدريب" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="splashDurationLabel"></label>
+                        <label>مدة العرض الترحيبي (ثواني)</label>
                         <input type="number" id="splashDuration" value="3" min="1" max="15" />
                     </div>
                     <div class="form-group">
-                        <label id="sessionTimeoutLabel"></label>
+                        <label>مدة الجلسة (دقائق)</label>
                         <input type="number" id="sessionTimeout" value="30" min="5" max="120" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="infoBoxLabel"></label>
+                        <label>نص البوكس تحت البحث</label>
                         <input type="text" id="infoBoxText" value="يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها." />
                     </div>
                     <div class="form-group">
-                        <label id="footerTextLabel"></label>
+                        <label>نص تذييل الصفحة</label>
                         <input type="text" id="footerText" value="© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="servicesTextLabel"></label>
+                        <label>نص زر الخدمات</label>
                         <input type="text" id="servicesBtnText" value="خدمات النقابة الإلكترونية" />
                     </div>
                     <div class="form-group">
-                        <label id="servicesLinkLabel"></label>
+                        <label>رابط زر الخدمات</label>
                         <input type="url" id="servicesBtnLink" value="https://itws.org.eg/services" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label id="presidentNameLabel"></label>
+                    <label>اسم النقيب العام</label>
                     <input type="text" id="presidentName" value="المهندس / محمود جميل" />
                 </div>
             </div>
 
+            <!-- ===== إعدادات التصميم ===== -->
             <div class="border-top">
-                <div class="section-title" id="imagesSectionTitle"></div>
+                <div class="section-title">🎨 إعدادات التصميم</div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>اللون الأساسي</label>
+                        <input type="color" id="primaryColor" value="#C9A84C" />
+                    </div>
+                    <div class="form-group">
+                        <label>اللون الثانوي</label>
+                        <input type="color" id="accentColor" value="#7C3AED" />
+                    </div>
+                    <div class="form-group">
+                        <label>لون الخلفية</label>
+                        <input type="color" id="bgColor" value="#0A0E1A" />
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>لون النص</label>
+                        <input type="color" id="textColor" value="#FFFFFF" />
+                    </div>
+                    <div class="form-group">
+                        <label>لون النجاح</label>
+                        <input type="color" id="successColor" value="#10B981" />
+                    </div>
+                    <div class="form-group">
+                        <label>لون الخطأ</label>
+                        <input type="color" id="errorColor" value="#EF4444" />
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>لون التحذير</label>
+                        <input type="color" id="warningColor" value="#F59E0B" />
+                    </div>
+                    <div class="form-group">
+                        <label>لون المعلومات</label>
+                        <input type="color" id="infoColor" value="#3B82F6" />
+                    </div>
+                    <div class="form-group">
+                        <label>نوع الخط</label>
+                        <select id="fontFamily">
+                            <option value="Cairo">Cairo</option>
+                            <option value="Tajawal">Tajawal</option>
+                            <option value="Amiri">Amiri</option>
+                            <option value="Noto Kufi Arabic">Noto Kufi Arabic</option>
+                            <option value="Almarai">Almarai</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>حجم الخط</label>
+                        <select id="fontSize">
+                            <option value="14px">صغير</option>
+                            <option value="16px" selected>متوسط</option>
+                            <option value="18px">كبير</option>
+                            <option value="20px">كبير جداً</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>شكل البطاقات</label>
+                        <select id="cardStyle">
+                            <option value="glass">زجاجي</option>
+                            <option value="solid">صلب</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الحركات</label>
+                        <select id="animations">
+                            <option value="true">مفعلة</option>
+                            <option value="false">معطلة</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== إعدادات الشهادات ===== -->
+            <div class="border-top">
+                <div class="section-title">📜 إعدادات الشهادات</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>تنسيق كود الشهادة</label>
+                        <input type="text" id="certCodeFormat" value="YYYY-####" />
+                    </div>
+                    <div class="form-group">
+                        <label>عدد مرات الطباعة المسموحة</label>
+                        <input type="number" id="printLimit" value="3" min="1" max="10" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>عنوان الشهادة (المطبوع)</label>
+                    <input type="text" id="certificateTitle" value="شهادة اجتياز دورة تدريبية" />
+                </div>
+            </div>
+
+            <!-- ===== إعدادات الأمان ===== -->
+            <div class="border-top">
+                <div class="section-title">🔐 إعدادات الأمان</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>محاولات الدخول المسموحة</label>
+                        <input type="number" id="maxLoginAttempts" value="5" min="3" max="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>وضع الصيانة</label>
+                        <select id="maintenanceMode">
+                            <option value="false">معطل</option>
+                            <option value="true">مفعل</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>السماح بالتسجيل</label>
+                    <select id="allowRegistration">
+                        <option value="true">مفعل</option>
+                        <option value="false">معطل</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ===== نصوص الشاشات ===== -->
+            <div class="border-top">
+                <div class="section-title">📝 نصوص الشاشات</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>عنوان الصفحة الرئيسية</label>
+                        <input type="text" id="heroTitle" value="تحقق من صحة شهاداتك التدريبية" />
+                    </div>
+                    <div class="form-group">
+                        <label>النص التعريفي للصفحة الرئيسية</label>
+                        <input type="text" id="heroSubtitle" value="منصة رسمية موثوقة من نقابة تكنولوجيا المعلومات" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر تسجيل الدخول</label>
+                        <input type="text" id="loginBtnText" value="تسجيل الدخول" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر تسجيل الخروج</label>
+                        <input type="text" id="logoutBtnText" value="تسجيل الخروج" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر البحث عن شهادة</label>
+                        <input type="text" id="searchCertBtnText" value="بحث" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر البحث عن متدرب</label>
+                        <input type="text" id="searchStudentBtnText" value="بحث" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر البحث عن أكاديمية</label>
+                        <input type="text" id="searchAcademyBtnText" value="بحث" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر البحث في سجل الخريجين</label>
+                        <input type="text" id="graduatesSearchBtnText" value="بحث" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص تبويب بحث عن شهادة</label>
+                        <input type="text" id="tabCertText" value="بحث عن شهادة" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص تبويب بحث عن متدرب</label>
+                        <input type="text" id="tabStudentText" value="بحث عن متدرب" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص تبويب بحث عن أكاديمية</label>
+                        <input type="text" id="tabAcademyText" value="بحث عن أكاديمية" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص تبويب سجل الخريجين</label>
+                        <input type="text" id="tabGraduatesText" value="سجل الخريجين" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص رسالة النجاح</label>
+                        <input type="text" id="msgSuccess" value="تمت العملية بنجاح" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص رسالة الخطأ</label>
+                        <input type="text" id="msgError" value="حدث خطأ" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص رسالة التحذير</label>
+                        <input type="text" id="msgWarning" value="تحذير" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص رسالة المعلومات</label>
+                        <input type="text" id="msgInfo" value="معلومات" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر الطباعة</label>
+                        <input type="text" id="printBtnText" value="طباعة" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر تحميل PDF</label>
+                        <input type="text" id="pdfBtnText" value="تحميل PDF" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر المشاركة</label>
+                        <input type="text" id="shareBtnText" value="مشاركة" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر التعديل</label>
+                        <input type="text" id="editBtnText" value="تعديل" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر الحذف</label>
+                        <input type="text" id="deleteBtnText" value="حذف" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر الإضافة</label>
+                        <input type="text" id="addBtnText" value="إضافة" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر الحفظ</label>
+                        <input type="text" id="saveBtnText" value="حفظ" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر الإلغاء</label>
+                        <input type="text" id="cancelBtnText" value="إلغاء" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>نص زر إعادة تعيين المصادقة</label>
+                        <input type="text" id="resetAuthBtnText" value="إعادة تعيين المصادقة" />
+                    </div>
+                    <div class="form-group">
+                        <label>نص زر تحديث الحالة</label>
+                        <input type="text" id="checkStatusBtnText" value="تحديث الحالة" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== رفع اللوجو والختم ===== -->
+            <div class="border-top">
+                <div class="section-title">🖼️ رفع اللوجو والختم</div>
 
                 <div class="form-row">
                     <div>
@@ -795,12 +1044,12 @@
                             <div class="preview" id="logoPreview">
                                 <img src="" alt="لوجو النقابة" style="display:none;" />
                             </div>
-                            <div class="text" id="logoPlaceholder"></div>
-                            <div class="sub" id="logoSub"></div>
+                            <div class="text" id="logoPlaceholder">اضغط لرفع لوجو النقابة</div>
+                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
                             <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
                         </div>
                         <div class="flex" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn"></button>
+                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn">رفع اللوجو</button>
                             <span class="upload-status" id="logoStatus"></span>
                         </div>
                     </div>
@@ -810,37 +1059,38 @@
                             <div class="preview" id="stampPreview">
                                 <img src="" alt="ختم النقابة" style="display:none;" />
                             </div>
-                            <div class="text" id="stampPlaceholder"></div>
-                            <div class="sub" id="stampSub"></div>
+                            <div class="text" id="stampPlaceholder">اضغط لرفع ختم النقابة</div>
+                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
                             <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
                         </div>
                         <div class="flex" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn"></button>
+                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn">رفع الختم</button>
                             <span class="upload-status" id="stampStatus"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex" style="gap:10px;margin-top:12px;">
-                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromFirestore()" id="loadImagesBtn"></button>
-                    <button class="btn btn-danger btn-sm" onclick="clearImages()" id="clearImagesBtn"></button>
+                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromFirestore()">تحميل الصور الحالية</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearImages()">حذف الصور</button>
                 </div>
             </div>
 
+            <!-- ===== سجل العمليات ===== -->
             <div class="border-top">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                    <div class="section-title" style="margin-bottom:0;" id="logTitle"></div>
-                    <button class="btn btn-outline btn-sm" onclick="clearLog()" id="clearLogBtn"></button>
+                    <div class="section-title" style="margin-bottom:0;">📋 سجل العمليات</div>
+                    <button class="btn btn-outline btn-sm" onclick="clearLog()">🗑️ مسح</button>
                 </div>
                 <div class="log" id="log">
-                    <div class="line info" id="logReady"></div>
+                    <div class="line info">⏳ جاهز - اضغط على زر التهيئة</div>
                 </div>
             </div>
 
         </div>
 
         <div class="footer">
-            <span id="footerText"></span>
+            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات
         </div>
 
     </div>
@@ -879,214 +1129,8 @@
         let stampFile = null;
         let isRunning = false;
 
-        let settings = {
-            pageTitleHeader: 'تهيئة النظام',
-            pageSubtitle: 'نقابة تكنولوجيا المعلومات والبرمجيات',
-            homeBtn: 'الرئيسية',
-            loaderText: 'جاري التنفيذ...',
-            mainBtnText: 'تهيئة النظام بالكامل',
-            mainBtnDesc: 'سيتم إنشاء قاعدة البيانات بالكامل مع مستخدم سوبر أدمن',
-            adminSectionTitle: 'بيانات السوبر أدمن',
-            adminEmailLabel: 'البريد الإلكتروني',
-            adminPasswordLabel: 'كلمة المرور',
-            adminNameLabel: 'الاسم الكامل',
-            adminPhoneLabel: 'رقم الهاتف',
-            settingsSectionTitle: 'إعدادات النظام',
-            unionNameLabel: 'اسم النقابة',
-            committeeNameLabel: 'اسم اللجنة',
-            splashDurationLabel: 'مدة العرض الترحيبي (ثواني)',
-            sessionTimeoutLabel: 'مدة الجلسة (دقائق)',
-            infoBoxLabel: 'نص البوكس تحت البحث',
-            footerTextLabel: 'نص تذييل الصفحة',
-            servicesTextLabel: 'نص زر الخدمات',
-            servicesLinkLabel: 'رابط زر الخدمات',
-            presidentNameLabel: 'اسم النقيب العام',
-            imagesSectionTitle: 'رفع اللوجو والختم',
-            logoPlaceholder: 'اضغط لرفع لوجو النقابة',
-            logoSub: 'PNG, JPG, SVG • حد أقصى 2MB',
-            stampPlaceholder: 'اضغط لرفع ختم النقابة',
-            stampSub: 'PNG, JPG, SVG • حد أقصى 2MB',
-            uploadLogoBtn: 'رفع اللوجو',
-            uploadStampBtn: 'رفع الختم',
-            loadImagesBtn: 'تحميل الصور الحالية',
-            clearImagesBtn: 'حذف الصور',
-            logTitle: 'سجل العمليات',
-            clearLogBtn: 'مسح السجل',
-            logReady: 'جاهز - اضغط على زر التهيئة',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات',
-            statusFirebaseTitle: 'Firebase',
-            statusCloudTitle: 'Cloudinary',
-            statusUsersTitle: 'المستخدمين',
-            statusAcademiesTitle: 'الأكاديميات',
-            statusCertificatesTitle: 'الشهادات',
-            statusActivitiesTitle: 'النشاطات',
-            statusSearchTitle: 'سجل البحث',
-            statusSettingsTitle: 'الإعدادات',
-            unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
-            committeeName: 'لجنة التحول الرقمي والتدريب',
-            splashDuration: 3,
-            sessionTimeout: 30,
-            infoBoxText: 'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-            servicesText: 'خدمات النقابة الإلكترونية',
-            servicesLink: 'https://itws.org.eg/services',
-            presidentName: 'المهندس / محمود جميل',
-            colors: {
-                primary: '#C9A84C',
-                accent: '#7C3AED',
-                background: '#0A0E1A',
-                text: '#FFFFFF',
-                textSecondary: 'rgba(255,255,255,0.7)',
-                textMuted: 'rgba(255,255,255,0.4)',
-                textDim: 'rgba(255,255,255,0.15)',
-                success: '#10B981',
-                error: '#EF4444',
-                warning: '#F59E0B',
-                info: '#3B82F6',
-                border: 'rgba(255,255,255,0.06)',
-                cardBg: 'rgba(255,255,255,0.04)'
-            }
-        };
-
         // ============================================================
-        // 4. جلب الإعدادات
-        // ============================================================
-        function loadSettings() {
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
-                        applyColors(settings.colors);
-                    } else {
-                        applyColors(settings.colors);
-                    }
-                })
-                .catch(function() {
-                    applyColors(settings.colors);
-                });
-
-            applyTextSettings();
-        }
-
-        function applyTextSettings() {
-            const pageTitle = document.getElementById('pageTitle');
-            const pageTitleHeader = document.getElementById('pageTitleHeader');
-            const pageSubtitle = document.getElementById('pageSubtitle');
-            const homeBtn = document.getElementById('homeBtn');
-            const loaderText = document.getElementById('loaderText');
-            const mainBtnText = document.getElementById('mainBtnText');
-            const mainBtnDesc = document.getElementById('mainBtnDesc');
-            const adminSectionTitle = document.getElementById('adminSectionTitle');
-            const adminEmailLabel = document.getElementById('adminEmailLabel');
-            const adminPasswordLabel = document.getElementById('adminPasswordLabel');
-            const adminNameLabel = document.getElementById('adminNameLabel');
-            const adminPhoneLabel = document.getElementById('adminPhoneLabel');
-            const settingsSectionTitle = document.getElementById('settingsSectionTitle');
-            const unionNameLabel = document.getElementById('unionNameLabel');
-            const committeeNameLabel = document.getElementById('committeeNameLabel');
-            const splashDurationLabel = document.getElementById('splashDurationLabel');
-            const sessionTimeoutLabel = document.getElementById('sessionTimeoutLabel');
-            const infoBoxLabel = document.getElementById('infoBoxLabel');
-            const footerTextLabel = document.getElementById('footerTextLabel');
-            const servicesTextLabel = document.getElementById('servicesTextLabel');
-            const servicesLinkLabel = document.getElementById('servicesLinkLabel');
-            const presidentNameLabel = document.getElementById('presidentNameLabel');
-            const imagesSectionTitle = document.getElementById('imagesSectionTitle');
-            const logoPlaceholder = document.getElementById('logoPlaceholder');
-            const logoSub = document.getElementById('logoSub');
-            const stampPlaceholder = document.getElementById('stampPlaceholder');
-            const stampSub = document.getElementById('stampSub');
-            const uploadLogoBtn = document.getElementById('uploadLogoBtn');
-            const uploadStampBtn = document.getElementById('uploadStampBtn');
-            const loadImagesBtn = document.getElementById('loadImagesBtn');
-            const clearImagesBtn = document.getElementById('clearImagesBtn');
-            const logTitle = document.getElementById('logTitle');
-            const clearLogBtn = document.getElementById('clearLogBtn');
-            const logReady = document.getElementById('logReady');
-            const footerText = document.getElementById('footerText');
-            const statusFirebaseTitle = document.getElementById('statusFirebaseTitle');
-            const statusCloudTitle = document.getElementById('statusCloudTitle');
-            const statusUsersTitle = document.getElementById('statusUsersTitle');
-            const statusAcademiesTitle = document.getElementById('statusAcademiesTitle');
-            const statusCertificatesTitle = document.getElementById('statusCertificatesTitle');
-            const statusActivitiesTitle = document.getElementById('statusActivitiesTitle');
-            const statusSearchTitle = document.getElementById('statusSearchTitle');
-            const statusSettingsTitle = document.getElementById('statusSettingsTitle');
-
-            if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
-            if (pageTitleHeader) pageTitleHeader.textContent = settings.pageTitleHeader;
-            if (pageSubtitle) pageSubtitle.textContent = settings.pageSubtitle;
-            if (homeBtn) homeBtn.textContent = settings.homeBtn;
-            if (loaderText) loaderText.textContent = settings.loaderText;
-            if (mainBtnText) mainBtnText.textContent = settings.mainBtnText;
-            if (mainBtnDesc) mainBtnDesc.textContent = settings.mainBtnDesc;
-            if (adminSectionTitle) adminSectionTitle.textContent = settings.adminSectionTitle;
-            if (adminEmailLabel) adminEmailLabel.textContent = settings.adminEmailLabel;
-            if (adminPasswordLabel) adminPasswordLabel.textContent = settings.adminPasswordLabel;
-            if (adminNameLabel) adminNameLabel.textContent = settings.adminNameLabel;
-            if (adminPhoneLabel) adminPhoneLabel.textContent = settings.adminPhoneLabel;
-            if (settingsSectionTitle) settingsSectionTitle.textContent = settings.settingsSectionTitle;
-            if (unionNameLabel) unionNameLabel.textContent = settings.unionNameLabel;
-            if (committeeNameLabel) committeeNameLabel.textContent = settings.committeeNameLabel;
-            if (splashDurationLabel) splashDurationLabel.textContent = settings.splashDurationLabel;
-            if (sessionTimeoutLabel) sessionTimeoutLabel.textContent = settings.sessionTimeoutLabel;
-            if (infoBoxLabel) infoBoxLabel.textContent = settings.infoBoxLabel;
-            if (footerTextLabel) footerTextLabel.textContent = settings.footerTextLabel;
-            if (servicesTextLabel) servicesTextLabel.textContent = settings.servicesTextLabel;
-            if (servicesLinkLabel) servicesLinkLabel.textContent = settings.servicesLinkLabel;
-            if (presidentNameLabel) presidentNameLabel.textContent = settings.presidentNameLabel;
-            if (imagesSectionTitle) imagesSectionTitle.textContent = settings.imagesSectionTitle;
-            if (logoPlaceholder) logoPlaceholder.textContent = settings.logoPlaceholder;
-            if (logoSub) logoSub.textContent = settings.logoSub;
-            if (stampPlaceholder) stampPlaceholder.textContent = settings.stampPlaceholder;
-            if (stampSub) stampSub.textContent = settings.stampSub;
-            if (uploadLogoBtn) uploadLogoBtn.textContent = settings.uploadLogoBtn;
-            if (uploadStampBtn) uploadStampBtn.textContent = settings.uploadStampBtn;
-            if (loadImagesBtn) loadImagesBtn.textContent = settings.loadImagesBtn;
-            if (clearImagesBtn) clearImagesBtn.textContent = settings.clearImagesBtn;
-            if (logTitle) logTitle.textContent = settings.logTitle;
-            if (clearLogBtn) clearLogBtn.textContent = settings.clearLogBtn;
-            if (logReady) logReady.textContent = settings.logReady;
-            if (footerText) footerText.textContent = settings.footerText;
-            if (statusFirebaseTitle) statusFirebaseTitle.textContent = settings.statusFirebaseTitle;
-            if (statusCloudTitle) statusCloudTitle.textContent = settings.statusCloudTitle;
-            if (statusUsersTitle) statusUsersTitle.textContent = settings.statusUsersTitle;
-            if (statusAcademiesTitle) statusAcademiesTitle.textContent = settings.statusAcademiesTitle;
-            if (statusCertificatesTitle) statusCertificatesTitle.textContent = settings.statusCertificatesTitle;
-            if (statusActivitiesTitle) statusActivitiesTitle.textContent = settings.statusActivitiesTitle;
-            if (statusSearchTitle) statusSearchTitle.textContent = settings.statusSearchTitle;
-            if (statusSettingsTitle) statusSettingsTitle.textContent = settings.statusSettingsTitle;
-        }
-
-        function applyColors(colors) {
-            const root = document.documentElement;
-            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
-            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
-            if (colors.background) root.style.setProperty('--bg-color', colors.background);
-            if (colors.text) root.style.setProperty('--text-color', colors.text);
-            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
-            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
-            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
-            if (colors.success) root.style.setProperty('--success', colors.success);
-            if (colors.error) root.style.setProperty('--error', colors.error);
-            if (colors.warning) root.style.setProperty('--warning', colors.warning);
-            if (colors.info) root.style.setProperty('--info', colors.info);
-            if (colors.border) root.style.setProperty('--border', colors.border);
-            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
-
-            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
-            root.style.setProperty('--primary-glow', primaryGlow);
-            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
-            root.style.setProperty('--accent-glow', accentGlow);
-
-            if (colors.background) {
-                document.body.style.background = colors.background;
-            }
-        }
-
-        // ============================================================
-        // 5. دوال مساعدة
+        // 4. دوال مساعدة
         // ============================================================
         function addLog(msg, type = 'info') {
             const log = document.getElementById('log');
@@ -1100,7 +1144,7 @@
 
         function clearLog() {
             document.getElementById('log').innerHTML = '';
-            addLog(settings.logReady, 'info');
+            addLog('🗑️ تم مسح السجل', 'info');
         }
 
         function showMsg(msg, type = 'info') {
@@ -1140,7 +1184,7 @@
         }
 
         // ============================================================
-        // 6. رفع الصور
+        // 5. رفع الصور
         // ============================================================
         function previewLogo(e) {
             const file = e.target.files[0];
@@ -1241,9 +1285,9 @@
                     document.getElementById('logoStatus').textContent = 'تم الرفع';
                     document.getElementById('logoStatus').className = 'upload-status show success';
                     btn.disabled = false;
-                    btn.textContent = settings.uploadLogoBtn;
+                    btn.textContent = 'رفع اللوجو';
                     logoFile = null;
-                    addLog('تم رفع اللوجو', 'success');
+                    addLog('✅ تم رفع اللوجو', 'success');
                     loadImagesFromFirestore();
                 })
                 .catch(function(err) {
@@ -1251,8 +1295,8 @@
                     document.getElementById('logoStatus').textContent = 'فشل الرفع';
                     document.getElementById('logoStatus').className = 'upload-status show error';
                     btn.disabled = false;
-                    btn.textContent = settings.uploadLogoBtn;
-                    addLog('فشل رفع اللوجو: ' + (err.message || err), 'error');
+                    btn.textContent = 'رفع اللوجو';
+                    addLog('❌ فشل رفع اللوجو: ' + (err.message || err), 'error');
                 });
         }
 
@@ -1277,9 +1321,9 @@
                     document.getElementById('stampStatus').textContent = 'تم الرفع';
                     document.getElementById('stampStatus').className = 'upload-status show success';
                     btn.disabled = false;
-                    btn.textContent = settings.uploadStampBtn;
+                    btn.textContent = 'رفع الختم';
                     stampFile = null;
-                    addLog('تم رفع الختم', 'success');
+                    addLog('✅ تم رفع الختم', 'success');
                     loadImagesFromFirestore();
                 })
                 .catch(function(err) {
@@ -1287,8 +1331,8 @@
                     document.getElementById('stampStatus').textContent = 'فشل الرفع';
                     document.getElementById('stampStatus').className = 'upload-status show error';
                     btn.disabled = false;
-                    btn.textContent = settings.uploadStampBtn;
-                    addLog('فشل رفع الختم: ' + (err.message || err), 'error');
+                    btn.textContent = 'رفع الختم';
+                    addLog('❌ فشل رفع الختم: ' + (err.message || err), 'error');
                 });
         }
 
@@ -1323,20 +1367,20 @@
             }, { merge: true })
             .then(function() {
                 document.querySelector('#logoPreview img').style.display = 'none';
-                document.getElementById('logoPlaceholder').textContent = settings.logoPlaceholder;
+                document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
                 document.querySelector('#stampPreview img').style.display = 'none';
-                document.getElementById('stampPlaceholder').textContent = settings.stampPlaceholder;
+                document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
                 showMsg('تم حذف الصور بنجاح', 'success');
-                addLog('تم حذف الصور', 'success');
+                addLog('✅ تم حذف الصور', 'success');
             })
             .catch(function(err) {
                 showMsg('حدث خطأ: ' + err.message, 'error');
-                addLog('خطأ: ' + err.message, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
             });
         }
 
         // ============================================================
-        // 7. مسح جميع المجموعات
+        // 6. مسح جميع المجموعات
         // ============================================================
         async function clearAllCollections() {
             const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
@@ -1346,7 +1390,7 @@
                 try {
                     const snap = await db.collection(name).get();
                     if (snap.empty) {
-                        addLog('جدول ' + name + ' فارغ', 'info');
+                        addLog('📭 جدول ' + name + ' فارغ', 'info');
                         continue;
                     }
 
@@ -1359,7 +1403,7 @@
 
                     await batch.commit();
                     cleared++;
-                    addLog('تم مسح جدول: ' + name + ' (' + snap.size + ' وثيقة)', 'warning');
+                    addLog('🗑️ تم مسح جدول: ' + name + ' (' + snap.size + ' وثيقة)', 'warning');
 
                     await sleep(200);
 
@@ -1370,19 +1414,19 @@
                     });
 
                 } catch (err) {
-                    addLog('خطأ في مسح ' + name + ': ' + err.message, 'error');
+                    addLog('❌ خطأ في مسح ' + name + ': ' + err.message, 'error');
                 }
             }
 
-            addLog('تم مسح ' + cleared + ' جداول', 'success');
+            addLog('✅ تم مسح ' + cleared + ' جداول', 'success');
             return cleared;
         }
 
         // ============================================================
-        // 8. إنشاء المستخدم
+        // 7. إنشاء المستخدم
         // ============================================================
         async function createUser(email, password, name, phone) {
-            addLog('جاري إنشاء المستخدم: ' + email, 'info');
+            addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
 
             try {
                 try { await auth.signOut(); } catch(e) {}
@@ -1391,7 +1435,7 @@
                 try {
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     const uid = cred.user.uid;
-                    addLog('المستخدم موجود مسبقاً', 'success');
+                    addLog('✅ المستخدم موجود مسبقاً', 'success');
 
                     await db.collection('users').doc(uid).set({
                         uid: uid,
@@ -1409,7 +1453,7 @@
                     if (loginErr.code === 'auth/user-not-found') {
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         const uid = cred.user.uid;
-                        addLog('تم إنشاء مستخدم جديد', 'success');
+                        addLog('✅ تم إنشاء مستخدم جديد', 'success');
 
                         await db.collection('users').doc(uid).set({
                             uid: uid,
@@ -1428,84 +1472,163 @@
                     }
                 }
             } catch (err) {
-                addLog('فشل: ' + err.message, 'error');
+                addLog('❌ فشل: ' + err.message, 'error');
                 throw err;
             }
         }
 
         // ============================================================
-        // 9. حفظ الإعدادات
+        // 8. حفظ جميع الإعدادات
         // ============================================================
-        async function saveSettings() {
-            const data = {
-                unionName: document.getElementById('unionName').value.trim() || settings.unionName,
-                committeeName: document.getElementById('committeeName').value.trim() || settings.committeeName,
-                splashDuration: parseInt(document.getElementById('splashDuration').value) || settings.splashDuration,
-                infoBoxText: document.getElementById('infoBoxText').value.trim() || settings.infoBoxText,
-                footerText: document.getElementById('footerText').value.trim() || settings.footerText,
-                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || settings.sessionTimeout,
-                presidentName: document.getElementById('presidentName').value.trim() || settings.presidentName,
+        async function saveAllSettings() {
+            // الإعدادات العامة
+            const generalData = {
+                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
+                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
+                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
+                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها',
+                footerText: document.getElementById('footerText').value.trim() ||
+                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+                presidentName: document.getElementById('presidentName').value.trim() || 'المهندس / محمود جميل',
                 updatedAt: getEgyptTime()
             };
 
-            await db.collection('settings').doc('general').set(data, { merge: true });
-            addLog('تم حفظ الإعدادات العامة', 'success');
+            await db.collection('settings').doc('general').set(generalData, { merge: true });
+            addLog('✅ تم حفظ الإعدادات العامة', 'success');
 
+            // خدمات النقابة
             const servicesData = {
-                text: document.getElementById('servicesBtnText').value.trim() || settings.servicesText,
-                link: document.getElementById('servicesBtnLink').value.trim() || settings.servicesLink,
+                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
+                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
                 updatedAt: getEgyptTime()
             };
             await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
-            addLog('تم حفظ زر الخدمات', 'success');
+            addLog('✅ تم حفظ زر الخدمات', 'success');
 
-            setStatus('sSettings', 'جاهز', 'done');
+            // ألوان التصميم
+            const designData = {
+                colors: {
+                    primary: document.getElementById('primaryColor').value || '#C9A84C',
+                    accent: document.getElementById('accentColor').value || '#7C3AED',
+                    background: document.getElementById('bgColor').value || '#0A0E1A',
+                    text: document.getElementById('textColor').value || '#FFFFFF',
+                    success: document.getElementById('successColor').value || '#10B981',
+                    error: document.getElementById('errorColor').value || '#EF4444',
+                    warning: document.getElementById('warningColor').value || '#F59E0B',
+                    info: document.getElementById('infoColor').value || '#3B82F6'
+                },
+                fontFamily: document.getElementById('fontFamily').value || 'Cairo',
+                fontSize: document.getElementById('fontSize').value || '16px',
+                cardStyle: document.getElementById('cardStyle').value || 'glass',
+                animations: document.getElementById('animations').value === 'true',
+                updatedAt: getEgyptTime()
+            };
+            await db.collection('settings').doc('design').set(designData, { merge: true });
+            addLog('✅ تم حفظ إعدادات التصميم', 'success');
+
+            // إعدادات الشهادات
+            const certData = {
+                codeFormat: document.getElementById('certCodeFormat').value.trim() || 'YYYY-####',
+                printLimit: parseInt(document.getElementById('printLimit').value) || 3,
+                certificateTitle: document.getElementById('certificateTitle').value.trim() || 'شهادة اجتياز دورة تدريبية',
+                updatedAt: getEgyptTime()
+            };
+            await db.collection('settings').doc('certificates').set(certData, { merge: true });
+            addLog('✅ تم حفظ إعدادات الشهادات', 'success');
+
+            // إعدادات الأمان
+            const securityData = {
+                maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
+                maintenanceMode: document.getElementById('maintenanceMode').value === 'true',
+                allowRegistration: document.getElementById('allowRegistration').value === 'true',
+                updatedAt: getEgyptTime()
+            };
+            await db.collection('settings').doc('security').set(securityData, { merge: true });
+            addLog('✅ تم حفظ إعدادات الأمان', 'success');
+
+            // نصوص الشاشات
+            const textsData = {
+                heroTitle: document.getElementById('heroTitle').value.trim() || 'تحقق من صحة شهاداتك التدريبية',
+                heroSubtitle: document.getElementById('heroSubtitle').value.trim() ||
+                    'منصة رسمية موثوقة من نقابة تكنولوجيا المعلومات',
+                loginBtnText: document.getElementById('loginBtnText').value.trim() || 'تسجيل الدخول',
+                logoutBtnText: document.getElementById('logoutBtnText').value.trim() || 'تسجيل الخروج',
+                searchCertBtnText: document.getElementById('searchCertBtnText').value.trim() || 'بحث',
+                searchStudentBtnText: document.getElementById('searchStudentBtnText').value.trim() || 'بحث',
+                searchAcademyBtnText: document.getElementById('searchAcademyBtnText').value.trim() || 'بحث',
+                graduatesSearchBtnText: document.getElementById('graduatesSearchBtnText').value.trim() || 'بحث',
+                tabCertText: document.getElementById('tabCertText').value.trim() || 'بحث عن شهادة',
+                tabStudentText: document.getElementById('tabStudentText').value.trim() || 'بحث عن متدرب',
+                tabAcademyText: document.getElementById('tabAcademyText').value.trim() || 'بحث عن أكاديمية',
+                tabGraduatesText: document.getElementById('tabGraduatesText').value.trim() || 'سجل الخريجين',
+                msgSuccess: document.getElementById('msgSuccess').value.trim() || 'تمت العملية بنجاح',
+                msgError: document.getElementById('msgError').value.trim() || 'حدث خطأ',
+                msgWarning: document.getElementById('msgWarning').value.trim() || 'تحذير',
+                msgInfo: document.getElementById('msgInfo').value.trim() || 'معلومات',
+                printBtnText: document.getElementById('printBtnText').value.trim() || 'طباعة',
+                pdfBtnText: document.getElementById('pdfBtnText').value.trim() || 'تحميل PDF',
+                shareBtnText: document.getElementById('shareBtnText').value.trim() || 'مشاركة',
+                editBtnText: document.getElementById('editBtnText').value.trim() || 'تعديل',
+                deleteBtnText: document.getElementById('deleteBtnText').value.trim() || 'حذف',
+                addBtnText: document.getElementById('addBtnText').value.trim() || 'إضافة',
+                saveBtnText: document.getElementById('saveBtnText').value.trim() || 'حفظ',
+                cancelBtnText: document.getElementById('cancelBtnText').value.trim() || 'إلغاء',
+                resetAuthBtnText: document.getElementById('resetAuthBtnText').value.trim() || 'إعادة تعيين المصادقة',
+                checkStatusBtnText: document.getElementById('checkStatusBtnText').value.trim() || 'تحديث الحالة',
+                updatedAt: getEgyptTime()
+            };
+            await db.collection('settings').doc('texts').set(textsData, { merge: true });
+            addLog('✅ تم حفظ نصوص الشاشات', 'success');
+
+            setStatus('sSettings', '✅ جاهز', 'done');
             return true;
         }
 
         // ============================================================
-        // 10. التحقق من Firebase
+        // 9. التحقق من Firebase
         // ============================================================
         async function checkFirebase() {
             try {
                 await db.collection('users').limit(1).get();
-                setStatus('sFirebase', 'متصل', 'done');
-                addLog('Firebase متصل', 'success');
+                setStatus('sFirebase', '✅ متصل', 'done');
+                addLog('🔥 Firebase متصل', 'success');
                 return true;
             } catch (err) {
-                setStatus('sFirebase', 'خطأ', 'error');
-                addLog('Firebase: ' + err.message, 'error');
+                setStatus('sFirebase', '❌ خطأ', 'error');
+                addLog('❌ Firebase: ' + err.message, 'error');
                 return false;
             }
         }
 
         // ============================================================
-        // 11. التحقق من Cloudinary
+        // 10. التحقق من Cloudinary
         // ============================================================
         async function checkCloudinary() {
             try {
                 if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
-                    setStatus('sCloudinary', 'متصل', 'done');
-                    addLog('Cloudinary متصل', 'success');
+                    setStatus('sCloudinary', '✅ متصل', 'done');
+                    addLog('☁️ Cloudinary متصل', 'success');
                     return true;
                 } else {
-                    setStatus('sCloudinary', 'غير متصل', 'warning');
-                    addLog('Cloudinary غير متصل', 'warning');
+                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                    addLog('⚠️ Cloudinary غير متصل', 'warning');
                     return false;
                 }
             } catch (err) {
-                setStatus('sCloudinary', 'غير متصل', 'warning');
-                addLog('Cloudinary: ' + err.message, 'warning');
+                setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                addLog('⚠️ Cloudinary: ' + err.message, 'warning');
                 return false;
             }
         }
 
         // ============================================================
-        // 12. تشغيل التهيئة الكاملة
+        // 11. تشغيل التهيئة الكاملة
         // ============================================================
         async function runFullSetup() {
             if (isRunning) {
-                showMsg('جاري التنفيذ حالياً، انتظر قليلاً', 'warning');
+                showMsg('⚠️ جاري التنفيذ حالياً، انتظر قليلاً', 'warning');
                 return;
             }
 
@@ -1517,15 +1640,15 @@
             const phone = document.getElementById('adminPhone').value.trim();
 
             if (!email || !password || !name || !phone) {
-                showMsg('الرجاء ملء جميع الحقول', 'error');
+                showMsg('❌ الرجاء ملء جميع الحقول', 'error');
                 return;
             }
             if (password.length < 6) {
-                showMsg('كلمة المرور 6 أحرف على الأقل', 'error');
+                showMsg('❌ كلمة المرور 6 أحرف على الأقل', 'error');
                 return;
             }
 
-            if (!confirm('تحذير: هذا الإجراء سيمسح جميع البيانات الحالية في Firebase\n' +
+            if (!confirm('⚠️ تحذير: هذا الإجراء سيمسح جميع البيانات الحالية في Firebase\n' +
                          'ويقوم بإنشاء قاعدة بيانات جديدة مهيأة للمنصة.\n\n' +
                          'المستخدم الجديد: ' + email + '\n' +
                          'هل أنت متأكد؟')) {
@@ -1535,78 +1658,83 @@
             isRunning = true;
             const btn = document.getElementById('mainBtn');
             btn.disabled = true;
-            btn.textContent = 'جاري التهيئة...';
+            btn.textContent = '⏳ جاري التهيئة...';
 
             showLoader('جاري تهيئة النظام بالكامل...');
-            addLog('بدء التهيئة الكاملة للنظام...', 'info');
+            addLog('🚀 بدء التهيئة الكاملة للنظام...', 'info');
 
             try {
+                // 1. التحقق من الاتصالات
                 await checkFirebase();
                 await sleep(300);
                 await checkCloudinary();
                 await sleep(300);
 
-                addLog('جاري مسح جميع البيانات...', 'warning');
+                // 2. مسح جميع الجداول
+                addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
                 await clearAllCollections();
                 await sleep(500);
 
-                await saveSettings();
+                // 3. حفظ جميع الإعدادات
+                await saveAllSettings();
                 await sleep(300);
 
+                // 4. إنشاء المستخدم
                 await createUser(email, password, name, phone);
                 await sleep(300);
 
+                // 5. تحميل الصور إن وجدت
                 loadImagesFromFirestore();
 
+                // 6. تحديث الحالة النهائية
                 setStatus('sUsers', '✅ ' + email, 'done');
-                setStatus('sAcademies', 'جاهز', 'done');
-                setStatus('sCertificates', 'جاهز', 'done');
-                setStatus('sActivities', 'جاهز', 'done');
-                setStatus('sSearchLogs', 'جاهز', 'done');
+                setStatus('sAcademies', '✅ جاهز', 'done');
+                setStatus('sCertificates', '✅ جاهز', 'done');
+                setStatus('sActivities', '✅ جاهز', 'done');
+                setStatus('sSearchLogs', '✅ جاهز', 'done');
 
-                showMsg('تمت تهيئة النظام بالكامل بنجاح!\n' + email + ' / ' + password, 'success');
-                addLog('اكتملت تهيئة النظام بالكامل', 'success');
-                addLog(email + ' / ' + password, 'info');
-                addLog('يمكنك تسجيل الدخول الآن', 'info');
+                showMsg('✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ' + email + ' / ' + password, 'success');
+                addLog('🎉 اكتملت تهيئة النظام بالكامل', 'success');
+                addLog('👑 ' + email + ' / ' + password, 'info');
+                addLog('🔑 يمكنك تسجيل الدخول الآن', 'info');
 
             } catch (err) {
-                showMsg('خطأ: ' + err.message, 'error');
-                addLog('خطأ: ' + err.message, 'error');
+                showMsg('❌ خطأ: ' + err.message, 'error');
+                addLog('❌ خطأ: ' + err.message, 'error');
             }
 
             hideLoader();
             btn.disabled = false;
-            btn.textContent = settings.mainBtnText;
+            btn.textContent = '🚀 تهيئة النظام بالكامل';
             isRunning = false;
         }
 
         // ============================================================
-        // 13. تحميل الصفحة
+        // 12. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            loadSettings();
-
             auth.signOut().catch(() => {});
 
             setTimeout(function() {
                 db.collection('users').limit(1).get()
                     .then(() => {
-                        setStatus('sFirebase', 'متصل', 'done');
+                        setStatus('sFirebase', '✅ متصل', 'done');
                     })
                     .catch(() => {
-                        setStatus('sFirebase', 'خطأ', 'error');
+                        setStatus('sFirebase', '❌ خطأ', 'error');
                     });
 
                 if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
-                    setStatus('sCloudinary', 'متصل', 'done');
+                    setStatus('sCloudinary', '✅ متصل', 'done');
                 } else {
-                    setStatus('sCloudinary', 'غير متصل', 'warning');
+                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
                 }
             }, 500);
 
             loadImagesFromFirestore();
-            addLog(settings.logReady, 'info');
-            addLog('اضغط "تهيئة النظام بالكامل" لإنشاء قاعدة البيانات', 'info');
+            addLog('🚀 جاهز', 'info');
+            addLog('💡 اضغط "تهيئة النظام بالكامل" لإنشاء قاعدة البيانات', 'info');
+            addLog('📋 جميع الإعدادات سيتم حفظها في Firestore', 'info');
         });
     </script>
 
