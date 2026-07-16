@@ -38,30 +38,22 @@
             transition: all 0.3s ease;
         }
 
-        /* ===== متغيرات CSS (تتحدّث من الإعدادات) ===== */
         :root {
             --primary-color: #C9A84C;
             --primary-dark: #A8893A;
             --primary-light: #E8D5A3;
             --primary-glow: rgba(201,168,76,0.3);
-            
             --secondary-color: #0A1628;
-            --secondary-dark: #050D1A;
-            --secondary-light: #1A2A4A;
-            
             --accent-color: #7C3AED;
             --accent-light: #A78BFA;
             --accent-glow: rgba(124,58,237,0.2);
-            
             --bg-color: #0A0E1A;
             --bg-card: rgba(255,255,255,0.04);
             --bg-hover: rgba(255,255,255,0.06);
-            
             --text-color: #FFFFFF;
             --text-secondary: rgba(255,255,255,0.7);
             --text-muted: rgba(255,255,255,0.4);
             --text-dim: rgba(255,255,255,0.15);
-            
             --success: #10B981;
             --success-bg: rgba(16,185,129,0.12);
             --error: #EF4444;
@@ -70,18 +62,15 @@
             --warning-bg: rgba(245,158,11,0.12);
             --info: #3B82F6;
             --info-bg: rgba(59,130,246,0.12);
-            
             --border: rgba(255,255,255,0.06);
             --border-light: rgba(255,255,255,0.03);
             --card-bg: rgba(255,255,255,0.04);
             --shadow: 0 20px 60px rgba(0,0,0,0.3);
-            
             --radius: 20px;
             --radius-sm: 12px;
             --radius-lg: 28px;
         }
 
-        /* ===== خلفية ===== */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -106,7 +95,6 @@
             pointer-events: none;
         }
 
-        /* ===== جزيئات ===== */
         .particles-container {
             position: fixed;
             inset: 0;
@@ -139,7 +127,6 @@
             100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
-        /* ===== شبكة ===== */
         .grid-lines {
             position: fixed;
             inset: 0;
@@ -157,7 +144,6 @@
             100% { transform: translateY(30px) translateX(30px); }
         }
 
-        /* ===== حلقات ===== */
         .orbital-ring {
             position: fixed;
             inset: 0;
@@ -184,7 +170,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== كرات ضوئية ===== */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
@@ -216,7 +201,6 @@
             100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
         }
 
-        /* ===== الحاوية ===== */
         .dashboard-container {
             position: relative;
             z-index: 10;
@@ -225,7 +209,6 @@
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -301,7 +284,6 @@
             font-size: 20px;
             font-weight: 800;
             color: var(--text-color);
-            transition: color 0.3s ease;
         }
 
         .header-title p {
@@ -415,7 +397,6 @@
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
-        /* ===== البطاقات الإحصائية ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -464,18 +445,6 @@
         }
         .stat-card .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 300; }
 
-        .stat-card .stat-change {
-            font-size: 11px;
-            padding: 2px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-        .stat-change.up { background: var(--success-bg); color: var(--success); }
-        .stat-change.down { background: var(--error-bg); color: var(--error); }
-        .stat-change.neutral { background: var(--warning-bg); color: var(--warning); }
-
-        /* ===== الشبكة الداخلية ===== */
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -519,7 +488,6 @@
             font-weight: 600;
         }
 
-        /* ===== قائمة النشاطات ===== */
         .activity-list {
             max-height: 350px;
             overflow-y: auto;
@@ -577,7 +545,6 @@
         .type-badge.search { background: var(--accent-glow); color: var(--accent-light); }
         .type-badge.export { background: rgba(236,72,153,0.15); color: #ec4899; }
 
-        /* ===== الروابط السريعة ===== */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -606,14 +573,12 @@
         .quick-action .icon { font-size: 28px; margin-bottom: 4px; }
         .quick-action .label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
-        /* ===== الرسم البياني ===== */
         .chart-container {
             position: relative;
             height: 200px;
             width: 100%;
         }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: var(--radius-sm);
@@ -655,7 +620,6 @@
             font-size: 11px;
         }
 
-        /* ===== استجابة ===== */
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
             .header-right { justify-content: center; }
@@ -719,7 +683,7 @@
             <div class="header-left">
                 <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'">ن.ت</div>
                 <div class="header-title">
-                    <h1 id="unionName">لوحة التحكم</h1>
+                    <h1 id="dashboardTitle">لوحة التحكم</h1>
                     <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
                 </div>
                 <div class="header-president">
@@ -898,7 +862,6 @@
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-                        if (data.unionName) settings.unionName = data.unionName;
                         if (data.committeeName) settings.committeeName = data.committeeName;
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
                         if (data.footerText) settings.footerText = data.footerText;
@@ -918,39 +881,50 @@
         }
 
         function applySettings() {
-            document.getElementById('unionName').textContent = 'لوحة التحكم';
-            document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
-            document.getElementById('footerText').textContent = settings.footerText;
-            document.getElementById('headerPresidentName').textContent = settings.presidentName;
+            const committeeEl = document.getElementById('committeeName');
+            const footerEl = document.getElementById('footerText');
+            const presidentEl = document.getElementById('headerPresidentName');
+
+            if (committeeEl) committeeEl.textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
+            if (footerEl) footerEl.textContent = settings.footerText;
+            if (presidentEl) presidentEl.textContent = settings.presidentName;
 
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
-                logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
-                logo.style.backgroundSize = 'cover';
-                logo.style.backgroundPosition = 'center';
-                logo.textContent = '';
+                if (logo) {
+                    logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logo.style.backgroundSize = 'cover';
+                    logo.style.backgroundPosition = 'center';
+                    logo.textContent = '';
+                }
             }
         }
 
         function applyColors(colors) {
             const root = document.documentElement;
-            root.style.setProperty('--primary-color', colors.primary || '#C9A84C');
-            root.style.setProperty('--accent-color', colors.accent || '#7C3AED');
-            root.style.setProperty('--bg-color', colors.background || '#0A0E1A');
-            root.style.setProperty('--text-color', colors.text || '#FFFFFF');
-            root.style.setProperty('--text-secondary', colors.textSecondary || 'rgba(255,255,255,0.7)');
-            root.style.setProperty('--text-muted', colors.textMuted || 'rgba(255,255,255,0.4)');
-            root.style.setProperty('--text-dim', colors.textDim || 'rgba(255,255,255,0.15)');
-            root.style.setProperty('--success', colors.success || '#10B981');
-            root.style.setProperty('--error', colors.error || '#EF4444');
-            root.style.setProperty('--warning', colors.warning || '#F59E0B');
-            root.style.setProperty('--info', colors.info || '#3B82F6');
-            root.style.setProperty('--border', colors.border || 'rgba(255,255,255,0.06)');
-            root.style.setProperty('--card-bg', colors.cardBg || 'rgba(255,255,255,0.04)');
-            root.style.setProperty('--bg-hover', 'rgba(255,255,255,0.06)');
-            root.style.setProperty('--primary-glow', colors.primary + '30' || 'rgba(201,168,76,0.3)');
-            root.style.setProperty('--accent-glow', colors.accent + '20' || 'rgba(124,58,237,0.2)');
-            document.body.style.background = colors.background || '#0A0E1A';
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+            
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+            
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
         }
 
         // ============================================================
@@ -965,20 +939,28 @@
                             const data = doc.data();
                             if (data.role === 'super_admin' || data.role === 'admin' || data.role === 'committee_manager') {
                                 userRole = data.role;
-                                document.getElementById('userDisplay').textContent = 'مرحباً بك، ' + (data.displayName || 'أدمن');
 
-                                if (data.role === 'super_admin') {
-                                    document.getElementById('settingsBtn').style.display = 'inline-flex';
-                                    document.getElementById('settingsQuickBtn').style.display = 'flex';
-                                    document.getElementById('usersBtn').style.display = 'inline-flex';
-                                    document.getElementById('usersQuickBtn').style.display = 'flex';
-                                    document.getElementById('roleBadge').textContent = 'سوبر أدمن';
-                                    document.getElementById('roleBadge').style.background = 'rgba(139,92,246,0.15)';
-                                    document.getElementById('roleBadge').style.color = '#8b5cf6';
-                                } else if (data.role === 'admin') {
-                                    document.getElementById('roleBadge').textContent = 'أدمن';
-                                } else {
-                                    document.getElementById('roleBadge').textContent = 'إدارة اللجنة';
+                                const roleBadge = document.getElementById('roleBadge');
+                                if (roleBadge) {
+                                    if (data.role === 'super_admin') {
+                                        roleBadge.textContent = 'سوبر أدمن';
+                                        roleBadge.style.background = 'rgba(139,92,246,0.15)';
+                                        roleBadge.style.color = '#8b5cf6';
+                                        
+                                        const settingsBtn = document.getElementById('settingsBtn');
+                                        const settingsQuickBtn = document.getElementById('settingsQuickBtn');
+                                        const usersBtn = document.getElementById('usersBtn');
+                                        const usersQuickBtn = document.getElementById('usersQuickBtn');
+                                        
+                                        if (settingsBtn) settingsBtn.style.display = 'inline-flex';
+                                        if (settingsQuickBtn) settingsQuickBtn.style.display = 'flex';
+                                        if (usersBtn) usersBtn.style.display = 'inline-flex';
+                                        if (usersQuickBtn) usersQuickBtn.style.display = 'flex';
+                                    } else if (data.role === 'admin') {
+                                        roleBadge.textContent = 'أدمن';
+                                    } else {
+                                        roleBadge.textContent = 'إدارة اللجنة';
+                                    }
                                 }
 
                                 loadDashboard();
@@ -1010,7 +992,8 @@
         // 5. تحميل لوحة التحكم
         // ============================================================
         function loadDashboard() {
-            document.getElementById('dashboardLoader').classList.add('show');
+            const loader = document.getElementById('dashboardLoader');
+            if (loader) loader.classList.add('show');
 
             Promise.all([
                 db.collection('certificates').where('isActive', '==', true).get(),
@@ -1027,22 +1010,30 @@
                 const activitySnap = results[4];
                 const allCertSnap = results[5];
 
-                document.getElementById('statCertificates').textContent = certActiveSnap.size || 0;
-                document.getElementById('statAcademies').textContent = acadSnap.size || 0;
-                document.getElementById('statUsers').textContent = userSnap.size || 0;
-                document.getElementById('statSearches').textContent = searchSnap.size || 0;
-                document.getElementById('statActivities').textContent = activitySnap.size || 0;
+                const statCert = document.getElementById('statCertificates');
+                const statAcad = document.getElementById('statAcademies');
+                const statUsers = document.getElementById('statUsers');
+                const statSearches = document.getElementById('statSearches');
+                const statActivities = document.getElementById('statActivities');
+
+                if (statCert) statCert.textContent = certActiveSnap.size || 0;
+                if (statAcad) statAcad.textContent = acadSnap.size || 0;
+                if (statUsers) statUsers.textContent = userSnap.size || 0;
+                if (statSearches) statSearches.textContent = searchSnap.size || 0;
+                if (statActivities) statActivities.textContent = activitySnap.size || 0;
 
                 renderActivities(activitySnap);
                 renderChart(allCertSnap);
 
-                document.getElementById('dashboardLoader').classList.remove('show');
-                document.getElementById('dashboardContent').style.display = 'block';
+                if (loader) loader.classList.remove('show');
+                const content = document.getElementById('dashboardContent');
+                if (content) content.style.display = 'block';
 
             }).catch(function(err) {
                 console.error(err);
-                document.getElementById('dashboardLoader').classList.remove('show');
-                document.getElementById('dashboardContent').style.display = 'block';
+                if (loader) loader.classList.remove('show');
+                const content = document.getElementById('dashboardContent');
+                if (content) content.style.display = 'block';
                 showMsg('حدث خطأ في تحميل البيانات', 'error');
             });
         }
@@ -1052,6 +1043,8 @@
         // ============================================================
         function renderActivities(snapshot) {
             const container = document.getElementById('activityList');
+            if (!container) return;
+
             container.innerHTML = '';
 
             if (snapshot.empty) {
@@ -1110,7 +1103,10 @@
         // 7. الرسم البياني
         // ============================================================
         function renderChart(snapshot) {
-            const ctx = document.getElementById('chartCanvas').getContext('2d');
+            const canvas = document.getElementById('chartCanvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
 
             const grades = {};
             snapshot.forEach(function(doc) {
@@ -1167,6 +1163,8 @@
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('dashboardMsg');
+            if (!el) return;
+            
             el.textContent = msg;
             el.className = 'msg show ' + type;
             setTimeout(function() { el.className = 'msg'; }, 5000);
