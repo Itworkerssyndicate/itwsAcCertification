@@ -13,7 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
 
-    <!-- Cloudinary Widget (نفس المشروع الشغال) -->
+    <!-- Cloudinary Widget -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript">
     </script>
 
@@ -30,21 +30,169 @@
             color: #fff;
             min-height: 100vh;
             direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة */
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.04) 0%, transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(1.04) rotate(1.5deg); opacity: 0.9; }
+        }
+
+        .page-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat 22s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+
+        @keyframes particleFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+            20% { transform: translate(40px, -30px) scale(1.3); opacity: 0.6; }
+            40% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.3; }
+            60% { transform: translate(50px, -20px) scale(1.4); opacity: 0.7; }
+            80% { transform: translate(-30px, -80px) scale(0.8); opacity: 0.4; }
+            100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
+        }
+
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            animation: gridMove 25s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(30px) translateX(30px); }
+        }
+
+        .orbital-ring {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 100, 255, 0.05);
+            animation: ringSpin 40s linear infinite;
+        }
+
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
+        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 18s ease-in-out infinite alternate;
+        }
+
+        .glow-orb:nth-child(1) {
+            width: 450px;
+            height: 450px;
+            top: -150px;
+            right: -150px;
+            background: rgba(0, 100, 255, 0.08);
+        }
+
+        .glow-orb:nth-child(2) {
+            width: 550px;
+            height: 550px;
+            bottom: -200px;
+            left: -200px;
+            background: rgba(138, 43, 226, 0.06);
+            animation-delay: 6s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+            100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
         }
 
         .container {
+            position: relative;
+            z-index: 10;
             max-width: 950px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 100, 255, 0.04), transparent 50%);
+            pointer-events: none;
         }
 
         .header {
@@ -53,7 +201,9 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
         }
 
         .logo {
@@ -63,30 +213,42 @@
         }
 
         .logo-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
             font-size: 20px;
             color: #fff;
+            box-shadow: 0 0 40px rgba(0, 100, 255, 0.2);
+            animation: logoSpin 20s linear infinite;
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo h1 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         .logo p {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 300;
         }
 
         .btn {
-            padding: 10px 22px;
-            border-radius: 12px;
+            padding: 10px 24px;
+            border-radius: 30px;
             border: none;
             font-weight: 700;
             font-size: 14px;
@@ -96,53 +258,66 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: linear-gradient(135deg, #10b981, #22c55e);
             color: #fff;
+            box-shadow: 0 4px 25px rgba(16, 185, 129, 0.3);
         }
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
-        }
-        .btn-success:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-success:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(16, 185, 129, 0.4); }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.12);
             color: #fff;
         }
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-3px); }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0055e6, #5c00e6);
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
             color: #fff;
+            box-shadow: 0 4px 25px rgba(0, 100, 255, 0.3);
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 230, 0.4);
-        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(0, 100, 255, 0.4); }
 
         .btn-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
+            box-shadow: 0 4px 25px rgba(239, 68, 68, 0.3);
         }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
-        }
+        .btn-danger:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(239, 68, 68, 0.4); }
 
-        .btn-sm {
-            padding: 5px 12px;
-            font-size: 12px;
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            box-shadow: 0 4px 25px rgba(245, 158, 11, 0.3);
         }
+        .btn-warning:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(245, 158, 11, 0.4); }
+
+        .btn-sm { padding: 5px 14px; font-size: 12px; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
         .form-group {
             margin-bottom: 14px;
@@ -152,31 +327,32 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.45);
             margin-bottom: 4px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 10px 16px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
             color: #fff;
             font-size: 14px;
             outline: none;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #0055e6;
-            box-shadow: 0 0 0 3px rgba(0, 85, 230, 0.15);
+            border-color: #0066ff;
+            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
         }
 
         .form-group select option {
-            background: #1a1a2e;
+            background: #0a0f1f;
             color: #fff;
         }
 
@@ -196,7 +372,7 @@
         }
 
         .upload-area:hover {
-            border-color: rgba(0, 85, 230, 0.3);
+            border-color: rgba(0, 100, 255, 0.3);
             background: rgba(255, 255, 255, 0.02);
         }
 
@@ -232,113 +408,92 @@
             margin-top: 6px;
         }
 
-        .upload-status.show {
-            display: inline-block;
-        }
-        .upload-status.success {
-            color: #22c55e;
-            background: rgba(34, 197, 94, 0.10);
-        }
-        .upload-status.error {
-            color: #ef4444;
-            background: rgba(239, 68, 68, 0.10);
-        }
+        .upload-status.show { display: inline-block; }
+        .upload-status.success { color: #22c55e; background: rgba(34, 197, 94, 0.10); }
+        .upload-status.error { color: #ef4444; background: rgba(239, 68, 68, 0.10); }
 
         .msg {
             display: none;
             border-radius: 14px;
-            padding: 14px 18px;
+            padding: 14px 20px;
             margin-bottom: 16px;
             text-align: center;
             font-size: 14px;
+            position: relative;
+            z-index: 2;
         }
-        .msg.show {
-            display: block;
-        }
-        .msg.success {
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            color: #22c55e;
-        }
-        .msg.error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ef4444;
-        }
-        .msg.info {
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #3b82f6;
-        }
-        .msg.warning {
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            color: #f59e0b;
+        .msg.show { display: block; animation: fadeIn 0.4s ease; }
+        .msg.success { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; }
+        .msg.error { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.25); color: #ef4444; }
+        .msg.info { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.25); color: #3b82f6; }
+        .msg.warning { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); color: #f59e0b; }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .loader {
             display: none;
             text-align: center;
             padding: 20px 0;
+            position: relative;
+            z-index: 2;
         }
-        .loader.show {
-            display: block;
-        }
+        .loader.show { display: block; }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border: 4px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0055e6;
+            border-top-color: #0066ff;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .log {
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 16px;
-            max-height: 250px;
+            max-height: 280px;
             overflow-y: auto;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 12px;
             color: rgba(255, 255, 255, 0.6);
             direction: ltr;
             text-align: left;
             margin-top: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            position: relative;
+            z-index: 2;
         }
 
+        .log::-webkit-scrollbar { width: 4px; }
+        .log::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
+        .log::-webkit-scrollbar-thumb { background: rgba(0, 100, 255, 0.3); border-radius: 4px; }
+
         .log .line {
-            padding: 2px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 11px;
         }
-        .log .line.success {
-            color: #22c55e;
-        }
-        .log .line.error {
-            color: #ef4444;
-        }
-        .log .line.info {
-            color: #3b82f6;
-        }
-        .log .line.warning {
-            color: #f59e0b;
-        }
+        .log .line.success { color: #22c55e; }
+        .log .line.error { color: #ef4444; }
+        .log .line.info { color: #3b82f6; }
+        .log .line.warning { color: #f59e0b; }
 
         .footer {
             text-align: center;
             padding: 20px 0 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 12px;
+            color: rgba(255, 255, 255, 0.10);
+            font-size: 11px;
             margin-top: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .flex {
@@ -353,38 +508,30 @@
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 10px;
             margin: 16px 0;
+            position: relative;
+            z-index: 2;
         }
 
         .status-item {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 12px;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .status-item .icon {
-            font-size: 22px;
+        .status-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 100, 255, 0.08);
         }
-        .status-item .title {
-            font-weight: 700;
-            font-size: 11px;
-            color: #fff;
-        }
-        .status-item .value {
-            font-size: 11px;
-            margin-top: 4px;
-            font-weight: 700;
-        }
-        .status-item .value.done {
-            color: #22c55e;
-        }
-        .status-item .value.pending {
-            color: #f59e0b;
-        }
-        .status-item .value.error {
-            color: #ef4444;
-        }
+
+        .status-item .icon { font-size: 22px; margin-bottom: 2px; }
+        .status-item .title { font-weight: 700; font-size: 11px; color: rgba(255, 255, 255, 0.5); }
+        .status-item .value { font-size: 11px; margin-top: 4px; font-weight: 700; }
+        .status-item .value.done { color: #22c55e; }
+        .status-item .value.pending { color: #f59e0b; }
+        .status-item .value.error { color: #ef4444; }
 
         .section-title {
             font-size: 16px;
@@ -394,48 +541,72 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
+            z-index: 2;
         }
 
         .border-top {
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             padding-top: 16px;
             margin-top: 16px;
+            position: relative;
+            z-index: 2;
         }
 
         @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .container {
-                padding: 12px;
-            }
-            .card {
-                padding: 16px;
-            }
+            .form-row { grid-template-columns: 1fr; }
+            .container { padding: 12px; }
+            .card { padding: 18px; border-radius: 20px; }
+            .header { flex-direction: column; align-items: stretch; text-align: center; }
+            .logo { justify-content: center; }
         }
 
         @media (max-width: 480px) {
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .flex {
-                flex-direction: column;
-            }
+            .btn { width: 100%; justify-content: center; }
+            .flex { flex-direction: column; }
+            .status-grid { grid-template-columns: repeat(2, 1fr); }
+            .logo h1 { font-size: 18px; }
+            .logo-box { width: 44px; height: 44px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="page-bg"></div>
+
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="grid-lines"></div>
+
+    <div class="orbital-ring">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
     <div class="container">
 
         <div class="card">
+
             <div class="header">
                 <div class="logo">
                     <div class="logo-box">ن.ت</div>
                     <div>
                         <h1>تهيئة النظام</h1>
-                        <p>نقابة تكنولوجيا المعلومات</p>
+                        <p>نقابة تكنولوجيا المعلومات والبرمجيات</p>
                     </div>
                 </div>
                 <div class="flex" style="gap:8px;">
@@ -487,12 +658,17 @@
                     <div class="title">سجل البحث</div>
                     <div class="value pending" id="sSearchLogs">⏳ جاري...</div>
                 </div>
+                <div class="status-item">
+                    <div class="icon">⚙️</div>
+                    <div class="title">الإعدادات</div>
+                    <div class="value pending" id="sSettings">⏳ جاري...</div>
+                </div>
             </div>
 
             <!-- الأزرار الرئيسية -->
-            <div class="flex" style="gap:10px;margin-bottom:16px;">
+            <div class="flex" style="gap:10px;margin-bottom:16px;position:relative;z-index:2;">
                 <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="flex:1;">
-                    🚀 تهيئة النظام بالكامل
+                    🚀 تهيئة النظام بالكامل (مسح وإعادة إنشاء)
                 </button>
                 <button class="btn btn-outline" onclick="checkAllStatus()" id="checkBtn">
                     🔄 تحديث الحالة
@@ -673,6 +849,7 @@
         // ============================================================
         let logoFile = null;
         let stampFile = null;
+        let isRunning = false;
 
         // ============================================================
         // 4. دوال مساعدة
@@ -729,11 +906,10 @@
         }
 
         // ============================================================
-        // 5. رفع الصور باستخدام Cloudinary Widget (نفس المشروع الشغال)
+        // 5. رفع الصور باستخدام Cloudinary Widget
         // ============================================================
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
-                // استخدام Cloudinary Widget
                 const widget = cloudinary.createUploadWidget({
                     cloudName: CLOUDINARY.cloudName,
                     uploadPreset: CLOUDINARY.uploadPreset,
@@ -771,7 +947,6 @@
                         addLog('✅ تم الرفع عبر Widget', 'success');
                         resolve({ secure_url: result.info.secure_url });
                     } else if (result.event === 'close') {
-                        // المستخدم أغلق النافذة
                         reject(new Error('تم إلغاء الرفع'));
                     }
                 });
@@ -781,7 +956,7 @@
         }
 
         // ============================================================
-        // 6. رفع اللوجو
+        // 6. رفع اللوجو والختم
         // ============================================================
         function previewLogo(e) {
             const file = e.target.files[0];
@@ -987,7 +1162,6 @@
         // ============================================================
         async function checkCloudinary() {
             try {
-                // التحقق من وجود مكتبة Cloudinary Widget
                 if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
                     setStatus('sCloudinary', '✅ متصل', 'done');
                     addLog('☁️ Cloudinary متصل', 'success');
@@ -1005,25 +1179,47 @@
         }
 
         // ============================================================
-        // 11. إنشاء الجداول
+        // 11. مسح جميع البيانات من Firestore
         // ============================================================
-        async function ensureCollection(name) {
-            try {
-                const snap = await db.collection(name).limit(1).get();
-                if (snap.empty) {
+        async function clearAllCollections() {
+            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs', 'settings'];
+            let cleared = 0;
+
+            for (const name of collections) {
+                try {
+                    const snap = await db.collection(name).get();
+                    if (snap.empty) {
+                        addLog('📭 جدول ' + name + ' فارغ بالفعل', 'info');
+                        continue;
+                    }
+
+                    const batch = db.batch();
+                    snap.docs.forEach(function(doc) {
+                        if (doc.id !== '_init') {
+                            batch.delete(doc.ref);
+                        }
+                    });
+
+                    await batch.commit();
+                    cleared++;
+                    addLog('🗑️ تم مسح جدول: ' + name + ' (' + snap.size + ' وثيقة)', 'warning');
+
+                    await sleep(200);
+
+                    // إعادة إنشاء وثيقة _init للحفاظ على وجود الجدول
                     await db.collection(name).doc('_init').set({
                         initialized: true,
-                        createdAt: getEgyptTime()
+                        createdAt: getEgyptTime(),
+                        clearedAt: getEgyptTime()
                     });
-                    addLog('✅ تم إنشاء جدول: ' + name, 'success');
-                    return true;
+
+                } catch (err) {
+                    addLog('❌ خطأ في مسح ' + name + ': ' + err.message, 'error');
                 }
-                addLog('✅ جدول موجود: ' + name, 'info');
-                return true;
-            } catch (err) {
-                addLog('❌ خطأ في جدول ' + name + ': ' + err.message, 'error');
-                return false;
             }
+
+            addLog('✅ تم مسح ' + cleared + ' جداول بنجاح', 'success');
+            return cleared;
         }
 
         // ============================================================
@@ -1040,13 +1236,18 @@
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     const uid = cred.user.uid;
                     addLog('✅ المستخدم موجود مسبقاً', 'success');
+                    
                     await db.collection('users').doc(uid).set({
+                        uid: uid,
+                        email: email,
                         displayName: name,
                         phone: phone,
                         role: 'super_admin',
                         isActive: true,
-                        lastLogin: getEgyptTime()
+                        lastLogin: getEgyptTime(),
+                        updatedAt: getEgyptTime()
                     }, { merge: true });
+                    
                     return { success: true, uid, isNew: false };
                 } catch (loginErr) {
                     if (loginErr.code === 'auth/user-not-found') {
@@ -1064,6 +1265,7 @@
                             createdAt: getEgyptTime(),
                             lastLogin: getEgyptTime()
                         });
+                        
                         return { success: true, uid, isNew: true };
                     } else {
                         throw loginErr;
@@ -1105,6 +1307,7 @@
             await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
             addLog('✅ تم حفظ زر الخدمات', 'success');
 
+            setStatus('sSettings', '✅ جاهز', 'done');
             return true;
         }
 
@@ -1132,10 +1335,24 @@
                     try {
                         const snap = await db.collection(col.name).get();
                         const count = snap.size;
-                        setStatus(col.id, count > 0 ? count + ' سجل' : 'فارغ', count > 0 ? 'done' : 'pending');
+                        const actualCount = count > 0 && snap.docs.some(d => d.id !== '_init') ? 
+                            count - (snap.docs.some(d => d.id === '_init') ? 1 : 0) : 0;
+                        setStatus(col.id, actualCount > 0 ? actualCount + ' سجل' : 'فارغ', actualCount > 0 ? 'done' : 'pending');
                     } catch (err) {
                         setStatus(col.id, '❌', 'error');
                     }
+                }
+
+                // التحقق من الإعدادات
+                try {
+                    const settingsSnap = await db.collection('settings').doc('general').get();
+                    if (settingsSnap.exists) {
+                        setStatus('sSettings', '✅ جاهز', 'done');
+                    } else {
+                        setStatus('sSettings', '⚠️ غير مهيأ', 'warning');
+                    }
+                } catch (err) {
+                    setStatus('sSettings', '❌', 'error');
                 }
 
                 addLog('✅ اكتمل التحقق', 'success');
@@ -1179,9 +1396,14 @@
         }
 
         // ============================================================
-        // 16. التشغيل الكامل
+        // 16. التشغيل الكامل (مسح وإعادة إنشاء)
         // ============================================================
         async function runFullSetup() {
+            if (isRunning) {
+                showMsg('⚠️ جاري التنفيذ حالياً، انتظر قليلاً', 'warning');
+                return;
+            }
+
             hideMsg();
 
             const email = document.getElementById('adminEmail').value.trim();
@@ -1198,41 +1420,61 @@
                 return;
             }
 
+            if (!confirm('⚠️ تحذير: هذا الإجراء سيمسح جميع البيانات الحالية في Firebase\n' +
+                         'ويقوم بإنشاء قاعدة بيانات جديدة مهيأة للمنصة.\n\n' +
+                         'المستخدم الجديد: ' + email + '\n' +
+                         'هل أنت متأكد؟')) {
+                return;
+            }
+
+            if (!confirm('⚠️ تأكيد نهائي: سيتم حذف جميع الأكاديميات، الشهادات، المستخدمين، والنشاطات!')) {
+                return;
+            }
+
+            isRunning = true;
             const btn = document.getElementById('mainBtn');
             btn.disabled = true;
             btn.textContent = '⏳ جاري التهيئة...';
 
             showLoader('جاري تهيئة النظام بالكامل...');
             addLog('🚀 بدء التهيئة الكاملة للنظام...', 'info');
+            addLog('⚠️ سيتم مسح جميع البيانات الحالية', 'warning');
 
             try {
+                // 1. التحقق من الاتصال
                 await checkFirebase();
                 await sleep(300);
-
                 await checkCloudinary();
                 await sleep(300);
 
-                addLog('📊 إنشاء الجداول...', 'info');
-                const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
-                for (const name of collections) {
-                    await ensureCollection(name);
-                    await sleep(200);
-                }
+                // 2. مسح جميع الجداول
+                addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
+                await clearAllCollections();
+                await sleep(500);
 
+                // 3. إنشاء الجداول وإعداداتها
+                addLog('📊 جاري إنشاء هيكل النظام...', 'info');
+                
+                // 4. حفظ الإعدادات
                 await saveSettings();
                 await sleep(300);
 
+                // 5. إنشاء المستخدم
                 await createUser(email, password, name, phone);
                 await sleep(300);
 
+                // 6. تحميل الصور إن وجدت
                 loadImagesFromFirestore();
 
+                // 7. تحديث الحالة
                 await checkAllStatus();
 
+                // 8. عرض النتيجة
                 showMsg('✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ' + email + ' / ' + password, 'success');
                 addLog('🎉 اكتملت تهيئة النظام بالكامل', 'success');
                 addLog('👑 ' + email + ' / ' + password, 'info');
                 addLog('🔑 يمكنك تسجيل الدخول الآن', 'info');
+                addLog('📌 تم مسح جميع البيانات القديمة وإعادة إنشائها', 'success');
 
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
@@ -1245,7 +1487,8 @@
 
             hideLoader();
             btn.disabled = false;
-            btn.textContent = '🚀 تهيئة النظام بالكامل';
+            btn.textContent = '🚀 تهيئة النظام بالكامل (مسح وإعادة إنشاء)';
+            isRunning = false;
         }
 
         // ============================================================
@@ -1253,11 +1496,14 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             auth.signOut().catch(() => {});
-            checkAllStatus();
+            setTimeout(function() {
+                checkAllStatus();
+            }, 500);
             loadImagesFromFirestore();
             addLog('🚀 جاهز', 'info');
-            addLog('💡 اضغط "تهيئة النظام بالكامل" لإنشاء كل شيء', 'info');
+            addLog('💡 اضغط "تهيئة النظام بالكامل" لمسح كل البيانات وإعادة إنشائها', 'info');
             addLog('📌 رفع الصور يتم عبر Cloudinary Widget', 'info');
+            addLog('⚠️ تحذير: التهيئة تمسح جميع البيانات الحالية', 'warning');
         });
     </script>
 
