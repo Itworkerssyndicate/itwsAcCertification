@@ -22,6 +22,9 @@
     </script>
 
     <style>
+        /* ============================================================
+           التصميم المتطور - خلفية ذكاء اصطناعي فخمة
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -37,20 +40,22 @@
             overflow-x: hidden;
         }
 
+        /* ===== خلفية ذكاء اصطناعي سينمائية ===== */
         .ai-background {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.10) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.05) 0%, transparent 60%);
-            animation: bgPulse 12s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 15% 25%, rgba(0, 100, 255, 0.12) 0%, transparent 45%),
+                radial-gradient(ellipse at 85% 75%, rgba(138, 43, 226, 0.10) 0%, transparent 45%),
+                radial-gradient(ellipse at 45% 15%, rgba(0, 200, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 25%, rgba(255, 100, 200, 0.04) 0%, transparent 50%);
+            animation: bgDrift 25s ease-in-out infinite alternate;
         }
 
-        @keyframes bgPulse {
-            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-            100% { transform: scale(1.05) rotate(2deg); opacity: 0.9; }
+        @keyframes bgDrift {
+            0% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0.9; transform: scale(1.08) rotate(2deg); }
         }
 
         .ai-background::before {
@@ -58,10 +63,19 @@
             position: absolute;
             inset: 0;
             background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
+        .ai-background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(5, 10, 24, 0.4) 100%);
+            pointer-events: none;
+        }
+
+        /* ===== جزيئات ذكية متطورة ===== */
         .particles-container {
             position: fixed;
             inset: 0;
@@ -73,51 +87,55 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            animation: particleFloat 22s infinite ease-in-out;
+            animation: particleFloat 25s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
-        .particle:nth-child(9) { width: 3px; height: 3px; top: 10%; left: 90%; animation-delay: 1.5s; background: rgba(0, 255, 150, 0.5); }
-        .particle:nth-child(10) { width: 8px; height: 8px; top: 45%; left: 55%; animation-delay: 3.5s; background: rgba(50, 100, 255, 0.3); }
-        .particle:nth-child(11) { width: 5px; height: 5px; top: 80%; left: 80%; animation-delay: 0.8s; background: rgba(255, 50, 150, 0.3); }
-        .particle:nth-child(12) { width: 7px; height: 7px; top: 35%; left: 45%; animation-delay: 4.8s; background: rgba(0, 200, 255, 0.4); }
-        .particle:nth-child(13) { width: 4px; height: 4px; top: 55%; left: 15%; animation-delay: 2.2s; background: rgba(150, 50, 255, 0.4); }
-        .particle:nth-child(14) { width: 6px; height: 6px; top: 70%; left: 75%; animation-delay: 3.8s; background: rgba(0, 100, 200, 0.4); }
-        .particle:nth-child(15) { width: 5px; height: 5px; top: 20%; left: 50%; animation-delay: 0.3s; background: rgba(200, 200, 100, 0.3); }
+        .particle:nth-child(1) { width: 8px; height: 8px; top: 8%; left: 8%; animation-delay: 0s; background: rgba(0, 150, 255, 0.35); box-shadow: 0 0 25px rgba(0, 150, 255, 0.15); }
+        .particle:nth-child(2) { width: 12px; height: 12px; top: 18%; left: 35%; animation-delay: 1.5s; background: rgba(138, 43, 226, 0.30); box-shadow: 0 0 30px rgba(138, 43, 226, 0.15); }
+        .particle:nth-child(3) { width: 6px; height: 6px; top: 30%; left: 75%; animation-delay: 3s; background: rgba(0, 200, 255, 0.40); box-shadow: 0 0 20px rgba(0, 200, 255, 0.15); }
+        .particle:nth-child(4) { width: 10px; height: 10px; top: 45%; left: 15%; animation-delay: 0.8s; background: rgba(255, 100, 200, 0.25); box-shadow: 0 0 28px rgba(255, 100, 200, 0.12); }
+        .particle:nth-child(5) { width: 7px; height: 7px; top: 55%; left: 88%; animation-delay: 2.2s; background: rgba(0, 255, 200, 0.30); box-shadow: 0 0 22px rgba(0, 255, 200, 0.12); }
+        .particle:nth-child(6) { width: 14px; height: 14px; top: 68%; left: 25%; animation-delay: 4s; background: rgba(100, 50, 255, 0.20); box-shadow: 0 0 35px rgba(100, 50, 255, 0.12); }
+        .particle:nth-child(7) { width: 5px; height: 5px; top: 78%; left: 65%; animation-delay: 1.8s; background: rgba(0, 150, 255, 0.45); box-shadow: 0 0 18px rgba(0, 150, 255, 0.15); }
+        .particle:nth-child(8) { width: 9px; height: 9px; top: 90%; left: 45%; animation-delay: 3.5s; background: rgba(200, 100, 255, 0.25); box-shadow: 0 0 26px rgba(200, 100, 255, 0.12); }
+        .particle:nth-child(9) { width: 4px; height: 4px; top: 12%; left: 92%; animation-delay: 1.2s; background: rgba(0, 255, 150, 0.50); box-shadow: 0 0 15px rgba(0, 255, 150, 0.15); }
+        .particle:nth-child(10) { width: 11px; height: 11px; top: 50%; left: 50%; animation-delay: 2.8s; background: rgba(50, 100, 255, 0.20); box-shadow: 0 0 32px rgba(50, 100, 255, 0.12); }
+        .particle:nth-child(11) { width: 6px; height: 6px; top: 85%; left: 85%; animation-delay: 0.5s; background: rgba(255, 50, 150, 0.30); box-shadow: 0 0 20px rgba(255, 50, 150, 0.12); }
+        .particle:nth-child(12) { width: 13px; height: 13px; top: 38%; left: 60%; animation-delay: 4.5s; background: rgba(0, 200, 255, 0.25); box-shadow: 0 0 30px rgba(0, 200, 255, 0.12); }
+        .particle:nth-child(13) { width: 5px; height: 5px; top: 60%; left: 10%; animation-delay: 2s; background: rgba(150, 50, 255, 0.35); box-shadow: 0 0 18px rgba(150, 50, 255, 0.12); }
+        .particle:nth-child(14) { width: 8px; height: 8px; top: 72%; left: 78%; animation-delay: 3.2s; background: rgba(0, 100, 200, 0.30); box-shadow: 0 0 24px rgba(0, 100, 200, 0.12); }
+        .particle:nth-child(15) { width: 7px; height: 7px; top: 22%; left: 48%; animation-delay: 0.3s; background: rgba(200, 200, 100, 0.25); box-shadow: 0 0 20px rgba(200, 200, 100, 0.12); }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
-            20% { transform: translate(40px, -30px) scale(1.3); opacity: 0.6; }
-            40% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.3; }
-            60% { transform: translate(50px, -20px) scale(1.4); opacity: 0.7; }
-            80% { transform: translate(-30px, -80px) scale(0.8); opacity: 0.4; }
+            15% { transform: translate(45px, -25px) scale(1.4); opacity: 0.7; }
+            30% { transform: translate(-25px, -55px) scale(0.7); opacity: 0.3; }
+            45% { transform: translate(55px, -15px) scale(1.5); opacity: 0.8; }
+            60% { transform: translate(-35px, -75px) scale(0.8); opacity: 0.4; }
+            80% { transform: translate(20px, -35px) scale(1.2); opacity: 0.6; }
             100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
+        /* ===== شبكة تقنية ثلاثية الأبعاد ===== */
         .grid-lines {
             position: fixed;
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
+                linear-gradient(rgba(0, 150, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 255, 0.025) 1px, transparent 1px);
+            background-size: 70px 70px;
             pointer-events: none;
-            animation: gridMove 25s linear infinite;
+            animation: gridSlide 30s linear infinite;
+            perspective: 800px;
         }
 
-        @keyframes gridMove {
-            0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(30px) translateX(30px); }
+        @keyframes gridSlide {
+            0% { transform: translateY(0) translateX(0) rotateX(0deg); }
+            100% { transform: translateY(35px) translateX(35px) rotateX(1deg); }
         }
 
+        /* ===== حلقات دوارة سينمائية ===== */
         .orbital-ring {
             position: fixed;
             inset: 0;
@@ -131,83 +149,114 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 100, 255, 0.05);
-            animation: ringSpin 40s linear infinite;
+            border: 1px solid rgba(0, 100, 255, 0.04);
+            animation: ringOrbit 45s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
-        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+        .ring:nth-child(1) { width: 320px; height: 320px; border-color: rgba(0, 100, 255, 0.07); animation-duration: 35s; }
+        .ring:nth-child(2) { width: 520px; height: 520px; border-color: rgba(138, 43, 226, 0.05); animation-duration: 45s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 55s; }
+        .ring:nth-child(4) { width: 920px; height: 920px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 65s; animation-direction: reverse; }
+        .ring:nth-child(5) { width: 1120px; height: 1120px; border-color: rgba(0, 150, 200, 0.02); animation-duration: 75s; }
 
-        @keyframes ringSpin {
+        @keyframes ringOrbit {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
+        /* ===== كرات ضوئية ناعمة ===== */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(100px);
+            filter: blur(120px);
             pointer-events: none;
             z-index: 0;
-            animation: orbFloat 18s ease-in-out infinite alternate;
+            animation: orbDrift 20s ease-in-out infinite alternate;
         }
 
         .glow-orb:nth-child(1) {
-            width: 450px;
-            height: 450px;
-            top: -150px;
-            right: -150px;
-            background: rgba(0, 100, 255, 0.08);
+            width: 550px;
+            height: 550px;
+            top: -180px;
+            right: -180px;
+            background: rgba(0, 100, 255, 0.07);
+            animation-delay: 0s;
         }
 
         .glow-orb:nth-child(2) {
-            width: 550px;
-            height: 550px;
-            bottom: -200px;
-            left: -200px;
-            background: rgba(138, 43, 226, 0.06);
+            width: 650px;
+            height: 650px;
+            bottom: -220px;
+            left: -220px;
+            background: rgba(138, 43, 226, 0.05);
             animation-delay: 6s;
         }
 
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
+        .glow-orb:nth-child(3) {
+            width: 450px;
+            height: 450px;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 200, 255, 0.04);
+            animation-delay: 3s;
+            animation-duration: 25s;
         }
 
+        @keyframes orbDrift {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            100% { transform: translate(70px, 50px) scale(1.2); opacity: 0.7; }
+        }
+
+        /* ===== الحاوية الرئيسية ===== */
         .main-container {
             position: relative;
             z-index: 10;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 20px;
         }
 
+        /* ===== الهيدر المتطور ===== */
         .header {
             background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: headerFloat 6s ease-in-out infinite;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            animation: headerGlide 7s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes headerFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 100, 255, 0.04), transparent 50%);
+            pointer-events: none;
+        }
+
+        @keyframes headerGlide {
+            0%, 100% { transform: translateY(0); box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3); }
+            50% { transform: translateY(-4px); box-shadow: 0 35px 90px rgba(0, 100, 255, 0.05); }
         }
 
         .header-left {
             display: flex;
             align-items: center;
             gap: 16px;
+            position: relative;
+            z-index: 2;
         }
 
         .logo-box {
@@ -222,9 +271,28 @@
             font-size: 20px;
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             animation: logoSpin 20s linear infinite;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+            box-shadow: 0 0 35px rgba(0, 100, 255, 0.2);
+            position: relative;
+        }
+
+        .logo-box::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066ff, #8b5cf6, #0066ff);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: logoBorder 4s ease-in-out infinite alternate;
+            filter: blur(12px);
+            opacity: 0.3;
+        }
+
+        @keyframes logoBorder {
+            0% { background-position: 0% 50%; opacity: 0.2; }
+            100% { background-position: 100% 50%; opacity: 0.6; }
         }
 
         @keyframes logoSpin {
@@ -234,8 +302,8 @@
 
         .logo-box:hover {
             animation-duration: 3s;
-            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
-            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(0, 100, 255, 0.4);
+            transform: scale(1.08);
         }
 
         .header-title h1 {
@@ -246,6 +314,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            transition: all 0.3s ease;
         }
 
         .header-title p {
@@ -258,6 +327,8 @@
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .btn {
@@ -267,64 +338,115 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #0066ff, #8b5cf6);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
+            box-shadow: 0 4px 25px rgba(0, 100, 255, 0.25);
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px rgba(0, 100, 255, 0.4); }
 
         .btn-outline {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.12);
             color: #fff;
         }
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
 
         .btn-success {
             background: linear-gradient(135deg, #10b981, #22c55e);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 25px rgba(16, 185, 129, 0.25);
         }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px rgba(16, 185, 129, 0.4); }
 
         .btn-ghost {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #fff;
         }
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.10); transform: translateY(-2px); }
+        .btn-ghost:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-3px); }
+
+        .btn-glow {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            box-shadow: 0 4px 25px rgba(245, 158, 11, 0.25);
+            animation: glowPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 4px 25px rgba(245, 158, 11, 0.25); }
+            50% { box-shadow: 0 8px 50px rgba(245, 158, 11, 0.5); }
+        }
+
+        .btn-glow:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
+        .btn-lg { padding: 12px 32px; font-size: 16px; }
 
+        .btn-float {
+            animation: btnFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes btnFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* ===== المحتوى الرئيسي ===== */
         .hero-section {
             text-align: center;
             margin-bottom: 25px;
+            animation: heroAppear 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes heroAppear {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .hero-title {
-            font-size: 40px;
+            font-size: 44px;
             font-weight: 900;
             margin-bottom: 6px;
-            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 40%, #a78bfa 70%, #ffffff 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #60a5fa 35%, #a78bfa 65%, #ffffff 100%);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: titleShimmer 6s ease-in-out infinite;
+            animation: titleFlow 7s ease-in-out infinite;
             letter-spacing: 1px;
         }
 
-        @keyframes titleShimmer {
+        @keyframes titleFlow {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
@@ -336,21 +458,29 @@
             letter-spacing: 2px;
         }
 
+        /* ===== بوكس النص ===== */
         .info-box {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 18px 28px;
             margin: 0 auto 25px;
-            max-width: 850px;
+            max-width: 880px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
+            animation: infoSlide 1s ease-out;
+        }
+
+        @keyframes infoSlide {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .info-box:hover {
             border-color: rgba(0, 100, 255, 0.2);
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.05);
+            box-shadow: 0 0 40px rgba(0, 100, 255, 0.05);
+            transform: translateY(-2px);
         }
 
         .info-box p {
@@ -359,72 +489,113 @@
             line-height: 1.7;
         }
 
+        /* ===== علامات التبويب المتطورة ===== */
         .tabs {
             display: flex;
             gap: 6px;
             background: rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
+            border-radius: 18px;
             padding: 6px;
             margin-bottom: 24px;
-            max-width: 560px;
+            max-width: 600px;
             margin-right: auto;
             margin-left: auto;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.04);
+            position: relative;
+        }
+
+        .tabs::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 16px;
+            background: rgba(0, 100, 255, 0.04);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .tabs:hover::before {
+            opacity: 1;
         }
 
         .tab-btn {
             flex: 1;
             padding: 12px 16px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             background: transparent;
             color: rgba(255, 255, 255, 0.4);
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-family: inherit;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.2), rgba(138, 43, 226, 0.2));
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .tab-btn:hover::before {
+            opacity: 0.3;
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, rgba(0, 100, 255, 0.2), rgba(138, 43, 226, 0.2));
             color: #fff;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.05);
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.25), rgba(138, 43, 226, 0.25));
+            box-shadow: 0 0 40px rgba(0, 100, 255, 0.08);
         }
 
-        .tab-btn:hover:not(.active) { color: rgba(255, 255, 255, 0.7); }
+        .tab-btn.active::before {
+            opacity: 1;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.7);
+            transform: translateY(-2px);
+        }
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: tabFade 0.6s ease;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes tabFade {
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* ===== بطاقات البحث ===== */
         .search-card {
             background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
-            padding: 28px 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            max-width: 800px;
+            border-radius: 26px;
+            padding: 30px 34px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+            max-width: 850px;
             margin: 0 auto;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         .search-card:hover {
-            border-color: rgba(0, 100, 255, 0.15);
-            box-shadow: 0 20px 60px rgba(0, 100, 255, 0.05);
+            border-color: rgba(0, 100, 255, 0.12);
+            box-shadow: 0 25px 70px rgba(0, 100, 255, 0.04);
+            transform: translateY(-3px);
         }
 
         .search-row {
@@ -438,12 +609,12 @@
             min-width: 180px;
             padding: 14px 20px;
             border-radius: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
             color: #fff;
             font-size: 15px;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             font-family: inherit;
         }
 
@@ -453,36 +624,94 @@
 
         .search-row input:focus {
             border-color: #0066ff;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.10);
+            box-shadow: 0 0 40px rgba(0, 100, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
         }
 
         .search-hint {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.12);
             text-align: center;
             letter-spacing: 1px;
-            margin-top: 8px;
+            margin-top: 10px;
+        }
+
+        /* ===== زر عرض الأكاديميات المتطور ===== */
+        .academies-showcase {
+            text-align: center;
+            margin-top: 20px;
+            animation: showcaseAppear 1s ease-out 0.3s both;
+        }
+
+        @keyframes showcaseAppear {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .academies-showcase .btn {
+            padding: 12px 36px;
+            font-size: 15px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(8px);
+            font-weight: 700;
+        }
+
+        .academies-showcase .btn::before {
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.2), rgba(138, 43, 226, 0.2));
+        }
+
+        .academies-showcase .btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 50px rgba(0, 100, 255, 0.15);
+            border-color: rgba(0, 100, 255, 0.2);
+        }
+
+        .academies-showcase .btn .icon {
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+
+        .academies-showcase .btn:hover .icon {
+            transform: rotate(360deg);
         }
 
         /* ===== نتائج البحث ===== */
         .result-box {
             display: none;
             margin-top: 24px;
+            animation: resultAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .result-box.active {
             display: block;
-            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes resultAppear {
+            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* ===== بطاقة الشهادة ===== */
         .certificate-card {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 22px;
+            padding: 26px;
             position: relative;
             overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 100, 255, 0.12);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
         }
 
         .certificate-card::before {
@@ -492,7 +721,7 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(0, 100, 255, 0.03), transparent 50%);
+            background: radial-gradient(circle at 30% 20%, rgba(0, 100, 255, 0.04), transparent 50%);
             pointer-events: none;
         }
 
@@ -549,6 +778,12 @@
             background: rgba(255, 255, 255, 0.03);
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .cert-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 100, 255, 0.06);
         }
 
         .cert-item .label {
@@ -590,8 +825,15 @@
         .academy-card {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 22px;
+            padding: 26px;
+            transition: all 0.4s ease;
+        }
+
+        .academy-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 100, 255, 0.12);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
         }
 
         .academy-header {
@@ -630,7 +872,7 @@
 
         .branch-item {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 14px 18px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             transition: all 0.3s ease;
@@ -638,7 +880,8 @@
 
         .branch-item:hover {
             background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 100, 255, 0.1);
+            border-color: rgba(0, 100, 255, 0.08);
+            transform: translateY(-2px);
         }
 
         .branch-item .gov {
@@ -668,7 +911,248 @@
             margin-top: 4px;
         }
 
-        /* ===== قائمة الشهادات للطالب ===== */
+        /* ===== قائمة الأكاديميات (مودال متطور) ===== */
+        .academies-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(25px);
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .academies-modal.active {
+            display: flex;
+        }
+
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .academies-modal .modal-content {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 32px 36px;
+            max-width: 950px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            animation: modalContent 0.5s ease;
+        }
+
+        @keyframes modalContent {
+            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .academies-modal .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .academies-modal .modal-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        .academies-modal .modal-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            border-radius: 10px;
+        }
+
+        .academies-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 16px;
+            margin-bottom: 18px;
+        }
+
+        .academies-modal .modal-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .academies-modal .modal-header .close-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.4);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .academies-modal .modal-header .close-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* ===== فلتر المودال ===== */
+        .modal-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .modal-filters .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .modal-filters .filter-group label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-filters .filter-group input,
+        .modal-filters .filter-group select {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .modal-filters .filter-group input::placeholder {
+            color: rgba(255, 255, 255, 0.12);
+        }
+
+        .modal-filters .filter-group input:focus,
+        .modal-filters .filter-group select:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 30px rgba(0, 100, 255, 0.06);
+        }
+
+        .modal-filters .filter-group select option {
+            background: #0a0f1f;
+            color: #fff;
+        }
+
+        .academies-modal .academy-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .academies-modal .academy-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 100, 255, 0.1);
+            transform: translateX(-4px);
+        }
+
+        .academies-modal .academy-item .name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .academies-modal .academy-item .license {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Courier New', monospace;
+        }
+
+        .academies-modal .academy-item .badge {
+            font-size: 11px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .academies-modal .academy-item .branches-count {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .academies-modal .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .academies-modal .pagination button {
+            padding: 8px 22px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .academies-modal .pagination button:hover:not(:disabled) {
+            background: rgba(0, 100, 255, 0.15);
+            border-color: rgba(0, 100, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .academies-modal .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .academies-modal .pagination span {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+        }
+
+        .academies-modal .no-results {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            font-size: 16px;
+        }
+
+        /* ===== قائمة شهادات الطالب ===== */
         .student-certificates-list {
             margin-top: 16px;
         }
@@ -689,7 +1173,8 @@
 
         .student-cert-item:hover {
             background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 100, 255, 0.1);
+            border-color: rgba(0, 100, 255, 0.08);
+            transform: translateX(-4px);
         }
 
         .student-cert-item .cert-code-sm {
@@ -720,6 +1205,7 @@
             border-radius: 20px;
         }
 
+        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: 16px;
@@ -729,16 +1215,21 @@
             font-size: 14px;
         }
 
-        .msg.show { display: block; animation: fadeIn 0.3s ease; }
+        .msg.show { display: block; animation: msgIn 0.4s ease; }
         .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
         .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
         .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
 
+        @keyframes msgIn {
+            0% { opacity: 0; transform: translateY(-10px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .loader { display: none; text-align: center; padding: 30px 0; }
         .loader.show { display: block; }
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border: 3px solid rgba(255, 255, 255, 0.05);
             border-top-color: #0066ff;
             border-radius: 50%;
@@ -748,39 +1239,47 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .services-btn-container { text-align: center; margin-top: 28px; }
+        /* ===== زر خدمات النقابة ===== */
+        .services-btn-container {
+            text-align: center;
+            margin-top: 28px;
+        }
+
         .services-btn {
             display: inline-flex;
             align-items: center;
             gap: 12px;
             padding: 14px 36px;
-            border-radius: 30px;
+            border-radius: 40px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #fff;
             font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             text-decoration: none;
             font-family: inherit;
+            backdrop-filter: blur(8px);
         }
 
         .services-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.10);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 100, 255, 0.15);
         }
 
         .services-btn .arrow {
             font-size: 16px;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
         .services-btn:hover .arrow {
-            transform: translateX(-4px);
+            transform: translateX(-6px);
         }
 
+        /* ===== الفوتر ===== */
         .footer {
             text-align: center;
             padding: 20px 0 12px;
@@ -797,6 +1296,13 @@
             top: 0;
             width: 800px;
             z-index: 9999;
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 992px) {
+            .modal-filters {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -885,6 +1391,26 @@
                 width: 100%;
                 justify-content: flex-start;
             }
+            .academies-modal .modal-content {
+                padding: 20px;
+                margin: 10px;
+                border-radius: 20px;
+                max-height: 90vh;
+            }
+            .academies-modal .academy-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .modal-filters {
+                grid-template-columns: 1fr;
+            }
+            .academies-modal .modal-header h2 {
+                font-size: 18px;
+            }
+            .academies-modal .pagination button {
+                padding: 6px 16px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -933,6 +1459,12 @@
                 height: 40px;
                 font-size: 16px;
             }
+            .academies-modal .modal-content {
+                padding: 16px;
+            }
+            .academies-modal .academy-item .name {
+                font-size: 14px;
+            }
         }
 
         @media print {
@@ -955,8 +1487,10 @@
 </head>
 <body>
 
+    <!-- ===== خلفية ===== -->
     <div class="ai-background"></div>
 
+    <!-- ===== جزيئات ===== -->
     <div class="particles-container">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -975,20 +1509,27 @@
         <div class="particle"></div>
     </div>
 
+    <!-- ===== شبكة ===== -->
     <div class="grid-lines"></div>
 
+    <!-- ===== حلقات ===== -->
     <div class="orbital-ring">
+        <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
     </div>
 
+    <!-- ===== كرات ضوئية ===== -->
+    <div class="glow-orb"></div>
     <div class="glow-orb"></div>
     <div class="glow-orb"></div>
 
+    <!-- ===== المحتوى ===== -->
     <div class="main-container">
 
+        <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
                 <div class="logo-box" id="logoBox" onclick="window.location.href='index.html'">ن.ت</div>
@@ -1004,15 +1545,18 @@
             </div>
         </header>
 
+        <!-- ===== البطل ===== -->
         <div class="hero-section">
             <h1 class="hero-title">تحقق من صحة شهاداتك التدريبية</h1>
             <p class="hero-subtitle">منصة رسمية موثوقة من نقابة تكنولوجيا المعلومات</p>
         </div>
 
+        <!-- ===== بوكس النص ===== -->
         <div class="info-box" id="infoBox">
             <p id="infoBoxText">يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها، أو البحث عن شهادات طالب باستخدام الاسم أو الرقم القومي.</p>
         </div>
 
+        <!-- ===== علامات التبويب ===== -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="tabCertificate">بحث عن شهادة</button>
             <button class="tab-btn" data-tab="tabStudent">بحث عن طالب</button>
@@ -1083,6 +1627,15 @@
                     </div>
                 </form>
 
+                <!-- ===== زر عرض الأكاديميات ===== -->
+                <div class="academies-showcase">
+                    <button class="btn btn-glow btn-float" onclick="openAcademiesModal()">
+                        <span class="icon">🏛️</span>
+                        عرض جميع الأكاديميات المعتمدة
+                        <span style="font-size:14px;">←</span>
+                    </button>
+                </div>
+
                 <div class="loader" id="academyLoader">
                     <div class="spinner"></div>
                     <div style="color:rgba(255,255,255,0.3);">جاري البحث...</div>
@@ -1095,6 +1648,7 @@
             </div>
         </div>
 
+        <!-- ===== زر خدمات النقابة ===== -->
         <div class="services-btn-container">
             <a href="#" class="services-btn" id="servicesBtn">
                 <span id="servicesBtnText">خدمات النقابة الإلكترونية</span>
@@ -1102,6 +1656,7 @@
             </a>
         </div>
 
+        <!-- ===== الفوتر ===== -->
         <footer class="footer">
             <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
         </footer>
@@ -1110,6 +1665,49 @@
 
     <!-- ===== حاوية الطباعة ===== -->
     <div id="print-container"></div>
+
+    <!-- ===== مودال الأكاديميات ===== -->
+    <div class="academies-modal" id="academiesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>جميع الأكاديميات المعتمدة</h2>
+                <button class="close-btn" onclick="closeAcademiesModal()">✕</button>
+            </div>
+
+            <div class="modal-filters">
+                <div class="filter-group">
+                    <label>اسم الأكاديمية</label>
+                    <input type="text" id="modalFilterName" placeholder="بحث بالاسم..." oninput="applyModalFilters()" />
+                </div>
+                <div class="filter-group">
+                    <label>الرقم الاعتمادي</label>
+                    <input type="text" id="modalFilterLicense" placeholder="بحث بالرقم..." oninput="applyModalFilters()" />
+                </div>
+                <div class="filter-group">
+                    <label>المحافظة</label>
+                    <select id="modalFilterGovernorate" onchange="applyModalFilters()">
+                        <option value="">جميع المحافظات</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="justify-content:flex-end;">
+                    <button class="btn btn-ghost btn-sm" onclick="resetModalFilters()" style="width:100%;">إعادة ضبط</button>
+                </div>
+            </div>
+
+            <div id="modalAcademiesContainer">
+                <div class="loader show" id="modalAcademiesLoader">
+                    <div class="spinner"></div>
+                    <div style="color:rgba(255,255,255,0.3);">جاري تحميل الأكاديميات...</div>
+                </div>
+                <div id="modalAcademiesContent" style="display:none;"></div>
+                <div class="pagination" id="modalPagination">
+                    <button id="modalPrevPage" onclick="changeModalPage(-1)">السابق</button>
+                    <span id="modalPageInfo">صفحة 1 من 1</span>
+                    <button id="modalNextPage" onclick="changeModalPage(1)">التالي</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ============================================================
     جافا سكريبت
@@ -1137,6 +1735,11 @@
         // ============================================================
         let currentUser = null;
         let isAdmin = false;
+        let allAcademies = [];
+        let allCertificates = [];
+        let filteredAcademies = [];
+        let modalPage = 1;
+        const modalItemsPerPage = 8;
 
         let settings = {
             unionName: 'نقابة تكنولوجيا المعلومات',
@@ -1149,9 +1752,6 @@
             footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
             presidentName: 'المهندس / محمود جميل'
         };
-
-        let allAcademies = [];
-        let allCertificates = [];
 
         // ============================================================
         // 3. جلب الإعدادات
@@ -1220,6 +1820,8 @@
                     allCertificates.push(data);
                 });
 
+                filteredAcademies = [...allAcademies];
+                populateModalGovernorates();
                 console.log('✅ تم تحميل البيانات: ' + allAcademies.length + ' أكاديمية، ' + allCertificates.length +
                     ' شهادة');
             }).catch(function(err) {
@@ -1333,7 +1935,6 @@
             hideResult('certResult');
             showLoader('certLoader');
 
-            // البحث في البيانات المحملة
             const result = allCertificates.find(function(c) {
                 return c.certificateCode === code && c.isActive !== false;
             });
@@ -1528,7 +2129,6 @@
                 return;
             }
 
-            // استخدام نفس HTML للطباعة مع تحويل إلى PDF
             const logoHtml = settings.logoUrl ?
                 `<img src="${settings.logoUrl}" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #0066ff;box-shadow:0 0 30px rgba(0,100,255,0.15);" />` :
                 '<div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#fff;">ن.ت</div>';
@@ -1673,7 +2273,6 @@
             hideResult('studentResult');
             showLoader('studentLoader');
 
-            // البحث في البيانات المحملة
             let results = allCertificates;
 
             if (name) {
@@ -1745,8 +2344,8 @@
                         ${certsHtml}
                     </div>
                     <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:12px;flex-wrap:wrap;">
-                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${certificates[0]?.studentName}')">طباعة الكل</button>
-                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${certificates[0]?.studentName}')">تحميل الكل PDF</button>
+                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${studentName}')">طباعة الكل</button>
+                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${studentName}')">تحميل الكل PDF</button>
                     </div>
                 </div>
             `;
@@ -1798,7 +2397,6 @@
             hideResult('academyResult');
             showLoader('academyLoader');
 
-            // البحث في البيانات المحملة
             const results = allAcademies.filter(function(a) {
                 return (a.name && a.name.includes(searchValue)) ||
                     (a.licenseNumber && a.licenseNumber.includes(searchValue));
@@ -1851,7 +2449,6 @@
                 branchesHtml = '<div style="color:rgba(255,255,255,0.3);font-size:14px;">لا توجد فروع مسجلة</div>';
             }
 
-            // عدد الشهادات لهذه الأكاديمية
             const certCount = allCertificates.filter(function(c) {
                 return c.academyId === data.id && c.isActive !== false;
             }).length;
@@ -1891,7 +2488,167 @@
         }
 
         // ============================================================
-        // 17. علامات التبويب
+        // 17. مودال الأكاديميات
+        // ============================================================
+        function openAcademiesModal() {
+            document.getElementById('academiesModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadModalAcademies();
+        }
+
+        function closeAcademiesModal() {
+            document.getElementById('academiesModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function populateModalGovernorates() {
+            const select = document.getElementById('modalFilterGovernorate');
+            const govs = new Set();
+            allAcademies.forEach(function(a) {
+                if (a.branches) {
+                    a.branches.forEach(function(b) {
+                        if (b.governorate) govs.add(b.governorate);
+                    });
+                }
+            });
+            govs.forEach(function(g) {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.textContent = g;
+                select.appendChild(opt);
+            });
+        }
+
+        function loadModalAcademies() {
+            document.getElementById('modalAcademiesLoader').style.display = 'block';
+            document.getElementById('modalAcademiesContent').style.display = 'none';
+
+            filteredAcademies = [...allAcademies];
+            modalPage = 1;
+            renderModalAcademies();
+            document.getElementById('modalAcademiesLoader').style.display = 'none';
+            document.getElementById('modalAcademiesContent').style.display = 'block';
+        }
+
+        function applyModalFilters() {
+            const nameFilter = document.getElementById('modalFilterName').value.trim().toLowerCase();
+            const licenseFilter = document.getElementById('modalFilterLicense').value.trim().toLowerCase();
+            const govFilter = document.getElementById('modalFilterGovernorate').value;
+
+            filteredAcademies = allAcademies.filter(function(item) {
+                let match = true;
+
+                if (nameFilter) {
+                    match = match && (item.name || '').toLowerCase().includes(nameFilter);
+                }
+
+                if (licenseFilter) {
+                    match = match && (item.licenseNumber || '').toLowerCase().includes(licenseFilter);
+                }
+
+                if (govFilter) {
+                    let hasGov = false;
+                    if (item.branches) {
+                        for (var i = 0; i < item.branches.length; i++) {
+                            if (item.branches[i].governorate === govFilter) {
+                                hasGov = true;
+                                break;
+                            }
+                        }
+                    }
+                    match = match && hasGov;
+                }
+
+                return match;
+            });
+
+            modalPage = 1;
+            renderModalAcademies();
+        }
+
+        function resetModalFilters() {
+            document.getElementById('modalFilterName').value = '';
+            document.getElementById('modalFilterLicense').value = '';
+            document.getElementById('modalFilterGovernorate').value = '';
+            filteredAcademies = [...allAcademies];
+            modalPage = 1;
+            renderModalAcademies();
+        }
+
+        function renderModalAcademies() {
+            const start = (modalPage - 1) * modalItemsPerPage;
+            const end = start + modalItemsPerPage;
+            const pageItems = filteredAcademies.slice(start, end);
+            const totalPages = Math.ceil(filteredAcademies.length / modalItemsPerPage);
+
+            const container = document.getElementById('modalAcademiesContent');
+
+            if (filteredAcademies.length === 0) {
+                container.innerHTML = '<div class="no-results">لا توجد أكاديميات تطابق معايير البحث</div>';
+            } else if (pageItems.length === 0) {
+                container.innerHTML = '<div class="no-results">لا توجد أكاديميات في هذه الصفحة</div>';
+            } else {
+                container.innerHTML = pageItems.map(function(item) {
+                    const certCount = allCertificates.filter(function(c) {
+                        return c.academyId === item.id && c.isActive !== false;
+                    }).length;
+
+                    return `
+                        <div class="academy-item" onclick="showAcademyDetails('${item.id}')">
+                            <div>
+                                <div class="name">${item.name || '-'}</div>
+                                <div class="license">${item.licenseNumber || '-'}</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                                <span class="badge">${certCount} شهادة</span>
+                                <span class="branches-count">${item.branches ? item.branches.length : 0} فرع</span>
+                                <span style="font-size:11px;color:rgba(255,255,255,0.2);">${item.taxNumber || ''}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('modalPageInfo').textContent = 'صفحة ' + modalPage + ' من ' + Math.max(totalPages, 1);
+            document.getElementById('modalPrevPage').disabled = modalPage <= 1;
+            document.getElementById('modalNextPage').disabled = modalPage >= totalPages;
+        }
+
+        function changeModalPage(delta) {
+            const totalPages = Math.ceil(filteredAcademies.length / modalItemsPerPage);
+            const newPage = modalPage + delta;
+            if (newPage < 1 || newPage > totalPages) return;
+            modalPage = newPage;
+            renderModalAcademies();
+        }
+
+        function showAcademyDetails(academyId) {
+            const academy = allAcademies.find(function(a) { return a.id === academyId; });
+            if (academy) {
+                closeAcademiesModal();
+                // الانتقال إلى تبويب الأكاديمية وعرض النتيجة
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelector('[data-tab="tabAcademy"]').classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+                document.getElementById('tabAcademy').classList.add('active');
+
+                document.getElementById('academySearchInput').value = academy.name || academy.licenseNumber || '';
+                setTimeout(function() {
+                    document.getElementById('academySearchForm').dispatchEvent(new Event('submit'));
+                }, 300);
+            }
+        }
+
+        document.getElementById('academiesModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAcademiesModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeAcademiesModal();
+        });
+
+        // ============================================================
+        // 18. علامات التبويب
         // ============================================================
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -1901,20 +2658,18 @@
                 document.querySelectorAll('.tab-content').forEach(function(tab) { tab.classList.remove('active'); });
                 document.getElementById(this.dataset.tab).classList.add('active');
 
-                // إعادة تعيين النتائج عند تبديل التبويب
                 document.querySelectorAll('.result-box').forEach(function(r) { r.classList.remove('active'); });
                 document.querySelectorAll('.msg').forEach(function(m) { m.className = 'msg'; });
             });
         });
 
         // ============================================================
-        // 18. التحميل الأولي
+        // 19. التحميل الأولي
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
             loadData();
 
-            // إذا كان هناك كود في الرابط
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
             if (code) {
@@ -1928,6 +2683,7 @@
             console.log('🔒 نظام أمني متطور');
             console.log('🧠 محسّن بالذكاء الاصطناعي');
             console.log('🔍 بحث متكامل عن الشهادات والطلاب والأكاديميات');
+            console.log('🏛️ عرض جميع الأكاديميات مع فلاتر متقدمة');
         });
     </script>
 
