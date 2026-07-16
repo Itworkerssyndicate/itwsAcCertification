@@ -3,28 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="keywords" id="metaKeywords" content="" />
-    
-    <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="" />
-    <meta property="og:description" id="ogDescription" content="" />
-    <meta property="og:image" id="ogImage" content="" />
-    <meta property="og:url" id="ogUrl" content="" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="" />
-    <meta property="og:locale" content="ar_EG" />
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="" />
-    <meta name="twitter:description" id="twitterDescription" content="" />
-    <meta name="twitter:image" id="twitterImage" content="" />
-    
-    <!-- Icons -->
-    <link rel="icon" id="favicon" href="" />
-    <link rel="apple-touch-icon" id="appleIcon" href="" />
+    <title>نقابة تكنولوجيا المعلومات</title>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -36,8 +15,8 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي للشاشة الترحيبية - بدون أي نصوص ثابتة
-           كل حرف ولون وصورة من الإعدادات
+           التصميم الخرافي للشاشة الترحيبية - نسخة محسنة
+           مع تحميل سريع لللوجو + توجيه للهوم
            ============================================================ */
         * {
             margin: 0;
@@ -272,6 +251,9 @@
             animation: logoSpin 40s linear infinite;
             transition: all 0.5s ease;
             background: var(--bg-color);
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E');
+            background-size: cover;
+            background-position: center;
         }
 
         @keyframes logoSpin {
@@ -551,15 +533,15 @@
             <img src="" alt="شعار النقابة" class="union-logo" id="splashLogo" />
         </div>
 
-        <!-- العناوين - كلها من الإعدادات -->
-        <h1 class="splash-title" id="unionName"></h1>
-        <p class="splash-subtitle" id="splashSubtitle"></p>
-        <p class="splash-committee">لجنة <span id="committeeName"></span></p>
+        <!-- العناوين -->
+        <h1 class="splash-title" id="unionName">نقابة تكنولوجيا المعلومات</h1>
+        <p class="splash-subtitle" id="splashSubtitle">نظام توثيق الشهادات التدريبية</p>
+        <p class="splash-committee">لجنة <span id="committeeName">التحول الرقمي والتدريب</span></p>
 
         <!-- النقيب العام -->
         <div class="splash-president">
-            <span id="presidentLabel"></span>
-            <span class="president-name" id="presidentName"></span>
+            النقيب العام
+            <span class="president-name" id="presidentName">المهندس / محمود جميل</span>
         </div>
 
         <!-- شريط التحميل -->
@@ -568,7 +550,7 @@
                 <div class="loading-bar" id="loadingBar"></div>
             </div>
             <div class="loading-text">
-                <span id="loadingStatus"></span>
+                <span id="loadingStatus">جاري تجهيز المنصة</span>
                 <span class="percentage" id="loadingPercent">0%</span>
             </div>
         </div>
@@ -577,15 +559,15 @@
 
     <!-- ===== زر تخطي ===== -->
     <button class="splash-skip" onclick="skipSplash()">
-        <span id="skipBtnText"></span>
+        <span>تخطي</span>
         <span style="font-size:14px;">←</span>
     </button>
 
     <!-- ===== تذييل ===== -->
     <div class="splash-footer">
-        <span class="version" id="systemVersion"></span>
+        <span class="version" id="systemVersion">v2.0.0</span>
         <span class="separator">•</span>
-        <span id="footerText"></span>
+        <span id="footerText">نقابة تكنولوجيا المعلومات والبرمجيات</span>
     </div>
 
     <script>
@@ -607,7 +589,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // 2. عناصر الصفحة - كلها IDs فقط
+        // 2. عناصر الصفحة
         // ============================================================
         const loadingBar = document.getElementById('loadingBar');
         const loadingPercent = document.getElementById('loadingPercent');
@@ -615,137 +597,29 @@
         const unionNameEl = document.getElementById('unionName');
         const committeeNameEl = document.getElementById('committeeName');
         const presidentNameEl = document.getElementById('presidentName');
-        const presidentLabelEl = document.getElementById('presidentLabel');
         const splashLogo = document.getElementById('splashLogo');
         const versionEl = document.getElementById('systemVersion');
         const splashSubtitle = document.getElementById('splashSubtitle');
         const footerTextEl = document.getElementById('footerText');
-        const skipBtnText = document.getElementById('skipBtnText');
-
-        // OG Tags
-        const pageTitle = document.getElementById('pageTitle');
-        const metaDescription = document.getElementById('metaDescription');
-        const metaKeywords = document.getElementById('metaKeywords');
-        const ogTitle = document.getElementById('ogTitle');
-        const ogDescription = document.getElementById('ogDescription');
-        const ogImage = document.getElementById('ogImage');
-        const ogUrl = document.getElementById('ogUrl');
-        const ogSiteName = document.getElementById('ogSiteName');
-        const twitterTitle = document.getElementById('twitterTitle');
-        const twitterDescription = document.getElementById('twitterDescription');
-        const twitterImage = document.getElementById('twitterImage');
-        const favicon = document.getElementById('favicon');
-        const appleIcon = document.getElementById('appleIcon');
 
         // ============================================================
-        // 3. الإعدادات الافتراضية - كلها من Firestore
+        // 3. الإعدادات الافتراضية
         // ============================================================
         const DEFAULT_SETTINGS = {
-            unionName: '',
-            committeeName: '',
-            presidentName: '',
-            presidentLabel: '',
+            unionName: 'نقابة تكنولوجيا المعلومات',
+            committeeName: 'التحول الرقمي والتدريب',
+            presidentName: 'المهندس / محمود جميل',
             splashDuration: 4000,
             logoUrl: '',
-            systemVersion: '',
-            subtitle: '',
-            footerText: '',
-            skipText: '',
-            pageTitle: '',
-            metaDescription: '',
-            metaKeywords: '',
-            ogTitle: '',
-            ogDescription: '',
-            ogUrl: '',
-            ogSiteName: '',
-            twitterTitle: '',
-            twitterDescription: '',
-            loadingMessages: [],
-            colors: {
-                primary: '#C9A84C',
-                accent: '#7C3AED',
-                background: '#0A0E1A',
-                text: '#FFFFFF',
-                textSecondary: 'rgba(255,255,255,0.7)',
-                textMuted: 'rgba(255,255,255,0.4)',
-                textDim: 'rgba(255,255,255,0.15)',
-                border: 'rgba(255,255,255,0.06)'
-            }
+            systemVersion: 'v2.0.0',
+            subtitle: 'نظام توثيق الشهادات التدريبية',
+            footerText: 'نقابة تكنولوجيا المعلومات والبرمجيات'
         };
 
         let settings = { ...DEFAULT_SETTINGS };
 
         // ============================================================
-        // 4. تطبيق الألوان على CSS
-        // ============================================================
-        function applyColors(colors) {
-            const root = document.documentElement;
-            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
-            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
-            if (colors.background) root.style.setProperty('--bg-color', colors.background);
-            if (colors.text) root.style.setProperty('--text-color', colors.text);
-            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
-            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
-            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
-            if (colors.border) root.style.setProperty('--border', colors.border);
-            
-            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
-            root.style.setProperty('--primary-glow', primaryGlow);
-            
-            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
-            root.style.setProperty('--accent-glow', accentGlow);
-            
-            if (colors.background) {
-                document.body.style.background = colors.background;
-            }
-        }
-
-        // ============================================================
-        // 5. تطبيق جميع الإعدادات على الصفحة
-        // ============================================================
-        function applySettings(data) {
-            // النصوص الأساسية
-            if (data.unionName) unionNameEl.textContent = data.unionName;
-            if (data.committeeName) committeeNameEl.textContent = data.committeeName;
-            if (data.presidentName) presidentNameEl.textContent = data.presidentName;
-            if (data.presidentLabel) presidentLabelEl.textContent = data.presidentLabel;
-            if (data.subtitle) splashSubtitle.textContent = data.subtitle;
-            if (data.footerText) footerTextEl.textContent = data.footerText;
-            if (data.skipText) skipBtnText.textContent = data.skipText;
-            if (data.systemVersion) versionEl.textContent = data.systemVersion;
-
-            // اللوجو
-            if (data.logoUrl) {
-                splashLogo.src = data.logoUrl;
-            }
-
-            // OG Tags
-            if (data.pageTitle) pageTitle.textContent = data.pageTitle;
-            if (data.metaDescription) metaDescription.content = data.metaDescription;
-            if (data.metaKeywords) metaKeywords.content = data.metaKeywords;
-            if (data.ogTitle) ogTitle.content = data.ogTitle;
-            if (data.ogDescription) ogDescription.content = data.ogDescription;
-            if (data.ogUrl) ogUrl.content = data.ogUrl;
-            if (data.ogSiteName) ogSiteName.content = data.ogSiteName;
-            if (data.twitterTitle) twitterTitle.content = data.twitterTitle;
-            if (data.twitterDescription) twitterDescription.content = data.twitterDescription;
-
-            // صور OG
-            if (data.logoUrl) {
-                ogImage.content = data.logoUrl;
-                twitterImage.content = data.logoUrl;
-                favicon.href = data.logoUrl;
-                appleIcon.href = data.logoUrl;
-            }
-
-            // الألوان
-            if (data.colors) {
-                applyColors(data.colors);
-            }
-        }
-
-        // ============================================================
-        // 6. جلب الإعدادات من Firestore
+        // 4. جلب الإعدادات من Firestore
         // ============================================================
         async function loadSettingsFromFirestore() {
             try {
@@ -754,44 +628,61 @@
 
                 if (doc.exists) {
                     const data = doc.data();
-                    
-                    // نصوص
-                    if (data.unionName) settings.unionName = data.unionName;
-                    if (data.committeeName) settings.committeeName = data.committeeName;
-                    if (data.presidentName) settings.presidentName = data.presidentName;
-                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
-                    if (data.splashDuration) settings.splashDuration = data.splashDuration * 1000;
-                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
-                    if (data.systemVersion) settings.systemVersion = data.systemVersion;
-                    if (data.subtitle) settings.subtitle = data.subtitle;
-                    if (data.footerText) settings.footerText = data.footerText;
-                    if (data.skipText) settings.skipText = data.skipText;
-                    if (data.pageTitle) settings.pageTitle = data.pageTitle;
-                    if (data.metaDescription) settings.metaDescription = data.metaDescription;
-                    if (data.metaKeywords) settings.metaKeywords = data.metaKeywords;
-                    if (data.ogTitle) settings.ogTitle = data.ogTitle;
-                    if (data.ogDescription) settings.ogDescription = data.ogDescription;
-                    if (data.ogUrl) settings.ogUrl = data.ogUrl;
-                    if (data.ogSiteName) settings.ogSiteName = data.ogSiteName;
-                    if (data.twitterTitle) settings.twitterTitle = data.twitterTitle;
-                    if (data.twitterDescription) settings.twitterDescription = data.twitterDescription;
-                    if (data.loadingMessages) settings.loadingMessages = data.loadingMessages;
-                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
-                    applySettings(settings);
+                    if (data.unionName) {
+                        settings.unionName = data.unionName;
+                        unionNameEl.textContent = data.unionName;
+                    }
+
+                    if (data.committeeName) {
+                        settings.committeeName = data.committeeName;
+                        committeeNameEl.textContent = data.committeeName;
+                    }
+
+                    if (data.presidentName) {
+                        settings.presidentName = data.presidentName;
+                        presidentNameEl.textContent = data.presidentName;
+                    }
+
+                    if (data.splashDuration) {
+                        settings.splashDuration = data.splashDuration * 1000;
+                    }
+
+                    if (data.logoUrl) {
+                        settings.logoUrl = data.logoUrl;
+                        splashLogo.src = data.logoUrl;
+                        // إضافة fallback في حالة فشل التحميل
+                        splashLogo.onerror = function() {
+                            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E';
+                        };
+                    }
+
+                    if (data.systemVersion) {
+                        settings.systemVersion = data.systemVersion;
+                        versionEl.textContent = data.systemVersion;
+                    }
+
+                    if (data.subtitle) {
+                        settings.subtitle = data.subtitle;
+                        splashSubtitle.textContent = data.subtitle;
+                    }
+
+                    if (data.footerText) {
+                        settings.footerText = data.footerText;
+                        footerTextEl.textContent = data.footerText;
+                    }
+
                     console.log('✅ تم جلب الإعدادات من Firestore');
                 } else {
                     console.log('ℹ️ استخدام الإعدادات الافتراضية');
-                    applySettings(settings);
                 }
             } catch (err) {
                 console.error('❌ خطأ في جلب الإعدادات:', err.message);
-                applySettings(settings);
             }
         }
 
         // ============================================================
-        // 7. تشغيل شريط التحميل
+        // 5. تشغيل شريط التحميل
         // ============================================================
         function startLoading() {
             let progress = 0;
@@ -799,7 +690,7 @@
             const totalSteps = settings.splashDuration / interval;
             const increment = 100 / totalSteps;
 
-            const defaultMessages = [
+            const statusMessages = [
                 'جاري تجهيز المنصة',
                 'جاري تحميل البيانات',
                 'جاري تهيئة النظام',
@@ -807,22 +698,15 @@
                 'مرحباً بك في المنصة'
             ];
 
-            const statusMessages = settings.loadingMessages.length > 0 ? settings.loadingMessages : defaultMessages;
-
             const loadingInterval = setInterval(() => {
                 progress += increment;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(loadingInterval);
                     loadingStatus.textContent = 'جاري التوجيه...';
-                    setTimeout(() => {
-                        auth.onAuthStateChanged(function(user) {
-                            if (user) {
-                                window.location.href = 'home.html';
-                            } else {
-                                window.location.href = 'login.html';
-                            }
-                        });
+                    setTimeout(function() {
+                        // ✅ التوجيه إلى home.html مباشرة (بدون التحقق من حالة المستخدم)
+                        window.location.href = 'home.html';
                     }, 400);
                 }
 
@@ -836,64 +720,32 @@
         }
 
         // ============================================================
-        // 8. تخطي شاشة الترحيب
+        // 6. تخطي شاشة الترحيب - يروح للهوم مباشرة
         // ============================================================
         function skipSplash() {
-            auth.onAuthStateChanged(function(user) {
-                if (user) {
-                    window.location.href = 'home.html';
-                } else {
-                    window.location.href = 'login.html';
-                }
-            });
+            window.location.href = 'home.html';
         }
 
         // ============================================================
-        // 9. التحقق من حالة المستخدم
-        // ============================================================
-        auth.onAuthStateChanged(function(user) {
-            if (user) {
-                db.collection('users').doc(user.uid).get()
-                    .then(function(doc) {
-                        if (doc.exists) {
-                            const data = doc.data();
-                            sessionStorage.setItem('userData', JSON.stringify({
-                                uid: user.uid,
-                                email: user.email,
-                                displayName: data.displayName || 'مستخدم',
-                                role: data.role || 'user',
-                                isActive: data.isActive !== false
-                            }));
-                        }
-                    })
-                    .catch(function(err) {
-                        console.error('❌ خطأ في جلب بيانات المستخدم:', err);
-                    });
-            } else {
-                sessionStorage.removeItem('userData');
-            }
-        });
-
-        // ============================================================
-        // 10. تشغيل الصفحة
+        // 7. تشغيل الصفحة
         // ============================================================
         async function init() {
             await loadSettingsFromFirestore();
             startLoading();
 
+            // في حالة فشل تحميل اللوجو من Firestore
             splashLogo.onerror = function() {
-                this.src = 'https://placehold.co/160x160/0A0E1A/C9A84C/png?text=ن.ت';
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E';
             };
         }
 
         init();
 
-        console.log('✅ الصفحة الترحيبية - كل حرف من الإعدادات');
+        console.log('✅ الصفحة الترحيبية - نقابة تكنولوجيا المعلومات');
         console.log('📌 الإصدار:', settings.systemVersion);
+        console.log('⏳ مدة العرض:', settings.splashDuration / 1000, 'ثانية');
         console.log('👤 النقيب العام:', settings.presidentName);
-        console.log('🎨 الألوان من الإعدادات');
-        console.log('🔄 دوران اللوجو بطيء وأنيق');
-        console.log('🚀 التوجيه إلى home.html أو login.html');
+        console.log('🚀 التوجيه إلى home.html مباشرة');
     </script>
 
 </body>
