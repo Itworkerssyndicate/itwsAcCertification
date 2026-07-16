@@ -37,7 +37,7 @@
     <style>
         /* ============================================================
            التصميم الخرافي لشاشة تسجيل الدخول
-           كل حرف من الإعدادات
+           مع توجيه للداش بورد وزر للشاشة الهوم
            ============================================================ */
         * {
             margin: 0;
@@ -564,9 +564,15 @@
             color: var(--text-dim);
         }
 
-        .back-link {
-            display: inline-block;
+        .back-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
             margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .back-links a {
             color: var(--text-dim);
             font-size: 12px;
             text-decoration: none;
@@ -575,7 +581,7 @@
             z-index: 1;
         }
 
-        .back-link:hover {
+        .back-links a:hover {
             color: var(--text-muted);
         }
 
@@ -610,6 +616,7 @@
             .form-options { flex-direction: column; align-items: flex-start; gap: 4px; }
             .ring { display: none; }
             .glow-orb { display: none; }
+            .back-links { flex-direction: column; gap: 6px; align-items: center; }
         }
 
         @media (max-width: 380px) {
@@ -700,8 +707,9 @@
                 <span id="footerText"></span>
             </div>
 
-            <div style="text-align:center;margin-top:8px;">
-                <a href="index.html" class="back-link" id="backLink"></a>
+            <div class="back-links">
+                <a href="home.html" id="searchPageLink">شاشة البحث</a>
+                <a href="dashboard.html" id="dashboardLink">لوحة التحكم</a>
             </div>
 
         </div>
@@ -744,7 +752,8 @@
             rememberLabel: 'تذكرني',
             loginBtnText: 'تسجيل الدخول',
             homeLink: 'الرئيسية',
-            backLink: 'العودة إلى الرئيسية',
+            searchPageLink: 'شاشة البحث',
+            dashboardLink: 'لوحة التحكم',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -791,7 +800,8 @@
                                     if (texts.passwordLabel) settings.passwordLabel = texts.passwordLabel;
                                     if (texts.rememberLabel) settings.rememberLabel = texts.rememberLabel;
                                     if (texts.homeLink) settings.homeLink = texts.homeLink;
-                                    if (texts.backLink) settings.backLink = texts.backLink;
+                                    if (texts.searchPageLink) settings.searchPageLink = texts.searchPageLink;
+                                    if (texts.dashboardLink) settings.dashboardLink = texts.dashboardLink;
                                     if (texts.loginSubtitle) settings.loginSubtitle = texts.loginSubtitle;
                                 }
                                 applySettings();
@@ -825,7 +835,8 @@
             const rememberLabelEl = document.getElementById('rememberLabel');
             const loginBtnTextEl = document.getElementById('loginBtnText');
             const homeLinkEl = document.getElementById('homeLink');
-            const backLinkEl = document.getElementById('backLink');
+            const searchPageLinkEl = document.getElementById('searchPageLink');
+            const dashboardLinkEl = document.getElementById('dashboardLink');
             const emailInput = document.getElementById('emailInput');
             const passwordInput = document.getElementById('passwordInput');
 
@@ -840,7 +851,8 @@
             if (rememberLabelEl) rememberLabelEl.textContent = settings.rememberLabel;
             if (loginBtnTextEl) loginBtnTextEl.textContent = settings.loginBtnText;
             if (homeLinkEl) homeLinkEl.textContent = settings.homeLink;
-            if (backLinkEl) backLinkEl.textContent = settings.backLink;
+            if (searchPageLinkEl) searchPageLinkEl.textContent = settings.searchPageLink;
+            if (dashboardLinkEl) dashboardLinkEl.textContent = settings.dashboardLink;
 
             if (emailInput) emailInput.placeholder = settings.emailLabel;
             if (passwordInput) passwordInput.placeholder = settings.passwordLabel;
@@ -918,7 +930,8 @@
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
-                window.location.href = 'home.html';
+                // ✅ التوجيه إلى dashboard.html
+                window.location.href = 'dashboard.html';
             }
         });
 
@@ -1010,7 +1023,8 @@
                         showMsg('تم تسجيل الدخول بنجاح! جاري التوجيه...', 'success');
 
                         setTimeout(function() {
-                            window.location.href = 'home.html';
+                            // ✅ التوجيه إلى dashboard.html
+                            window.location.href = 'dashboard.html';
                         }, 800);
 
                     } else {
@@ -1095,6 +1109,8 @@
             console.log('👤 النقيب العام: ' + settings.presidentName);
             console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('🔒 نظام أمني متطور');
+            console.log('🚀 التوجيه إلى dashboard.html بعد تسجيل الدخول');
+            console.log('🔗 روابط: شاشة البحث ولوحة التحكم');
         });
     </script>
 
