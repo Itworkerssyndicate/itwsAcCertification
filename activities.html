@@ -213,17 +213,12 @@
             color: #fff;
             cursor: pointer;
             transition: all 0.3s ease;
-            animation: logoSpin 20s linear infinite;
             box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
-        }
-
-        @keyframes logoSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            background-size: cover;
+            background-position: center;
         }
 
         .logo-box:hover {
-            animation-duration: 3s;
             box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
             transform: scale(1.05);
         }
@@ -806,16 +801,16 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
                 <div class="header-title">
                     <h1>سجل النشاطات</h1>
                     <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">📊 لوحة التحكم</a>
-                <a href="users.html" class="btn btn-outline btn-sm">👥 المستخدمين</a>
-                <button class="btn btn-primary btn-sm" onclick="refreshActivities()">🔄 تحديث</button>
+                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
+                <a href="users.html" class="btn btn-outline btn-sm">المستخدمين</a>
+                <button class="btn btn-primary btn-sm" onclick="refreshActivities()">تحديث</button>
             </div>
         </header>
 
@@ -869,12 +864,12 @@
 
             <div class="card">
                 <div class="card-title">
-                    <span>📋 سجل النشاطات</span>
+                    <span>سجل النشاطات</span>
                     <span class="badge" id="activityCount">0</span>
                 </div>
 
                 <div class="filter-bar">
-                    <input type="text" id="searchInput" placeholder="🔍 بحث (المستخدم، الوصف، البريد)..." oninput="filterActivities()" />
+                    <input type="text" id="searchInput" placeholder="بحث (المستخدم، الوصف، البريد)..." oninput="filterActivities()" />
                     <select id="typeFilter" onchange="filterActivities()">
                         <option value="">جميع الأنواع</option>
                         <option value="login">تسجيل دخول</option>
@@ -900,7 +895,7 @@
                         <option value="super_admin">سوبر أدمن</option>
                         <option value="admin">أدمن</option>
                     </select>
-                    <button class="btn btn-outline btn-sm" onclick="resetFilters()">🔄 إعادة ضبط</button>
+                    <button class="btn btn-outline btn-sm" onclick="resetFilters()">إعادة ضبط</button>
                 </div>
 
                 <div class="table-responsive">
@@ -930,9 +925,39 @@
                 <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center;">
                     <div style="color:rgba(255,255,255,0.15);font-size:11px;" id="activityMeta">0 نشاط مسجل</div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <button class="btn btn-success btn-sm" onclick="exportActivities('pdf')">📥 تصدير PDF</button>
-                        <button class="btn btn-success btn-sm" onclick="exportActivities('excel')">📊 تصدير Excel</button>
-                        <button class="btn btn-danger btn-sm" onclick="clearAllActivities()">🗑️ مسح الكل</button>
+                        <button class="btn btn-success btn-sm" onclick="exportActivities('pdf')">تصدير PDF</button>
+                        <button class="btn btn-success btn-sm" onclick="exportActivities('excel')">تصدير Excel</button>
+                        <button class="btn btn-danger btn-sm" onclick="clearAllActivities()">مسح الكل</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== قسم اتخاذ القرارات ===== -->
+            <div class="card" style="border-color: rgba(139, 92, 246, 0.15);">
+                <div class="card-title">
+                    <span>اتخاذ القرارات</span>
+                    <span class="badge">تحليل النشاطات</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;" id="decisionCards">
+                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">نشاطات اليوم</div>
+                        <div style="font-size:24px;font-weight:800;color:#22c55e;" id="decisionToday">0</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionTodayMsg">لا توجد نشاطات اليوم</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">نشاطات الأسبوع</div>
+                        <div style="font-size:24px;font-weight:800;color:#f59e0b;" id="decisionWeek">0</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionWeekMsg">متوسط 0 نشاط يومياً</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">أكثر نوع نشاط</div>
+                        <div style="font-size:24px;font-weight:800;color:#8b5cf6;" id="decisionTopType">-</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionTopTypeCount">0 نشاط</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">التوصية</div>
+                        <div style="font-size:16px;font-weight:700;color:#60a5fa;" id="decisionRecommendation">انتظار البيانات</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionRecommendationDetail">تحليل النشاطات لتقديم توصيات</div>
                     </div>
                 </div>
             </div>
@@ -949,7 +974,7 @@
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>📋 تفاصيل النشاط</h2>
+                <h2>تفاصيل النشاط</h2>
                 <button class="modal-close" onclick="closeDetailModal()">✕</button>
             </div>
             <div class="modal-body" id="detailContent">
@@ -990,7 +1015,8 @@
         let userRole = null;
         let settings = {
             committeeName: 'لجنة التحول الرقمي والتدريب',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة'
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            logoUrl: ''
         };
 
         let liveInterval = null;
@@ -1005,6 +1031,7 @@
                         const data = doc.data();
                         if (data.committeeName) settings.committeeName = data.committeeName;
                         if (data.footerText) settings.footerText = data.footerText;
+                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
                         applySettings();
                     }
                 })
@@ -1014,6 +1041,17 @@
         function applySettings() {
             document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
             document.getElementById('footerText').textContent = settings.footerText;
+            
+            const logoBox = document.getElementById('logoBox');
+            if (settings.logoUrl && settings.logoUrl.trim() !== '') {
+                logoBox.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                logoBox.style.backgroundSize = 'cover';
+                logoBox.style.backgroundPosition = 'center';
+                logoBox.textContent = '';
+            } else {
+                logoBox.style.backgroundImage = 'linear-gradient(135deg, #0066ff, #8b5cf6)';
+                logoBox.textContent = 'ن.ت';
+            }
         }
 
         // ============================================================
@@ -1069,11 +1107,12 @@
                     renderActivities(activities);
                     updateStats();
                     updateLiveStatus();
+                    updateDecisions();
                 })
                 .catch(function(err) {
                     document.getElementById('pageLoader').classList.remove('show');
                     document.getElementById('pageContent').style.display = 'block';
-                    showMsg('❌ حدث خطأ في تحميل النشاطات: ' + err.message, 'error');
+                    showMsg('حدث خطأ في تحميل النشاطات: ' + err.message, 'error');
                 });
         }
 
@@ -1141,10 +1180,10 @@
             const statusText = document.getElementById('liveStatusText');
             if (liveActivities.length > 0) {
                 dot.className = 'live-dot';
-                statusText.textContent = '🟢 مباشر';
+                statusText.textContent = 'مباشر';
             } else {
                 dot.className = 'live-dot inactive';
-                statusText.textContent = '🔴 غير نشط';
+                statusText.textContent = 'غير نشط';
             }
         }
 
@@ -1156,7 +1195,112 @@
         }
 
         // ============================================================
-        // 8. عرض النشاطات
+        // 8. تحديث قرارات الإدارة
+        // ============================================================
+        function updateDecisions() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayActivities = activities.filter(function(item) {
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
+                    new Date();
+                return date >= today;
+            });
+
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const weekActivities = activities.filter(function(item) {
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
+                    new Date();
+                return date >= weekAgo;
+            });
+
+            // أكثر نوع نشاط
+            const typeCounts = {};
+            activities.forEach(function(item) {
+                const type = item.type || 'other';
+                typeCounts[type] = (typeCounts[type] || 0) + 1;
+            });
+            let topType = '-';
+            let topTypeCount = 0;
+            const typeLabels = {
+                'login': 'تسجيل دخول',
+                'logout': 'تسجيل خروج',
+                'create_academy': 'إضافة أكاديمية',
+                'update_academy': 'تعديل أكاديمية',
+                'delete_academy': 'حذف أكاديمية',
+                'create_certificate': 'إضافة شهادة',
+                'update_certificate': 'تعديل شهادة',
+                'delete_certificate': 'حذف شهادة',
+                'search_certificate': 'بحث شهادة',
+                'search_academy': 'بحث أكاديمية',
+                'export_pdf': 'تصدير PDF',
+                'export_excel': 'تصدير Excel',
+                'upload_logo': 'رفع لوجو',
+                'upload_stamp': 'رفع ختم',
+                'user_create': 'إنشاء مستخدم',
+                'user_update': 'تعديل مستخدم',
+                'user_delete': 'حذف مستخدم',
+            };
+            for (const [type, count] of Object.entries(typeCounts)) {
+                if (count > topTypeCount) {
+                    topTypeCount = count;
+                    topType = typeLabels[type] || type;
+                }
+            }
+
+            document.getElementById('decisionToday').textContent = todayActivities.length;
+            document.getElementById('decisionWeek').textContent = weekActivities.length;
+
+            if (todayActivities.length === 0) {
+                document.getElementById('decisionTodayMsg').textContent = 'لا توجد نشاطات اليوم';
+                document.getElementById('decisionTodayMsg').style.color = 'rgba(255,255,255,0.2)';
+            } else if (todayActivities.length < 5) {
+                document.getElementById('decisionTodayMsg').textContent = 'نشاط منخفض - يوصى بتحفيز التفاعل';
+                document.getElementById('decisionTodayMsg').style.color = '#f59e0b';
+            } else if (todayActivities.length < 15) {
+                document.getElementById('decisionTodayMsg').textContent = 'نشاط جيد - استمر على هذا المستوى';
+                document.getElementById('decisionTodayMsg').style.color = '#22c55e';
+            } else {
+                document.getElementById('decisionTodayMsg').textContent = 'نشاط ممتاز - تفاعل عالي';
+                document.getElementById('decisionTodayMsg').style.color = '#22c55e';
+            }
+
+            const avgDaily = Math.round(weekActivities.length / 7);
+            document.getElementById('decisionWeekMsg').textContent = 'متوسط ' + avgDaily + ' نشاط يومياً';
+
+            document.getElementById('decisionTopType').textContent = topType;
+            document.getElementById('decisionTopTypeCount').textContent = topTypeCount + ' نشاط';
+
+            // التوصية
+            const recEl = document.getElementById('decisionRecommendation');
+            const recDetailEl = document.getElementById('decisionRecommendationDetail');
+            
+            if (activities.length === 0) {
+                recEl.textContent = 'لا توجد بيانات';
+                recDetailEl.textContent = 'انتظر تسجيل أول نشاط على المنصة';
+            } else if (todayActivities.length === 0 && weekActivities.length === 0) {
+                recEl.textContent = 'المنصة غير نشطة';
+                recDetailEl.textContent = 'يوصى بمراجعة نشاط المستخدمين خلال الأسبوع الماضي';
+            } else if (todayActivities.length < 5 && weekActivities.length > 20) {
+                recEl.textContent = 'انخفاض مفاجئ في النشاط';
+                recDetailEl.textContent = 'يوصى بالتحقق من حالة النظام وإرسال تذكير للمستخدمين';
+            } else if (topType === 'تسجيل دخول' || topType === 'تسجيل خروج') {
+                recEl.textContent = 'نشاط دخول وخروج فقط';
+                recDetailEl.textContent = 'يوصى بتحفيز المستخدمين على استخدام الميزات الأساسية';
+            } else if (weekActivities.length > 50) {
+                recEl.textContent = 'نشاط عالي جداً';
+                recDetailEl.textContent = 'يوصى بالاستعداد لزيادة السعة وتحسين الأداء';
+            } else if (weekActivities.length > 20) {
+                recEl.textContent = 'نشاط جيد ومستقر';
+                recDetailEl.textContent = 'يوصى بالاستمرار في تقديم المحتوى والخدمات';
+            } else {
+                recEl.textContent = 'نشاط منخفض';
+                recDetailEl.textContent = 'يوصى بإطلاق حملة توعوية وتحفيزية للمستخدمين';
+            }
+        }
+
+        // ============================================================
+        // 9. عرض النشاطات
         // ============================================================
         function renderActivities(data) {
             const tbody = document.getElementById('activitiesBody');
@@ -1259,7 +1403,7 @@
         }
 
         // ============================================================
-        // 9. فلترة النشاطات
+        // 10. فلترة النشاطات
         // ============================================================
         function filterActivities() {
             const search = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1293,7 +1437,7 @@
         }
 
         // ============================================================
-        // 10. إعادة ضبط الفلتر
+        // 11. إعادة ضبط الفلتر
         // ============================================================
         function resetFilters() {
             document.getElementById('searchInput').value = '';
@@ -1303,20 +1447,20 @@
         }
 
         // ============================================================
-        // 11. تحديث النشاطات
+        // 12. تحديث النشاطات
         // ============================================================
         function refreshActivities() {
             loadActivities();
-            showMsg('🔄 تم تحديث النشاطات', 'success');
+            showMsg('تم تحديث النشاطات', 'success');
         }
 
         // ============================================================
-        // 12. عرض تفاصيل النشاط
+        // 13. عرض تفاصيل النشاط
         // ============================================================
         function showDetails(id) {
             const item = activities.find(function(a) { return a.id === id; });
             if (!item) {
-                showMsg('❌ النشاط غير موجود', 'error');
+                showMsg('النشاط غير موجود', 'error');
                 return;
             }
 
@@ -1395,11 +1539,11 @@
         });
 
         // ============================================================
-        // 13. تصدير النشاطات
+        // 14. تصدير النشاطات
         // ============================================================
         function exportActivities(format) {
             const type = format === 'pdf' ? 'PDF' : 'Excel';
-            showMsg('📥 جاري تحميل ' + type + '...', 'info');
+            showMsg('جاري تحميل ' + type + '...', 'info');
 
             db.collection('activities').add({
                 userId: currentUser ? currentUser.uid : 'system',
@@ -1414,18 +1558,18 @@
             }).catch(function() {});
 
             setTimeout(function() {
-                showMsg('✅ تم تحميل ' + type + ' بنجاح', 'success');
+                showMsg('تم تحميل ' + type + ' بنجاح', 'success');
             }, 1500);
         }
 
         // ============================================================
-        // 14. مسح جميع النشاطات
+        // 15. مسح جميع النشاطات
         // ============================================================
         function clearAllActivities() {
-            if (!confirm('⚠️ هل أنت متأكد من حذف جميع النشاطات؟')) return;
-            if (!confirm('⚠️ تأكيد نهائي؟')) return;
+            if (!confirm('هل أنت متأكد من حذف جميع النشاطات؟')) return;
+            if (!confirm('تأكيد نهائي؟')) return;
 
-            showMsg('⏳ جاري حذف النشاطات...', 'info');
+            showMsg('جاري حذف النشاطات...', 'info');
 
             db.collection('activities').get()
                 .then(function(snap) {
@@ -1436,16 +1580,16 @@
                     return batch.commit();
                 })
                 .then(function() {
-                    showMsg('✅ تم حذف جميع النشاطات', 'success');
+                    showMsg('تم حذف جميع النشاطات', 'success');
                     loadActivities();
                 })
                 .catch(function(err) {
-                    showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                    showMsg('حدث خطأ: ' + err.message, 'error');
                 });
         }
 
         // ============================================================
-        // 15. عرض الرسائل
+        // 16. عرض الرسائل
         // ============================================================
         function showMsg(msg, type = 'info') {
             const el = document.getElementById('pageMsg');
@@ -1457,12 +1601,12 @@
         }
 
         // ============================================================
-        // 16. تحميل الصفحة
+        // 17. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            console.log('✅ سجل النشاطات - نقابة تكنولوجيا المعلومات');
-            console.log('📋 جميع حركات المنصة مسجلة هنا');
+            console.log('سجل النشاطات - نقابة تكنولوجيا المعلومات');
+            console.log('جميع حركات المنصة مسجلة هنا');
         });
     </script>
 
