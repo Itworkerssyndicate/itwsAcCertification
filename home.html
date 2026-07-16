@@ -313,6 +313,43 @@
             color: var(--text-muted);
         }
 
+        /* ===== معلومات النقيب في الهيدر ===== */
+        .header-president {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 14px;
+            background: var(--bg-hover);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .header-president:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .header-president .president-icon {
+            font-size: 16px;
+        }
+
+        .header-president .president-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .header-president .president-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
         .header-right {
             display: flex;
             align-items: center;
@@ -1148,7 +1185,7 @@
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 18px; border-radius: 20px; }
             .header-right { justify-content: center; flex-wrap: wrap; }
-            .header-left { justify-content: center; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
             .hero-title { font-size: 28px; }
             .hero-subtitle { font-size: 15px; }
             .search-row { flex-direction: column; }
@@ -1175,6 +1212,9 @@
             .academies-modal .academy-item { flex-direction: column; align-items: flex-start; }
             .academies-modal .modal-header h2 { font-size: 18px; }
             .academies-modal .pagination button { padding: 6px 16px; font-size: 12px; }
+            .header-president { padding: 3px 10px; }
+            .header-president .president-name { font-size: 12px; }
+            .header-president .president-label { font-size: 10px; }
         }
 
         @media (max-width: 480px) {
@@ -1194,6 +1234,8 @@
             .academies-modal .modal-content { padding: 16px; }
             .academies-modal .academy-item .name { font-size: 14px; }
             .academies-modal .modal-header h2 { font-size: 16px; }
+            .header-president .president-name { font-size: 11px; }
+            .header-president .president-label { font-size: 9px; }
         }
 
         @media print {
@@ -1263,6 +1305,12 @@
                 <div class="header-title">
                     <h1 id="unionName">نقابة تكنولوجيا المعلومات</h1>
                     <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                </div>
+                <!-- ===== النقيب العام في الهيدر ===== -->
+                <div class="header-president">
+                    <span class="president-icon">👤</span>
+                    <span class="president-label">النقيب العام:</span>
+                    <span class="president-name" id="headerPresidentName">المهندس / محمود جميل</span>
                 </div>
             </div>
             <div class="header-right">
@@ -1572,6 +1620,7 @@
             document.getElementById('servicesBtn').href = settings.servicesLink;
             document.getElementById('footerText').textContent = settings.footerText;
             document.getElementById('presidentName').textContent = settings.presidentName;
+            document.getElementById('headerPresidentName').textContent = settings.presidentName;
             document.getElementById('heroTitle').textContent = settings.heroTitle;
             document.getElementById('heroSubtitle').textContent = settings.heroSubtitle;
             document.getElementById('certHint').textContent = settings.certHint;
