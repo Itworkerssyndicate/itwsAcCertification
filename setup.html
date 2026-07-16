@@ -18,6 +18,9 @@
     </script>
 
     <style>
+        /* ============================================================
+           التصميم المتطور لتهيئة النظام
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -25,9 +28,9 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Tahoma', Arial, sans-serif;
-            background: #050a18;
-            color: #fff;
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
+            background: #0A0E1A;
+            color: #ffffff;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
@@ -38,9 +41,9 @@
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 85, 230, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(100, 50, 255, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 150, 0.04) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.04) 0%, transparent 60%);
             animation: bgPulse 15s ease-in-out infinite alternate;
         }
 
@@ -71,14 +74,14 @@
             animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(201, 168, 76, 0.3); }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(124, 58, 237, 0.3); }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(201, 168, 76, 0.4); }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(124, 58, 237, 0.25); }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(201, 168, 76, 0.3); }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(124, 58, 237, 0.25); }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(201, 168, 76, 0.4); }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(124, 58, 237, 0.3); }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
@@ -94,8 +97,8 @@
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(201, 168, 76, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.02) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             animation: gridMove 25s linear infinite;
@@ -119,14 +122,13 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 100, 255, 0.05);
+            border: 1px solid rgba(201, 168, 76, 0.04);
             animation: ringSpin 40s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
-        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201, 168, 76, 0.06); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(124, 58, 237, 0.04); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(59, 130, 246, 0.03); animation-duration: 60s; }
 
         @keyframes ringSpin {
             0% { transform: rotate(0deg); }
@@ -147,7 +149,7 @@
             height: 450px;
             top: -150px;
             right: -150px;
-            background: rgba(0, 100, 255, 0.08);
+            background: rgba(201, 168, 76, 0.05);
         }
 
         .glow-orb:nth-child(2) {
@@ -155,7 +157,7 @@
             height: 550px;
             bottom: -200px;
             left: -200px;
-            background: rgba(138, 43, 226, 0.06);
+            background: rgba(124, 58, 237, 0.04);
             animation-delay: 6s;
         }
 
@@ -175,12 +177,23 @@
         .card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(201, 168, 76, 0.03), transparent 50%);
+            pointer-events: none;
         }
 
         .header {
@@ -204,20 +217,26 @@
             width: 52px;
             height: 52px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            background: linear-gradient(135deg, #C9A84C, #8B5CF6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
             font-size: 20px;
             color: #fff;
-            box-shadow: 0 0 40px rgba(0, 100, 255, 0.2);
+            box-shadow: 0 0 40px rgba(201, 168, 76, 0.2);
+            animation: logoSpin 20s linear infinite;
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .logo h1 {
             font-size: 22px;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #60a5fa);
+            background: linear-gradient(135deg, #ffffff, #C9A84C);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -229,16 +248,16 @@
         }
 
         .btn {
-            padding: 12px 28px;
+            padding: 10px 24px;
             border-radius: 30px;
             border: none;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
             font-family: inherit;
             position: relative;
@@ -259,8 +278,8 @@
         }
 
         .btn:hover::before {
-            width: 400px;
-            height: 400px;
+            width: 300px;
+            height: 300px;
         }
 
         .btn-success {
@@ -278,11 +297,11 @@
         .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-3px); }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            background: linear-gradient(135deg, #C9A84C, #8B5CF6);
             color: #fff;
-            box-shadow: 0 4px 25px rgba(0, 100, 255, 0.3);
+            box-shadow: 0 4px 25px rgba(201, 168, 76, 0.3);
         }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(0, 100, 255, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(201, 168, 76, 0.4); }
 
         .btn-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626);
@@ -322,8 +341,8 @@
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
+            border-color: #C9A84C;
+            box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.06);
         }
 
         .form-group select option {
@@ -347,7 +366,7 @@
         }
 
         .upload-area:hover {
-            border-color: rgba(0, 100, 255, 0.3);
+            border-color: rgba(201, 168, 76, 0.3);
             background: rgba(255, 255, 255, 0.02);
         }
 
@@ -421,7 +440,7 @@
             width: 44px;
             height: 44px;
             border: 4px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0066ff;
+            border-top-color: #C9A84C;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -448,7 +467,7 @@
 
         .log::-webkit-scrollbar { width: 4px; }
         .log::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
-        .log::-webkit-scrollbar-thumb { background: rgba(0, 100, 255, 0.3); border-radius: 4px; }
+        .log::-webkit-scrollbar-thumb { background: rgba(201, 168, 76, 0.3); border-radius: 4px; }
 
         .log .line {
             padding: 3px 0;
@@ -498,7 +517,7 @@
 
         .status-item:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(0, 100, 255, 0.08);
+            border-color: rgba(201, 168, 76, 0.08);
         }
 
         .status-item .icon { font-size: 22px; margin-bottom: 2px; }
@@ -563,7 +582,6 @@
     <div class="grid-lines"></div>
 
     <div class="orbital-ring">
-        <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
@@ -639,7 +657,6 @@
                 </div>
             </div>
 
-            <!-- زر التهيئة الرئيسي فقط -->
             <div style="text-align:center;margin-bottom:16px;position:relative;z-index:2;">
                 <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="font-size:18px;padding:16px 40px;">
                     🚀 تهيئة النظام بالكامل
@@ -928,16 +945,16 @@
                     styles: {
                         palette: {
                             window: '#0a0e1a',
-                            windowBorder: '#0055e6',
-                            tabIcon: '#0055e6',
-                            menuIcons: '#0055e6',
+                            windowBorder: '#C9A84C',
+                            tabIcon: '#C9A84C',
+                            menuIcons: '#C9A84C',
                             textDark: '#ffffff',
                             textLight: '#ffffff',
-                            link: '#0055e6',
-                            action: '#0055e6',
+                            link: '#C9A84C',
+                            action: '#C9A84C',
                             inactiveTabIcon: '#666666',
                             error: '#ef4444',
-                            inProgress: '#0055e6',
+                            inProgress: '#C9A84C',
                             complete: '#22c55e',
                             sourceBg: '#0a0e1a'
                         }
@@ -1070,7 +1087,175 @@
         }
 
         // ============================================================
-        // 6. تهيئة النظام بالكامل
+        // 6. مسح جميع المجموعات (ما عدا settings)
+        // ============================================================
+        async function clearAllCollections() {
+            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
+            let cleared = 0;
+
+            for (const name of collections) {
+                try {
+                    const snap = await db.collection(name).get();
+                    if (snap.empty) {
+                        addLog('📭 جدول ' + name + ' فارغ', 'info');
+                        continue;
+                    }
+
+                    const batch = db.batch();
+                    snap.docs.forEach(function(doc) {
+                        if (doc.id !== '_init') {
+                            batch.delete(doc.ref);
+                        }
+                    });
+
+                    await batch.commit();
+                    cleared++;
+                    addLog('🗑️ تم مسح جدول: ' + name + ' (' + snap.size + ' وثيقة)', 'warning');
+
+                    await sleep(200);
+
+                    // إعادة إنشاء وثيقة _init
+                    await db.collection(name).doc('_init').set({
+                        initialized: true,
+                        createdAt: getEgyptTime(),
+                        clearedAt: getEgyptTime()
+                    });
+
+                } catch (err) {
+                    addLog('❌ خطأ في مسح ' + name + ': ' + err.message, 'error');
+                }
+            }
+
+            addLog('✅ تم مسح ' + cleared + ' جداول', 'success');
+            return cleared;
+        }
+
+        // ============================================================
+        // 7. إنشاء المستخدم
+        // ============================================================
+        async function createUser(email, password, name, phone) {
+            addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
+
+            try {
+                try { await auth.signOut(); } catch(e) {}
+                await sleep(500);
+
+                try {
+                    const cred = await auth.signInWithEmailAndPassword(email, password);
+                    const uid = cred.user.uid;
+                    addLog('✅ المستخدم موجود مسبقاً', 'success');
+                    
+                    await db.collection('users').doc(uid).set({
+                        uid: uid,
+                        email: email,
+                        displayName: name,
+                        phone: phone,
+                        role: 'super_admin',
+                        isActive: true,
+                        lastLogin: getEgyptTime(),
+                        updatedAt: getEgyptTime()
+                    }, { merge: true });
+                    
+                    return { success: true, uid, isNew: false };
+                } catch (loginErr) {
+                    if (loginErr.code === 'auth/user-not-found') {
+                        const cred = await auth.createUserWithEmailAndPassword(email, password);
+                        const uid = cred.user.uid;
+                        addLog('✅ تم إنشاء مستخدم جديد', 'success');
+                        
+                        await db.collection('users').doc(uid).set({
+                            uid: uid,
+                            email: email,
+                            displayName: name,
+                            phone: phone,
+                            role: 'super_admin',
+                            isActive: true,
+                            createdAt: getEgyptTime(),
+                            lastLogin: getEgyptTime()
+                        });
+                        
+                        return { success: true, uid, isNew: true };
+                    } else {
+                        throw loginErr;
+                    }
+                }
+            } catch (err) {
+                addLog('❌ فشل: ' + err.message, 'error');
+                throw err;
+            }
+        }
+
+        // ============================================================
+        // 8. حفظ الإعدادات
+        // ============================================================
+        async function saveSettings() {
+            const data = {
+                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
+                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
+                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
+                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها',
+                footerText: document.getElementById('footerText').value.trim() ||
+                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                presidentName: document.getElementById('presidentName').value.trim() || 'المهندس / محمود جميل',
+                updatedAt: getEgyptTime()
+            };
+
+            await db.collection('settings').doc('general').set(data, { merge: true });
+            addLog('✅ تم حفظ الإعدادات العامة', 'success');
+
+            const servicesData = {
+                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
+                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
+                updatedAt: getEgyptTime()
+            };
+            await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
+            addLog('✅ تم حفظ زر الخدمات', 'success');
+            
+            setStatus('sSettings', '✅ جاهز', 'done');
+            return true;
+        }
+
+        // ============================================================
+        // 9. التحقق من Firebase
+        // ============================================================
+        async function checkFirebase() {
+            try {
+                await db.collection('users').limit(1).get();
+                setStatus('sFirebase', '✅ متصل', 'done');
+                addLog('✅ Firebase متصل', 'success');
+                return true;
+            } catch (err) {
+                setStatus('sFirebase', '❌ خطأ', 'error');
+                addLog('❌ Firebase: ' + err.message, 'error');
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 10. التحقق من Cloudinary
+        // ============================================================
+        async function checkCloudinary() {
+            try {
+                if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
+                    setStatus('sCloudinary', '✅ متصل', 'done');
+                    addLog('✅ Cloudinary متصل', 'success');
+                    return true;
+                } else {
+                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                    addLog('⚠️ Cloudinary غير متصل', 'warning');
+                    return false;
+                }
+            } catch (err) {
+                setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                addLog('⚠️ Cloudinary: ' + err.message, 'warning');
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 11. تشغيل التهيئة الكاملة
         // ============================================================
         async function runFullSetup() {
             if (isRunning) {
@@ -1110,156 +1295,35 @@
             addLog('🚀 بدء التهيئة الكاملة للنظام...', 'info');
 
             try {
-                // 1. التحقق من الاتصال
-                try {
-                    await db.collection('users').limit(1).get();
-                    setStatus('sFirebase', '✅ متصل', 'done');
-                    addLog('✅ Firebase متصل', 'success');
-                } catch (err) {
-                    setStatus('sFirebase', '❌ خطأ', 'error');
-                    addLog('❌ Firebase: ' + err.message, 'error');
-                    throw new Error('فشل الاتصال بـ Firebase');
-                }
+                // 1. التحقق من الاتصالات
+                await checkFirebase();
+                await sleep(300);
+                await checkCloudinary();
+                await sleep(300);
 
-                // 2. التحقق من Cloudinary
-                try {
-                    if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
-                        setStatus('sCloudinary', '✅ متصل', 'done');
-                        addLog('✅ Cloudinary متصل', 'success');
-                    } else {
-                        setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
-                        addLog('⚠️ Cloudinary غير متصل', 'warning');
-                    }
-                } catch (err) {
-                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
-                }
-
+                // 2. مسح جميع الجداول
+                addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
+                await clearAllCollections();
                 await sleep(500);
 
-                // 3. مسح جميع الجداول
-                addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
-                const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
-                
-                for (const name of collections) {
-                    try {
-                        const snap = await db.collection(name).get();
-                        if (!snap.empty) {
-                            const batch = db.batch();
-                            snap.docs.forEach(function(doc) {
-                                if (doc.id !== '_init') {
-                                    batch.delete(doc.ref);
-                                }
-                            });
-                            await batch.commit();
-                            addLog('🗑️ تم مسح جدول: ' + name, 'success');
-                        } else {
-                            addLog('📭 جدول ' + name + ' فارغ', 'info');
-                        }
-                        await sleep(200);
-                    } catch (err) {
-                        addLog('❌ خطأ في مسح ' + name + ': ' + err.message, 'error');
-                    }
-                }
-
-                // 4. إنشاء الجداول مع بيانات افتراضية
-                addLog('📊 جاري إنشاء هيكل البيانات...', 'info');
-
-                // 4.1 إنشاء مستخدم السوبر أدمن
-                addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
-                try {
-                    // محاولة تسجيل الدخول أولاً
-                    let uid;
-                    try {
-                        const cred = await auth.signInWithEmailAndPassword(email, password);
-                        uid = cred.user.uid;
-                        addLog('✅ المستخدم موجود مسبقاً', 'success');
-                    } catch (loginErr) {
-                        if (loginErr.code === 'auth/user-not-found') {
-                            const cred = await auth.createUserWithEmailAndPassword(email, password);
-                            uid = cred.user.uid;
-                            addLog('✅ تم إنشاء مستخدم جديد', 'success');
-                        } else {
-                            throw loginErr;
-                        }
-                    }
-
-                    await db.collection('users').doc(uid).set({
-                        uid: uid,
-                        email: email,
-                        displayName: name,
-                        phone: phone,
-                        role: 'super_admin',
-                        isActive: true,
-                        createdAt: getEgyptTime(),
-                        lastLogin: getEgyptTime()
-                    }, { merge: true });
-                    
-                    addLog('✅ تم حفظ بيانات المستخدم', 'success');
-                    setStatus('sUsers', '✅ ' + email, 'done');
-
-                } catch (err) {
-                    addLog('❌ فشل إنشاء المستخدم: ' + err.message, 'error');
-                    throw err;
-                }
-
+                // 3. حفظ الإعدادات
+                await saveSettings();
                 await sleep(300);
 
-                // 4.2 حفظ الإعدادات
-                addLog('⚙️ جاري حفظ الإعدادات...', 'info');
-                try {
-                    const settingsData = {
-                        unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
-                        committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
-                        splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
-                        infoBoxText: document.getElementById('infoBoxText').value.trim() ||
-                            'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها',
-                        footerText: document.getElementById('footerText').value.trim() ||
-                            '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-                        sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
-                        presidentName: document.getElementById('presidentName').value.trim() || 'المهندس / محمود جميل',
-                        updatedAt: getEgyptTime()
-                    };
-
-                    await db.collection('settings').doc('general').set(settingsData, { merge: true });
-                    addLog('✅ تم حفظ الإعدادات العامة', 'success');
-
-                    const servicesData = {
-                        text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
-                        link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
-                        updatedAt: getEgyptTime()
-                    };
-                    await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
-                    addLog('✅ تم حفظ زر الخدمات', 'success');
-                    
-                    setStatus('sSettings', '✅ جاهز', 'done');
-                } catch (err) {
-                    addLog('❌ فشل حفظ الإعدادات: ' + err.message, 'error');
-                    throw err;
-                }
-
+                // 4. إنشاء المستخدم
+                await createUser(email, password, name, phone);
                 await sleep(300);
 
-                // 4.3 إنشاء وثائق _init للجداول
-                for (const name of collections) {
-                    try {
-                        await db.collection(name).doc('_init').set({
-                            initialized: true,
-                            createdAt: getEgyptTime()
-                        });
-                    } catch (err) {
-                        // تجاهل
-                    }
-                }
+                // 5. تحميل الصور إن وجدت
+                loadImagesFromFirestore();
 
-                // 5. تحديث الحالة النهائية
+                // 6. تحديث الحالة النهائية
+                setStatus('sUsers', '✅ ' + email, 'done');
                 setStatus('sAcademies', '✅ جاهز', 'done');
                 setStatus('sCertificates', '✅ جاهز', 'done');
                 setStatus('sActivities', '✅ جاهز', 'done');
                 setStatus('sSearchLogs', '✅ جاهز', 'done');
 
-                loadImagesFromFirestore();
-
-                // عرض النتيجة
                 showMsg('✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ' + email + ' / ' + password, 'success');
                 addLog('🎉 اكتملت تهيئة النظام بالكامل', 'success');
                 addLog('👑 ' + email + ' / ' + password, 'info');
@@ -1277,12 +1341,11 @@
         }
 
         // ============================================================
-        // 7. تحميل الصفحة
+        // 12. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             auth.signOut().catch(() => {});
             
-            // تحديث الحالة الأولية
             setTimeout(function() {
                 db.collection('users').limit(1).get()
                     .then(() => {
