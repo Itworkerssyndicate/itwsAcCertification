@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>إدارة الأكاديميات - نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -13,14 +34,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
 
-    <!-- html2pdf للتصدير -->
+    <!-- html2pdf -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
     </script>
 
     <style>
         /* ============================================================
-           التصميم الخرافي لإدارة الأكاديميات
-           كل حرف ولون من الإعدادات
+           التصميم الخرافي لإدارة الأكاديميات - بدون أي نصوص ثابتة
+           كل حرف ولون وصورة من الإعدادات
            ============================================================ */
         * {
             margin: 0;
@@ -321,7 +342,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             position: relative;
             z-index: 2;
@@ -337,7 +358,7 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
@@ -905,7 +926,8 @@
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
-            .header-right { justify-content: center; }
+            .header-right { justify-content: center; flex-wrap: wrap; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
             .form-row { grid-template-columns: 1fr; }
             .container { padding: 10px; }
             .card { padding: 14px 16px; }
@@ -915,7 +937,6 @@
             .branch-item .branch-grid { grid-template-columns: 1fr; }
             .glow-orb { display: none; }
             .ring { display: none; }
-            .header-left { justify-content: center; flex-wrap: wrap; }
             .header-title { text-align: center; }
             .stats-row { grid-template-columns: repeat(2, 1fr); }
             .header-president { padding: 3px 10px; }
@@ -967,20 +988,20 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1>إدارة الأكاديميات</h1>
-                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="pageTitleHeader"></h1>
+                    <p id="committeeName"></p>
                 </div>
                 <div class="header-president">
                     <span class="president-icon">👤</span>
-                    <span class="president-label">النقيب العام:</span>
-                    <span class="president-name" id="headerPresidentName">المهندس / محمود جميل</span>
+                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
-                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()">إضافة أكاديمية</a>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn"></a>
+                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()" id="addAcademyBtn"></a>
             </div>
         </header>
 
@@ -988,7 +1009,7 @@
 
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
-            <div style="color:var(--text-muted);">جاري تحميل الأكاديميات...</div>
+            <div style="color:var(--text-muted);" id="loaderText"></div>
         </div>
 
         <div id="pageContent" style="display:none;">
@@ -997,49 +1018,49 @@
                 <div class="stats-row" id="statsRow">
                     <div class="stat-mini">
                         <div class="num" id="statTotal">0</div>
-                        <div class="label">إجمالي الأكاديميات</div>
+                        <div class="label" id="statTotalLabel"></div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statMain">0</div>
-                        <div class="label">أكاديميات رئيسية</div>
+                        <div class="label" id="statMainLabel"></div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statBranches">0</div>
-                        <div class="label">فروع فرعية</div>
+                        <div class="label" id="statBranchesLabel"></div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statGovernorates">0</div>
-                        <div class="label">محافظات</div>
+                        <div class="label" id="statGovernoratesLabel"></div>
                     </div>
                 </div>
 
                 <div class="filters-grid">
                     <div class="filter-group">
-                        <label>اسم الأكاديمية</label>
-                        <input type="text" id="filterName" placeholder="بحث بالاسم..." oninput="applyFilters()" />
+                        <label id="filterNameLabel"></label>
+                        <input type="text" id="filterName" placeholder="" oninput="applyFilters()" />
                     </div>
                     <div class="filter-group">
-                        <label>الرقم الاعتمادي</label>
-                        <input type="text" id="filterLicense" placeholder="بحث بالرقم..." oninput="applyFilters()" />
+                        <label id="filterLicenseLabel"></label>
+                        <input type="text" id="filterLicense" placeholder="" oninput="applyFilters()" />
                     </div>
                     <div class="filter-group">
-                        <label>المحافظة</label>
+                        <label id="filterGovernorateLabel"></label>
                         <select id="filterGovernorate" onchange="applyFilters()">
-                            <option value="">جميع المحافظات</option>
+                            <option value="" id="filterAllOption"></option>
                         </select>
                     </div>
                     <div class="filter-group" style="justify-content:flex-end;">
-                        <button class="btn btn-ghost btn-sm" onclick="resetFilters()" style="width:100%;">إعادة ضبط</button>
+                        <button class="btn btn-ghost btn-sm" onclick="resetFilters()" id="resetFiltersBtn"></button>
                     </div>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-title">
-                    <span>قائمة الأكاديميات</span>
+                    <span id="academiesListTitle"></span>
                     <div style="display:flex;gap:8px;align-items:center;">
                         <span class="badge" id="academyCount">0</span>
-                        <button class="btn btn-success btn-sm" onclick="exportSearchResultsPDF()">طباعة البحث</button>
+                        <button class="btn btn-success btn-sm" onclick="exportSearchResultsPDF()" id="exportPdfBtn"></button>
                     </div>
                 </div>
 
@@ -1047,13 +1068,13 @@
                     <table class="table" id="academiesTable">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>اسم الأكاديمية</th>
-                                <th>الرقم الاعتمادي</th>
-                                <th>الفروع</th>
-                                <th>المحافظات</th>
-                                <th>الحالة</th>
-                                <th>الإجراءات</th>
+                                <th id="thNum">#</th>
+                                <th id="thName"></th>
+                                <th id="thLicense"></th>
+                                <th id="thBranches"></th>
+                                <th id="thGovernorates"></th>
+                                <th id="thStatus"></th>
+                                <th id="thActions"></th>
                             </tr>
                         </thead>
                         <tbody id="academiesBody"></tbody>
@@ -1062,15 +1083,19 @@
 
                 <div class="empty-state" id="emptyState" style="display:none;">
                     <div class="icon">🏛️</div>
-                    <div class="title">لا توجد أكاديميات</div>
-                    <div class="desc">قم بإضافة أكاديمية جديدة بالضغط على زر "إضافة أكاديمية"</div>
+                    <div class="title" id="emptyTitle"></div>
+                    <div class="desc" id="emptyDesc"></div>
                 </div>
             </div>
 
         </div>
 
         <footer class="footer">
-            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <span id="footerText"></span>
+            <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
+                <span id="presidentFooter"></span>
+                <span id="presidentName"></span>
+            </div>
         </footer>
 
     </div>
@@ -1082,7 +1107,7 @@
     <div class="modal-overlay" id="academyModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="modalTitle">إضافة أكاديمية جديدة</h2>
+                <h2 id="modalTitle"></h2>
                 <button class="modal-close" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
@@ -1091,43 +1116,35 @@
                     <input type="hidden" id="editId" value="" />
 
                     <div class="form-group">
-                        <label>اسم الأكاديمية *</label>
-                        <input type="text" id="academyName" placeholder="أدخل اسم الأكاديمية" required />
+                        <label id="academyNameLabel"></label>
+                        <input type="text" id="academyName" placeholder="" required />
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>الرقم الاعتمادي *</label>
-                            <input type="text" id="academyLicense" placeholder="مثال: NTI-2026-001" required />
+                            <label id="academyLicenseLabel"></label>
+                            <input type="text" id="academyLicense" placeholder="" required />
                         </div>
                         <div class="form-group">
-                            <label>البطاقة الضريبية *</label>
-                            <input type="text" id="academyTax" placeholder="مثال: 123-456-789" required />
+                            <label id="academyTaxLabel"></label>
+                            <input type="text" id="academyTax" placeholder="" required />
                         </div>
                     </div>
 
                     <div class="branches-container">
                         <div class="branch-header">
-                            <h4>الفروع</h4>
-                            <button type="button" class="btn btn-success btn-sm" onclick="addBranchField()">
-                                + إضافة فرع
-                            </button>
+                            <h4 id="branchesTitle"></h4>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addBranchField()" id="addBranchBtn"></button>
                         </div>
-                        <div id="branchesContainer">
-                            <!-- سيتم إنشاء الفروع بواسطة JavaScript -->
-                        </div>
+                        <div id="branchesContainer"></div>
                     </div>
 
-                    <div style="color:var(--text-muted);font-size:11px;margin-top:8px;">
-                        * الحقول المطلوبة
-                    </div>
+                    <div style="color:var(--text-muted);font-size:11px;margin-top:8px;" id="requiredFields"></div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal()">إلغاء</button>
-                <button class="btn btn-primary" onclick="document.getElementById('academyForm').dispatchEvent(new Event('submit'))">
-                    حفظ
-                </button>
+                <button class="btn btn-outline" onclick="closeModal()" id="cancelBtn"></button>
+                <button class="btn btn-primary" onclick="document.getElementById('academyForm').dispatchEvent(new Event('submit'))" id="saveBtn"></button>
             </div>
         </div>
     </div>
@@ -1136,25 +1153,23 @@
     <div class="modal-overlay" id="deleteModal">
         <div class="modal" style="max-width:450px;">
             <div class="modal-header">
-                <h2 style="color:var(--error);">تأكيد الحذف</h2>
+                <h2 style="color:var(--error);" id="deleteTitle"></h2>
                 <button class="modal-close" onclick="closeDeleteModal()">✕</button>
             </div>
             <div class="modal-body">
-                <p style="color:var(--text-secondary);margin-bottom:12px;">
-                    هل أنت متأكد من حذف الأكاديمية التالية؟
-                </p>
+                <p style="color:var(--text-secondary);margin-bottom:12px;" id="deleteConfirmText"></p>
                 <div style="background:var(--bg-hover);border-radius:var(--radius-sm);padding:14px;">
                     <p style="font-weight:700;color:var(--text-color);" id="deleteAcademyName">-</p>
                     <p style="font-size:12px;color:var(--text-muted);" id="deleteAcademyLicense">-</p>
                 </div>
                 <div class="form-group" style="margin-top:12px;">
-                    <label>سبب الحذف *</label>
-                    <input type="text" id="deleteReason" placeholder="أدخل سبب الحذف (للإدارة)" required />
+                    <label id="deleteReasonLabel"></label>
+                    <input type="text" id="deleteReason" placeholder="" required />
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeDeleteModal()">إلغاء</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">تأكيد الحذف</button>
+                <button class="btn btn-outline" onclick="closeDeleteModal()" id="deleteCancelBtn"></button>
+                <button class="btn btn-danger" onclick="confirmDelete()" id="deleteConfirmBtn"></button>
             </div>
         </div>
     </div>
@@ -1187,10 +1202,50 @@
         let branchCounter = 1;
 
         let settings = {
-            committeeName: 'لجنة التحول الرقمي والتدريب',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            pageTitleHeader: '',
+            committeeName: '',
             logoUrl: '',
-            presidentName: 'المهندس / محمود جميل',
+            footerText: '',
+            presidentName: '',
+            presidentLabel: '',
+            presidentFooter: '',
+            dashboardBtn: '',
+            addAcademyBtn: '',
+            loaderText: '',
+            statTotalLabel: '',
+            statMainLabel: '',
+            statBranchesLabel: '',
+            statGovernoratesLabel: '',
+            filterNameLabel: '',
+            filterLicenseLabel: '',
+            filterGovernorateLabel: '',
+            filterAllOption: '',
+            resetFiltersBtn: '',
+            academiesListTitle: '',
+            exportPdfBtn: '',
+            thNum: '',
+            thName: '',
+            thLicense: '',
+            thBranches: '',
+            thGovernorates: '',
+            thStatus: '',
+            thActions: '',
+            emptyTitle: '',
+            emptyDesc: '',
+            modalTitle: '',
+            academyNameLabel: '',
+            academyLicenseLabel: '',
+            academyTaxLabel: '',
+            branchesTitle: '',
+            addBranchBtn: '',
+            requiredFields: '',
+            cancelBtn: '',
+            saveBtn: '',
+            deleteTitle: '',
+            deleteConfirmText: '',
+            deleteReasonLabel: '',
+            deleteCancelBtn: '',
+            deleteConfirmBtn: '',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1216,11 +1271,54 @@
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
+
+                        if (data.pageTitleHeader) settings.pageTitleHeader = data.pageTitleHeader;
                         if (data.committeeName) settings.committeeName = data.committeeName;
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
                         if (data.footerText) settings.footerText = data.footerText;
                         if (data.presidentName) settings.presidentName = data.presidentName;
+                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
+                        if (data.dashboardBtn) settings.dashboardBtn = data.dashboardBtn;
+                        if (data.addAcademyBtn) settings.addAcademyBtn = data.addAcademyBtn;
+                        if (data.loaderText) settings.loaderText = data.loaderText;
+                        if (data.statTotalLabel) settings.statTotalLabel = data.statTotalLabel;
+                        if (data.statMainLabel) settings.statMainLabel = data.statMainLabel;
+                        if (data.statBranchesLabel) settings.statBranchesLabel = data.statBranchesLabel;
+                        if (data.statGovernoratesLabel) settings.statGovernoratesLabel = data.statGovernoratesLabel;
+                        if (data.filterNameLabel) settings.filterNameLabel = data.filterNameLabel;
+                        if (data.filterLicenseLabel) settings.filterLicenseLabel = data.filterLicenseLabel;
+                        if (data.filterGovernorateLabel) settings.filterGovernorateLabel = data.filterGovernorateLabel;
+                        if (data.filterAllOption) settings.filterAllOption = data.filterAllOption;
+                        if (data.resetFiltersBtn) settings.resetFiltersBtn = data.resetFiltersBtn;
+                        if (data.academiesListTitle) settings.academiesListTitle = data.academiesListTitle;
+                        if (data.exportPdfBtn) settings.exportPdfBtn = data.exportPdfBtn;
+                        if (data.thNum) settings.thNum = data.thNum;
+                        if (data.thName) settings.thName = data.thName;
+                        if (data.thLicense) settings.thLicense = data.thLicense;
+                        if (data.thBranches) settings.thBranches = data.thBranches;
+                        if (data.thGovernorates) settings.thGovernorates = data.thGovernorates;
+                        if (data.thStatus) settings.thStatus = data.thStatus;
+                        if (data.thActions) settings.thActions = data.thActions;
+                        if (data.emptyTitle) settings.emptyTitle = data.emptyTitle;
+                        if (data.emptyDesc) settings.emptyDesc = data.emptyDesc;
+                        if (data.modalTitle) settings.modalTitle = data.modalTitle;
+                        if (data.academyNameLabel) settings.academyNameLabel = data.academyNameLabel;
+                        if (data.academyLicenseLabel) settings.academyLicenseLabel = data.academyLicenseLabel;
+                        if (data.academyTaxLabel) settings.academyTaxLabel = data.academyTaxLabel;
+                        if (data.branchesTitle) settings.branchesTitle = data.branchesTitle;
+                        if (data.addBranchBtn) settings.addBranchBtn = data.addBranchBtn;
+                        if (data.requiredFields) settings.requiredFields = data.requiredFields;
+                        if (data.cancelBtn) settings.cancelBtn = data.cancelBtn;
+                        if (data.saveBtn) settings.saveBtn = data.saveBtn;
+                        if (data.deleteTitle) settings.deleteTitle = data.deleteTitle;
+                        if (data.deleteConfirmText) settings.deleteConfirmText = data.deleteConfirmText;
+                        if (data.deleteReasonLabel) settings.deleteReasonLabel = data.deleteReasonLabel;
+                        if (data.deleteCancelBtn) settings.deleteCancelBtn = data.deleteCancelBtn;
+                        if (data.deleteConfirmBtn) settings.deleteConfirmBtn = data.deleteConfirmBtn;
+
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+
                         applySettings();
                         applyColors(settings.colors);
                     } else {
@@ -1235,14 +1333,130 @@
         }
 
         function applySettings() {
+            const titleEl = document.getElementById('pageTitleHeader');
             const committeeEl = document.getElementById('committeeName');
-            const footerEl = document.getElementById('footerText');
-            const presidentEl = document.getElementById('headerPresidentName');
+            const presidentLabelEl = document.getElementById('presidentLabel');
+            const presidentNameEl = document.getElementById('headerPresidentName');
+            const footerTextEl = document.getElementById('footerText');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
 
-            if (committeeEl) committeeEl.textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
-            if (footerEl) footerEl.textContent = settings.footerText;
-            if (presidentEl) presidentEl.textContent = settings.presidentName;
+            if (titleEl) titleEl.textContent = settings.pageTitleHeader;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
+            if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
+            if (footerTextEl) footerTextEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
 
+            // الأزرار
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            const addAcademyBtn = document.getElementById('addAcademyBtn');
+            if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
+            if (addAcademyBtn) addAcademyBtn.textContent = settings.addAcademyBtn;
+
+            // لودر
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.textContent = settings.loaderText;
+
+            // الإحصائيات
+            const statTotalLabel = document.getElementById('statTotalLabel');
+            const statMainLabel = document.getElementById('statMainLabel');
+            const statBranchesLabel = document.getElementById('statBranchesLabel');
+            const statGovernoratesLabel = document.getElementById('statGovernoratesLabel');
+            if (statTotalLabel) statTotalLabel.textContent = settings.statTotalLabel;
+            if (statMainLabel) statMainLabel.textContent = settings.statMainLabel;
+            if (statBranchesLabel) statBranchesLabel.textContent = settings.statBranchesLabel;
+            if (statGovernoratesLabel) statGovernoratesLabel.textContent = settings.statGovernoratesLabel;
+
+            // الفلاتر
+            const filterNameLabel = document.getElementById('filterNameLabel');
+            const filterLicenseLabel = document.getElementById('filterLicenseLabel');
+            const filterGovernorateLabel = document.getElementById('filterGovernorateLabel');
+            const filterAllOption = document.getElementById('filterAllOption');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+            const filterName = document.getElementById('filterName');
+            const filterLicense = document.getElementById('filterLicense');
+
+            if (filterNameLabel) filterNameLabel.textContent = settings.filterNameLabel;
+            if (filterLicenseLabel) filterLicenseLabel.textContent = settings.filterLicenseLabel;
+            if (filterGovernorateLabel) filterGovernorateLabel.textContent = settings.filterGovernorateLabel;
+            if (filterAllOption) filterAllOption.textContent = settings.filterAllOption;
+            if (resetFiltersBtn) resetFiltersBtn.textContent = settings.resetFiltersBtn;
+            if (filterName) filterName.placeholder = settings.filterNameLabel;
+            if (filterLicense) filterLicense.placeholder = settings.filterLicenseLabel;
+
+            // قائمة الأكاديميات
+            const academiesListTitle = document.getElementById('academiesListTitle');
+            const exportPdfBtn = document.getElementById('exportPdfBtn');
+            if (academiesListTitle) academiesListTitle.textContent = settings.academiesListTitle;
+            if (exportPdfBtn) exportPdfBtn.textContent = settings.exportPdfBtn;
+
+            // رؤوس الجدول
+            const thNum = document.getElementById('thNum');
+            const thName = document.getElementById('thName');
+            const thLicense = document.getElementById('thLicense');
+            const thBranches = document.getElementById('thBranches');
+            const thGovernorates = document.getElementById('thGovernorates');
+            const thStatus = document.getElementById('thStatus');
+            const thActions = document.getElementById('thActions');
+            if (thNum) thNum.textContent = settings.thNum;
+            if (thName) thName.textContent = settings.thName;
+            if (thLicense) thLicense.textContent = settings.thLicense;
+            if (thBranches) thBranches.textContent = settings.thBranches;
+            if (thGovernorates) thGovernorates.textContent = settings.thGovernorates;
+            if (thStatus) thStatus.textContent = settings.thStatus;
+            if (thActions) thActions.textContent = settings.thActions;
+
+            // حالة فارغة
+            const emptyTitle = document.getElementById('emptyTitle');
+            const emptyDesc = document.getElementById('emptyDesc');
+            if (emptyTitle) emptyTitle.textContent = settings.emptyTitle;
+            if (emptyDesc) emptyDesc.textContent = settings.emptyDesc;
+
+            // مودال
+            const modalTitle = document.getElementById('modalTitle');
+            const academyNameLabel = document.getElementById('academyNameLabel');
+            const academyLicenseLabel = document.getElementById('academyLicenseLabel');
+            const academyTaxLabel = document.getElementById('academyTaxLabel');
+            const branchesTitle = document.getElementById('branchesTitle');
+            const addBranchBtn = document.getElementById('addBranchBtn');
+            const requiredFields = document.getElementById('requiredFields');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const academyName = document.getElementById('academyName');
+            const academyLicense = document.getElementById('academyLicense');
+            const academyTax = document.getElementById('academyTax');
+
+            if (modalTitle) modalTitle.textContent = settings.modalTitle;
+            if (academyNameLabel) academyNameLabel.textContent = settings.academyNameLabel;
+            if (academyLicenseLabel) academyLicenseLabel.textContent = settings.academyLicenseLabel;
+            if (academyTaxLabel) academyTaxLabel.textContent = settings.academyTaxLabel;
+            if (branchesTitle) branchesTitle.textContent = settings.branchesTitle;
+            if (addBranchBtn) addBranchBtn.textContent = settings.addBranchBtn;
+            if (requiredFields) requiredFields.textContent = settings.requiredFields;
+            if (cancelBtn) cancelBtn.textContent = settings.cancelBtn;
+            if (saveBtn) saveBtn.textContent = settings.saveBtn;
+            if (academyName) academyName.placeholder = settings.academyNameLabel;
+            if (academyLicense) academyLicense.placeholder = settings.academyLicenseLabel;
+            if (academyTax) academyTax.placeholder = settings.academyTaxLabel;
+
+            // مودال الحذف
+            const deleteTitle = document.getElementById('deleteTitle');
+            const deleteConfirmText = document.getElementById('deleteConfirmText');
+            const deleteReasonLabel = document.getElementById('deleteReasonLabel');
+            const deleteCancelBtn = document.getElementById('deleteCancelBtn');
+            const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+            const deleteReason = document.getElementById('deleteReason');
+
+            if (deleteTitle) deleteTitle.textContent = settings.deleteTitle;
+            if (deleteConfirmText) deleteConfirmText.textContent = settings.deleteConfirmText;
+            if (deleteReasonLabel) deleteReasonLabel.textContent = settings.deleteReasonLabel;
+            if (deleteCancelBtn) deleteCancelBtn.textContent = settings.deleteCancelBtn;
+            if (deleteConfirmBtn) deleteConfirmBtn.textContent = settings.deleteConfirmBtn;
+            if (deleteReason) deleteReason.placeholder = settings.deleteReasonLabel;
+
+            // Logo
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
                 if (logo) {
@@ -1251,6 +1465,36 @@
                     logo.style.backgroundPosition = 'center';
                     logo.textContent = '';
                 }
+            }
+
+            // OG Tags
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
+            if (metaDescription) metaDescription.content = 'إدارة الأكاديميات - نقابة تكنولوجيا المعلومات';
+            if (ogTitle) ogTitle.content = settings.pageTitleHeader;
+            if (ogDescription) ogDescription.content = 'إدارة الأكاديميات المعتمدة';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = settings.pageTitleHeader;
+            if (twitterTitle) twitterTitle.content = settings.pageTitleHeader;
+            if (twitterDescription) twitterDescription.content = 'إدارة الأكاديميات المعتمدة';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
             }
         }
 
@@ -1269,13 +1513,13 @@
             if (colors.info) root.style.setProperty('--info', colors.info);
             if (colors.border) root.style.setProperty('--border', colors.border);
             if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
-            
+
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-            
+
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
-            
+
             if (colors.background) {
                 document.body.style.background = colors.background;
             }
@@ -1408,21 +1652,21 @@
 
                 return `
                     <tr>
-                        <td data-label="#"><span style="color:var(--text-muted);font-weight:600;">${index + 1}</span></td>
-                        <td data-label="اسم الأكاديمية">
+                        <td data-label="${settings.thNum}"><span style="color:var(--text-muted);font-weight:600;">${index + 1}</span></td>
+                        <td data-label="${settings.thName}">
                             <div class="academy-name">${academy.name || '-'}</div>
                             <div style="font-size:11px;color:var(--text-dim);">${academy.licenseNumber || '-'}</div>
                         </td>
-                        <td data-label="الرقم الاعتمادي">
+                        <td data-label="${settings.thLicense}">
                             <span class="academy-license">${academy.licenseNumber || '-'}</span>
                         </td>
-                        <td data-label="الفروع">${branchCount}</td>
-                        <td data-label="المحافظات" style="font-size:12px;">${govsStr}</td>
-                        <td data-label="الحالة">${statusHtml}</td>
-                        <td data-label="الإجراءات">
+                        <td data-label="${settings.thBranches}">${branchCount}</td>
+                        <td data-label="${settings.thGovernorates}" style="font-size:12px;">${govsStr}</td>
+                        <td data-label="${settings.thStatus}">${statusHtml}</td>
+                        <td data-label="${settings.thActions}">
                             <div class="actions">
-                                <button class="btn btn-primary btn-sm" onclick="editAcademy('${academy.id}')">تعديل</button>
-                                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">حذف</button>
+                                <button class="btn btn-primary btn-sm" onclick="editAcademy('${academy.id}')">${settings.thActions}</button>
+                                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">${settings.deleteTitle}</button>
                             </div>
                         </td>
                     </tr>
@@ -1436,8 +1680,8 @@
         function populateGovernorates() {
             const select = document.getElementById('filterGovernorate');
             if (!select) return;
-            
-            select.innerHTML = '<option value="">جميع المحافظات</option>';
+
+            select.innerHTML = '<option value="">' + settings.filterAllOption + '</option>';
             const govs = new Set();
             academies.forEach(function(a) {
                 if (a.branches) {
@@ -1493,7 +1737,7 @@
             const nameInput = document.getElementById('filterName');
             const licenseInput = document.getElementById('filterLicense');
             const govSelect = document.getElementById('filterGovernorate');
-            
+
             if (nameInput) nameInput.value = '';
             if (licenseInput) licenseInput.value = '';
             if (govSelect) govSelect.value = '';
@@ -1572,7 +1816,6 @@
 
             div.appendChild(grid);
 
-            // زر حذف (للفروع غير الرئيسية)
             if (!isMain) {
                 const removeBtn = document.createElement('button');
                 removeBtn.type = 'button';
@@ -1589,7 +1832,7 @@
         function initializeBranches() {
             const container = document.getElementById('branchesContainer');
             if (!container) return;
-            
+
             container.innerHTML = '';
             const mainBranch = getBranchTemplate(true);
             container.appendChild(mainBranch);
@@ -1598,7 +1841,7 @@
         function addBranchField() {
             const container = document.getElementById('branchesContainer');
             if (!container) return;
-            
+
             const newBranch = getBranchTemplate(false);
             container.appendChild(newBranch);
         }
@@ -1645,12 +1888,12 @@
             const titleEl = document.getElementById('modalTitle');
             const editIdEl = document.getElementById('editId');
             const formEl = document.getElementById('academyForm');
-            
-            if (titleEl) titleEl.textContent = 'إضافة أكاديمية جديدة';
+
+            if (titleEl) titleEl.textContent = settings.modalTitle;
             if (editIdEl) editIdEl.value = '';
             if (formEl) formEl.reset();
             initializeBranches();
-            
+
             const modal = document.getElementById('academyModal');
             if (modal) modal.classList.add('show');
         }
@@ -1670,7 +1913,7 @@
             const nameEl = document.getElementById('academyName');
             const licenseEl = document.getElementById('academyLicense');
             const taxEl = document.getElementById('academyTax');
-            
+
             if (titleEl) titleEl.textContent = 'تعديل أكاديمية';
             if (editIdEl) editIdEl.value = id;
             if (nameEl) nameEl.value = academy.name || '';
@@ -1690,7 +1933,7 @@
                         const govSelect = div.querySelector('.branch-governorate');
                         const addrInput = div.querySelector('.branch-address');
                         const phoneInput = div.querySelector('.branch-phone');
-                        
+
                         if (govSelect) govSelect.value = branch.governorate || '';
                         if (addrInput) addrInput.value = branch.address || '';
                         if (phoneInput) phoneInput.value = branch.phone || '';
@@ -1795,11 +2038,11 @@
             const nameEl = document.getElementById('deleteAcademyName');
             const licenseEl = document.getElementById('deleteAcademyLicense');
             const reasonEl = document.getElementById('deleteReason');
-            
+
             if (nameEl) nameEl.textContent = academy.name || '-';
             if (licenseEl) licenseEl.textContent = academy.licenseNumber || '-';
             if (reasonEl) reasonEl.value = '';
-            
+
             const modal = document.getElementById('deleteModal');
             if (modal) modal.classList.add('show');
         }
@@ -1876,7 +2119,7 @@
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
             if (!el) return;
-            
+
             el.textContent = msg;
             el.className = 'msg show ' + type;
             setTimeout(function() { el.className = 'msg'; }, 4000);
@@ -1888,7 +2131,7 @@
         function exportSearchResultsPDF() {
             const tbody = document.getElementById('academiesBody');
             if (!tbody) return;
-            
+
             const rows = tbody.querySelectorAll('tr');
 
             if (rows.length === 0) {
@@ -1896,7 +2139,6 @@
                 return;
             }
 
-            // جمع البيانات من الجدول
             const data = [];
             rows.forEach(function(row, index) {
                 const cells = row.querySelectorAll('td');
@@ -1940,7 +2182,7 @@
                         <div style="display:flex;align-items:center;gap:14px;">
                             ${logoHtml}
                             <div>
-                                <h1 style="font-size:18px;font-weight:800;color:var(--primary-color);margin:0;">${settings.unionName || 'نقابة تكنولوجيا المعلومات'}</h1>
+                                <h1 style="font-size:18px;font-weight:800;color:var(--primary-color);margin:0;">${settings.pageTitleHeader || 'نقابة تكنولوجيا المعلومات'}</h1>
                                 <p style="font-size:11px;color:#666;margin:1px 0 0;">${settings.committeeName}</p>
                             </div>
                         </div>
@@ -1949,7 +2191,7 @@
                         </div>
                     </div>
 
-                    <div style="text-align:center;font-size:22px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;">تقرير الأكاديميات</div>
+                    <div style="text-align:center;font-size:22px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;">${settings.academiesListTitle || 'تقرير الأكاديميات'}</div>
                     <div style="text-align:center;font-size:12px;color:#666;margin-bottom:14px;">قائمة الأكاديميات المعتمدة في النظام</div>
 
                     <div style="display:flex;justify-content:center;gap:20px;margin:8px 0 12px;font-size:12px;color:#666;flex-wrap:wrap;">
@@ -1960,12 +2202,12 @@
                     <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;">
                         <thead>
                             <tr>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">#</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">اسم الأكاديمية</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">الرقم الاعتمادي</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">الفروع</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">المحافظات</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">الحالة</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thNum || '#'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thName || 'اسم الأكاديمية'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thLicense || 'الرقم الاعتمادي'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thBranches || 'الفروع'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thGovernorates || 'المحافظات'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thStatus || 'الحالة'}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1975,7 +2217,7 @@
 
                     <div style="text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#999;">
                         <div>تم إنشاء هذا التقرير بواسطة نظام نقابة تكنولوجيا المعلومات</div>
-                        <div style="margin-top:6px;font-size:12px;color:var(--primary-color);font-weight:700;">النقيب العام: ${settings.presidentName || 'المهندس / محمود جميل'}</div>
+                        <div style="margin-top:6px;font-size:12px;color:var(--primary-color);font-weight:700;">${settings.presidentLabel}: ${settings.presidentName}</div>
                         <div style="font-size:9px;color:#aaa;margin-top:4px;">${settings.footerText} | الإصدار 1.0</div>
                     </div>
                 </div>
@@ -1983,7 +2225,7 @@
 
             const container = document.getElementById('print-container');
             if (!container) return;
-            
+
             container.innerHTML = html;
 
             const element = container.firstElementChild;
@@ -2012,10 +2254,10 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            console.log('✅ إدارة الأكاديميات - نقابة تكنولوجيا المعلومات');
-            console.log('🔒 نظام أمني متطور');
-            console.log('🧠 محسّن بالذكاء الاصطناعي');
-            console.log('🎨 كل حرف ولون من الإعدادات');
+            console.log('✅ إدارة الأكاديميات - كل حرف من الإعدادات');
+            console.log('👤 النقيب العام: ' + settings.presidentName);
+            console.log('🎨 الألوان من الإعدادات');
+            console.log('🏛️ إدارة الأكاديميات متطورة');
         });
     </script>
 
