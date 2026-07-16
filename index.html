@@ -15,7 +15,7 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي للشاشة الترحيبية
+           التصميم الخرافي للشاشة الترحيبية - نسخة معدلة
            ============================================================ */
         * {
             margin: 0;
@@ -31,81 +31,89 @@
             align-items: center;
             overflow: hidden;
             direction: rtl;
-            transition: background 0.5s ease;
+            background: #0A0E1A;
+            transition: background 0.8s ease;
         }
 
-        /* ===== خلفية ثلاثية الأبعاد ===== */
+        /* ===== خلفية متطورة ===== */
         .splash-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
-            transition: background 0.8s ease;
-        }
-
-        /* ===== طبقات الخلفية ===== */
-        .bg-layer {
-            position: absolute;
-            inset: 0;
-            transition: all 0.8s ease;
-        }
-
-        .bg-layer-1 {
-            background: radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 70%, var(--secondary-glow) 0%, transparent 50%),
-                        radial-gradient(ellipse at 50% 50%, var(--accent-glow) 0%, transparent 60%);
-            animation: bgPulse 8s ease-in-out infinite alternate;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(201, 168, 76, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
+            animation: bgPulse 15s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
             0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-            100% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+            100% { transform: scale(1.06) rotate(1.5deg); opacity: 0.9; }
         }
 
-        .bg-layer-2 {
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='8' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-            pointer-events: none;
-            animation: noiseMove 30s linear infinite;
-        }
-
-        @keyframes noiseMove {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-50px, -50px) scale(1.1); }
-        }
-
-        .bg-layer-3 {
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--mouse-glow) 0%, transparent 40%);
-            opacity: 0.5;
-            transition: background 0.1s ease;
+        .splash-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
-        /* ===== جزيئات ثلاثية الأبعاد ===== */
-        .particles-3d {
+        /* ===== جزيئات ناعمة ===== */
+        .particles-container {
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
             overflow: hidden;
-            perspective: 800px;
         }
 
-        .particle-3d {
+        .particle {
             position: absolute;
             border-radius: 50%;
-            animation: particle3D var(--duration, 20s) infinite ease-in-out;
-            transform-style: preserve-3d;
+            animation: particleFloat 25s infinite ease-in-out;
         }
 
-        @keyframes particle3D {
-            0% { transform: translate3d(0, 0, 0) scale(1) rotateX(0deg) rotateY(0deg); opacity: 0.1; }
-            25% { transform: translate3d(var(--tx1, 50px), var(--ty1, -30px), var(--tz1, 50px)) scale(1.4) rotateX(20deg) rotateY(40deg); opacity: 0.7; }
-            50% { transform: translate3d(var(--tx2, -30px), var(--ty2, -60px), var(--tz2, -30px)) scale(0.7) rotateX(-20deg) rotateY(-40deg); opacity: 0.3; }
-            75% { transform: translate3d(var(--tx3, 60px), var(--ty3, -20px), var(--tz3, 60px)) scale(1.5) rotateX(30deg) rotateY(60deg); opacity: 0.8; }
-            100% { transform: translate3d(0, 0, 0) scale(1) rotateX(0deg) rotateY(0deg); opacity: 0.1; }
+        .particle:nth-child(1) { width: 5px; height: 5px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(201, 168, 76, 0.3); }
+        .particle:nth-child(2) { width: 7px; height: 7px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(124, 58, 237, 0.3); }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(201, 168, 76, 0.35); }
+        .particle:nth-child(4) { width: 6px; height: 6px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(124, 58, 237, 0.25); }
+        .particle:nth-child(5) { width: 4px; height: 4px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(201, 168, 76, 0.3); }
+        .particle:nth-child(6) { width: 8px; height: 8px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(124, 58, 237, 0.25); }
+        .particle:nth-child(7) { width: 3px; height: 3px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(201, 168, 76, 0.4); }
+        .particle:nth-child(8) { width: 5px; height: 5px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(124, 58, 237, 0.3); }
+        .particle:nth-child(9) { width: 3px; height: 3px; top: 10%; left: 90%; animation-delay: 1.5s; background: rgba(201, 168, 76, 0.35); }
+        .particle:nth-child(10) { width: 6px; height: 6px; top: 45%; left: 55%; animation-delay: 3.5s; background: rgba(59, 130, 246, 0.25); }
+
+        @keyframes particleFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+            25% { transform: translate(35px, -25px) scale(1.2); opacity: 0.5; }
+            50% { transform: translate(-15px, -50px) scale(0.8); opacity: 0.3; }
+            75% { transform: translate(45px, -15px) scale(1.3); opacity: 0.6; }
+            100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
-        /* ===== حلقات دوارة 3D ===== */
-        .rings-3d {
+        /* ===== شبكة خفيفة ===== */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.015) 1px, transparent 1px);
+            background-size: 70px 70px;
+            pointer-events: none;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(25px) translateX(25px); }
+        }
+
+        /* ===== حلقات دوارة بطيئة ===== */
+        .orbital-ring {
             position: fixed;
             inset: 0;
             z-index: 1;
@@ -113,138 +121,154 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1200px;
         }
 
-        .ring-3d {
+        .ring {
             position: absolute;
             border-radius: 50%;
-            border: 2px solid var(--ring-color);
-            animation: ring3D var(--ring-duration, 40s) linear infinite;
-            transform-style: preserve-3d;
-            box-shadow: 0 0 40px var(--ring-glow);
+            border: 1px solid rgba(201, 168, 76, 0.04);
+            animation: ringSpin 60s linear infinite;
         }
 
-        .ring-3d::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
+        .ring:nth-child(1) { width: 320px; height: 320px; border-color: rgba(201, 168, 76, 0.06); animation-duration: 70s; }
+        .ring:nth-child(2) { width: 520px; height: 520px; border-color: rgba(124, 58, 237, 0.04); animation-duration: 80s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(59, 130, 246, 0.03); animation-duration: 90s; }
+
+        @keyframes ringSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== كرات ضوئية ناعمة ===== */
+        .glow-orb {
+            position: fixed;
             border-radius: 50%;
-            border: 1px solid var(--ring-glow);
-            animation: ringPulse 3s ease-in-out infinite;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 22s ease-in-out infinite alternate;
         }
 
-        @keyframes ring3D {
-            0% { transform: rotateX(var(--rx, 30deg)) rotateY(var(--ry, 0deg)) rotateZ(0deg); }
-            100% { transform: rotateX(var(--rx, 30deg)) rotateY(var(--ry, 360deg)) rotateZ(360deg); }
+        .glow-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: -180px;
+            right: -180px;
+            background: rgba(201, 168, 76, 0.05);
         }
 
-        @keyframes ringPulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+        .glow-orb:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            bottom: -220px;
+            left: -220px;
+            background: rgba(124, 58, 237, 0.04);
+            animation-delay: 8s;
         }
 
-        /* ===== محتوى الشاشة ===== */
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            100% { transform: translate(50px, 30px) scale(1.1); opacity: 0.6; }
+        }
+
+        /* ===== المحتوى ===== */
         .splash-content {
             position: relative;
             z-index: 10;
             text-align: center;
             max-width: 750px;
             padding: 40px 50px;
-            animation: contentEntrance 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: contentEntrance 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes contentEntrance {
-            0% { opacity: 0; transform: scale(0.7) rotateX(40deg) translateY(80px); }
-            100% { opacity: 1; transform: scale(1) rotateX(0deg) translateY(0); }
+            0% { opacity: 0; transform: scale(0.8) translateY(60px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* ===== شعار ثلاثي الأبعاد ===== */
-        .logo-3d-wrapper {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 25px;
+        /* ===== شعار النقابة ===== */
+        .logo-wrapper {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 20px;
             position: relative;
-            perspective: 600px;
         }
 
-        .logo-3d-wrapper::before {
+        /* الحلقة الخارجية المتحركة */
+        .logo-wrapper::before {
             content: '';
             position: absolute;
-            inset: -12px;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent, var(--primary-color), var(--secondary-color), var(--accent-color), transparent);
-            animation: rotateConic 6s linear infinite;
+            background: conic-gradient(from 0deg, transparent, rgba(201, 168, 76, 0.25), rgba(124, 58, 237, 0.2), rgba(59, 130, 246, 0.2), transparent);
+            animation: conicSpin 12s linear infinite;
             mask: radial-gradient(circle, transparent 60%, black 62%);
             -webkit-mask: radial-gradient(circle, transparent 60%, black 62%);
             filter: blur(2px);
         }
 
-        @keyframes rotateConic {
+        @keyframes conicSpin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
-        .logo-3d {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 0 80px var(--primary-glow), inset 0 0 60px var(--primary-glow);
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            animation: logo3D 12s ease-in-out infinite;
-            transform-style: preserve-3d;
-            transition: all 0.6s ease;
-        }
-
-        @keyframes logo3D {
-            0% { transform: rotateY(0deg) rotateX(0deg) scale(1); }
-            25% { transform: rotateY(90deg) rotateX(10deg) scale(1.02); }
-            50% { transform: rotateY(180deg) rotateX(0deg) scale(1); }
-            75% { transform: rotateY(270deg) rotateX(-10deg) scale(1.02); }
-            100% { transform: rotateY(360deg) rotateX(0deg) scale(1); }
-        }
-
-        .logo-3d:hover {
-            animation-duration: 3s;
-            box-shadow: 0 0 120px var(--primary-glow);
-            transform: scale(1.05) rotateY(180deg);
-        }
-
-        /* ===== تأثير النبض حول الشعار ===== */
-        .logo-pulse {
+        /* حلقة النبض */
+        .logo-wrapper::after {
+            content: '';
             position: absolute;
             inset: -20px;
             border-radius: 50%;
-            border: 2px solid var(--primary-color);
-            opacity: 0;
-            animation: pulseRing 3s ease-in-out infinite;
-            z-index: 0;
+            border: 1px solid rgba(201, 168, 76, 0.08);
+            animation: pulseRing 4s ease-in-out infinite;
         }
 
-        .logo-pulse:nth-child(2) { animation-delay: 1s; }
-        .logo-pulse:nth-child(3) { animation-delay: 2s; }
-
         @keyframes pulseRing {
-            0% { transform: scale(0.8); opacity: 0.8; }
-            100% { transform: scale(1.3); opacity: 0; }
+            0%, 100% { transform: scale(0.9); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* اللوجو نفسه - دوران بطيء جداً */
+        .union-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid rgba(201, 168, 76, 0.2);
+            box-shadow: 0 0 60px rgba(201, 168, 76, 0.1);
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            animation: logoSpin 40s linear infinite;
+            transition: all 0.5s ease;
+            background: #0A0E1A;
+        }
+
+        @keyframes logoSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .union-logo:hover {
+            animation-duration: 10s;
+            box-shadow: 0 0 80px rgba(201, 168, 76, 0.2);
+            border-color: rgba(201, 168, 76, 0.4);
         }
 
         /* ===== النصوص ===== */
         .splash-title {
-            font-size: 48px;
+            font-size: 38px;
             font-weight: 900;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--text-color) 0%, var(--primary-color) 40%, var(--accent-color) 70%, var(--text-color) 100%);
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff 0%, #C9A84C 40%, #E8D5A3 70%, #ffffff 100%);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: titleFlow 5s ease-in-out infinite;
-            letter-spacing: 3px;
-            text-shadow: 0 0 60px var(--primary-glow);
+            animation: titleFlow 7s ease-in-out infinite;
+            font-family: 'Cairo', sans-serif;
         }
 
         @keyframes titleFlow {
@@ -253,39 +277,39 @@
         }
 
         .splash-subtitle {
-            font-size: 20px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 6px;
             font-weight: 300;
-            letter-spacing: 4px;
-            animation: fadeInUp 1.5s ease 0.5s both;
+            letter-spacing: 3px;
+            font-family: 'Cairo', sans-serif;
         }
 
         .splash-committee {
-            font-size: 15px;
-            color: var(--text-dim);
-            margin-bottom: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 6px;
             font-weight: 300;
-            letter-spacing: 2px;
-            animation: fadeInUp 1.5s ease 0.7s both;
+            letter-spacing: 1px;
+            font-family: 'Cairo', sans-serif;
         }
 
         .splash-committee span {
-            color: var(--primary-color);
-            font-weight: 600;
+            color: rgba(201, 168, 76, 0.5);
+            font-weight: 500;
         }
 
         /* ===== النقيب العام ===== */
         .splash-president {
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 700;
-            color: var(--text-secondary);
-            margin-bottom: 35px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
             letter-spacing: 1px;
             position: relative;
             display: inline-block;
-            padding: 0 30px;
-            animation: fadeInUp 1.5s ease 0.9s both;
+            padding: 0 25px;
+            font-family: 'Cairo', sans-serif;
         }
 
         .splash-president::before,
@@ -293,9 +317,9 @@
             content: '';
             position: absolute;
             top: 50%;
-            width: 40px;
+            width: 30px;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.2), transparent);
         }
 
         .splash-president::before { right: 100%; }
@@ -303,269 +327,207 @@
 
         .splash-president .president-name {
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            background: linear-gradient(135deg, #C9A84C, #E8D5A3);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        /* ===== شريط التحميل السينمائي ===== */
-        .loading-cinematic {
-            width: 400px;
-            margin: 0 auto 25px;
+        /* ===== شريط التحميل ===== */
+        .loading-container {
+            width: 360px;
+            margin: 0 auto 20px;
             position: relative;
-            animation: fadeInUp 1.5s ease 1.1s both;
         }
 
-        .loading-cinematic .bar-bg {
+        .loading-bar-wrapper {
             width: 100%;
-            height: 6px;
-            background: var(--bar-bg);
-            border-radius: 6px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 0 30px var(--primary-glow);
         }
 
-        .loading-cinematic .bar-bg::before {
+        .loading-bar-wrapper::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, var(--bar-shine), transparent);
-            animation: barSweep 2s linear infinite;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            animation: loaderSweep 2.5s linear infinite;
         }
 
-        @keyframes barSweep {
+        @keyframes loaderSweep {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
 
-        .loading-cinematic .bar-fill {
+        .loading-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color), var(--primary-color));
-            background-size: 300% 100%;
-            border-radius: 6px;
-            animation: barShimmer 2s linear infinite, barPulse 1.5s ease-in-out infinite;
+            background: linear-gradient(90deg, #C9A84C, #E8D5A3, #C9A84C);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            animation: loadingShimmer 2.5s linear infinite;
             transition: width 0.3s ease;
             position: relative;
-            box-shadow: 0 0 20px var(--primary-glow);
         }
 
-        @keyframes barShimmer {
-            0% { background-position: 300% 0; }
-            100% { background-position: -300% 0; }
+        @keyframes loadingShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
-        @keyframes barPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        .loading-cinematic .bar-glow {
-            position: absolute;
-            top: -10px;
-            bottom: -10px;
-            left: var(--glow-x, 0%);
-            width: 30px;
-            background: radial-gradient(ellipse, var(--primary-glow), transparent 70%);
-            filter: blur(10px);
-            transition: left 0.3s ease;
-            pointer-events: none;
-        }
-
-        .loading-cinematic .loading-text {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .loading-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.15);
             margin-top: 14px;
-            font-size: 13px;
-            color: var(--text-dim);
             letter-spacing: 2px;
             font-weight: 300;
-        }
-
-        .loading-cinematic .loading-text .status {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            font-family: 'Cairo', sans-serif;
         }
 
-        .loading-cinematic .loading-text .status .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            animation: dotPulse 1.2s ease-in-out infinite;
-        }
-
-        .loading-cinematic .loading-text .status .dot:nth-child(2) { animation-delay: 0.4s; }
-        .loading-cinematic .loading-text .status .dot:nth-child(3) { animation-delay: 0.8s; }
-
-        @keyframes dotPulse {
-            0%, 100% { transform: scale(0.5); opacity: 0.3; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .loading-cinematic .loading-text .percentage {
-            font-weight: 700;
-            font-size: 18px;
+        .loading-text .percentage {
+            color: rgba(201, 168, 76, 0.5);
+            font-weight: 600;
+            font-size: 14px;
             font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            min-width: 42px;
         }
 
-        /* ===== أزرار ===== */
+        /* ===== زر تخطي ===== */
         .splash-skip {
             position: fixed;
-            bottom: 35px;
-            left: 35px;
+            bottom: 30px;
+            left: 30px;
             z-index: 20;
-            background: var(--btn-bg);
-            border: 2px solid var(--btn-border);
-            color: var(--text-secondary);
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-size: 13px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.25);
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-size: 12px;
             cursor: pointer;
-            backdrop-filter: blur(20px);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-family: inherit;
-            font-weight: 600;
-            animation: fadeInUp 1.5s ease 1.5s both;
+            gap: 8px;
+            font-family: 'Cairo', sans-serif;
         }
 
         .splash-skip:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: #fff;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 10px 50px var(--primary-glow);
-        }
-
-        .splash-skip .arrow {
-            display: inline-block;
-            transition: transform 0.4s ease;
-        }
-
-        .splash-skip:hover .arrow {
-            transform: translateX(-6px);
+            background: rgba(201, 168, 76, 0.12);
+            border-color: rgba(201, 168, 76, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(201, 168, 76, 0.05);
         }
 
         /* ===== تذييل ===== */
         .splash-footer {
             position: fixed;
-            bottom: 35px;
+            bottom: 30px;
             right: 50%;
             transform: translateX(50%);
             z-index: 10;
             text-align: center;
-            font-size: 12px;
-            color: var(--text-dim);
-            letter-spacing: 3px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.06);
+            letter-spacing: 2px;
             font-weight: 300;
-            animation: fadeInUp 1.5s ease 1.7s both;
+            font-family: 'Cairo', sans-serif;
         }
 
         .splash-footer .version {
+            color: rgba(255, 255, 255, 0.04);
             font-family: 'Courier New', monospace;
-            color: var(--text-muted);
-            font-weight: 600;
         }
 
         .splash-footer .separator {
-            margin: 0 10px;
-            color: var(--text-dim);
-        }
-
-        /* ===== أنيميشن مساعدة ===== */
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== متغيرات CSS (تُحدّث من JavaScript) ===== */
-        :root {
-            --primary-color: #C9A84C;
-            --secondary-color: #8B5CF6;
-            --accent-color: #3B82F6;
-            --text-color: #FFFFFF;
-            --text-secondary: rgba(255,255,255,0.7);
-            --text-muted: rgba(255,255,255,0.4);
-            --text-dim: rgba(255,255,255,0.2);
-            --primary-glow: rgba(201,168,76,0.3);
-            --secondary-glow: rgba(139,92,246,0.2);
-            --accent-glow: rgba(59,130,246,0.2);
-            --mouse-glow: rgba(201,168,76,0.05);
-            --ring-color: rgba(201,168,76,0.1);
-            --ring-glow: rgba(201,168,76,0.05);
-            --bar-bg: rgba(255,255,255,0.05);
-            --bar-shine: rgba(255,255,255,0.05);
-            --btn-bg: rgba(255,255,255,0.04);
-            --btn-border: rgba(255,255,255,0.08);
-            --bg-color: #0A0E1A;
+            margin: 0 8px;
+            color: rgba(255, 255, 255, 0.03);
         }
 
         /* ===== استجابة ===== */
         @media (max-width: 768px) {
-            .splash-title { font-size: 32px; }
-            .logo-3d-wrapper { width: 140px; height: 140px; }
-            .loading-cinematic { width: 280px; }
-            .splash-subtitle { font-size: 16px; }
-            .splash-president { font-size: 16px; }
-            .splash-content { padding: 30px 20px; }
-            .splash-skip { bottom: 20px; left: 20px; padding: 8px 18px; font-size: 12px; }
+            .splash-title { font-size: 30px; }
+            .logo-wrapper { width: 130px; height: 130px; }
+            .loading-container { width: 280px; }
+            .splash-subtitle { font-size: 15px; }
+            .splash-president { font-size: 15px; }
+            .splash-content { padding: 30px 25px; }
+            .splash-skip { bottom: 20px; left: 20px; padding: 6px 16px; font-size: 11px; }
             .splash-footer { bottom: 20px; font-size: 10px; }
-            .splash-president::before,
-            .splash-president::after { width: 20px; }
+            .logo-wrapper::before { top: -8px; left: -8px; right: -8px; bottom: -8px; }
+            .logo-wrapper::after { inset: -14px; }
         }
 
         @media (max-width: 480px) {
-            .splash-title { font-size: 26px; }
-            .logo-3d-wrapper { width: 110px; height: 110px; }
-            .loading-cinematic { width: 220px; }
-            .splash-subtitle { font-size: 14px; }
+            .splash-title { font-size: 24px; }
+            .logo-wrapper { width: 110px; height: 110px; }
+            .loading-container { width: 220px; }
+            .splash-subtitle { font-size: 13px; }
             .splash-committee { font-size: 12px; }
-            .splash-president { font-size: 14px; }
-            .splash-content { padding: 20px 14px; }
-            .splash-skip { bottom: 15px; left: 15px; padding: 6px 14px; font-size: 10px; }
+            .splash-president { font-size: 13px; }
+            .splash-content { padding: 20px 16px; }
+            .splash-skip { bottom: 15px; left: 15px; padding: 5px 14px; font-size: 10px; }
             .splash-footer { bottom: 15px; font-size: 9px; }
-            .rings-3d { display: none; }
-            .particles-3d { display: none; }
             .splash-president::before,
-            .splash-president::after { width: 12px; }
+            .splash-president::after { width: 15px; }
+            .logo-wrapper::before { top: -6px; left: -6px; right: -6px; bottom: -6px; }
+            .logo-wrapper::after { inset: -10px; }
+            .ring { display: none; }
+            .glow-orb { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== خلفية ثلاثية الأبعاد ===== -->
-    <div class="splash-bg" id="splashBg">
-        <div class="bg-layer bg-layer-1"></div>
-        <div class="bg-layer bg-layer-2"></div>
-        <div class="bg-layer bg-layer-3" id="mouseLayer"></div>
+    <!-- ===== خلفية ===== -->
+    <div class="splash-bg"></div>
+
+    <!-- ===== كرات ضوئية ===== -->
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+
+    <!-- ===== جزيئات ===== -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
 
-    <!-- ===== جزيئات 3D ===== -->
-    <div class="particles-3d" id="particles3D"></div>
+    <!-- ===== شبكة ===== -->
+    <div class="grid-lines"></div>
 
-    <!-- ===== حلقات 3D ===== -->
-    <div class="rings-3d" id="rings3D"></div>
+    <!-- ===== حلقات ===== -->
+    <div class="orbital-ring">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
 
     <!-- ===== المحتوى ===== -->
     <div class="splash-content">
 
         <!-- الشعار -->
-        <div class="logo-3d-wrapper">
-            <div class="logo-pulse"></div>
-            <div class="logo-pulse"></div>
-            <div class="logo-pulse"></div>
-            <img src="https://placehold.co/180x180/0A0E1A/C9A84C/png?text=ن.ت" alt="شعار النقابة" class="logo-3d" id="splashLogo">
+        <div class="logo-wrapper">
+            <img src="https://placehold.co/160x160/0A0E1A/C9A84C/png?text=ن.ت" alt="شعار النقابة" class="union-logo" id="splashLogo" />
         </div>
 
         <!-- العناوين -->
@@ -579,19 +541,13 @@
             <span class="president-name" id="presidentName">المهندس / محمود جميل</span>
         </div>
 
-        <!-- شريط التحميل السينمائي -->
-        <div class="loading-cinematic">
-            <div class="bar-bg">
-                <div class="bar-fill" id="loadingBar"></div>
-                <div class="bar-glow" id="barGlow"></div>
+        <!-- شريط التحميل -->
+        <div class="loading-container">
+            <div class="loading-bar-wrapper">
+                <div class="loading-bar" id="loadingBar"></div>
             </div>
             <div class="loading-text">
-                <span class="status">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span id="loadingStatus">جاري تجهيز المنصة</span>
-                </span>
+                <span id="loadingStatus">جاري تجهيز المنصة</span>
                 <span class="percentage" id="loadingPercent">0%</span>
             </div>
         </div>
@@ -599,20 +555,20 @@
     </div>
 
     <!-- ===== زر تخطي ===== -->
-    <button class="splash-skip" onclick="skipSplash()" id="skipBtn">
+    <button class="splash-skip" onclick="skipSplash()">
         <span>تخطي</span>
-        <span class="arrow">→</span>
+        <span style="font-size:14px;">→</span>
     </button>
 
     <!-- ===== تذييل ===== -->
     <div class="splash-footer">
         <span class="version" id="systemVersion">v2.0.0</span>
         <span class="separator">•</span>
-        <span id="footerText">نقابة تكنولوجيا المعلومات والبرمجيات</span>
+        <span>نقابة تكنولوجيا المعلومات والبرمجيات</span>
     </div>
 
     <!-- ============================================================
-    جافا سكريبت الخرافية
+    جافا سكريبت
     ============================================================ -->
     <script>
         // ============================================================
@@ -638,16 +594,12 @@
         const loadingBar = document.getElementById('loadingBar');
         const loadingPercent = document.getElementById('loadingPercent');
         const loadingStatus = document.getElementById('loadingStatus');
-        const barGlow = document.getElementById('barGlow');
         const unionNameEl = document.getElementById('unionName');
         const committeeNameEl = document.getElementById('committeeName');
         const presidentNameEl = document.getElementById('presidentName');
         const splashLogo = document.getElementById('splashLogo');
-        const splashSubtitle = document.getElementById('splashSubtitle');
         const versionEl = document.getElementById('systemVersion');
-        const footerTextEl = document.getElementById('footerText');
-        const skipBtn = document.getElementById('skipBtn');
-        const splashBg = document.getElementById('splashBg');
+        const splashSubtitle = document.getElementById('splashSubtitle');
 
         // ============================================================
         // 3. الإعدادات الافتراضية
@@ -657,66 +609,15 @@
             committeeName: 'التحول الرقمي والتدريب',
             presidentName: 'المهندس / محمود جميل',
             splashDuration: 4000,
-            logoUrl: 'https://placehold.co/180x180/0A0E1A/C9A84C/png?text=ن.ت',
+            logoUrl: 'https://placehold.co/160x160/0A0E1A/C9A84C/png?text=ن.ت',
             systemVersion: 'v2.0.0',
-            subtitle: 'نظام توثيق الشهادات التدريبية',
-            footerText: 'نقابة تكنولوجيا المعلومات والبرمجيات',
-            // الألوان
-            colors: {
-                primary: '#C9A84C',
-                secondary: '#8B5CF6',
-                accent: '#3B82F6',
-                text: '#FFFFFF',
-                textSecondary: 'rgba(255,255,255,0.7)',
-                textMuted: 'rgba(255,255,255,0.4)',
-                textDim: 'rgba(255,255,255,0.2)',
-                primaryGlow: 'rgba(201,168,76,0.3)',
-                secondaryGlow: 'rgba(139,92,246,0.2)',
-                accentGlow: 'rgba(59,130,246,0.2)',
-                mouseGlow: 'rgba(201,168,76,0.05)',
-                ringColor: 'rgba(201,168,76,0.1)',
-                ringGlow: 'rgba(201,168,76,0.05)',
-                barBg: 'rgba(255,255,255,0.05)',
-                barShine: 'rgba(255,255,255,0.05)',
-                btnBg: 'rgba(255,255,255,0.04)',
-                btnBorder: 'rgba(255,255,255,0.08)',
-                bgColor: '#0A0E1A'
-            }
+            subtitle: 'نظام توثيق الشهادات التدريبية'
         };
 
         let settings = { ...DEFAULT_SETTINGS };
 
         // ============================================================
-        // 4. تطبيق الألوان على CSS
-        // ============================================================
-        function applyColors(colors) {
-            const root = document.documentElement;
-            root.style.setProperty('--primary-color', colors.primary);
-            root.style.setProperty('--secondary-color', colors.secondary);
-            root.style.setProperty('--accent-color', colors.accent);
-            root.style.setProperty('--text-color', colors.text);
-            root.style.setProperty('--text-secondary', colors.textSecondary);
-            root.style.setProperty('--text-muted', colors.textMuted);
-            root.style.setProperty('--text-dim', colors.textDim);
-            root.style.setProperty('--primary-glow', colors.primaryGlow);
-            root.style.setProperty('--secondary-glow', colors.secondaryGlow);
-            root.style.setProperty('--accent-glow', colors.accentGlow);
-            root.style.setProperty('--mouse-glow', colors.mouseGlow);
-            root.style.setProperty('--ring-color', colors.ringColor);
-            root.style.setProperty('--ring-glow', colors.ringGlow);
-            root.style.setProperty('--bar-bg', colors.barBg);
-            root.style.setProperty('--bar-shine', colors.barShine);
-            root.style.setProperty('--btn-bg', colors.btnBg);
-            root.style.setProperty('--btn-border', colors.btnBorder);
-            root.style.setProperty('--bg-color', colors.bgColor);
-
-            // تحديث خلفية الجسم
-            document.body.style.background = colors.bgColor;
-            splashBg.style.background = colors.bgColor;
-        }
-
-        // ============================================================
-        // 5. جلب الإعدادات من Firestore
+        // 4. جلب الإعدادات من Firestore
         // ============================================================
         async function loadSettingsFromFirestore() {
             try {
@@ -760,110 +661,17 @@
                         splashSubtitle.textContent = data.subtitle;
                     }
 
-                    if (data.footerText) {
-                        settings.footerText = data.footerText;
-                        footerTextEl.textContent = data.footerText;
-                    }
-
-                    // جلب الألوان
-                    if (data.colors) {
-                        settings.colors = { ...settings.colors, ...data.colors };
-                        applyColors(settings.colors);
-                    }
-
                     console.log('✅ تم جلب الإعدادات من Firestore');
                 } else {
                     console.log('ℹ️ استخدام الإعدادات الافتراضية');
-                    applyColors(settings.colors);
                 }
             } catch (err) {
                 console.error('❌ خطأ في جلب الإعدادات:', err.message);
-                applyColors(settings.colors);
             }
         }
 
         // ============================================================
-        // 6. إنشاء الجزيئات 3D
-        // ============================================================
-        function createParticles() {
-            const container = document.getElementById('particles3D');
-            const count = 30;
-
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle-3d';
-
-                const size = 4 + Math.random() * 10;
-                const colors = ['var(--primary-color)', 'var(--secondary-color)', 'var(--accent-color)'];
-
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.boxShadow = '0 0 ' + (size * 2) + 'px ' + colors[Math.floor(Math.random() * colors.length)];
-
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-
-                particle.style.setProperty('--duration', (15 + Math.random() * 20) + 's');
-                particle.style.setProperty('--tx1', (30 + Math.random() * 80) + 'px');
-                particle.style.setProperty('--ty1', (-20 - Math.random() * 60) + 'px');
-                particle.style.setProperty('--tz1', (30 + Math.random() * 80) + 'px');
-                particle.style.setProperty('--tx2', (-20 - Math.random() * 60) + 'px');
-                particle.style.setProperty('--ty2', (-40 - Math.random() * 60) + 'px');
-                particle.style.setProperty('--tz2', (-20 - Math.random() * 60) + 'px');
-                particle.style.setProperty('--tx3', (40 + Math.random() * 80) + 'px');
-                particle.style.setProperty('--ty3', (-10 - Math.random() * 60) + 'px');
-                particle.style.setProperty('--tz3', (40 + Math.random() * 80) + 'px');
-
-                particle.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // ============================================================
-        // 7. إنشاء الحلقات 3D
-        // ============================================================
-        function createRings() {
-            const container = document.getElementById('rings3D');
-            const sizes = [300, 480, 660, 840, 1020];
-
-            sizes.forEach((size, index) => {
-                const ring = document.createElement('div');
-                ring.className = 'ring-3d';
-
-                const colors = ['var(--primary-color)', 'var(--secondary-color)', 'var(--accent-color)'];
-                const color = colors[index % colors.length];
-
-                ring.style.width = size + 'px';
-                ring.style.height = size + 'px';
-                ring.style.setProperty('--ring-color', color + '30');
-                ring.style.setProperty('--ring-glow', color + '20');
-                ring.style.setProperty('--ring-duration', (35 + index * 10) + 's');
-                ring.style.setProperty('--rx', (15 + index * 5) + 'deg');
-                ring.style.setProperty('--ry', (index * 45) + 'deg');
-                ring.style.borderColor = color + '30';
-
-                ring.style.animationDelay = (index * 2) + 's';
-                container.appendChild(ring);
-            });
-        }
-
-        // ============================================================
-        // 8. تأثير الماوس على الخلفية
-        // ============================================================
-        function setupMouseEffect() {
-            const layer = document.getElementById('mouseLayer');
-
-            document.addEventListener('mousemove', function(e) {
-                const x = (e.clientX / window.innerWidth) * 100;
-                const y = (e.clientY / window.innerHeight) * 100;
-                layer.style.setProperty('--mouse-x', x + '%');
-                layer.style.setProperty('--mouse-y', y + '%');
-            });
-        }
-
-        // ============================================================
-        // 9. تشغيل شريط التحميل
+        // 5. تشغيل شريط التحميل
         // ============================================================
         function startLoading() {
             let progress = 0;
@@ -897,7 +705,6 @@
                 }
 
                 loadingBar.style.width = progress + '%';
-                barGlow.style.setProperty('--glow-x', progress + '%');
                 loadingPercent.textContent = Math.round(progress) + '%';
 
                 const index = Math.min(Math.floor(progress / 25), statusMessages.length - 1);
@@ -907,7 +714,7 @@
         }
 
         // ============================================================
-        // 10. تخطي شاشة الترحيب
+        // 6. تخطي شاشة الترحيب
         // ============================================================
         function skipSplash() {
             auth.onAuthStateChanged(function(user) {
@@ -920,7 +727,7 @@
         }
 
         // ============================================================
-        // 11. التحقق من حالة المستخدم
+        // 7. التحقق من حالة المستخدم
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -946,13 +753,10 @@
         });
 
         // ============================================================
-        // 12. تشغيل الصفحة
+        // 8. تشغيل الصفحة
         // ============================================================
         async function init() {
             await loadSettingsFromFirestore();
-            createParticles();
-            createRings();
-            setupMouseEffect();
             startLoading();
 
             splashLogo.onerror = function() {
@@ -962,14 +766,13 @@
 
         init();
 
-        console.log('✅ الصفحة الترحيبية الخرافية - نقابة تكنولوجيا المعلومات');
+        console.log('✅ الصفحة الترحيبية - نقابة تكنولوجيا المعلومات');
         console.log('📌 الإصدار:', settings.systemVersion);
         console.log('⏳ مدة العرض:', settings.splashDuration / 1000, 'ثانية');
         console.log('👤 النقيب العام:', settings.presidentName);
-        console.log('🎨 الألوان:', settings.colors);
         console.log('🔒 نظام أمني متطور');
         console.log('🧠 محسّن بالذكاء الاصطناعي');
-        console.log('🌟 تصميم خرافي محدش شافه قبل كده');
+        console.log('🔄 دوران اللوجو بطيء وأنيق');
     </script>
 
 </body>
