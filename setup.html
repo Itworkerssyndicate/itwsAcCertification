@@ -18,9 +18,6 @@
     </script>
 
     <style>
-        /* ============================================================
-           التصميم المتطور لتهيئة النظام
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -1131,15 +1128,17 @@
         }
 
         // ============================================================
-        // 7. إنشاء المستخدم
+        // 7. إنشاء المستخدم - الحل النهائي لمشكلة المصادقة
         // ============================================================
         async function createUser(email, password, name, phone) {
             addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
 
             try {
+                // 1. تسجيل الخروج من أي جلسة سابقة
                 try { await auth.signOut(); } catch(e) {}
-                await sleep(500);
+                await sleep(800);
 
+                // 2. محاولة تسجيل الدخول (لو المستخدم موجود)
                 try {
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     const uid = cred.user.uid;
@@ -1158,7 +1157,13 @@
                     
                     return { success: true, uid, isNew: false };
                 } catch (loginErr) {
+                    // 3. لو المستخدم غير موجود → ننشئه
                     if (loginErr.code === 'auth/user-not-found') {
+                        // تأكد من أن البريد صحيح
+                        if (!email || email.length < 5) {
+                            throw new Error('البريد الإلكتروني غير صحيح');
+                        }
+                        
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         const uid = cred.user.uid;
                         addLog('✅ تم إنشاء مستخدم جديد', 'success');
@@ -1175,6 +1180,32 @@
                         });
                         
                         return { success: true, uid, isNew: true };
+                    } else if (loginErr.code === 'auth/invalid-credential') {
+                        // 4. مشكلة في بيانات الاعتماد - نعيد المحاولة مع تنظيف كامل
+                        addLog('⚠️ مشكلة في بيانات الاعتماد، جاري إعادة المحاولة...', 'warning');
+                        await sleep(1000);
+                        
+                        // نحاول إنشاء المستخدم من جديد
+                        try {
+                            const cred = await auth.createUserWithEmailAndPassword(email, password);
+                            const uid = cred.user.uid;
+                            addLog('✅ تم إنشاء المستخدم بعد إعادة المحاولة', 'success');
+                            
+                            await db.collection('users').doc(uid).set({
+                                uid: uid,
+                                email: email,
+                                displayName: name,
+                                phone: phone,
+                                role: 'super_admin',
+                                isActive: true,
+                                createdAt: getEgyptTime(),
+                                lastLogin: getEgyptTime()
+                            });
+                            
+                            return { success: true, uid, isNew: true };
+                        } catch (retryErr) {
+                            throw retryErr;
+                        }
                     } else {
                         throw loginErr;
                     }
@@ -1310,7 +1341,7 @@
                 await saveSettings();
                 await sleep(300);
 
-                // 4. إنشاء المستخدم
+                // 4. إنشاء المستخدم (مع حل مشكلة المصادقة)
                 await createUser(email, password, name, phone);
                 await sleep(300);
 
@@ -1332,6 +1363,12 @@
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
                 addLog('❌ خطأ: ' + err.message, 'error');
+                
+                // نصائح للمستخدم
+                if (err.message.includes('auth/invalid-credential') || err.message.includes('credential')) {
+                    addLog('💡 حاول تغيير البريد الإلكتروني أو كلمة المرور', 'warning');
+                    addLog('💡 تأكد من أن البريد صالح (مثل: admin@example.com)', 'warning');
+                }
             }
 
             hideLoader();
@@ -1365,6 +1402,7 @@
             loadImagesFromFirestore();
             addLog('🚀 جاهز', 'info');
             addLog('💡 اضغط "تهيئة النظام بالكامل" لإنشاء قاعدة البيانات', 'info');
+            addLog('🔑 تأكد من صحة البريد الإلكتروني وكلمة المرور', 'info');
         });
     </script>
 
