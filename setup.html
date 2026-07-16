@@ -26,7 +26,7 @@
 
         body {
             font-family: 'Segoe UI', 'Tahoma', Arial, sans-serif;
-            background: #0a0e1a;
+            background: #050a18;
             color: #fff;
             min-height: 100vh;
             direction: rtl;
@@ -183,17 +183,6 @@
             overflow: hidden;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(0, 100, 255, 0.04), transparent 50%);
-            pointer-events: none;
-        }
-
         .header {
             display: flex;
             justify-content: space-between;
@@ -223,12 +212,6 @@
             font-size: 20px;
             color: #fff;
             box-shadow: 0 0 40px rgba(0, 100, 255, 0.2);
-            animation: logoSpin 20s linear infinite;
-        }
-
-        @keyframes logoSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .logo h1 {
@@ -246,16 +229,16 @@
         }
 
         .btn {
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 30px;
             border: none;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             text-decoration: none;
             font-family: inherit;
             position: relative;
@@ -276,8 +259,8 @@
         }
 
         .btn:hover::before {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
         }
 
         .btn-success {
@@ -307,13 +290,6 @@
             box-shadow: 0 4px 25px rgba(239, 68, 68, 0.3);
         }
         .btn-danger:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(239, 68, 68, 0.4); }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(245, 158, 11, 0.3);
-        }
-        .btn-warning:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(245, 158, 11, 0.4); }
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
@@ -620,7 +596,6 @@
                 <div style="color:rgba(255,255,255,0.3);" id="loaderText">جاري التنفيذ...</div>
             </div>
 
-            <!-- حالة الاتصالات -->
             <div class="status-grid" id="statusGrid">
                 <div class="status-item">
                     <div class="icon">🔥</div>
@@ -664,17 +639,15 @@
                 </div>
             </div>
 
-            <!-- الأزرار الرئيسية -->
-            <div class="flex" style="gap:10px;margin-bottom:16px;position:relative;z-index:2;">
-                <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="flex:1;">
-                    🚀 تهيئة النظام بالكامل (مسح وإعادة إنشاء)
+            <!-- زر التهيئة الرئيسي فقط -->
+            <div style="text-align:center;margin-bottom:16px;position:relative;z-index:2;">
+                <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="font-size:18px;padding:16px 40px;">
+                    🚀 تهيئة النظام بالكامل
                 </button>
-                <button class="btn btn-outline" onclick="checkAllStatus()" id="checkBtn">
-                    🔄 تحديث الحالة
-                </button>
-                <button class="btn btn-danger" onclick="resetAuth()" id="resetAuthBtn">
-                    🔄 إعادة تعيين المصادقة
-                </button>
+            </div>
+
+            <div style="font-size:12px;color:rgba(255,255,255,0.15);text-align:center;margin-bottom:16px;position:relative;z-index:2;">
+                سيتم إنشاء قاعدة البيانات بالكامل مع مستخدم سوبر أدمن
             </div>
 
             <!-- بيانات المستخدم -->
@@ -744,6 +717,10 @@
                         <label>رابط زر الخدمات</label>
                         <input type="url" id="servicesBtnLink" value="https://itws.org.eg/services" />
                     </div>
+                </div>
+                <div class="form-group">
+                    <label>اسم النقيب العام</label>
+                    <input type="text" id="presidentName" value="المهندس / محمود جميل" />
                 </div>
             </div>
 
@@ -822,17 +799,9 @@
             measurementId: "G-JBMGW74DV4"
         };
 
-        let app, db, auth;
-
-        try {
-            if (firebase.apps.length > 0) {
-                firebase.apps.forEach(app => app.delete());
-            }
-        } catch (e) {}
-
-        app = firebase.initializeApp(firebaseConfig);
-        db = firebase.firestore(app);
-        auth = firebase.auth(app);
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+        const auth = firebase.auth(app);
 
         // ============================================================
         // 2. إعدادات Cloudinary
@@ -905,8 +874,46 @@
         }
 
         // ============================================================
-        // 5. رفع الصور باستخدام Cloudinary Widget
+        // 5. رفع الصور
         // ============================================================
+        function previewLogo(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                showMsg('حجم الصورة يتجاوز 2MB', 'error');
+                e.target.value = '';
+                return;
+            }
+            logoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.querySelector('#logoPreview img');
+                img.src = ev.target.result;
+                img.style.display = 'block';
+                document.getElementById('logoPlaceholder').textContent = file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewStamp(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                showMsg('حجم الصورة يتجاوز 2MB', 'error');
+                e.target.value = '';
+                return;
+            }
+            stampFile = file;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = document.querySelector('#stampPreview img');
+                img.src = ev.target.result;
+                img.style.display = 'block';
+                document.getElementById('stampPlaceholder').textContent = file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
         function uploadToCloudinary(file, publicId) {
             return new Promise(function(resolve, reject) {
                 const widget = cloudinary.createUploadWidget({
@@ -918,8 +925,6 @@
                     sources: ['local', 'url'],
                     cropping: true,
                     croppingAspectRatio: 1,
-                    showAdvancedOptions: false,
-                    showCompletedButton: true,
                     styles: {
                         palette: {
                             window: '#0a0e1a',
@@ -938,65 +943,15 @@
                         }
                     }
                 }, function(error, result) {
-                    if (error) {
-                        reject(error);
-                        return;
-                    }
+                    if (error) { reject(error); return; }
                     if (result.event === 'success') {
-                        addLog('✅ تم الرفع عبر Widget', 'success');
                         resolve({ secure_url: result.info.secure_url });
                     } else if (result.event === 'close') {
                         reject(new Error('تم إلغاء الرفع'));
                     }
                 });
-
                 widget.open();
             });
-        }
-
-        // ============================================================
-        // 6. رفع اللوجو والختم
-        // ============================================================
-        function previewLogo(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (file.size > 2 * 1024 * 1024) {
-                showMsg('حجم الصورة يتجاوز 2MB', 'error');
-                e.target.value = '';
-                return;
-            }
-
-            logoFile = file;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const img = document.querySelector('#logoPreview img');
-                img.src = ev.target.result;
-                img.style.display = 'block';
-                document.getElementById('logoPlaceholder').textContent = file.name;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function previewStamp(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (file.size > 2 * 1024 * 1024) {
-                showMsg('حجم الصورة يتجاوز 2MB', 'error');
-                e.target.value = '';
-                return;
-            }
-
-            stampFile = file;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const img = document.querySelector('#stampPreview img');
-                img.src = ev.target.result;
-                img.style.display = 'block';
-                document.getElementById('stampPlaceholder').textContent = file.name;
-            };
-            reader.readAsDataURL(file);
         }
 
         function uploadLogoToCloudinary() {
@@ -1004,23 +959,18 @@
                 showMsg('الرجاء اختيار صورة اللوجو أولاً', 'info');
                 return;
             }
-
             const btn = document.getElementById('uploadLogoBtn');
             btn.disabled = true;
             btn.textContent = 'جاري الرفع...';
-
             uploadToCloudinary(logoFile, 'union_logo')
                 .then(function(data) {
                     const url = data.secure_url;
                     return db.collection('settings').doc('general').set({
                         logoUrl: url,
-                        updatedAt: getEgyptTime(),
-                        updatedBy: 'system'
-                    }, { merge: true }).then(function() {
-                        return url;
-                    });
+                        updatedAt: getEgyptTime()
+                    }, { merge: true }).then(function() { return url; });
                 })
-                .then(function(url) {
+                .then(function() {
                     showMsg('تم رفع اللوجو بنجاح', 'success');
                     document.getElementById('logoStatus').textContent = 'تم الرفع';
                     document.getElementById('logoStatus').className = 'upload-status show success';
@@ -1045,23 +995,18 @@
                 showMsg('الرجاء اختيار صورة الختم أولاً', 'info');
                 return;
             }
-
             const btn = document.getElementById('uploadStampBtn');
             btn.disabled = true;
             btn.textContent = 'جاري الرفع...';
-
             uploadToCloudinary(stampFile, 'union_stamp')
                 .then(function(data) {
                     const url = data.secure_url;
                     return db.collection('settings').doc('general').set({
                         stampUrl: url,
-                        updatedAt: getEgyptTime(),
-                        updatedBy: 'system'
-                    }, { merge: true }).then(function() {
-                        return url;
-                    });
+                        updatedAt: getEgyptTime()
+                    }, { merge: true }).then(function() { return url; });
                 })
-                .then(function(url) {
+                .then(function() {
                     showMsg('تم رفع الختم بنجاح', 'success');
                     document.getElementById('stampStatus').textContent = 'تم الرفع';
                     document.getElementById('stampStatus').className = 'upload-status show success';
@@ -1081,50 +1026,34 @@
                 });
         }
 
-        // ============================================================
-        // 7. تحميل الصور من Firestore
-        // ============================================================
         function loadImagesFromFirestore() {
             db.collection('settings').doc('general').get()
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-
                         if (data.logoUrl) {
                             const img = document.querySelector('#logoPreview img');
                             img.src = data.logoUrl;
                             img.style.display = 'block';
                             document.getElementById('logoPlaceholder').textContent = 'لوجو موجود';
-                        } else {
-                            document.querySelector('#logoPreview img').style.display = 'none';
-                            document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
                         }
-
                         if (data.stampUrl) {
                             const img = document.querySelector('#stampPreview img');
                             img.src = data.stampUrl;
                             img.style.display = 'block';
                             document.getElementById('stampPlaceholder').textContent = 'ختم موجود';
-                        } else {
-                            document.querySelector('#stampPreview img').style.display = 'none';
-                            document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
                         }
                     }
                 })
                 .catch(function() {});
         }
 
-        // ============================================================
-        // 8. حذف الصور
-        // ============================================================
         function clearImages() {
             if (!confirm('هل أنت متأكد من حذف اللوجو والختم؟')) return;
-
             db.collection('settings').doc('general').set({
                 logoUrl: '',
                 stampUrl: '',
-                updatedAt: getEgyptTime(),
-                updatedBy: 'system'
+                updatedAt: getEgyptTime()
             }, { merge: true })
             .then(function() {
                 document.querySelector('#logoPreview img').style.display = 'none';
@@ -1141,277 +1070,7 @@
         }
 
         // ============================================================
-        // 9. التحقق من Firebase
-        // ============================================================
-        async function checkFirebase() {
-            try {
-                await db.collection('users').limit(1).get();
-                setStatus('sFirebase', '✅ متصل', 'done');
-                addLog('🔥 Firebase متصل', 'success');
-                return true;
-            } catch (err) {
-                setStatus('sFirebase', '❌ خطأ', 'error');
-                addLog('❌ Firebase: ' + err.message, 'error');
-                return false;
-            }
-        }
-
-        // ============================================================
-        // 10. التحقق من Cloudinary
-        // ============================================================
-        async function checkCloudinary() {
-            try {
-                if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
-                    setStatus('sCloudinary', '✅ متصل', 'done');
-                    addLog('☁️ Cloudinary متصل', 'success');
-                    return true;
-                } else {
-                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
-                    addLog('⚠️ Cloudinary غير متصل', 'warning');
-                    return false;
-                }
-            } catch (err) {
-                setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
-                addLog('⚠️ Cloudinary: ' + err.message, 'warning');
-                return false;
-            }
-        }
-
-        // ============================================================
-        // 11. مسح جميع البيانات من Firestore (باستثناء settings)
-        // ============================================================
-        async function clearAllCollections() {
-            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
-            let cleared = 0;
-
-            for (const name of collections) {
-                try {
-                    const snap = await db.collection(name).get();
-                    if (snap.empty) {
-                        addLog('📭 جدول ' + name + ' فارغ بالفعل', 'info');
-                        continue;
-                    }
-
-                    const batch = db.batch();
-                    snap.docs.forEach(function(doc) {
-                        if (doc.id !== '_init') {
-                            batch.delete(doc.ref);
-                        }
-                    });
-
-                    await batch.commit();
-                    cleared++;
-                    addLog('🗑️ تم مسح جدول: ' + name + ' (' + snap.size + ' وثيقة)', 'warning');
-
-                    await sleep(200);
-
-                    // إعادة إنشاء وثيقة _init
-                    await db.collection(name).doc('_init').set({
-                        initialized: true,
-                        createdAt: getEgyptTime(),
-                        clearedAt: getEgyptTime()
-                    });
-
-                } catch (err) {
-                    addLog('❌ خطأ في مسح ' + name + ': ' + err.message, 'error');
-                }
-            }
-
-            addLog('✅ تم مسح ' + cleared + ' جداول بنجاح', 'success');
-            return cleared;
-        }
-
-        // ============================================================
-        // 12. إنشاء المستخدم (بشكل نظيف)
-        // ============================================================
-        async function createUser(email, password, name, phone) {
-            addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
-
-            try {
-                // تنظيف المصادقة أولاً
-                try { await auth.signOut(); } catch(e) {}
-                await sleep(500);
-
-                // حذف أي مستخدم موجود بنفس البريد
-                try {
-                    const existingUsers = await db.collection('users').where('email', '==', email).get();
-                    if (!existingUsers.empty) {
-                        existingUsers.forEach(async function(doc) {
-                            await db.collection('users').doc(doc.id).delete();
-                        });
-                        addLog('🗑️ تم حذف المستخدم القديم', 'warning');
-                    }
-                } catch(err) {
-                    // تجاهل
-                }
-
-                // محاولة تسجيل الدخول أولاً
-                try {
-                    const cred = await auth.signInWithEmailAndPassword(email, password);
-                    const uid = cred.user.uid;
-                    addLog('✅ المستخدم موجود، جاري تحديث البيانات', 'success');
-                    
-                    await db.collection('users').doc(uid).set({
-                        uid: uid,
-                        email: email,
-                        displayName: name,
-                        phone: phone,
-                        role: 'super_admin',
-                        isActive: true,
-                        lastLogin: getEgyptTime(),
-                        updatedAt: getEgyptTime()
-                    }, { merge: true });
-                    
-                    return { success: true, uid, isNew: false };
-                } catch (loginErr) {
-                    // إذا كان المستخدم غير موجود، نقوم بإنشائه
-                    if (loginErr.code === 'auth/user-not-found') {
-                        const cred = await auth.createUserWithEmailAndPassword(email, password);
-                        const uid = cred.user.uid;
-                        addLog('✅ تم إنشاء مستخدم جديد', 'success');
-                        
-                        await db.collection('users').doc(uid).set({
-                            uid: uid,
-                            email: email,
-                            displayName: name,
-                            phone: phone,
-                            role: 'super_admin',
-                            isActive: true,
-                            createdAt: getEgyptTime(),
-                            lastLogin: getEgyptTime()
-                        });
-                        
-                        return { success: true, uid, isNew: true };
-                    } else {
-                        throw loginErr;
-                    }
-                }
-            } catch (err) {
-                addLog('❌ فشل: ' + err.message, 'error');
-                throw err;
-            }
-        }
-
-        // ============================================================
-        // 13. حفظ الإعدادات
-        // ============================================================
-        async function saveSettings() {
-            const data = {
-                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
-                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
-                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
-                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
-                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها',
-                footerText: document.getElementById('footerText').value.trim() ||
-                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
-                presidentName: 'المهندس / محمود جميل',
-                updatedAt: getEgyptTime(),
-                updatedBy: 'system'
-            };
-
-            await db.collection('settings').doc('general').set(data, { merge: true });
-            addLog('✅ تم حفظ الإعدادات العامة', 'success');
-
-            const servicesData = {
-                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
-                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
-                updatedAt: getEgyptTime(),
-                updatedBy: 'system'
-            };
-
-            await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
-            addLog('✅ تم حفظ زر الخدمات', 'success');
-
-            setStatus('sSettings', '✅ جاهز', 'done');
-            return true;
-        }
-
-        // ============================================================
-        // 14. التحقق من الحالة الكاملة
-        // ============================================================
-        async function checkAllStatus() {
-            hideMsg();
-            showLoader('جاري التحقق...');
-            addLog('🔍 جاري التحقق من حالة النظام...', 'info');
-
-            try {
-                await checkFirebase();
-                await checkCloudinary();
-
-                const collections = [
-                    { name: 'users', id: 'sUsers' },
-                    { name: 'academies', id: 'sAcademies' },
-                    { name: 'certificates', id: 'sCertificates' },
-                    { name: 'activities', id: 'sActivities' },
-                    { name: 'searchLogs', id: 'sSearchLogs' },
-                ];
-
-                for (const col of collections) {
-                    try {
-                        const snap = await db.collection(col.name).get();
-                        const count = snap.size;
-                        const actualCount = count > 0 && snap.docs.some(d => d.id !== '_init') ? 
-                            count - (snap.docs.some(d => d.id === '_init') ? 1 : 0) : 0;
-                        setStatus(col.id, actualCount > 0 ? actualCount + ' سجل' : 'فارغ', actualCount > 0 ? 'done' : 'pending');
-                    } catch (err) {
-                        setStatus(col.id, '❌', 'error');
-                    }
-                }
-
-                try {
-                    const settingsSnap = await db.collection('settings').doc('general').get();
-                    if (settingsSnap.exists) {
-                        setStatus('sSettings', '✅ جاهز', 'done');
-                    } else {
-                        setStatus('sSettings', '⚠️ غير مهيأ', 'warning');
-                    }
-                } catch (err) {
-                    setStatus('sSettings', '❌', 'error');
-                }
-
-                addLog('✅ اكتمل التحقق', 'success');
-
-            } catch (err) {
-                addLog('❌ خطأ: ' + err.message, 'error');
-            }
-
-            hideLoader();
-        }
-
-        // ============================================================
-        // 15. إعادة تعيين المصادقة
-        // ============================================================
-        async function resetAuth() {
-            hideMsg();
-            showLoader('جاري إعادة تعيين المصادقة...');
-            addLog('🔄 جاري إعادة تعيين المصادقة...', 'warning');
-
-            try {
-                await auth.signOut();
-                addLog('✅ تم تسجيل الخروج', 'success');
-
-                localStorage.clear();
-                sessionStorage.clear();
-                addLog('✅ تم مسح التخزين المحلي', 'success');
-
-                await sleep(1000);
-                showMsg('✅ تم إعادة تعيين المصادقة! سيتم تحديث الصفحة...', 'success');
-                addLog('🔄 جاري تحديث الصفحة...', 'info');
-
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
-
-            } catch (err) {
-                showMsg('❌ خطأ: ' + err.message, 'error');
-                addLog('❌ خطأ: ' + err.message, 'error');
-                hideLoader();
-            }
-        }
-
-        // ============================================================
-        // 16. التشغيل الكامل (مسح وإعادة إنشاء)
+        // 6. تهيئة النظام بالكامل
         // ============================================================
         async function runFullSetup() {
             if (isRunning) {
@@ -1436,14 +1095,9 @@
             }
 
             if (!confirm('⚠️ تحذير: هذا الإجراء سيمسح جميع البيانات الحالية في Firebase\n' +
-                         '(المستخدمين، الأكاديميات، الشهادات، النشاطات، سجل البحث)\n' +
                          'ويقوم بإنشاء قاعدة بيانات جديدة مهيأة للمنصة.\n\n' +
                          'المستخدم الجديد: ' + email + '\n' +
                          'هل أنت متأكد؟')) {
-                return;
-            }
-
-            if (!confirm('⚠️ تأكيد نهائي: سيتم حذف جميع البيانات!')) {
                 return;
             }
 
@@ -1454,70 +1108,200 @@
 
             showLoader('جاري تهيئة النظام بالكامل...');
             addLog('🚀 بدء التهيئة الكاملة للنظام...', 'info');
-            addLog('⚠️ سيتم مسح جميع البيانات الحالية', 'warning');
 
             try {
                 // 1. التحقق من الاتصال
-                await checkFirebase();
-                await sleep(300);
-                await checkCloudinary();
-                await sleep(300);
+                try {
+                    await db.collection('users').limit(1).get();
+                    setStatus('sFirebase', '✅ متصل', 'done');
+                    addLog('✅ Firebase متصل', 'success');
+                } catch (err) {
+                    setStatus('sFirebase', '❌ خطأ', 'error');
+                    addLog('❌ Firebase: ' + err.message, 'error');
+                    throw new Error('فشل الاتصال بـ Firebase');
+                }
 
-                // 2. مسح جميع الجداول (ما عدا settings)
-                addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
-                await clearAllCollections();
+                // 2. التحقق من Cloudinary
+                try {
+                    if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
+                        setStatus('sCloudinary', '✅ متصل', 'done');
+                        addLog('✅ Cloudinary متصل', 'success');
+                    } else {
+                        setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                        addLog('⚠️ Cloudinary غير متصل', 'warning');
+                    }
+                } catch (err) {
+                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                }
+
                 await sleep(500);
 
-                // 3. حفظ الإعدادات (بما فيها بيانات السوبر أدمن)
-                await saveSettings();
+                // 3. مسح جميع الجداول
+                addLog('🗑️ جاري مسح جميع البيانات...', 'warning');
+                const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
+                
+                for (const name of collections) {
+                    try {
+                        const snap = await db.collection(name).get();
+                        if (!snap.empty) {
+                            const batch = db.batch();
+                            snap.docs.forEach(function(doc) {
+                                if (doc.id !== '_init') {
+                                    batch.delete(doc.ref);
+                                }
+                            });
+                            await batch.commit();
+                            addLog('🗑️ تم مسح جدول: ' + name, 'success');
+                        } else {
+                            addLog('📭 جدول ' + name + ' فارغ', 'info');
+                        }
+                        await sleep(200);
+                    } catch (err) {
+                        addLog('❌ خطأ في مسح ' + name + ': ' + err.message, 'error');
+                    }
+                }
+
+                // 4. إنشاء الجداول مع بيانات افتراضية
+                addLog('📊 جاري إنشاء هيكل البيانات...', 'info');
+
+                // 4.1 إنشاء مستخدم السوبر أدمن
+                addLog('👑 جاري إنشاء المستخدم: ' + email, 'info');
+                try {
+                    // محاولة تسجيل الدخول أولاً
+                    let uid;
+                    try {
+                        const cred = await auth.signInWithEmailAndPassword(email, password);
+                        uid = cred.user.uid;
+                        addLog('✅ المستخدم موجود مسبقاً', 'success');
+                    } catch (loginErr) {
+                        if (loginErr.code === 'auth/user-not-found') {
+                            const cred = await auth.createUserWithEmailAndPassword(email, password);
+                            uid = cred.user.uid;
+                            addLog('✅ تم إنشاء مستخدم جديد', 'success');
+                        } else {
+                            throw loginErr;
+                        }
+                    }
+
+                    await db.collection('users').doc(uid).set({
+                        uid: uid,
+                        email: email,
+                        displayName: name,
+                        phone: phone,
+                        role: 'super_admin',
+                        isActive: true,
+                        createdAt: getEgyptTime(),
+                        lastLogin: getEgyptTime()
+                    }, { merge: true });
+                    
+                    addLog('✅ تم حفظ بيانات المستخدم', 'success');
+                    setStatus('sUsers', '✅ ' + email, 'done');
+
+                } catch (err) {
+                    addLog('❌ فشل إنشاء المستخدم: ' + err.message, 'error');
+                    throw err;
+                }
+
                 await sleep(300);
 
-                // 4. إنشاء المستخدم (مع تنظيف مسبق)
-                await createUser(email, password, name, phone);
+                // 4.2 حفظ الإعدادات
+                addLog('⚙️ جاري حفظ الإعدادات...', 'info');
+                try {
+                    const settingsData = {
+                        unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
+                        committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
+                        splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                        infoBoxText: document.getElementById('infoBoxText').value.trim() ||
+                            'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها',
+                        footerText: document.getElementById('footerText').value.trim() ||
+                            '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+                        sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                        presidentName: document.getElementById('presidentName').value.trim() || 'المهندس / محمود جميل',
+                        updatedAt: getEgyptTime()
+                    };
+
+                    await db.collection('settings').doc('general').set(settingsData, { merge: true });
+                    addLog('✅ تم حفظ الإعدادات العامة', 'success');
+
+                    const servicesData = {
+                        text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
+                        link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
+                        updatedAt: getEgyptTime()
+                    };
+                    await db.collection('settings').doc('servicesButton').set(servicesData, { merge: true });
+                    addLog('✅ تم حفظ زر الخدمات', 'success');
+                    
+                    setStatus('sSettings', '✅ جاهز', 'done');
+                } catch (err) {
+                    addLog('❌ فشل حفظ الإعدادات: ' + err.message, 'error');
+                    throw err;
+                }
+
                 await sleep(300);
 
-                // 5. تحميل الصور إن وجدت
+                // 4.3 إنشاء وثائق _init للجداول
+                for (const name of collections) {
+                    try {
+                        await db.collection(name).doc('_init').set({
+                            initialized: true,
+                            createdAt: getEgyptTime()
+                        });
+                    } catch (err) {
+                        // تجاهل
+                    }
+                }
+
+                // 5. تحديث الحالة النهائية
+                setStatus('sAcademies', '✅ جاهز', 'done');
+                setStatus('sCertificates', '✅ جاهز', 'done');
+                setStatus('sActivities', '✅ جاهز', 'done');
+                setStatus('sSearchLogs', '✅ جاهز', 'done');
+
                 loadImagesFromFirestore();
 
-                // 6. تحديث الحالة
-                await checkAllStatus();
-
-                // 7. عرض النتيجة
+                // عرض النتيجة
                 showMsg('✅ تمت تهيئة النظام بالكامل بنجاح!\n👑 ' + email + ' / ' + password, 'success');
                 addLog('🎉 اكتملت تهيئة النظام بالكامل', 'success');
                 addLog('👑 ' + email + ' / ' + password, 'info');
                 addLog('🔑 يمكنك تسجيل الدخول الآن', 'info');
-                addLog('📌 تم مسح جميع البيانات القديمة وإعادة إنشائها', 'success');
 
             } catch (err) {
                 showMsg('❌ خطأ: ' + err.message, 'error');
                 addLog('❌ خطأ: ' + err.message, 'error');
-
-                if (err.message.includes('credential') || err.message.includes('auth')) {
-                    addLog('💡 حاول الضغط على "إعادة تعيين المصادقة" أولاً', 'warning');
-                }
             }
 
             hideLoader();
             btn.disabled = false;
-            btn.textContent = '🚀 تهيئة النظام بالكامل (مسح وإعادة إنشاء)';
+            btn.textContent = '🚀 تهيئة النظام بالكامل';
             isRunning = false;
         }
 
         // ============================================================
-        // 17. تحميل الصفحة
+        // 7. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             auth.signOut().catch(() => {});
+            
+            // تحديث الحالة الأولية
             setTimeout(function() {
-                checkAllStatus();
+                db.collection('users').limit(1).get()
+                    .then(() => {
+                        setStatus('sFirebase', '✅ متصل', 'done');
+                    })
+                    .catch(() => {
+                        setStatus('sFirebase', '❌ خطأ', 'error');
+                    });
+                    
+                if (typeof cloudinary !== 'undefined' && cloudinary.createUploadWidget) {
+                    setStatus('sCloudinary', '✅ متصل', 'done');
+                } else {
+                    setStatus('sCloudinary', '⚠️ غير متصل', 'warning');
+                }
             }, 500);
+
             loadImagesFromFirestore();
             addLog('🚀 جاهز', 'info');
-            addLog('💡 اضغط "تهيئة النظام بالكامل" لمسح كل البيانات وإعادة إنشائها', 'info');
-            addLog('📌 رفع الصور يتم عبر Cloudinary Widget', 'info');
-            addLog('⚠️ تحذير: التهيئة تمسح جميع البيانات الحالية (عدا الإعدادات)', 'warning');
-            addLog('✅ تم إصلاح مشكلة المصادقة', 'success');
+            addLog('💡 اضغط "تهيئة النظام بالكامل" لإنشاء قاعدة البيانات', 'info');
         });
     </script>
 
