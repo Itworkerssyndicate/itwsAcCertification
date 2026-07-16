@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+    
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -15,7 +36,8 @@
 
     <style>
         /* ============================================================
-           التصميم المطابق لشاشة الهوم - نسخة الترحيب
+           التصميم الخرافي للشاشة الترحيبية - بدون أي نصوص ثابتة
+           كل حرف ولون وصورة من الإعدادات
            ============================================================ */
         * {
             margin: 0;
@@ -31,24 +53,43 @@
             align-items: center;
             overflow: hidden;
             direction: rtl;
-            background: #0A0E1A;
+            background: var(--bg-color);
+            transition: background 0.8s ease;
         }
 
-        /* ===== خلفية متطابقة مع الهوم ===== */
+        :root {
+            --primary-color: #C9A84C;
+            --primary-dark: #A8893A;
+            --primary-light: #E8D5A3;
+            --primary-glow: rgba(201,168,76,0.3);
+            --secondary-color: #0A1628;
+            --accent-color: #7C3AED;
+            --accent-light: #A78BFA;
+            --accent-glow: rgba(124,58,237,0.2);
+            --bg-color: #0A0E1A;
+            --text-color: #FFFFFF;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-dim: rgba(255,255,255,0.15);
+            --border: rgba(255,255,255,0.06);
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --radius: 20px;
+        }
+
         .splash-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(201, 168, 76, 0.10) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
             animation: bgPulse 15s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
             0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-            100% { transform: scale(1.05) rotate(1.5deg); opacity: 0.9; }
+            100% { transform: scale(1.06) rotate(1.5deg); opacity: 0.9; }
         }
 
         .splash-bg::before {
@@ -59,7 +100,6 @@
             pointer-events: none;
         }
 
-        /* ===== جزيئات ===== */
         .particles-container {
             position: fixed;
             inset: 0;
@@ -71,17 +111,17 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            animation: particleFloat 22s infinite ease-in-out;
+            animation: particleFloat 25s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 5px; height: 5px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(201, 168, 76, 0.3); }
-        .particle:nth-child(2) { width: 7px; height: 7px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(124, 58, 237, 0.3); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(201, 168, 76, 0.35); }
-        .particle:nth-child(4) { width: 6px; height: 6px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(124, 58, 237, 0.25); }
-        .particle:nth-child(5) { width: 4px; height: 4px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(201, 168, 76, 0.3); }
-        .particle:nth-child(6) { width: 8px; height: 8px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(124, 58, 237, 0.25); }
-        .particle:nth-child(7) { width: 3px; height: 3px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(201, 168, 76, 0.4); }
-        .particle:nth-child(8) { width: 5px; height: 5px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(124, 58, 237, 0.3); }
+        .particle:nth-child(1) { width: 5px; height: 5px; top: 5%; left: 5%; animation-delay: 0s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(2) { width: 7px; height: 7px; top: 15%; left: 30%; animation-delay: 2s; background: var(--accent-color); opacity: 0.3; }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: var(--primary-color); opacity: 0.35; }
+        .particle:nth-child(4) { width: 6px; height: 6px; top: 40%; left: 10%; animation-delay: 1s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(5) { width: 4px; height: 4px; top: 50%; left: 85%; animation-delay: 3s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(6) { width: 8px; height: 8px; top: 65%; left: 20%; animation-delay: 5s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(7) { width: 3px; height: 3px; top: 75%; left: 60%; animation-delay: 2.5s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(8) { width: 5px; height: 5px; top: 88%; left: 40%; animation-delay: 4.5s; background: var(--accent-color); opacity: 0.3; }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
@@ -91,14 +131,13 @@
             100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
         }
 
-        /* ===== شبكة ===== */
         .grid-lines {
             position: fixed;
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(201, 168, 76, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201, 168, 76, 0.015) 1px, transparent 1px);
+                linear-gradient(rgba(201,168,76,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.015) 1px, transparent 1px);
             background-size: 70px 70px;
             pointer-events: none;
             animation: gridMove 30s linear infinite;
@@ -109,7 +148,6 @@
             100% { transform: translateY(25px) translateX(25px); }
         }
 
-        /* ===== حلقات ===== */
         .orbital-ring {
             position: fixed;
             inset: 0;
@@ -123,20 +161,19 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(201, 168, 76, 0.04);
+            border: 1px solid rgba(201,168,76,0.04);
             animation: ringSpin 60s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 320px; height: 320px; border-color: rgba(201, 168, 76, 0.06); animation-duration: 70s; }
-        .ring:nth-child(2) { width: 520px; height: 520px; border-color: rgba(124, 58, 237, 0.04); animation-duration: 80s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(59, 130, 246, 0.03); animation-duration: 90s; }
+        .ring:nth-child(1) { width: 320px; height: 320px; border-color: rgba(201,168,76,0.06); animation-duration: 70s; }
+        .ring:nth-child(2) { width: 520px; height: 520px; border-color: rgba(124,58,237,0.04); animation-duration: 80s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 720px; height: 720px; border-color: rgba(59,130,246,0.03); animation-duration: 90s; }
 
         @keyframes ringSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== كرات ضوئية ===== */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
@@ -151,7 +188,7 @@
             height: 500px;
             top: -180px;
             right: -180px;
-            background: rgba(201, 168, 76, 0.05);
+            background: rgba(201,168,76,0.05);
         }
 
         .glow-orb:nth-child(2) {
@@ -159,7 +196,7 @@
             height: 600px;
             bottom: -220px;
             left: -220px;
-            background: rgba(124, 58, 237, 0.04);
+            background: rgba(124,58,237,0.04);
             animation-delay: 8s;
         }
 
@@ -168,7 +205,6 @@
             100% { transform: translate(50px, 30px) scale(1.1); opacity: 0.6; }
         }
 
-        /* ===== المحتوى ===== */
         .splash-content {
             position: relative;
             z-index: 10;
@@ -183,7 +219,6 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* ===== شعار النقابة - دوران بطيء ===== */
         .logo-wrapper {
             width: 160px;
             height: 160px;
@@ -191,7 +226,6 @@
             position: relative;
         }
 
-        /* الحلقة الخارجية المتحركة */
         .logo-wrapper::before {
             content: '';
             position: absolute;
@@ -200,7 +234,7 @@
             right: -12px;
             bottom: -12px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent, rgba(201, 168, 76, 0.25), rgba(124, 58, 237, 0.2), rgba(59, 130, 246, 0.2), transparent);
+            background: conic-gradient(from 0deg, transparent, rgba(201,168,76,0.25), rgba(124,58,237,0.2), rgba(59,130,246,0.2), transparent);
             animation: conicSpin 12s linear infinite;
             mask: radial-gradient(circle, transparent 60%, black 62%);
             -webkit-mask: radial-gradient(circle, transparent 60%, black 62%);
@@ -212,13 +246,12 @@
             to { transform: rotate(360deg); }
         }
 
-        /* حلقة النبض */
         .logo-wrapper::after {
             content: '';
             position: absolute;
             inset: -20px;
             border-radius: 50%;
-            border: 1px solid rgba(201, 168, 76, 0.08);
+            border: 1px solid rgba(201,168,76,0.08);
             animation: pulseRing 4s ease-in-out infinite;
         }
 
@@ -227,19 +260,18 @@
             50% { transform: scale(1.1); opacity: 0.8; }
         }
 
-        /* اللوجو - دوران بطيء جداً داخل الإطار */
         .union-logo {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 3px solid rgba(201, 168, 76, 0.2);
-            box-shadow: 0 0 60px rgba(201, 168, 76, 0.1);
+            border: 3px solid rgba(201,168,76,0.2);
+            box-shadow: 0 0 60px rgba(201,168,76,0.1);
             object-fit: cover;
             position: relative;
             z-index: 2;
             animation: logoSpin 40s linear infinite;
             transition: all 0.5s ease;
-            background: #0A0E1A;
+            background: var(--bg-color);
         }
 
         @keyframes logoSpin {
@@ -249,17 +281,16 @@
 
         .union-logo:hover {
             animation-duration: 10s;
-            box-shadow: 0 0 80px rgba(201, 168, 76, 0.2);
-            border-color: rgba(201, 168, 76, 0.4);
+            box-shadow: 0 0 80px rgba(201,168,76,0.2);
+            border-color: rgba(201,168,76,0.4);
         }
 
-        /* ===== النصوص ===== */
         .splash-title {
             font-size: 38px;
             font-weight: 900;
             margin-bottom: 6px;
             letter-spacing: 2px;
-            background: linear-gradient(135deg, #ffffff 0%, #C9A84C 40%, #E8D5A3 70%, #ffffff 100%);
+            background: linear-gradient(135deg, var(--text-color) 0%, var(--primary-color) 40%, var(--primary-light) 70%, var(--text-color) 100%);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
@@ -275,7 +306,7 @@
 
         .splash-subtitle {
             font-size: 17px;
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--text-muted);
             margin-bottom: 6px;
             font-weight: 300;
             letter-spacing: 3px;
@@ -284,7 +315,7 @@
 
         .splash-committee {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-dim);
             margin-bottom: 6px;
             font-weight: 300;
             letter-spacing: 1px;
@@ -292,15 +323,14 @@
         }
 
         .splash-committee span {
-            color: rgba(201, 168, 76, 0.5);
+            color: rgba(201,168,76,0.5);
             font-weight: 500;
         }
 
-        /* ===== النقيب العام ===== */
         .splash-president {
             font-size: 17px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 30px;
             letter-spacing: 1px;
             position: relative;
@@ -316,7 +346,7 @@
             top: 50%;
             width: 30px;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
         }
 
         .splash-president::before { right: 100%; }
@@ -324,13 +354,12 @@
 
         .splash-president .president-name {
             font-weight: 800;
-            background: linear-gradient(135deg, #C9A84C, #E8D5A3);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        /* ===== شريط التحميل ===== */
         .loading-container {
             width: 360px;
             margin: 0 auto 20px;
@@ -340,7 +369,7 @@
         .loading-bar-wrapper {
             width: 100%;
             height: 3px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255,255,255,0.04);
             border-radius: 4px;
             overflow: hidden;
             position: relative;
@@ -353,7 +382,7 @@
             right: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
             animation: loaderSweep 2.5s linear infinite;
         }
 
@@ -365,7 +394,7 @@
         .loading-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #C9A84C, #E8D5A3, #C9A84C);
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light), var(--primary-color));
             background-size: 200% 100%;
             border-radius: 4px;
             animation: loadingShimmer 2.5s linear infinite;
@@ -380,7 +409,7 @@
 
         .loading-text {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.15);
+            color: var(--text-dim);
             margin-top: 14px;
             letter-spacing: 2px;
             font-weight: 300;
@@ -392,22 +421,21 @@
         }
 
         .loading-text .percentage {
-            color: rgba(201, 168, 76, 0.5);
+            color: rgba(201,168,76,0.5);
             font-weight: 600;
             font-size: 14px;
             font-family: 'Courier New', monospace;
             min-width: 42px;
         }
 
-        /* ===== زر تخطي ===== */
         .splash-skip {
             position: fixed;
             bottom: 30px;
             left: 30px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.25);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.25);
             padding: 8px 22px;
             border-radius: 30px;
             font-size: 12px;
@@ -421,14 +449,13 @@
         }
 
         .splash-skip:hover {
-            background: rgba(201, 168, 76, 0.12);
-            border-color: rgba(201, 168, 76, 0.2);
-            color: rgba(255, 255, 255, 0.6);
+            background: rgba(201,168,76,0.12);
+            border-color: rgba(201,168,76,0.2);
+            color: rgba(255,255,255,0.6);
             transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(201, 168, 76, 0.05);
+            box-shadow: 0 0 40px rgba(201,168,76,0.05);
         }
 
-        /* ===== تذييل ===== */
         .splash-footer {
             position: fixed;
             bottom: 30px;
@@ -437,23 +464,22 @@
             z-index: 10;
             text-align: center;
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.06);
+            color: var(--text-dim);
             letter-spacing: 2px;
             font-weight: 300;
             font-family: 'Cairo', sans-serif;
         }
 
         .splash-footer .version {
-            color: rgba(255, 255, 255, 0.04);
+            color: var(--text-dim);
             font-family: 'Courier New', monospace;
         }
 
         .splash-footer .separator {
             margin: 0 8px;
-            color: rgba(255, 255, 255, 0.03);
+            color: var(--text-dim);
         }
 
-        /* ===== استجابة ===== */
         @media (max-width: 768px) {
             .splash-title { font-size: 30px; }
             .logo-wrapper { width: 130px; height: 130px; }
@@ -520,20 +546,20 @@
     <!-- ===== المحتوى ===== -->
     <div class="splash-content">
 
-        <!-- الشعار - دوران بطيء داخل الإطار -->
+        <!-- الشعار -->
         <div class="logo-wrapper">
-            <img src="https://placehold.co/160x160/0A0E1A/C9A84C/png?text=ن.ت" alt="شعار النقابة" class="union-logo" id="splashLogo" />
+            <img src="" alt="شعار النقابة" class="union-logo" id="splashLogo" />
         </div>
 
-        <!-- العناوين -->
-        <h1 class="splash-title" id="unionName">نقابة تكنولوجيا المعلومات</h1>
-        <p class="splash-subtitle" id="splashSubtitle">نظام توثيق الشهادات التدريبية</p>
-        <p class="splash-committee">لجنة <span id="committeeName">التحول الرقمي والتدريب</span></p>
+        <!-- العناوين - كلها من الإعدادات -->
+        <h1 class="splash-title" id="unionName"></h1>
+        <p class="splash-subtitle" id="splashSubtitle"></p>
+        <p class="splash-committee">لجنة <span id="committeeName"></span></p>
 
         <!-- النقيب العام -->
         <div class="splash-president">
-            النقيب العام
-            <span class="president-name" id="presidentName">المهندس / محمود جميل</span>
+            <span id="presidentLabel"></span>
+            <span class="president-name" id="presidentName"></span>
         </div>
 
         <!-- شريط التحميل -->
@@ -542,7 +568,7 @@
                 <div class="loading-bar" id="loadingBar"></div>
             </div>
             <div class="loading-text">
-                <span id="loadingStatus">جاري تجهيز المنصة</span>
+                <span id="loadingStatus"></span>
                 <span class="percentage" id="loadingPercent">0%</span>
             </div>
         </div>
@@ -551,20 +577,17 @@
 
     <!-- ===== زر تخطي ===== -->
     <button class="splash-skip" onclick="skipSplash()">
-        <span>تخطي</span>
-        <span style="font-size:14px;">→</span>
+        <span id="skipBtnText"></span>
+        <span style="font-size:14px;">←</span>
     </button>
 
     <!-- ===== تذييل ===== -->
     <div class="splash-footer">
-        <span class="version" id="systemVersion">v2.0.0</span>
+        <span class="version" id="systemVersion"></span>
         <span class="separator">•</span>
-        <span>نقابة تكنولوجيا المعلومات والبرمجيات</span>
+        <span id="footerText"></span>
     </div>
 
-    <!-- ============================================================
-    جافا سكريبت
-    ============================================================ -->
     <script>
         // ============================================================
         // 1. تهيئة Firebase
@@ -584,7 +607,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // 2. عناصر الصفحة
+        // 2. عناصر الصفحة - كلها IDs فقط
         // ============================================================
         const loadingBar = document.getElementById('loadingBar');
         const loadingPercent = document.getElementById('loadingPercent');
@@ -592,27 +615,137 @@
         const unionNameEl = document.getElementById('unionName');
         const committeeNameEl = document.getElementById('committeeName');
         const presidentNameEl = document.getElementById('presidentName');
+        const presidentLabelEl = document.getElementById('presidentLabel');
         const splashLogo = document.getElementById('splashLogo');
         const versionEl = document.getElementById('systemVersion');
         const splashSubtitle = document.getElementById('splashSubtitle');
+        const footerTextEl = document.getElementById('footerText');
+        const skipBtnText = document.getElementById('skipBtnText');
+
+        // OG Tags
+        const pageTitle = document.getElementById('pageTitle');
+        const metaDescription = document.getElementById('metaDescription');
+        const metaKeywords = document.getElementById('metaKeywords');
+        const ogTitle = document.getElementById('ogTitle');
+        const ogDescription = document.getElementById('ogDescription');
+        const ogImage = document.getElementById('ogImage');
+        const ogUrl = document.getElementById('ogUrl');
+        const ogSiteName = document.getElementById('ogSiteName');
+        const twitterTitle = document.getElementById('twitterTitle');
+        const twitterDescription = document.getElementById('twitterDescription');
+        const twitterImage = document.getElementById('twitterImage');
+        const favicon = document.getElementById('favicon');
+        const appleIcon = document.getElementById('appleIcon');
 
         // ============================================================
-        // 3. الإعدادات الافتراضية
+        // 3. الإعدادات الافتراضية - كلها من Firestore
         // ============================================================
         const DEFAULT_SETTINGS = {
-            unionName: 'نقابة تكنولوجيا المعلومات',
-            committeeName: 'التحول الرقمي والتدريب',
-            presidentName: 'المهندس / محمود جميل',
+            unionName: '',
+            committeeName: '',
+            presidentName: '',
+            presidentLabel: '',
             splashDuration: 4000,
-            logoUrl: 'https://placehold.co/160x160/0A0E1A/C9A84C/png?text=ن.ت',
-            systemVersion: 'v2.0.0',
-            subtitle: 'نظام توثيق الشهادات التدريبية'
+            logoUrl: '',
+            systemVersion: '',
+            subtitle: '',
+            footerText: '',
+            skipText: '',
+            pageTitle: '',
+            metaDescription: '',
+            metaKeywords: '',
+            ogTitle: '',
+            ogDescription: '',
+            ogUrl: '',
+            ogSiteName: '',
+            twitterTitle: '',
+            twitterDescription: '',
+            loadingMessages: [],
+            colors: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                border: 'rgba(255,255,255,0.06)'
+            }
         };
 
         let settings = { ...DEFAULT_SETTINGS };
 
         // ============================================================
-        // 4. جلب الإعدادات من Firestore
+        // 4. تطبيق الألوان على CSS
+        // ============================================================
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+            
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        // ============================================================
+        // 5. تطبيق جميع الإعدادات على الصفحة
+        // ============================================================
+        function applySettings(data) {
+            // النصوص الأساسية
+            if (data.unionName) unionNameEl.textContent = data.unionName;
+            if (data.committeeName) committeeNameEl.textContent = data.committeeName;
+            if (data.presidentName) presidentNameEl.textContent = data.presidentName;
+            if (data.presidentLabel) presidentLabelEl.textContent = data.presidentLabel;
+            if (data.subtitle) splashSubtitle.textContent = data.subtitle;
+            if (data.footerText) footerTextEl.textContent = data.footerText;
+            if (data.skipText) skipBtnText.textContent = data.skipText;
+            if (data.systemVersion) versionEl.textContent = data.systemVersion;
+
+            // اللوجو
+            if (data.logoUrl) {
+                splashLogo.src = data.logoUrl;
+            }
+
+            // OG Tags
+            if (data.pageTitle) pageTitle.textContent = data.pageTitle;
+            if (data.metaDescription) metaDescription.content = data.metaDescription;
+            if (data.metaKeywords) metaKeywords.content = data.metaKeywords;
+            if (data.ogTitle) ogTitle.content = data.ogTitle;
+            if (data.ogDescription) ogDescription.content = data.ogDescription;
+            if (data.ogUrl) ogUrl.content = data.ogUrl;
+            if (data.ogSiteName) ogSiteName.content = data.ogSiteName;
+            if (data.twitterTitle) twitterTitle.content = data.twitterTitle;
+            if (data.twitterDescription) twitterDescription.content = data.twitterDescription;
+
+            // صور OG
+            if (data.logoUrl) {
+                ogImage.content = data.logoUrl;
+                twitterImage.content = data.logoUrl;
+                favicon.href = data.logoUrl;
+                appleIcon.href = data.logoUrl;
+            }
+
+            // الألوان
+            if (data.colors) {
+                applyColors(data.colors);
+            }
+        }
+
+        // ============================================================
+        // 6. جلب الإعدادات من Firestore
         // ============================================================
         async function loadSettingsFromFirestore() {
             try {
@@ -621,52 +754,44 @@
 
                 if (doc.exists) {
                     const data = doc.data();
+                    
+                    // نصوص
+                    if (data.unionName) settings.unionName = data.unionName;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                    if (data.splashDuration) settings.splashDuration = data.splashDuration * 1000;
+                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                    if (data.systemVersion) settings.systemVersion = data.systemVersion;
+                    if (data.subtitle) settings.subtitle = data.subtitle;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.skipText) settings.skipText = data.skipText;
+                    if (data.pageTitle) settings.pageTitle = data.pageTitle;
+                    if (data.metaDescription) settings.metaDescription = data.metaDescription;
+                    if (data.metaKeywords) settings.metaKeywords = data.metaKeywords;
+                    if (data.ogTitle) settings.ogTitle = data.ogTitle;
+                    if (data.ogDescription) settings.ogDescription = data.ogDescription;
+                    if (data.ogUrl) settings.ogUrl = data.ogUrl;
+                    if (data.ogSiteName) settings.ogSiteName = data.ogSiteName;
+                    if (data.twitterTitle) settings.twitterTitle = data.twitterTitle;
+                    if (data.twitterDescription) settings.twitterDescription = data.twitterDescription;
+                    if (data.loadingMessages) settings.loadingMessages = data.loadingMessages;
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
-                    if (data.unionName) {
-                        settings.unionName = data.unionName;
-                        unionNameEl.textContent = data.unionName;
-                    }
-
-                    if (data.committeeName) {
-                        settings.committeeName = data.committeeName;
-                        committeeNameEl.textContent = data.committeeName;
-                    }
-
-                    if (data.presidentName) {
-                        settings.presidentName = data.presidentName;
-                        presidentNameEl.textContent = data.presidentName;
-                    }
-
-                    if (data.splashDuration) {
-                        settings.splashDuration = data.splashDuration * 1000;
-                    }
-
-                    if (data.logoUrl) {
-                        settings.logoUrl = data.logoUrl;
-                        splashLogo.src = data.logoUrl;
-                    }
-
-                    if (data.systemVersion) {
-                        settings.systemVersion = data.systemVersion;
-                        versionEl.textContent = data.systemVersion;
-                    }
-
-                    if (data.subtitle) {
-                        settings.subtitle = data.subtitle;
-                        splashSubtitle.textContent = data.subtitle;
-                    }
-
+                    applySettings(settings);
                     console.log('✅ تم جلب الإعدادات من Firestore');
                 } else {
                     console.log('ℹ️ استخدام الإعدادات الافتراضية');
+                    applySettings(settings);
                 }
             } catch (err) {
                 console.error('❌ خطأ في جلب الإعدادات:', err.message);
+                applySettings(settings);
             }
         }
 
         // ============================================================
-        // 5. تشغيل شريط التحميل
+        // 7. تشغيل شريط التحميل
         // ============================================================
         function startLoading() {
             let progress = 0;
@@ -674,13 +799,15 @@
             const totalSteps = settings.splashDuration / interval;
             const increment = 100 / totalSteps;
 
-            const statusMessages = [
+            const defaultMessages = [
                 'جاري تجهيز المنصة',
                 'جاري تحميل البيانات',
                 'جاري تهيئة النظام',
                 'أوشكنا على الانتهاء',
                 'مرحباً بك في المنصة'
             ];
+
+            const statusMessages = settings.loadingMessages.length > 0 ? settings.loadingMessages : defaultMessages;
 
             const loadingInterval = setInterval(() => {
                 progress += increment;
@@ -689,8 +816,13 @@
                     clearInterval(loadingInterval);
                     loadingStatus.textContent = 'جاري التوجيه...';
                     setTimeout(() => {
-                        // التوجيه إلى home.html مباشرة
-                        window.location.href = 'home.html';
+                        auth.onAuthStateChanged(function(user) {
+                            if (user) {
+                                window.location.href = 'home.html';
+                            } else {
+                                window.location.href = 'login.html';
+                            }
+                        });
                     }, 400);
                 }
 
@@ -704,32 +836,64 @@
         }
 
         // ============================================================
-        // 6. تخطي شاشة الترحيب - يروح للهوم مباشرة
+        // 8. تخطي شاشة الترحيب
         // ============================================================
         function skipSplash() {
-            window.location.href = 'home.html';
+            auth.onAuthStateChanged(function(user) {
+                if (user) {
+                    window.location.href = 'home.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
         }
 
         // ============================================================
-        // 7. تشغيل الصفحة
+        // 9. التحقق من حالة المستخدم
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            sessionStorage.setItem('userData', JSON.stringify({
+                                uid: user.uid,
+                                email: user.email,
+                                displayName: data.displayName || 'مستخدم',
+                                role: data.role || 'user',
+                                isActive: data.isActive !== false
+                            }));
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('❌ خطأ في جلب بيانات المستخدم:', err);
+                    });
+            } else {
+                sessionStorage.removeItem('userData');
+            }
+        });
+
+        // ============================================================
+        // 10. تشغيل الصفحة
         // ============================================================
         async function init() {
             await loadSettingsFromFirestore();
             startLoading();
 
             splashLogo.onerror = function() {
-                this.src = DEFAULT_SETTINGS.logoUrl;
+                this.src = 'https://placehold.co/160x160/0A0E1A/C9A84C/png?text=ن.ت';
             };
         }
 
         init();
 
-        console.log('✅ الصفحة الترحيبية - نقابة تكنولوجيا المعلومات');
+        console.log('✅ الصفحة الترحيبية - كل حرف من الإعدادات');
         console.log('📌 الإصدار:', settings.systemVersion);
-        console.log('⏳ مدة العرض:', settings.splashDuration / 1000, 'ثانية');
         console.log('👤 النقيب العام:', settings.presidentName);
-        console.log('🔄 دوران اللوجو بطيء وأنيق داخل الإطار');
-        console.log('🚀 التوجيه إلى home.html مباشرة');
+        console.log('🎨 الألوان من الإعدادات');
+        console.log('🔄 دوران اللوجو بطيء وأنيق');
+        console.log('🚀 التوجيه إلى home.html أو login.html');
     </script>
 
 </body>
