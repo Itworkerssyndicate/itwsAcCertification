@@ -6,7 +6,7 @@
     <title id="pageTitle"></title>
     <meta name="description" id="metaDescription" content="" />
     <meta name="keywords" id="metaKeywords" content="" />
-    
+
     <!-- Open Graph -->
     <meta property="og:title" id="ogTitle" content="" />
     <meta property="og:description" id="ogDescription" content="" />
@@ -15,13 +15,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" id="ogSiteName" content="" />
     <meta property="og:locale" content="ar_EG" />
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" id="twitterTitle" content="" />
     <meta name="twitter:description" id="twitterDescription" content="" />
     <meta name="twitter:image" id="twitterImage" content="" />
-    
+
     <!-- Icons -->
     <link rel="icon" id="favicon" href="" />
     <link rel="apple-touch-icon" id="appleIcon" href="" />
@@ -40,8 +40,8 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي للصفحة الرئيسية - بدون أي نصوص ثابتة
-           كل حرف ولون وصورة من الإعدادات
+           التصميم الخرافي للصفحة الرئيسية
+           كل حرف من الإعدادات + مظهر محلي للمستخدم
            ============================================================ */
         * {
             margin: 0;
@@ -230,6 +230,7 @@
             padding: 20px;
         }
 
+        /* ===== الهيدر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -267,6 +268,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
             position: relative;
             z-index: 2;
         }
@@ -342,12 +344,13 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             position: relative;
             z-index: 2;
         }
 
+        /* ===== الأزرار ===== */
         .btn {
             padding: 8px 20px;
             border-radius: 30px;
@@ -358,7 +361,7 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
@@ -395,35 +398,9 @@
         }
         .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(16,185,129,0.25);
-        }
-        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
-
-        .btn-ghost {
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-        .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
-
-        .btn-glow {
-            background: linear-gradient(135deg, var(--warning), #d97706);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(245,158,11,0.25);
-            animation: glowPulse 2.5s ease-in-out infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 4px 25px rgba(245,158,11,0.25); }
-            50% { box-shadow: 0 8px 50px rgba(245,158,11,0.5); }
-        }
-        .btn-glow:hover { transform: translateY(-3px) scale(1.02); }
-
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
+        /* ===== المحتوى ===== */
         .hero-section {
             text-align: center;
             margin-bottom: 25px;
@@ -490,6 +467,7 @@
             line-height: 1.7;
         }
 
+        /* ===== تبويبات ===== */
         .tabs {
             display: flex;
             gap: 6px;
@@ -605,36 +583,6 @@
             text-align: center;
             letter-spacing: 1px;
             margin-top: 10px;
-        }
-
-        .academies-showcase {
-            text-align: center;
-            margin-top: 20px;
-            animation: showcaseAppear 1s ease-out 0.3s both;
-        }
-
-        @keyframes showcaseAppear {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .academies-showcase .btn {
-            padding: 12px 36px;
-            font-size: 15px;
-            border-radius: 40px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            transition: all 0.4s ease;
-            backdrop-filter: blur(8px);
-            font-weight: 700;
-        }
-
-        .academies-showcase .btn:hover {
-            background: var(--bg-hover);
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 10px 50px var(--primary-glow);
-            border-color: var(--primary-color);
         }
 
         .result-box {
@@ -864,180 +812,6 @@
             margin-top: 4px;
         }
 
-        .academies-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(25px);
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .academies-modal.active { display: flex; }
-
-        @keyframes modalIn {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .academies-modal .modal-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 32px 36px;
-            max-width: 950px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: var(--shadow);
-            animation: modalContent 0.5s ease;
-        }
-
-        @keyframes modalContent {
-            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .academies-modal .modal-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        .academies-modal .modal-content::-webkit-scrollbar-track {
-            background: var(--bg-hover);
-            border-radius: 10px;
-        }
-        .academies-modal .modal-content::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            border-radius: 10px;
-        }
-
-        .academies-modal .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 16px;
-            margin-bottom: 18px;
-        }
-
-        .academies-modal .modal-header h2 {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--text-color);
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .academies-modal .modal-header .close-btn {
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .academies-modal .modal-header .close-btn:hover {
-            background: var(--error-bg);
-            color: var(--error);
-            border-color: var(--error);
-            transform: rotate(90deg);
-        }
-
-        .academies-modal .academy-item {
-            background: var(--bg-hover);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-sm);
-            padding: 14px 18px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .academies-modal .academy-item:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: var(--primary-color);
-            transform: translateX(-4px);
-        }
-
-        .academies-modal .academy-item .name {
-            font-weight: 700;
-            color: var(--text-color);
-            font-size: 16px;
-        }
-
-        .academies-modal .academy-item .license {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-family: 'Courier New', monospace;
-        }
-
-        .academies-modal .academy-item .badge {
-            font-size: 11px;
-            padding: 4px 14px;
-            border-radius: 20px;
-            background: var(--success-bg);
-            color: var(--success);
-            border: 1px solid rgba(16,185,129,0.1);
-        }
-
-        .academies-modal .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .academies-modal .pagination button {
-            padding: 8px 22px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            background: var(--bg-hover);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            font-weight: 600;
-        }
-
-        .academies-modal .pagination button:hover:not(:disabled) {
-            background: var(--primary-glow);
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .academies-modal .pagination button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .academies-modal .pagination span {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
         .student-certificates-list {
             margin-top: 16px;
         }
@@ -1163,6 +937,167 @@
             z-index: 9999;
         }
 
+        .academies-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(25px);
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .academies-modal.active { display: flex; }
+
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .academies-modal .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            max-width: 950px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow);
+            animation: modalContent 0.5s ease;
+        }
+
+        .academies-modal .modal-content::-webkit-scrollbar { width: 6px; }
+        .academies-modal .modal-content::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 10px; }
+        .academies-modal .modal-content::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 10px; }
+
+        .academies-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 18px;
+        }
+
+        .academies-modal .modal-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .academies-modal .modal-header .close-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .academies-modal .modal-header .close-btn:hover {
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .academies-modal .academy-item {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .academies-modal .academy-item:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: var(--primary-color);
+            transform: translateX(-4px);
+        }
+
+        .academies-modal .academy-item .name {
+            font-weight: 700;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .academies-modal .academy-item .license {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+        }
+
+        .academies-modal .academy-item .badge {
+            font-size: 11px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid rgba(16,185,129,0.1);
+        }
+
+        .academies-modal .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .academies-modal .pagination button {
+            padding: 8px 22px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .academies-modal .pagination button:hover:not(:disabled) {
+            background: var(--primary-glow);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .academies-modal .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .academies-modal .pagination span {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 18px; border-radius: 20px; }
             .header-right { justify-content: center; flex-wrap: wrap; }
@@ -1245,6 +1180,7 @@
 
     <div class="main-container">
 
+        <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
                 <div class="logo-box" id="logoBox" onclick="window.location.href='index.html'"></div>
@@ -1254,40 +1190,44 @@
                 </div>
                 <div class="header-president">
                     <span class="president-icon">👤</span>
-                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-label">النقيب العام:</span>
                     <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <a href="#" class="btn btn-outline btn-sm" id="loginBtn"></a>
-                <a href="#" class="btn btn-primary btn-sm" id="adminBtn" style="display:none;"></a>
-                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn" style="display:none;"></a>
+                <a href="#" class="btn btn-outline btn-sm" id="loginBtn">تسجيل الدخول</a>
+                <a href="#" class="btn btn-primary btn-sm" id="adminBtn" style="display:none;">لوحة التحكم</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn" style="display:none;">تسجيل الخروج</a>
             </div>
         </header>
 
+        <!-- ===== البطل ===== -->
         <div class="hero-section">
             <h1 class="hero-title" id="heroTitle"></h1>
             <p class="hero-subtitle" id="heroSubtitle"></p>
         </div>
 
+        <!-- ===== بوكس النص ===== -->
         <div class="info-box" id="infoBox">
             <p id="infoBoxText"></p>
         </div>
 
+        <!-- ===== تبويبات ===== -->
         <div class="tabs">
-            <button class="tab-btn active" data-tab="tabCertificate" id="tabCertBtn"></button>
-            <button class="tab-btn" data-tab="tabStudent" id="tabStudentBtn"></button>
-            <button class="tab-btn" data-tab="tabAcademy" id="tabAcademyBtn"></button>
-            <button class="tab-btn" data-tab="tabGraduates" id="tabGraduatesBtn"></button>
+            <button class="tab-btn active" data-tab="tabCertificate" id="tabCertBtn">بحث عن شهادة</button>
+            <button class="tab-btn" data-tab="tabStudent" id="tabStudentBtn">بحث عن متدرب</button>
+            <button class="tab-btn" data-tab="tabAcademy" id="tabAcademyBtn">بحث عن أكاديمية</button>
+            <button class="tab-btn" data-tab="tabGraduates" id="tabGraduatesBtn">سجل الخريجين</button>
         </div>
 
+        <!-- ===== تبويب الشهادة ===== -->
         <div class="tab-content active" id="tabCertificate">
             <div class="search-card">
                 <form id="certificateSearchForm" onsubmit="return searchCertificate(event)">
                     <div class="search-box">
                         <div class="search-row">
-                            <input type="text" id="certCode" placeholder="" required />
-                            <button type="submit" class="btn btn-primary" id="searchCertBtn"></button>
+                            <input type="text" id="certCode" placeholder="أدخل كود الشهادة" required />
+                            <button type="submit" class="btn btn-primary" id="searchCertBtn">بحث</button>
                         </div>
                         <div class="search-hint" id="certHint"></div>
                     </div>
@@ -1295,7 +1235,7 @@
 
                 <div class="loader" id="certLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="certLoaderText"></div>
+                    <div style="color:var(--text-muted);" id="certLoaderText">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="certError"></div>
@@ -1305,14 +1245,15 @@
             </div>
         </div>
 
+        <!-- ===== تبويب المتدرب ===== -->
         <div class="tab-content" id="tabStudent">
             <div class="search-card">
                 <form id="studentSearchForm" onsubmit="return searchStudent(event)">
                     <div class="search-box">
                         <div class="search-row">
-                            <input type="text" id="studentName" placeholder="" />
-                            <input type="text" id="studentNationalId" placeholder="" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
-                            <button type="submit" class="btn btn-primary" id="searchStudentBtn"></button>
+                            <input type="text" id="studentName" placeholder="اسم المتدرب" />
+                            <input type="text" id="studentNationalId" placeholder="الرقم القومي" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
+                            <button type="submit" class="btn btn-primary" id="searchStudentBtn">بحث</button>
                         </div>
                         <div class="search-hint" id="studentHint"></div>
                     </div>
@@ -1320,7 +1261,7 @@
 
                 <div class="loader" id="studentLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="studentLoaderText"></div>
+                    <div style="color:var(--text-muted);" id="studentLoaderText">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="studentError"></div>
@@ -1330,29 +1271,22 @@
             </div>
         </div>
 
+        <!-- ===== تبويب الأكاديمية ===== -->
         <div class="tab-content" id="tabAcademy">
             <div class="search-card">
                 <form id="academySearchForm" onsubmit="return searchAcademy(event)">
                     <div class="search-box">
                         <div class="search-row">
-                            <input type="text" id="academySearchInput" placeholder="" required />
-                            <button type="submit" class="btn btn-primary" id="searchAcademyBtn"></button>
+                            <input type="text" id="academySearchInput" placeholder="اسم الأكاديمية أو الرقم الاعتمادي" required />
+                            <button type="submit" class="btn btn-primary" id="searchAcademyBtn">بحث</button>
                         </div>
                         <div class="search-hint" id="academyHint"></div>
                     </div>
                 </form>
 
-                <div class="academies-showcase">
-                    <button class="btn btn-glow" onclick="openAcademiesModal()" id="showAllAcademiesBtn">
-                        <span class="icon">🏛️</span>
-                        <span id="showAllAcademiesText"></span>
-                        <span style="font-size:14px;">←</span>
-                    </button>
-                </div>
-
                 <div class="loader" id="academyLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="academyLoaderText"></div>
+                    <div style="color:var(--text-muted);" id="academyLoaderText">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="academyError"></div>
@@ -1362,19 +1296,20 @@
             </div>
         </div>
 
+        <!-- ===== تبويب سجل الخريجين ===== -->
         <div class="tab-content" id="tabGraduates">
             <div class="search-card">
                 <div class="search-box">
                     <div class="search-row">
-                        <input type="text" id="graduatesSearchInput" placeholder="" />
-                        <button class="btn btn-primary" onclick="searchGraduates()" id="graduatesSearchBtn"></button>
+                        <input type="text" id="graduatesSearchInput" placeholder="اسم الخريج" />
+                        <button class="btn btn-primary" onclick="searchGraduates()" id="graduatesSearchBtn">بحث</button>
                     </div>
                     <div class="search-hint" id="graduatesHint"></div>
                 </div>
 
                 <div class="loader" id="graduatesLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="graduatesLoaderText"></div>
+                    <div style="color:var(--text-muted);" id="graduatesLoaderText">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="graduatesError"></div>
@@ -1384,6 +1319,7 @@
             </div>
         </div>
 
+        <!-- ===== زر خدمات النقابة ===== -->
         <div class="services-btn-container">
             <a href="#" class="services-btn" id="servicesBtn">
                 <span id="servicesBtnText"></span>
@@ -1391,6 +1327,7 @@
             </a>
         </div>
 
+        <!-- ===== الفوتر ===== -->
         <footer class="footer">
             <span id="footerText"></span>
             <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
@@ -1403,23 +1340,24 @@
 
     <div id="print-container"></div>
 
+    <!-- ===== مودال الأكاديميات ===== -->
     <div class="academies-modal" id="academiesModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalAcademiesTitle"></h2>
+                <h2 id="modalAcademiesTitle">جميع الأكاديميات المعتمدة</h2>
                 <button class="close-btn" onclick="closeAcademiesModal()">✕</button>
             </div>
 
             <div id="modalAcademiesContainer">
                 <div class="loader show" id="modalAcademiesLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="modalAcademiesLoaderText"></div>
+                    <div style="color:var(--text-muted);" id="modalAcademiesLoaderText">جاري تحميل الأكاديميات...</div>
                 </div>
                 <div id="modalAcademiesContent" style="display:none;"></div>
                 <div class="pagination" id="modalPagination">
-                    <button id="modalPrevPage" onclick="changeModalPage(-1)"></button>
-                    <span id="modalPageInfo"></span>
-                    <button id="modalNextPage" onclick="changeModalPage(1)"></button>
+                    <button id="modalPrevPage" onclick="changeModalPage(-1)">السابق</button>
+                    <span id="modalPageInfo">صفحة 1 من 1</span>
+                    <button id="modalNextPage" onclick="changeModalPage(1)">التالي</button>
                 </div>
             </div>
         </div>
@@ -1455,8 +1393,8 @@
         const modalItemsPerPage = 8;
 
         let settings = {
-            unionName: '',
-            committeeName: '',
+            unionName: 'نقابة تكنولوجيا المعلومات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
             stampUrl: '',
             infoBoxText: '',
@@ -1464,44 +1402,12 @@
             servicesLink: '',
             footerText: '',
             presidentName: '',
-            presidentLabel: '',
             heroTitle: '',
             heroSubtitle: '',
             certHint: '',
             studentHint: '',
             academyHint: '',
             graduatesHint: '',
-            // أزرار
-            loginBtnText: '',
-            logoutBtnText: '',
-            adminBtnText: '',
-            searchCertBtnText: '',
-            searchStudentBtnText: '',
-            searchAcademyBtnText: '',
-            graduatesSearchBtnText: '',
-            showAllAcademiesText: '',
-            // التبويبات
-            tabCertText: '',
-            tabStudentText: '',
-            tabAcademyText: '',
-            tabGraduatesText: '',
-            // مكان holder
-            certPlaceholder: '',
-            studentNamePlaceholder: '',
-            studentNationalPlaceholder: '',
-            academyPlaceholder: '',
-            graduatesPlaceholder: '',
-            // تحميل
-            certLoaderText: '',
-            studentLoaderText: '',
-            academyLoaderText: '',
-            graduatesLoaderText: '',
-            modalAcademiesLoaderText: '',
-            modalAcademiesTitle: '',
-            modalPrevText: '',
-            modalNextText: '',
-            modalPageInfoText: '',
-            // الألوان
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1537,43 +1443,12 @@
                         if (data.servicesLink) settings.servicesLink = data.servicesLink;
                         if (data.footerText) settings.footerText = data.footerText;
                         if (data.presidentName) settings.presidentName = data.presidentName;
-                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
                         if (data.heroTitle) settings.heroTitle = data.heroTitle;
                         if (data.heroSubtitle) settings.heroSubtitle = data.heroSubtitle;
                         if (data.certHint) settings.certHint = data.certHint;
                         if (data.studentHint) settings.studentHint = data.studentHint;
                         if (data.academyHint) settings.academyHint = data.academyHint;
                         if (data.graduatesHint) settings.graduatesHint = data.graduatesHint;
-                        
-                        if (data.loginBtnText) settings.loginBtnText = data.loginBtnText;
-                        if (data.logoutBtnText) settings.logoutBtnText = data.logoutBtnText;
-                        if (data.adminBtnText) settings.adminBtnText = data.adminBtnText;
-                        if (data.searchCertBtnText) settings.searchCertBtnText = data.searchCertBtnText;
-                        if (data.searchStudentBtnText) settings.searchStudentBtnText = data.searchStudentBtnText;
-                        if (data.searchAcademyBtnText) settings.searchAcademyBtnText = data.searchAcademyBtnText;
-                        if (data.graduatesSearchBtnText) settings.graduatesSearchBtnText = data.graduatesSearchBtnText;
-                        if (data.showAllAcademiesText) settings.showAllAcademiesText = data.showAllAcademiesText;
-                        
-                        if (data.tabCertText) settings.tabCertText = data.tabCertText;
-                        if (data.tabStudentText) settings.tabStudentText = data.tabStudentText;
-                        if (data.tabAcademyText) settings.tabAcademyText = data.tabAcademyText;
-                        if (data.tabGraduatesText) settings.tabGraduatesText = data.tabGraduatesText;
-                        
-                        if (data.certPlaceholder) settings.certPlaceholder = data.certPlaceholder;
-                        if (data.studentNamePlaceholder) settings.studentNamePlaceholder = data.studentNamePlaceholder;
-                        if (data.studentNationalPlaceholder) settings.studentNationalPlaceholder = data.studentNationalPlaceholder;
-                        if (data.academyPlaceholder) settings.academyPlaceholder = data.academyPlaceholder;
-                        if (data.graduatesPlaceholder) settings.graduatesPlaceholder = data.graduatesPlaceholder;
-                        
-                        if (data.certLoaderText) settings.certLoaderText = data.certLoaderText;
-                        if (data.studentLoaderText) settings.studentLoaderText = data.studentLoaderText;
-                        if (data.academyLoaderText) settings.academyLoaderText = data.academyLoaderText;
-                        if (data.graduatesLoaderText) settings.graduatesLoaderText = data.graduatesLoaderText;
-                        if (data.modalAcademiesLoaderText) settings.modalAcademiesLoaderText = data.modalAcademiesLoaderText;
-                        if (data.modalAcademiesTitle) settings.modalAcademiesTitle = data.modalAcademiesTitle;
-                        if (data.modalPrevText) settings.modalPrevText = data.modalPrevText;
-                        if (data.modalNextText) settings.modalNextText = data.modalNextText;
-                        if (data.modalPageInfoText) settings.modalPageInfoText = data.modalPageInfoText;
 
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
@@ -1588,12 +1463,14 @@
                     applySettings();
                     applyColors(settings.colors);
                 });
+
+            // جلب الإعدادات المحلية للمستخدم
+            loadLocalSettings();
         }
 
         function applySettings() {
             const unionNameEl = document.getElementById('unionName');
             const committeeNameEl = document.getElementById('committeeName');
-            const presidentLabelEl = document.getElementById('presidentLabel');
             const presidentNameEl = document.getElementById('headerPresidentName');
             const footerTextEl = document.getElementById('footerText');
             const presidentFooterEl = document.getElementById('presidentFooter');
@@ -1610,10 +1487,9 @@
 
             if (unionNameEl) unionNameEl.textContent = settings.unionName;
             if (committeeNameEl) committeeNameEl.textContent = settings.committeeName;
-            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
             if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
             if (footerTextEl) footerTextEl.textContent = settings.footerText;
-            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentLabel + ': ';
+            if (presidentFooterEl) presidentFooterEl.textContent = 'النقيب العام: ';
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
             if (infoBoxTextEl) infoBoxTextEl.textContent = settings.infoBoxText;
             if (servicesBtnTextEl) servicesBtnTextEl.textContent = settings.servicesText;
@@ -1624,73 +1500,6 @@
             if (studentHintEl) studentHintEl.textContent = settings.studentHint;
             if (academyHintEl) academyHintEl.textContent = settings.academyHint;
             if (graduatesHintEl) graduatesHintEl.textContent = settings.graduatesHint;
-
-            // أزرار
-            const loginBtn = document.getElementById('loginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const adminBtn = document.getElementById('adminBtn');
-            const searchCertBtn = document.getElementById('searchCertBtn');
-            const searchStudentBtn = document.getElementById('searchStudentBtn');
-            const searchAcademyBtn = document.getElementById('searchAcademyBtn');
-            const graduatesSearchBtn = document.getElementById('graduatesSearchBtn');
-            const showAllAcademiesBtn = document.getElementById('showAllAcademiesText');
-
-            if (loginBtn) loginBtn.textContent = settings.loginBtnText;
-            if (logoutBtn) logoutBtn.textContent = settings.logoutBtnText;
-            if (adminBtn) adminBtn.textContent = settings.adminBtnText;
-            if (searchCertBtn) searchCertBtn.textContent = settings.searchCertBtnText;
-            if (searchStudentBtn) searchStudentBtn.textContent = settings.searchStudentBtnText;
-            if (searchAcademyBtn) searchAcademyBtn.textContent = settings.searchAcademyBtnText;
-            if (graduatesSearchBtn) graduatesSearchBtn.textContent = settings.graduatesSearchBtnText;
-            if (showAllAcademiesBtn) showAllAcademiesBtn.textContent = settings.showAllAcademiesText;
-
-            // تبويبات
-            const tabCert = document.getElementById('tabCertBtn');
-            const tabStudent = document.getElementById('tabStudentBtn');
-            const tabAcademy = document.getElementById('tabAcademyBtn');
-            const tabGraduates = document.getElementById('tabGraduatesBtn');
-
-            if (tabCert) tabCert.textContent = settings.tabCertText;
-            if (tabStudent) tabStudent.textContent = settings.tabStudentText;
-            if (tabAcademy) tabAcademy.textContent = settings.tabAcademyText;
-            if (tabGraduates) tabGraduates.textContent = settings.tabGraduatesText;
-
-            // Placeholder
-            const certCode = document.getElementById('certCode');
-            const studentName = document.getElementById('studentName');
-            const studentNational = document.getElementById('studentNationalId');
-            const academyInput = document.getElementById('academySearchInput');
-            const graduatesInput = document.getElementById('graduatesSearchInput');
-
-            if (certCode) certCode.placeholder = settings.certPlaceholder;
-            if (studentName) studentName.placeholder = settings.studentNamePlaceholder;
-            if (studentNational) studentNational.placeholder = settings.studentNationalPlaceholder;
-            if (academyInput) academyInput.placeholder = settings.academyPlaceholder;
-            if (graduatesInput) graduatesInput.placeholder = settings.graduatesPlaceholder;
-
-            // Loader texts
-            const certLoaderText = document.getElementById('certLoaderText');
-            const studentLoaderText = document.getElementById('studentLoaderText');
-            const academyLoaderText = document.getElementById('academyLoaderText');
-            const graduatesLoaderText = document.getElementById('graduatesLoaderText');
-            const modalLoaderText = document.getElementById('modalAcademiesLoaderText');
-
-            if (certLoaderText) certLoaderText.textContent = settings.certLoaderText;
-            if (studentLoaderText) studentLoaderText.textContent = settings.studentLoaderText;
-            if (academyLoaderText) academyLoaderText.textContent = settings.academyLoaderText;
-            if (graduatesLoaderText) graduatesLoaderText.textContent = settings.graduatesLoaderText;
-            if (modalLoaderText) modalLoaderText.textContent = settings.modalAcademiesLoaderText;
-
-            // Modal
-            const modalTitle = document.getElementById('modalAcademiesTitle');
-            const modalPrev = document.getElementById('modalPrevPage');
-            const modalNext = document.getElementById('modalNextPage');
-            const modalPageInfo = document.getElementById('modalPageInfo');
-
-            if (modalTitle) modalTitle.textContent = settings.modalAcademiesTitle;
-            if (modalPrev) modalPrev.textContent = settings.modalPrevText;
-            if (modalNext) modalNext.textContent = settings.modalNextText;
-            if (modalPageInfo) modalPageInfo.textContent = settings.modalPageInfoText;
 
             // Logo
             if (settings.logoUrl) {
@@ -1706,7 +1515,6 @@
             // OG Tags
             const pageTitle = document.getElementById('pageTitle');
             const metaDescription = document.getElementById('metaDescription');
-            const metaKeywords = document.getElementById('metaKeywords');
             const ogTitle = document.getElementById('ogTitle');
             const ogDescription = document.getElementById('ogDescription');
             const ogImage = document.getElementById('ogImage');
@@ -1720,7 +1528,6 @@
 
             if (pageTitle) pageTitle.textContent = settings.unionName;
             if (metaDescription) metaDescription.content = settings.heroSubtitle;
-            if (metaKeywords) metaKeywords.content = 'نقابة, تكنولوجيا المعلومات, شهادات, توثيق';
             if (ogTitle) ogTitle.content = settings.unionName;
             if (ogDescription) ogDescription.content = settings.heroSubtitle;
             if (ogUrl) ogUrl.content = window.location.href;
@@ -1751,20 +1558,76 @@
             if (colors.info) root.style.setProperty('--info', colors.info);
             if (colors.border) root.style.setProperty('--border', colors.border);
             if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
-            
+
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-            
+
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
-            
+
             if (colors.background) {
                 document.body.style.background = colors.background;
             }
         }
 
         // ============================================================
-        // 4. دوال مساعدة
+        // 4. الإعدادات المحلية (LocalStorage)
+        // ============================================================
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        // تطبيق الثيم المحلي دون التأثير على باقي المستخدمين
+                        const root = document.documentElement;
+                        const colors = parsed.theme.colors;
+                        if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+                        if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+                        if (colors.background) root.style.setProperty('--bg-color', colors.background);
+                        if (colors.text) root.style.setProperty('--text-color', colors.text);
+                        if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+                        if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+                        if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+                        if (colors.success) root.style.setProperty('--success', colors.success);
+                        if (colors.error) root.style.setProperty('--error', colors.error);
+                        if (colors.warning) root.style.setProperty('--warning', colors.warning);
+                        if (colors.info) root.style.setProperty('--info', colors.info);
+                        if (colors.border) root.style.setProperty('--border', colors.border);
+                        if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+                        const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+                        root.style.setProperty('--primary-glow', primaryGlow);
+                        const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+                        root.style.setProperty('--accent-glow', accentGlow);
+
+                        if (colors.background) {
+                            document.body.style.background = colors.background;
+                        }
+                        console.log('✅ تم تطبيق الإعدادات المحلية');
+                    }
+                }
+            } catch (e) {
+                console.log('ℹ️ لا توجد إعدادات محلية');
+            }
+        }
+
+        // ============================================================
+        // 5. حفظ الإعدادات المحلية
+        // ============================================================
+        function saveLocalSettings(themeColors) {
+            try {
+                const currentSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+                currentSettings.theme = { colors: themeColors };
+                localStorage.setItem('userSettings', JSON.stringify(currentSettings));
+                console.log('✅ تم حفظ الإعدادات المحلية');
+            } catch (e) {
+                console.error('❌ خطأ في حفظ الإعدادات المحلية', e);
+            }
+        }
+
+        // ============================================================
+        // 6. دوال مساعدة
         // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
@@ -1799,7 +1662,7 @@
         }
 
         // ============================================================
-        // 5. المصادقة
+        // 7. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1843,7 +1706,7 @@
         });
 
         // ============================================================
-        // 6. تحميل البيانات
+        // 8. تحميل البيانات
         // ============================================================
         function loadData() {
             Promise.all([
@@ -1876,7 +1739,7 @@
         }
 
         // ============================================================
-        // 7. البحث عن شهادة
+        // 9. البحث عن شهادة
         // ============================================================
         function searchCertificate(e) {
             e.preventDefault();
@@ -1953,7 +1816,7 @@
         }
 
         // ============================================================
-        // 8. طباعة الشهادة
+        // 10. طباعة الشهادة
         // ============================================================
         function printCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2026,7 +1889,7 @@
                     </div>
 
                     <div style="text-align:center;margin-top:10px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px;">
-                        <span>${settings.presidentLabel}: ${settings.presidentName}</span>
+                        <span>النقيب العام: ${settings.presidentName}</span>
                         <span style="margin:0 8px;">|</span>
                         <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
                         <br/>
@@ -2037,7 +1900,7 @@
 
             const container = document.getElementById('print-container');
             if (!container) return;
-            
+
             container.innerHTML = html;
 
             const printWindow = window.open('', '_blank', 'width=800,height=600');
@@ -2077,7 +1940,7 @@
         }
 
         // ============================================================
-        // 9. تحميل PDF
+        // 11. تحميل PDF
         // ============================================================
         function downloadCertificatePDF(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2086,6 +1949,7 @@
                 return;
             }
 
+            // نفس الكود الخاص بالطباعة مع تحويل إلى PDF
             const logoHtml = settings.logoUrl ?
                 `<img src="${settings.logoUrl}" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);box-shadow:0 0 30px var(--primary-glow);" />` :
                 '<div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--primary-color),var(--accent-color));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#fff;">ن.ت</div>';
@@ -2150,7 +2014,7 @@
                     </div>
 
                     <div style="text-align:center;margin-top:10px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px;">
-                        <span>${settings.presidentLabel}: ${settings.presidentName}</span>
+                        <span>النقيب العام: ${settings.presidentName}</span>
                         <span style="margin:0 8px;">|</span>
                         <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
                         <br/>
@@ -2161,7 +2025,7 @@
 
             const container = document.getElementById('print-container');
             if (!container) return;
-            
+
             container.innerHTML = html;
 
             const element = container.firstElementChild;
@@ -2180,7 +2044,7 @@
         }
 
         // ============================================================
-        // 10. مشاركة الشهادة
+        // 12. مشاركة الشهادة
         // ============================================================
         function shareCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2214,7 +2078,7 @@
         }
 
         // ============================================================
-        // 11. البحث عن متدرب
+        // 13. البحث عن متدرب
         // ============================================================
         function searchStudent(e) {
             e.preventDefault();
@@ -2335,7 +2199,7 @@
         }
 
         // ============================================================
-        // 12. البحث عن أكاديمية
+        // 14. البحث عن أكاديمية
         // ============================================================
         function searchAcademy(e) {
             e.preventDefault();
@@ -2439,7 +2303,7 @@
         }
 
         // ============================================================
-        // 13. مودال الأكاديميات
+        // 15. مودال الأكاديميات
         // ============================================================
         function openAcademiesModal() {
             document.getElementById('academiesModal').classList.add('active');
@@ -2532,11 +2396,11 @@
         });
 
         // ============================================================
-        // 14. سجل الخريجين
+        // 16. سجل الخريجين
         // ============================================================
         function searchGraduates() {
             const searchValue = document.getElementById('graduatesSearchInput').value.trim();
-            
+
             hideMsg('graduatesError');
             hideMsg('graduatesSuccess');
             hideResult('graduatesResult');
@@ -2545,7 +2409,6 @@
             let results = [];
 
             if (searchValue) {
-                // تجميع الشهادات حسب اسم المتدرب
                 const graduatesMap = {};
                 allCertificates.forEach(function(cert) {
                     if (cert.studentName && cert.studentName.includes(searchValue)) {
@@ -2573,7 +2436,6 @@
 
                 results = Object.values(graduatesMap);
             } else {
-                // عرض كل الخريجين
                 const graduatesMap = {};
                 allCertificates.forEach(function(cert) {
                     if (cert.studentName) {
@@ -2632,7 +2494,7 @@
                             <span class="badge" style="background:var(--primary-glow);color:var(--primary-color);padding:2px 12px;border-radius:20px;font-size:11px;">${grad.total} شهادة</span>
                             <span style="font-size:11px;color:var(--text-muted);">آخر شهادة: ${lastDate}</span>
                             <span style="font-size:11px;color:var(--text-muted);">التقديرات: ${avgGrade}</span>
-                            <span style="font-size:11px;color:var(--success);">🏅 وسام النقابة</span>
+                            <span style="font-size:11px;color:var(--success);">وسام النقابة</span>
                         </div>
                     </div>
                 `;
@@ -2652,7 +2514,7 @@
         }
 
         // ============================================================
-        // 15. علامات التبويب
+        // 17. علامات التبويب
         // ============================================================
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -2668,7 +2530,7 @@
         });
 
         // ============================================================
-        // 16. التحميل الأولي
+        // 18. التحميل الأولي
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
@@ -2683,20 +2545,9 @@
                 }, 500);
             }
 
-            // LocalStorage theme - basic implementation
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                try {
-                    const theme = JSON.parse(savedTheme);
-                    if (theme.colors) {
-                        applyColors(theme.colors);
-                    }
-                } catch(e) {}
-            }
-
             console.log('✅ الصفحة الرئيسية - كل حرف من الإعدادات');
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎨 الألوان من الإعدادات');
             console.log('🎓 سجل الخريجين متكامل');
         });
     </script>
