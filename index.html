@@ -650,11 +650,10 @@
 
                     if (data.logoUrl) {
                         settings.logoUrl = data.logoUrl;
+                        // ✅ تحميل اللوجو من Firestore
                         splashLogo.src = data.logoUrl;
-                        // إضافة fallback في حالة فشل التحميل
-                        splashLogo.onerror = function() {
-                            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E';
-                        };
+                        splashLogo.style.display = 'block';
+                        console.log('✅ تم تحميل اللوجو من Firestore');
                     }
 
                     if (data.systemVersion) {
@@ -727,16 +726,25 @@
         }
 
         // ============================================================
-        // 7. تشغيل الصفحة
+        // 7. معالجة فشل تحميل اللوجو
+        // ============================================================
+        splashLogo.onerror = function() {
+            console.warn('⚠️ فشل تحميل اللوجو، استخدام الصورة الافتراضية');
+            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E';
+        };
+
+        // ============================================================
+        // 8. تشغيل الصفحة
         // ============================================================
         async function init() {
             await loadSettingsFromFirestore();
-            startLoading();
 
-            // في حالة فشل تحميل اللوجو من Firestore
-            splashLogo.onerror = function() {
-                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E';
-            };
+            // ✅ تأكد من أن اللوجو موجود
+            if (!settings.logoUrl) {
+                splashLogo.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"%3E%3Crect width="160" height="160" fill="%230A0E1A"/%3E%3Ctext x="80" y="90" font-family="Cairo" font-size="40" fill="%23C9A84C" text-anchor="middle"%3Eن.ت%3C/text%3E%3C/svg%3E';
+            }
+
+            startLoading();
         }
 
         init();
@@ -746,6 +754,7 @@
         console.log('⏳ مدة العرض:', settings.splashDuration / 1000, 'ثانية');
         console.log('👤 النقيب العام:', settings.presidentName);
         console.log('🚀 التوجيه إلى home.html مباشرة');
+        console.log('🖼️ اللوجو:', settings.logoUrl || 'افتراضي');
     </script>
 
 </body>
