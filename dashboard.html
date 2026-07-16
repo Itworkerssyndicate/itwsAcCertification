@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لوحة التحكم - نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -19,8 +40,8 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي للوحة التحكم
-           كل حرف ولون من الإعدادات
+           التصميم الخرافي للوحة التحكم - بدون أي نصوص ثابتة
+           كل حرف ولون وصورة من الإعدادات
            ============================================================ */
         * {
             margin: 0;
@@ -321,7 +342,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             position: relative;
             z-index: 2;
@@ -337,7 +358,7 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
@@ -374,28 +395,16 @@
         }
         .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(16,185,129,0.25);
-        }
-        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
-
-        .btn-danger {
-            background: linear-gradient(135deg, var(--error), #dc2626);
-            color: #fff;
-            box-shadow: 0 4px 25px rgba(239,68,68,0.25);
-        }
-        .btn-danger:hover { transform: translateY(-3px) scale(1.02); }
-
-        .btn-ghost {
-            background: var(--bg-hover);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-        .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
-
         .btn-sm { padding: 5px 14px; font-size: 12px; }
+
+        .role-badge {
+            font-size: 11px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: var(--primary-glow);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
 
         .stats-grid {
             display: grid;
@@ -547,15 +556,15 @@
 
         .quick-actions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
         }
 
         .quick-action {
             background: var(--bg-hover);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-sm);
-            padding: 14px 10px;
+            padding: 16px 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -622,7 +631,8 @@
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
-            .header-right { justify-content: center; }
+            .header-right { justify-content: center; flex-wrap: wrap; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-card .stat-number { font-size: 24px; }
             .quick-actions { grid-template-columns: repeat(3, 1fr); }
@@ -630,10 +640,10 @@
             .card { padding: 14px 16px; }
             .glow-orb { display: none; }
             .ring { display: none; }
-            .header-left { justify-content: center; flex-wrap: wrap; }
             .header-title { text-align: center; }
             .header-president { padding: 3px 10px; }
             .header-president .president-name { font-size: 12px; }
+            .content-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -681,23 +691,23 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'"></div>
                 <div class="header-title">
-                    <h1 id="dashboardTitle">لوحة التحكم</h1>
-                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="dashboardTitle"></h1>
+                    <p id="committeeName"></p>
                 </div>
                 <div class="header-president">
                     <span class="president-icon">👤</span>
-                    <span class="president-label">النقيب العام:</span>
-                    <span class="president-name" id="headerPresidentName">المهندس / محمود جميل</span>
+                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <span id="roleBadge" style="font-size:11px;padding:4px 14px;border-radius:20px;background:var(--primary-glow);color:var(--primary-color);font-weight:600;">أدمن</span>
-                <a href="home.html" class="btn btn-outline btn-sm">الرئيسية</a>
-                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">الإعدادات</a>
-                <a href="users.html" class="btn btn-outline btn-sm" id="usersBtn" style="display:none;">المستخدمين</a>
-                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
+                <span class="role-badge" id="roleBadge"></span>
+                <a href="home.html" class="btn btn-outline btn-sm" id="homeBtn"></a>
+                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;"></a>
+                <a href="users.html" class="btn btn-outline btn-sm" id="usersBtn" style="display:none;"></a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn"></a>
             </div>
         </header>
 
@@ -705,7 +715,7 @@
 
         <div class="loader" id="dashboardLoader">
             <div class="spinner"></div>
-            <div style="color:var(--text-muted);">جاري تحميل البيانات...</div>
+            <div style="color:var(--text-muted);" id="loaderText"></div>
         </div>
 
         <div id="dashboardContent" style="display:none;">
@@ -714,27 +724,27 @@
                 <div class="stat-card">
                     <div class="stat-icon">📜</div>
                     <div class="stat-number" id="statCertificates">0</div>
-                    <div class="stat-label">الشهادات الموثقة</div>
+                    <div class="stat-label" id="statCertificatesLabel"></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🏛️</div>
                     <div class="stat-number" id="statAcademies">0</div>
-                    <div class="stat-label">الأكاديميات المعتمدة</div>
+                    <div class="stat-label" id="statAcademiesLabel"></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">👤</div>
                     <div class="stat-number" id="statUsers">0</div>
-                    <div class="stat-label">المستخدمين النشطين</div>
+                    <div class="stat-label" id="statUsersLabel"></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🔍</div>
                     <div class="stat-number" id="statSearches">0</div>
-                    <div class="stat-label">عمليات البحث</div>
+                    <div class="stat-label" id="statSearchesLabel"></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">📊</div>
                     <div class="stat-number" id="statActivities">0</div>
-                    <div class="stat-label">إجمالي النشاطات</div>
+                    <div class="stat-label" id="statActivitiesLabel"></div>
                 </div>
             </div>
 
@@ -742,53 +752,55 @@
 
                 <div class="card">
                     <div class="card-title">
-                        آخر النشاطات
-                        <span class="badge">مباشر</span>
+                        <span id="activityTitle"></span>
+                        <span class="badge" id="activityBadge"></span>
                     </div>
                     <div class="activity-list" id="activityList">
-                        <div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">
-                            جاري تحميل النشاطات...
-                        </div>
+                        <div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;" id="activityEmpty"></div>
                     </div>
                     <div style="margin-top:12px;text-align:left;">
-                        <a href="activities.html" class="btn btn-outline btn-sm">عرض الكل</a>
+                        <a href="activities.html" class="btn btn-outline btn-sm" id="viewAllBtn"></a>
                     </div>
                 </div>
 
                 <div style="display:flex;flex-direction:column;gap:20px;">
 
                     <div class="card">
-                        <div class="card-title">روابط سريعة</div>
+                        <div class="card-title">
+                            <span id="quickActionsTitle"></span>
+                        </div>
                         <div class="quick-actions">
-                            <a href="academies.html" class="quick-action">
+                            <a href="academies.html" class="quick-action" id="quickAcademies">
                                 <div class="icon">🏛️</div>
-                                <div class="label">الأكاديميات</div>
+                                <div class="label" id="quickAcademiesLabel"></div>
                             </a>
-                            <a href="certificates.html" class="quick-action">
+                            <a href="certificates.html" class="quick-action" id="quickCertificates">
                                 <div class="icon">📜</div>
-                                <div class="label">الشهادات</div>
+                                <div class="label" id="quickCertificatesLabel"></div>
                             </a>
-                            <a href="activities.html" class="quick-action">
+                            <a href="activities.html" class="quick-action" id="quickActivities">
                                 <div class="icon">📋</div>
-                                <div class="label">النشاطات</div>
+                                <div class="label" id="quickActivitiesLabel"></div>
                             </a>
-                            <a href="settings.html" class="quick-action" id="settingsQuickBtn" style="display:none;">
+                            <a href="settings.html" class="quick-action" id="quickSettings" style="display:none;">
                                 <div class="icon">⚙️</div>
-                                <div class="label">الإعدادات</div>
+                                <div class="label" id="quickSettingsLabel"></div>
                             </a>
-                            <a href="users.html" class="quick-action" id="usersQuickBtn" style="display:none;">
+                            <a href="users.html" class="quick-action" id="quickUsers" style="display:none;">
                                 <div class="icon">👥</div>
-                                <div class="label">المستخدمين</div>
+                                <div class="label" id="quickUsersLabel"></div>
                             </a>
-                            <a href="reports.html" class="quick-action">
-                                <div class="icon">📊</div>
-                                <div class="label">التقارير</div>
+                            <a href="graduates.html" class="quick-action" id="quickGraduates">
+                                <div class="icon">🎓</div>
+                                <div class="label" id="quickGraduatesLabel"></div>
                             </a>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card-title">توزيع الشهادات حسب التقدير</div>
+                        <div class="card-title">
+                            <span id="chartTitle"></span>
+                        </div>
                         <div class="chart-container">
                             <canvas id="chartCanvas"></canvas>
                         </div>
@@ -801,7 +813,11 @@
         </div>
 
         <footer class="footer">
-            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <span id="footerText"></span>
+            <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
+                <span id="presidentFooter"></span>
+                <span id="presidentName"></span>
+            </div>
         </footer>
 
     </div>
@@ -832,11 +848,35 @@
         let chartInstance = null;
 
         let settings = {
-            unionName: 'نقابة تكنولوجيا المعلومات',
-            committeeName: 'لجنة التحول الرقمي والتدريب',
+            dashboardTitle: '',
+            committeeName: '',
             logoUrl: '',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-            presidentName: 'المهندس / محمود جميل',
+            footerText: '',
+            presidentName: '',
+            presidentLabel: '',
+            homeBtn: '',
+            logoutBtn: '',
+            settingsBtn: '',
+            usersBtn: '',
+            statCertificatesLabel: '',
+            statAcademiesLabel: '',
+            statUsersLabel: '',
+            statSearchesLabel: '',
+            statActivitiesLabel: '',
+            activityTitle: '',
+            activityBadge: '',
+            activityEmpty: '',
+            viewAllBtn: '',
+            quickActionsTitle: '',
+            quickAcademiesLabel: '',
+            quickCertificatesLabel: '',
+            quickActivitiesLabel: '',
+            quickSettingsLabel: '',
+            quickUsersLabel: '',
+            quickGraduatesLabel: '',
+            chartTitle: '',
+            loaderText: '',
+            presidentFooter: '',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -862,11 +902,39 @@
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
+
+                        if (data.dashboardTitle) settings.dashboardTitle = data.dashboardTitle;
                         if (data.committeeName) settings.committeeName = data.committeeName;
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
                         if (data.footerText) settings.footerText = data.footerText;
                         if (data.presidentName) settings.presidentName = data.presidentName;
+                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                        if (data.homeBtn) settings.homeBtn = data.homeBtn;
+                        if (data.logoutBtn) settings.logoutBtn = data.logoutBtn;
+                        if (data.settingsBtn) settings.settingsBtn = data.settingsBtn;
+                        if (data.usersBtn) settings.usersBtn = data.usersBtn;
+                        if (data.statCertificatesLabel) settings.statCertificatesLabel = data.statCertificatesLabel;
+                        if (data.statAcademiesLabel) settings.statAcademiesLabel = data.statAcademiesLabel;
+                        if (data.statUsersLabel) settings.statUsersLabel = data.statUsersLabel;
+                        if (data.statSearchesLabel) settings.statSearchesLabel = data.statSearchesLabel;
+                        if (data.statActivitiesLabel) settings.statActivitiesLabel = data.statActivitiesLabel;
+                        if (data.activityTitle) settings.activityTitle = data.activityTitle;
+                        if (data.activityBadge) settings.activityBadge = data.activityBadge;
+                        if (data.activityEmpty) settings.activityEmpty = data.activityEmpty;
+                        if (data.viewAllBtn) settings.viewAllBtn = data.viewAllBtn;
+                        if (data.quickActionsTitle) settings.quickActionsTitle = data.quickActionsTitle;
+                        if (data.quickAcademiesLabel) settings.quickAcademiesLabel = data.quickAcademiesLabel;
+                        if (data.quickCertificatesLabel) settings.quickCertificatesLabel = data.quickCertificatesLabel;
+                        if (data.quickActivitiesLabel) settings.quickActivitiesLabel = data.quickActivitiesLabel;
+                        if (data.quickSettingsLabel) settings.quickSettingsLabel = data.quickSettingsLabel;
+                        if (data.quickUsersLabel) settings.quickUsersLabel = data.quickUsersLabel;
+                        if (data.quickGraduatesLabel) settings.quickGraduatesLabel = data.quickGraduatesLabel;
+                        if (data.chartTitle) settings.chartTitle = data.chartTitle;
+                        if (data.loaderText) settings.loaderText = data.loaderText;
+                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
+
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+
                         applySettings();
                         applyColors(settings.colors);
                     } else {
@@ -881,14 +949,97 @@
         }
 
         function applySettings() {
+            const titleEl = document.getElementById('dashboardTitle');
             const committeeEl = document.getElementById('committeeName');
-            const footerEl = document.getElementById('footerText');
-            const presidentEl = document.getElementById('headerPresidentName');
+            const presidentLabelEl = document.getElementById('presidentLabel');
+            const presidentNameEl = document.getElementById('headerPresidentName');
+            const footerTextEl = document.getElementById('footerText');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
+            const homeBtn = document.getElementById('homeBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const usersBtn = document.getElementById('usersBtn');
+            const roleBadge = document.getElementById('roleBadge');
 
-            if (committeeEl) committeeEl.textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
-            if (footerEl) footerEl.textContent = settings.footerText;
-            if (presidentEl) presidentEl.textContent = settings.presidentName;
+            // العناوين
+            if (titleEl) titleEl.textContent = settings.dashboardTitle;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
+            if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
+            if (footerTextEl) footerTextEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
 
+            // الأزرار
+            if (homeBtn) homeBtn.textContent = settings.homeBtn;
+            if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
+            if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
+            if (usersBtn) usersBtn.textContent = settings.usersBtn;
+
+            // الإحصائيات
+            const statCertLabel = document.getElementById('statCertificatesLabel');
+            const statAcadLabel = document.getElementById('statAcademiesLabel');
+            const statUsersLabel = document.getElementById('statUsersLabel');
+            const statSearchesLabel = document.getElementById('statSearchesLabel');
+            const statActivitiesLabel = document.getElementById('statActivitiesLabel');
+
+            if (statCertLabel) statCertLabel.textContent = settings.statCertificatesLabel;
+            if (statAcadLabel) statAcadLabel.textContent = settings.statAcademiesLabel;
+            if (statUsersLabel) statUsersLabel.textContent = settings.statUsersLabel;
+            if (statSearchesLabel) statSearchesLabel.textContent = settings.statSearchesLabel;
+            if (statActivitiesLabel) statActivitiesLabel.textContent = settings.statActivitiesLabel;
+
+            // النشاطات
+            const activityTitle = document.getElementById('activityTitle');
+            const activityBadge = document.getElementById('activityBadge');
+            const activityEmpty = document.getElementById('activityEmpty');
+            const viewAllBtn = document.getElementById('viewAllBtn');
+
+            if (activityTitle) activityTitle.textContent = settings.activityTitle;
+            if (activityBadge) activityBadge.textContent = settings.activityBadge;
+            if (activityEmpty) activityEmpty.textContent = settings.activityEmpty;
+            if (viewAllBtn) viewAllBtn.textContent = settings.viewAllBtn;
+
+            // الروابط السريعة
+            const quickTitle = document.getElementById('quickActionsTitle');
+            const quickAcademies = document.getElementById('quickAcademiesLabel');
+            const quickCertificates = document.getElementById('quickCertificatesLabel');
+            const quickActivities = document.getElementById('quickActivitiesLabel');
+            const quickSettings = document.getElementById('quickSettingsLabel');
+            const quickUsers = document.getElementById('quickUsersLabel');
+            const quickGraduates = document.getElementById('quickGraduatesLabel');
+
+            if (quickTitle) quickTitle.textContent = settings.quickActionsTitle;
+            if (quickAcademies) quickAcademies.textContent = settings.quickAcademiesLabel;
+            if (quickCertificates) quickCertificates.textContent = settings.quickCertificatesLabel;
+            if (quickActivities) quickActivities.textContent = settings.quickActivitiesLabel;
+            if (quickSettings) quickSettings.textContent = settings.quickSettingsLabel;
+            if (quickUsers) quickUsers.textContent = settings.quickUsersLabel;
+            if (quickGraduates) quickGraduates.textContent = settings.quickGraduatesLabel;
+
+            // الرسم البياني
+            const chartTitle = document.getElementById('chartTitle');
+            if (chartTitle) chartTitle.textContent = settings.chartTitle;
+
+            // لودر
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.textContent = settings.loaderText;
+
+            // الدور
+            if (roleBadge) {
+                if (userRole === 'super_admin') {
+                    roleBadge.textContent = 'سوبر أدمن';
+                    roleBadge.style.background = 'rgba(139,92,246,0.15)';
+                    roleBadge.style.color = '#8b5cf6';
+                } else if (userRole === 'admin') {
+                    roleBadge.textContent = 'أدمن';
+                } else {
+                    roleBadge.textContent = 'إدارة اللجنة';
+                }
+            }
+
+            // Logo
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
                 if (logo) {
@@ -897,6 +1048,36 @@
                     logo.style.backgroundPosition = 'center';
                     logo.textContent = '';
                 }
+            }
+
+            // OG Tags
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (pageTitle) pageTitle.textContent = settings.dashboardTitle + ' - نقابة تكنولوجيا المعلومات';
+            if (metaDescription) metaDescription.content = 'لوحة التحكم - نقابة تكنولوجيا المعلومات';
+            if (ogTitle) ogTitle.content = settings.dashboardTitle;
+            if (ogDescription) ogDescription.content = 'لوحة التحكم - نظام توثيق الشهادات';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = settings.dashboardTitle;
+            if (twitterTitle) twitterTitle.content = settings.dashboardTitle;
+            if (twitterDescription) twitterDescription.content = 'لوحة التحكم - نظام توثيق الشهادات';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
             }
         }
 
@@ -915,13 +1096,13 @@
             if (colors.info) root.style.setProperty('--info', colors.info);
             if (colors.border) root.style.setProperty('--border', colors.border);
             if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
-            
+
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-            
+
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
-            
+
             if (colors.background) {
                 document.body.style.background = colors.background;
             }
@@ -940,27 +1121,16 @@
                             if (data.role === 'super_admin' || data.role === 'admin' || data.role === 'committee_manager') {
                                 userRole = data.role;
 
-                                const roleBadge = document.getElementById('roleBadge');
-                                if (roleBadge) {
-                                    if (data.role === 'super_admin') {
-                                        roleBadge.textContent = 'سوبر أدمن';
-                                        roleBadge.style.background = 'rgba(139,92,246,0.15)';
-                                        roleBadge.style.color = '#8b5cf6';
-                                        
-                                        const settingsBtn = document.getElementById('settingsBtn');
-                                        const settingsQuickBtn = document.getElementById('settingsQuickBtn');
-                                        const usersBtn = document.getElementById('usersBtn');
-                                        const usersQuickBtn = document.getElementById('usersQuickBtn');
-                                        
-                                        if (settingsBtn) settingsBtn.style.display = 'inline-flex';
-                                        if (settingsQuickBtn) settingsQuickBtn.style.display = 'flex';
-                                        if (usersBtn) usersBtn.style.display = 'inline-flex';
-                                        if (usersQuickBtn) usersQuickBtn.style.display = 'flex';
-                                    } else if (data.role === 'admin') {
-                                        roleBadge.textContent = 'أدمن';
-                                    } else {
-                                        roleBadge.textContent = 'إدارة اللجنة';
-                                    }
+                                const settingsBtn = document.getElementById('settingsBtn');
+                                const settingsQuick = document.getElementById('quickSettings');
+                                const usersBtn = document.getElementById('usersBtn');
+                                const usersQuick = document.getElementById('quickUsers');
+
+                                if (data.role === 'super_admin') {
+                                    if (settingsBtn) settingsBtn.style.display = 'inline-flex';
+                                    if (settingsQuick) settingsQuick.style.display = 'flex';
+                                    if (usersBtn) usersBtn.style.display = 'inline-flex';
+                                    if (usersQuick) usersQuick.style.display = 'flex';
                                 }
 
                                 loadDashboard();
@@ -1048,8 +1218,8 @@
             container.innerHTML = '';
 
             if (snapshot.empty) {
-                container.innerHTML =
-                    '<div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">لا توجد نشاطات حديثة</div>';
+                const empty = document.getElementById('activityEmpty');
+                if (empty) container.innerHTML = `<div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">${empty.textContent || 'لا توجد نشاطات حديثة'}</div>`;
                 return;
             }
 
@@ -1105,7 +1275,7 @@
         function renderChart(snapshot) {
             const canvas = document.getElementById('chartCanvas');
             if (!canvas) return;
-            
+
             const ctx = canvas.getContext('2d');
 
             const grades = {};
@@ -1164,7 +1334,6 @@
         function showMsg(msg, type) {
             const el = document.getElementById('dashboardMsg');
             if (!el) return;
-            
             el.textContent = msg;
             el.className = 'msg show ' + type;
             setTimeout(function() { el.className = 'msg'; }, 5000);
@@ -1175,10 +1344,10 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            console.log('✅ لوحة التحكم - نقابة تكنولوجيا المعلومات');
-            console.log('🔒 نظام أمني متطور');
-            console.log('🧠 محسّن بالذكاء الاصطناعي');
-            console.log('🎨 كل حرف ولون من الإعدادات');
+            console.log('✅ لوحة التحكم - كل حرف من الإعدادات');
+            console.log('👤 النقيب العام: ' + settings.presidentName);
+            console.log('🎨 الألوان من الإعدادات');
+            console.log('📊 لوحة تحكم متطورة');
         });
     </script>
 
