@@ -790,6 +790,10 @@
                                 <div class="icon">📋</div>
                                 <div class="label" id="quickActivitiesLabel"></div>
                             </a>
+                            <a href="reports.html" class="quick-action" id="quickReports">
+                                <div class="icon">📊</div>
+                                <div class="label" id="quickReportsLabel">التقارير</div>
+                            </a>
                             <a href="settings.html" class="quick-action" id="quickSettings" style="display:none;">
                                 <div class="icon">⚙️</div>
                                 <div class="label" id="quickSettingsLabel"></div>
@@ -879,6 +883,7 @@
             quickAcademiesLabel: 'الأكاديميات',
             quickCertificatesLabel: 'الشهادات',
             quickActivitiesLabel: 'النشاطات',
+            quickReportsLabel: 'التقارير',
             quickSettingsLabel: 'الإعدادات',
             quickUsersLabel: 'المستخدمين',
             quickSearchLabel: 'البحث',
@@ -941,6 +946,7 @@
                                     if (texts.quickAcademiesLabel) settings.quickAcademiesLabel = texts.quickAcademiesLabel;
                                     if (texts.quickCertificatesLabel) settings.quickCertificatesLabel = texts.quickCertificatesLabel;
                                     if (texts.quickActivitiesLabel) settings.quickActivitiesLabel = texts.quickActivitiesLabel;
+                                    if (texts.quickReportsLabel) settings.quickReportsLabel = texts.quickReportsLabel;
                                     if (texts.quickSettingsLabel) settings.quickSettingsLabel = texts.quickSettingsLabel;
                                     if (texts.quickUsersLabel) settings.quickUsersLabel = texts.quickUsersLabel;
                                     if (texts.quickSearchLabel) settings.quickSearchLabel = texts.quickSearchLabel;
@@ -1022,6 +1028,7 @@
             const quickAcademies = document.getElementById('quickAcademiesLabel');
             const quickCertificates = document.getElementById('quickCertificatesLabel');
             const quickActivities = document.getElementById('quickActivitiesLabel');
+            const quickReports = document.getElementById('quickReportsLabel');
             const quickSettings = document.getElementById('quickSettingsLabel');
             const quickUsers = document.getElementById('quickUsersLabel');
             const quickSearch = document.getElementById('quickSearchLabel');
@@ -1030,6 +1037,7 @@
             if (quickAcademies) quickAcademies.textContent = settings.quickAcademiesLabel;
             if (quickCertificates) quickCertificates.textContent = settings.quickCertificatesLabel;
             if (quickActivities) quickActivities.textContent = settings.quickActivitiesLabel;
+            if (quickReports) quickReports.textContent = settings.quickReportsLabel;
             if (quickSettings) quickSettings.textContent = settings.quickSettingsLabel;
             if (quickUsers) quickUsers.textContent = settings.quickUsersLabel;
             if (quickSearch) quickSearch.textContent = settings.quickSearchLabel;
@@ -1400,6 +1408,7 @@
             console.log('👤 النقيب العام: ' + settings.presidentName);
             console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('📊 لوحة تحكم متطورة');
+            console.log('📊 تم إضافة زر التقارير');
             console.log('🔗 زر البحث يودي إلى شاشة البحث (home.html)');
         });
     </script>
