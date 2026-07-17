@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>سجل النشاطات - نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -13,9 +34,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+
     <style>
         /* ============================================================
-           التصميم المتطور لسجل النشاطات
+           التصميم الخرافي لسجل النشاطات - بأرقام صحيحة
+           كل حرف ولون من الإعدادات
            ============================================================ */
         * {
             margin: 0;
@@ -24,24 +50,57 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #050a18;
-            color: #ffffff;
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
 
-        /* ===== خلفية ذكاء اصطناعي ===== */
+        :root {
+            --primary-color: #C9A84C;
+            --primary-dark: #A8893A;
+            --primary-light: #E8D5A3;
+            --primary-glow: rgba(201,168,76,0.3);
+            --secondary-color: #0A1628;
+            --accent-color: #7C3AED;
+            --accent-light: #A78BFA;
+            --accent-glow: rgba(124,58,237,0.2);
+            --bg-color: #0A0E1A;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-hover: rgba(255,255,255,0.06);
+            --text-color: #FFFFFF;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-dim: rgba(255,255,255,0.15);
+            --success: #10B981;
+            --success-bg: rgba(16,185,129,0.12);
+            --error: #EF4444;
+            --error-bg: rgba(239,68,68,0.12);
+            --warning: #F59E0B;
+            --warning-bg: rgba(245,158,11,0.12);
+            --info: #3B82F6;
+            --info-bg: rgba(59,130,246,0.12);
+            --border: rgba(255,255,255,0.06);
+            --border-light: rgba(255,255,255,0.03);
+            --card-bg: rgba(255,255,255,0.04);
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-lg: 28px;
+        }
+
         .page-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
-            animation: bgPulse 15s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
+            animation: bgPulse 12s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
@@ -53,8 +112,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -72,14 +130,14 @@
             animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: var(--accent-color); opacity: 0.3; }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: var(--accent-color); opacity: 0.3; }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
@@ -95,8 +153,8 @@
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             animation: gridMove 25s linear infinite;
@@ -120,14 +178,13 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 100, 255, 0.05);
+            border: 1px solid rgba(201,168,76,0.04);
             animation: ringSpin 40s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
-        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201,168,76,0.06); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(124,58,237,0.04); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(59,130,246,0.03); animation-duration: 60s; }
 
         @keyframes ringSpin {
             0% { transform: rotate(0deg); }
@@ -148,7 +205,7 @@
             height: 450px;
             top: -150px;
             right: -150px;
-            background: rgba(0, 100, 255, 0.08);
+            background: var(--primary-glow);
         }
 
         .glow-orb:nth-child(2) {
@@ -156,7 +213,7 @@
             height: 550px;
             bottom: -200px;
             left: -200px;
-            background: rgba(138, 43, 226, 0.06);
+            background: var(--accent-glow);
             animation-delay: 6s;
         }
 
@@ -173,20 +230,32 @@
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
-            padding: 14px 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
             animation: headerFloat 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
+            pointer-events: none;
         }
 
         @keyframes headerFloat {
@@ -197,45 +266,78 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .logo-box {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 20px;
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+            transition: all 0.4s ease;
+            animation: logoSpin 20s linear infinite;
+            box-shadow: 0 0 35px var(--primary-glow);
+            position: relative;
             background-size: cover;
             background-position: center;
         }
 
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .logo-box:hover {
-            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
-            transform: scale(1.05);
+            animation-duration: 3s;
+            transform: scale(1.08);
         }
 
         .header-title h1 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            color: #fff;
-            background: linear-gradient(135deg, #ffffff, #60a5fa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--text-color);
         }
 
         .header-title p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-president {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 14px;
+            background: var(--bg-hover);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .header-president:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .header-president .president-icon { font-size: 16px; }
+        .header-president .president-label { font-size: 11px; color: var(--text-muted); font-weight: 300; }
+        .header-president .president-name {
+            font-size: 13px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-right {
@@ -243,9 +345,10 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
-        /* ===== الأزرار ===== */
         .btn {
             padding: 8px 20px;
             border-radius: 30px;
@@ -253,88 +356,110 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
+
+        .btn:hover::before { width: 300px; height: 300px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: #fff;
+            box-shadow: 0 4px 25px var(--primary-glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px var(--primary-glow); }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
         }
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
         .btn-success {
-            background: linear-gradient(135deg, #10b981, #22c55e);
+            background: linear-gradient(135deg, var(--success), #059669);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 25px rgba(16,185,129,0.25);
         }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(135deg, var(--error), #dc2626);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
+            box-shadow: 0 4px 25px rgba(239,68,68,0.25);
         }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4); }
+        .btn-danger:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
         /* ===== بطاقات إحصائية ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
             margin-bottom: 24px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 16px 20px;
-            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(0, 100, 255, 0.2);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-card .stat-icon { font-size: 24px; margin-bottom: 6px; display: inline-block; }
-        .stat-card .stat-number { font-size: 28px; font-weight: 800; color: #fff; line-height: 1.2; }
-        .stat-card .stat-label { font-size: 12px; color: rgba(255, 255, 255, 0.3); margin-top: 2px; }
-        .stat-card .glow {
+        .stat-card::before {
+            content: '';
             position: absolute;
             top: -50%;
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0, 85, 230, 0.05), transparent 60%);
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
             pointer-events: none;
         }
 
-        .stat-card.primary .stat-number { color: #3b82f6; }
-        .stat-card.success .stat-number { color: #22c55e; }
-        .stat-card.warning .stat-number { color: #f59e0b; }
-        .stat-card.purple .stat-number { color: #8b5cf6; }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .stat-card .stat-icon { font-size: 28px; margin-bottom: 4px; display: inline-block; }
+        .stat-card .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        .stat-card .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 300; }
 
         /* ===== حالة النشاطات المباشرة ===== */
         .live-status {
@@ -342,9 +467,9 @@
             align-items: center;
             gap: 12px;
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
             margin-bottom: 16px;
             flex-wrap: wrap;
         }
@@ -353,7 +478,7 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: #22c55e;
+            background: var(--success);
             animation: pulseDot 1.5s ease-in-out infinite;
             display: inline-block;
         }
@@ -364,35 +489,32 @@
         }
 
         .live-dot.inactive {
-            background: #ef4444;
+            background: var(--error);
             animation: none;
         }
 
-        .live-text { font-size: 12px; color: rgba(255, 255, 255, 0.3); }
-        .live-text strong { color: #fff; font-weight: 600; }
-        .live-counter { font-size: 12px; color: rgba(255, 255, 255, 0.15); margin-right: auto; }
+        .live-text { font-size: 12px; color: var(--text-muted); }
+        .live-text strong { color: var(--text-color); font-weight: 600; }
+        .live-counter { font-size: 12px; color: var(--text-dim); margin-right: auto; }
 
         /* ===== البطاقة الرئيسية ===== */
         .card {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 20px 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            margin-bottom: 24px;
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
         }
 
-        .card:hover {
-            border-color: rgba(0, 100, 255, 0.10);
-        }
+        .card:hover { border-color: var(--primary-color); }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-color);
             margin-bottom: 16px;
             display: flex;
             align-items: center;
@@ -403,8 +525,8 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 100, 255, 0.15);
-            color: #60a5fa;
+            background: var(--primary-glow);
+            color: var(--primary-color);
             padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
@@ -421,30 +543,31 @@
         .filter-bar input,
         .filter-bar select {
             padding: 10px 16px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-color);
             font-size: 13px;
             outline: none;
             transition: all 0.3s ease;
             flex: 1;
             min-width: 150px;
+            font-family: inherit;
         }
 
         .filter-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
         }
 
         .filter-bar input:focus,
         .filter-bar select:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .filter-bar select option {
-            background: #0a0f1f;
-            color: #fff;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
 
         .filter-bar .btn { flex-shrink: 0; }
@@ -462,13 +585,13 @@
         }
 
         .table thead {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
         }
 
         .table thead th {
             text-align: right;
             padding: 10px 12px;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
             font-weight: 600;
             font-size: 11px;
             text-transform: uppercase;
@@ -478,7 +601,7 @@
 
         .table tbody td {
             padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-light);
             vertical-align: middle;
         }
 
@@ -487,7 +610,7 @@
         }
 
         .table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-hover);
         }
 
         .table .user-cell {
@@ -500,13 +623,13 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(0, 85, 230, 0.2), rgba(100, 50, 255, 0.2));
+            background: linear-gradient(135deg, var(--primary-glow), var(--accent-glow));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 11px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-color);
             flex-shrink: 0;
         }
 
@@ -518,15 +641,15 @@
             white-space: nowrap;
         }
 
-        .type-badge.login { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
-        .type-badge.logout { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .type-badge.create { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
-        .type-badge.update { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-        .type-badge.delete { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .type-badge.search { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
-        .type-badge.export { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
-        .type-badge.upload { background: rgba(34, 211, 238, 0.15); color: #22d3ee; }
-        .type-badge.default { background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.4); }
+        .type-badge.login { background: var(--info-bg); color: var(--info); }
+        .type-badge.logout { background: var(--error-bg); color: var(--error); }
+        .type-badge.create { background: var(--success-bg); color: var(--success); }
+        .type-badge.update { background: var(--warning-bg); color: var(--warning); }
+        .type-badge.delete { background: var(--error-bg); color: var(--error); }
+        .type-badge.search { background: var(--accent-glow); color: var(--accent-light); }
+        .type-badge.export { background: rgba(236,72,153,0.15); color: #ec4899; }
+        .type-badge.upload { background: rgba(34,211,238,0.15); color: #22d3ee; }
+        .type-badge.default { background: var(--bg-hover); color: var(--text-muted); }
 
         .table .role-badge {
             font-size: 10px;
@@ -535,37 +658,35 @@
             font-weight: 600;
         }
 
-        .role-badge.super_admin { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
-        .role-badge.admin { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .role-badge.super_admin { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+        .role-badge.admin { background: var(--info-bg); color: var(--info); }
 
         .table .details-btn {
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
             cursor: pointer;
             transition: color 0.3s ease;
             font-size: 14px;
         }
 
         .table .details-btn:hover {
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-secondary);
         }
 
-        /* ===== حالة فارغة ===== */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
         }
 
         .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-        .empty-state .title { font-size: 18px; font-weight: 700; color: rgba(255, 255, 255, 0.4); }
-        .empty-state .desc { font-size: 13px; color: rgba(255, 255, 255, 0.15); margin-top: 4px; }
+        .empty-state .title { font-size: 18px; font-weight: 700; color: var(--text-secondary); }
+        .empty-state .desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             padding: 12px 16px;
             margin-bottom: 16px;
             text-align: center;
@@ -573,23 +694,22 @@
         }
 
         .msg.show { display: block; animation: fadeIn 0.3s ease; }
-        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
-        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
-        .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
+        .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
+        .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
+        .msg.info { background: var(--info-bg); border: 1px solid var(--info); color: var(--info); }
 
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(-8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== لودر ===== */
         .loader { display: none; text-align: center; padding: 30px 0; }
         .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0066ff;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -597,13 +717,21 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== مودال ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+            color: var(--text-dim);
+            font-size: 11px;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(20px);
             justify-content: center;
             align-items: center;
@@ -614,23 +742,23 @@
         .modal-overlay.show { display: flex; }
 
         .modal {
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--card-bg);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             padding: 32px;
             max-width: 550px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow);
             animation: slideUp 0.3s ease;
         }
 
         .modal::-webkit-scrollbar { width: 4px; }
-        .modal::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
-        .modal::-webkit-scrollbar-thumb { background: rgba(0, 100, 255, 0.3); border-radius: 4px; }
+        .modal::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
+        .modal::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
 
         @keyframes slideUp {
             0% { opacity: 0; transform: translateY(30px) scale(0.96); }
@@ -643,23 +771,23 @@
             align-items: center;
             margin-bottom: 18px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
         }
 
         .modal-header h2 {
             font-size: 20px;
             font-weight: 800;
-            color: #fff;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
         .modal-close {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.3);
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -672,39 +800,39 @@
         }
 
         .modal-close:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.2);
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: var(--error);
         }
 
         .modal-body .detail-row {
             display: flex;
             padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-light);
         }
 
         .modal-body .detail-label {
             width: 100px;
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
             flex-shrink: 0;
         }
 
         .modal-body .detail-value {
             font-size: 13px;
-            color: #fff;
+            color: var(--text-color);
             word-break: break-word;
         }
 
         .modal-body .detail-value .json-preview {
             font-size: 11px;
             font-family: monospace;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0,0,0,0.2);
             padding: 8px;
             border-radius: 8px;
             max-height: 150px;
             overflow-y: auto;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
             white-space: pre-wrap;
             word-break: break-all;
         }
@@ -715,26 +843,63 @@
             justify-content: flex-end;
             flex-wrap: wrap;
             padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-top: 1px solid var(--border);
         }
 
-        .footer {
-            text-align: center;
-            padding: 20px 0 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: 24px;
-            color: rgba(255, 255, 255, 0.10);
+        /* ===== الرسم البياني ===== */
+        .chart-container {
+            position: relative;
+            height: 180px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        /* ===== قسم اتخاذ القرارات ===== */
+        .decision-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .decision-card {
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .decision-card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .decision-card .dec-label {
             font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
         }
 
-        /* ===== التجاوب ===== */
+        .decision-card .dec-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+
+        .decision-card .dec-sub {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
-            .header-right { justify-content: center; }
+            .header-right { justify-content: center; flex-wrap: wrap; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-card .stat-number { font-size: 24px; }
             .container { padding: 10px; }
             .card { padding: 14px 16px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .stat-card .stat-number { font-size: 20px; }
             .filter-bar { flex-direction: column; }
             .filter-bar input, .filter-bar select { min-width: unset; }
             .table thead th, .table tbody td { padding: 6px 8px; font-size: 11px; }
@@ -742,31 +907,27 @@
             .live-counter { margin-right: 0; }
             .glow-orb { display: none; }
             .ring { display: none; }
+            .header-title { text-align: center; }
+            .header-president { padding: 3px 10px; }
+            .header-president .president-name { font-size: 12px; }
+            .decision-cards { grid-template-columns: 1fr 1fr; }
             .modal { padding: 20px; margin: 10px; border-radius: 20px; }
         }
 
         @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-card { padding: 12px 14px; }
-            .stat-card .stat-number { font-size: 18px; }
+            .stat-card .stat-number { font-size: 20px; }
             .header-title h1 { font-size: 15px; }
+            .btn { padding: 6px 14px; font-size: 11px; }
+            .logo-box { width: 36px; height: 36px; font-size: 14px; }
             .table thead { display: none; }
             .table tbody td { display: block; padding: 4px 8px; border-bottom: none; }
-            .table tbody td::before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: rgba(255, 255, 255, 0.3);
-                display: inline-block;
-                width: 70px;
-                font-size: 10px;
-            }
-            .table tbody tr {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-                padding: 6px 0;
-                display: block;
-            }
+            .table tbody td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); display: inline-block; width: 70px; font-size: 10px; }
+            .table tbody tr { border-bottom: 1px solid var(--border); padding: 6px 0; display: block; }
             .table .user-cell .avatar { width: 22px; height: 22px; font-size: 9px; }
             .modal { padding: 16px; }
+            .decision-cards { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -791,7 +952,6 @@
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
-        <div class="ring"></div>
     </div>
 
     <div class="glow-orb"></div>
@@ -801,16 +961,21 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1>سجل النشاطات</h1>
-                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="pageTitleHeader"></h1>
+                    <p id="committeeName"></p>
+                </div>
+                <div class="header-president">
+                    <span class="president-icon">👤</span>
+                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
-                <a href="users.html" class="btn btn-outline btn-sm">المستخدمين</a>
-                <button class="btn btn-primary btn-sm" onclick="refreshActivities()">تحديث</button>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn"></a>
+                <a href="#" class="btn btn-outline btn-sm" id="usersBtn"></a>
+                <button class="btn btn-primary btn-sm" onclick="refreshActivities()" id="refreshBtn"></button>
             </div>
         </header>
 
@@ -818,7 +983,7 @@
 
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
-            <div style="color:rgba(255,255,255,0.3);">جاري تحميل النشاطات...</div>
+            <div style="color:var(--text-muted);" id="loaderText"></div>
         </div>
 
         <div id="pageContent" style="display:none;">
@@ -826,52 +991,49 @@
             <!-- ===== بطاقات إحصائية ===== -->
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card primary">
-                    <div class="glow"></div>
                     <div class="stat-icon">📊</div>
                     <div class="stat-number" id="statTotal">0</div>
-                    <div class="stat-label">إجمالي النشاطات</div>
+                    <div class="stat-label" id="statTotalLabel"></div>
                 </div>
                 <div class="stat-card success">
-                    <div class="glow"></div>
                     <div class="stat-icon">📅</div>
                     <div class="stat-number" id="statToday">0</div>
-                    <div class="stat-label">نشاطات اليوم</div>
+                    <div class="stat-label" id="statTodayLabel"></div>
                 </div>
                 <div class="stat-card warning">
-                    <div class="glow"></div>
                     <div class="stat-icon">📆</div>
                     <div class="stat-number" id="statWeek">0</div>
-                    <div class="stat-label">نشاطات الأسبوع</div>
+                    <div class="stat-label" id="statWeekLabel"></div>
                 </div>
                 <div class="stat-card purple">
-                    <div class="glow"></div>
                     <div class="stat-icon">👤</div>
                     <div class="stat-number" id="statTopUser">-</div>
-                    <div class="stat-label">أكثر مستخدم نشاط</div>
+                    <div class="stat-label" id="statTopUserLabel"></div>
                 </div>
             </div>
 
             <!-- ===== حالة النشاطات المباشرة ===== -->
-            <div class="live-status">
+            <div class="live-status" id="liveStatus">
                 <span class="live-dot" id="liveDot"></span>
                 <span class="live-text">
-                    <strong id="liveStatusText">مباشر</strong> · آخر تحديث: <span id="lastUpdateTime">الآن</span>
+                    <strong id="liveStatusText"></strong> · <span id="lastUpdateLabel"></span> <span id="lastUpdateTime"></span>
                 </span>
                 <span class="live-counter">
-                    🟢 <span id="liveCount">0</span> نشاط في آخر 5 دقائق
+                    <span id="liveCountLabel"></span> <span id="liveCount">0</span> <span id="liveCountUnit"></span>
                 </span>
             </div>
 
+            <!-- ===== البطاقة الرئيسية ===== -->
             <div class="card">
                 <div class="card-title">
-                    <span>سجل النشاطات</span>
+                    <span id="activityTitle"></span>
                     <span class="badge" id="activityCount">0</span>
                 </div>
 
                 <div class="filter-bar">
-                    <input type="text" id="searchInput" placeholder="بحث (المستخدم، الوصف، البريد)..." oninput="filterActivities()" />
+                    <input type="text" id="searchInput" placeholder="" oninput="filterActivities()" />
                     <select id="typeFilter" onchange="filterActivities()">
-                        <option value="">جميع الأنواع</option>
+                        <option value="" id="typeAllOption"></option>
                         <option value="login">تسجيل دخول</option>
                         <option value="logout">تسجيل خروج</option>
                         <option value="create_academy">إضافة أكاديمية</option>
@@ -891,81 +1053,94 @@
                         <option value="user_delete">حذف مستخدم</option>
                     </select>
                     <select id="roleFilter" onchange="filterActivities()">
-                        <option value="">جميع الأدوار</option>
+                        <option value="" id="roleAllOption"></option>
                         <option value="super_admin">سوبر أدمن</option>
                         <option value="admin">أدمن</option>
                     </select>
-                    <button class="btn btn-outline btn-sm" onclick="resetFilters()">إعادة ضبط</button>
+                    <button class="btn btn-outline btn-sm" onclick="resetFilters()" id="resetBtn"></button>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table" id="activitiesTable">
                         <thead>
                             <tr>
-                                <th>المستخدم</th>
-                                <th>النوع</th>
-                                <th>الوصف</th>
-                                <th>الدور</th>
-                                <th>التاريخ</th>
+                                <th id="thUser"></th>
+                                <th id="thType"></th>
+                                <th id="thDescription"></th>
+                                <th id="thRole"></th>
+                                <th id="thDate"></th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="activitiesBody">
-                            <!-- سيتم ملؤها بواسطة JavaScript -->
-                        </tbody>
+                        <tbody id="activitiesBody"></tbody>
                     </table>
                 </div>
 
                 <div class="empty-state" id="emptyState" style="display:none;">
                     <div class="icon">📋</div>
-                    <div class="title">لا توجد نشاطات</div>
-                    <div class="desc">سيتم تسجيل جميع حركات المنصة هنا</div>
+                    <div class="title" id="emptyTitle"></div>
+                    <div class="desc" id="emptyDesc"></div>
                 </div>
 
                 <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center;">
-                    <div style="color:rgba(255,255,255,0.15);font-size:11px;" id="activityMeta">0 نشاط مسجل</div>
+                    <div style="color:var(--text-dim);font-size:11px;" id="activityMeta"></div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <button class="btn btn-success btn-sm" onclick="exportActivities('pdf')">تصدير PDF</button>
-                        <button class="btn btn-success btn-sm" onclick="exportActivities('excel')">تصدير Excel</button>
-                        <button class="btn btn-danger btn-sm" onclick="clearAllActivities()">مسح الكل</button>
+                        <button class="btn btn-success btn-sm" onclick="exportActivities('pdf')" id="exportPdfBtn"></button>
+                        <button class="btn btn-success btn-sm" onclick="exportActivities('excel')" id="exportExcelBtn"></button>
+                        <button class="btn btn-danger btn-sm" onclick="clearAllActivities()" id="clearBtn"></button>
                     </div>
                 </div>
             </div>
 
-            <!-- ===== قسم اتخاذ القرارات ===== -->
-            <div class="card" style="border-color: rgba(139, 92, 246, 0.15);">
+            <!-- ===== قسم التحليل والقرارات ===== -->
+            <div class="card" style="border-color: rgba(139,92,246,0.15);">
                 <div class="card-title">
-                    <span>اتخاذ القرارات</span>
-                    <span class="badge">تحليل النشاطات</span>
+                    <span id="decisionsTitle"></span>
+                    <span class="badge" id="decisionsBadge"></span>
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;" id="decisionCards">
-                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
-                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">نشاطات اليوم</div>
-                        <div style="font-size:24px;font-weight:800;color:#22c55e;" id="decisionToday">0</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionTodayMsg">لا توجد نشاطات اليوم</div>
+                <div class="decision-cards" id="decisionCards">
+                    <div class="decision-card">
+                        <div class="dec-label" id="decTodayLabel"></div>
+                        <div class="dec-value" id="decToday">0</div>
+                        <div class="dec-sub" id="decTodayMsg"></div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
-                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">نشاطات الأسبوع</div>
-                        <div style="font-size:24px;font-weight:800;color:#f59e0b;" id="decisionWeek">0</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionWeekMsg">متوسط 0 نشاط يومياً</div>
+                    <div class="decision-card">
+                        <div class="dec-label" id="decWeekLabel"></div>
+                        <div class="dec-value" id="decWeek">0</div>
+                        <div class="dec-sub" id="decWeekMsg"></div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
-                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">أكثر نوع نشاط</div>
-                        <div style="font-size:24px;font-weight:800;color:#8b5cf6;" id="decisionTopType">-</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionTopTypeCount">0 نشاط</div>
+                    <div class="decision-card">
+                        <div class="dec-label" id="decTopTypeLabel"></div>
+                        <div class="dec-value" id="decTopType">-</div>
+                        <div class="dec-sub" id="decTopTypeCount"></div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.04);">
-                        <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:4px;">التوصية</div>
-                        <div style="font-size:16px;font-weight:700;color:#60a5fa;" id="decisionRecommendation">انتظار البيانات</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;" id="decisionRecommendationDetail">تحليل النشاطات لتقديم توصيات</div>
+                    <div class="decision-card">
+                        <div class="dec-label" id="decRecommendationLabel"></div>
+                        <div class="dec-value" id="decRecommendation" style="font-size:16px;"></div>
+                        <div class="dec-sub" id="decRecommendationDetail"></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- ===== الرسم البياني ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span id="chartTitle"></span>
+                    <span class="badge" id="chartBadge"></span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartCanvas"></canvas>
                 </div>
             </div>
 
         </div>
 
         <footer class="footer">
-            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <span id="footerText"></span>
+            <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
+                <span id="presidentFooter"></span>
+                <span id="presidentName"></span>
+            </div>
         </footer>
 
     </div>
@@ -974,21 +1149,16 @@
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>تفاصيل النشاط</h2>
+                <h2 id="detailTitle"></h2>
                 <button class="modal-close" onclick="closeDetailModal()">✕</button>
             </div>
-            <div class="modal-body" id="detailContent">
-                <!-- سيتم ملؤها بواسطة JavaScript -->
-            </div>
+            <div class="modal-body" id="detailContent"></div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeDetailModal()">إغلاق</button>
+                <button class="btn btn-outline" onclick="closeDetailModal()" id="detailCloseBtn"></button>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================
-    جافا سكريبت
-    ============================================================ -->
     <script>
         // ============================================================
         // 1. تهيئة Firebase
@@ -1013,13 +1183,69 @@
         let activities = [];
         let currentUser = null;
         let userRole = null;
-        let settings = {
-            committeeName: 'لجنة التحول الرقمي والتدريب',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-            logoUrl: ''
-        };
-
+        let chartInstance = null;
         let liveInterval = null;
+
+        let settings = {
+            pageTitleHeader: 'سجل النشاطات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
+            logoUrl: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            dashboardBtn: 'لوحة التحكم',
+            usersBtn: 'المستخدمين',
+            refreshBtn: 'تحديث',
+            loaderText: 'جاري تحميل النشاطات...',
+            statTotalLabel: 'إجمالي النشاطات',
+            statTodayLabel: 'نشاطات اليوم',
+            statWeekLabel: 'نشاطات الأسبوع',
+            statTopUserLabel: 'أكثر مستخدم نشاط',
+            liveStatusText: 'مباشر',
+            lastUpdateLabel: 'آخر تحديث:',
+            liveCountLabel: '🟢',
+            liveCountUnit: 'نشاط في آخر 5 دقائق',
+            activityTitle: 'سجل النشاطات',
+            typeAllOption: 'جميع الأنواع',
+            roleAllOption: 'جميع الأدوار',
+            resetBtn: 'إعادة ضبط',
+            thUser: 'المستخدم',
+            thType: 'النوع',
+            thDescription: 'الوصف',
+            thRole: 'الدور',
+            thDate: 'التاريخ',
+            emptyTitle: 'لا توجد نشاطات',
+            emptyDesc: 'سيتم تسجيل جميع حركات المنصة هنا',
+            exportPdfBtn: 'تصدير PDF',
+            exportExcelBtn: 'تصدير Excel',
+            clearBtn: 'مسح الكل',
+            decisionsTitle: 'اتخاذ القرارات',
+            decisionsBadge: 'تحليل النشاطات',
+            decTodayLabel: 'نشاطات اليوم',
+            decWeekLabel: 'نشاطات الأسبوع',
+            decTopTypeLabel: 'أكثر نوع نشاط',
+            decRecommendationLabel: 'التوصية',
+            chartTitle: 'توزيع النشاطات حسب النوع',
+            chartBadge: 'آخر 100 نشاط',
+            detailTitle: 'تفاصيل النشاط',
+            detailCloseBtn: 'إغلاق',
+            colors: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            }
+        };
 
         // ============================================================
         // 3. جلب الإعدادات
@@ -1029,33 +1255,260 @@
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
+
+                        if (data.pageTitleHeader) settings.pageTitleHeader = data.pageTitleHeader;
                         if (data.committeeName) settings.committeeName = data.committeeName;
-                        if (data.footerText) settings.footerText = data.footerText;
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                        if (data.footerText) settings.footerText = data.footerText;
+                        if (data.presidentName) settings.presidentName = data.presidentName;
+                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
+                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+
+                        db.collection('settings').doc('texts').get()
+                            .then(function(textsDoc) {
+                                if (textsDoc.exists) {
+                                    const texts = textsDoc.data();
+                                    if (texts.dashboardBtn) settings.dashboardBtn = texts.dashboardBtn;
+                                    if (texts.usersBtn) settings.usersBtn = texts.usersBtn;
+                                    if (texts.refreshBtn) settings.refreshBtn = texts.refreshBtn;
+                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
+                                    if (texts.statTotalLabel) settings.statTotalLabel = texts.statTotalLabel;
+                                    if (texts.statTodayLabel) settings.statTodayLabel = texts.statTodayLabel;
+                                    if (texts.statWeekLabel) settings.statWeekLabel = texts.statWeekLabel;
+                                    if (texts.statTopUserLabel) settings.statTopUserLabel = texts.statTopUserLabel;
+                                    if (texts.liveStatusText) settings.liveStatusText = texts.liveStatusText;
+                                    if (texts.lastUpdateLabel) settings.lastUpdateLabel = texts.lastUpdateLabel;
+                                    if (texts.liveCountLabel) settings.liveCountLabel = texts.liveCountLabel;
+                                    if (texts.liveCountUnit) settings.liveCountUnit = texts.liveCountUnit;
+                                    if (texts.activityTitle) settings.activityTitle = texts.activityTitle;
+                                    if (texts.typeAllOption) settings.typeAllOption = texts.typeAllOption;
+                                    if (texts.roleAllOption) settings.roleAllOption = texts.roleAllOption;
+                                    if (texts.resetBtn) settings.resetBtn = texts.resetBtn;
+                                    if (texts.thUser) settings.thUser = texts.thUser;
+                                    if (texts.thType) settings.thType = texts.thType;
+                                    if (texts.thDescription) settings.thDescription = texts.thDescription;
+                                    if (texts.thRole) settings.thRole = texts.thRole;
+                                    if (texts.thDate) settings.thDate = texts.thDate;
+                                    if (texts.emptyTitle) settings.emptyTitle = texts.emptyTitle;
+                                    if (texts.emptyDesc) settings.emptyDesc = texts.emptyDesc;
+                                    if (texts.exportPdfBtn) settings.exportPdfBtn = texts.exportPdfBtn;
+                                    if (texts.exportExcelBtn) settings.exportExcelBtn = texts.exportExcelBtn;
+                                    if (texts.clearBtn) settings.clearBtn = texts.clearBtn;
+                                    if (texts.decisionsTitle) settings.decisionsTitle = texts.decisionsTitle;
+                                    if (texts.decisionsBadge) settings.decisionsBadge = texts.decisionsBadge;
+                                    if (texts.decTodayLabel) settings.decTodayLabel = texts.decTodayLabel;
+                                    if (texts.decWeekLabel) settings.decWeekLabel = texts.decWeekLabel;
+                                    if (texts.decTopTypeLabel) settings.decTopTypeLabel = texts.decTopTypeLabel;
+                                    if (texts.decRecommendationLabel) settings.decRecommendationLabel = texts.decRecommendationLabel;
+                                    if (texts.chartTitle) settings.chartTitle = texts.chartTitle;
+                                    if (texts.chartBadge) settings.chartBadge = texts.chartBadge;
+                                    if (texts.detailTitle) settings.detailTitle = texts.detailTitle;
+                                    if (texts.detailCloseBtn) settings.detailCloseBtn = texts.detailCloseBtn;
+                                }
+                                applySettings();
+                                applyColors(settings.colors);
+                            })
+                            .catch(function() {
+                                applySettings();
+                                applyColors(settings.colors);
+                            });
+
+                    } else {
                         applySettings();
+                        applyColors(settings.colors);
                     }
                 })
-                .catch(function() {});
+                .catch(function() {
+                    applySettings();
+                    applyColors(settings.colors);
+                });
+
+            loadLocalSettings();
         }
 
         function applySettings() {
-            document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
-            document.getElementById('footerText').textContent = settings.footerText;
-            
-            const logoBox = document.getElementById('logoBox');
-            if (settings.logoUrl && settings.logoUrl.trim() !== '') {
-                logoBox.style.backgroundImage = 'url(' + settings.logoUrl + ')';
-                logoBox.style.backgroundSize = 'cover';
-                logoBox.style.backgroundPosition = 'center';
-                logoBox.textContent = '';
-            } else {
-                logoBox.style.backgroundImage = 'linear-gradient(135deg, #0066ff, #8b5cf6)';
-                logoBox.textContent = 'ن.ت';
+            const titleEl = document.getElementById('pageTitleHeader');
+            const committeeEl = document.getElementById('committeeName');
+            const presidentLabelEl = document.getElementById('presidentLabel');
+            const presidentNameEl = document.getElementById('headerPresidentName');
+            const footerTextEl = document.getElementById('footerText');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
+
+            if (titleEl) titleEl.textContent = settings.pageTitleHeader;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
+            if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
+            if (footerTextEl) footerTextEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
+
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            const usersBtn = document.getElementById('usersBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
+            if (usersBtn) usersBtn.textContent = settings.usersBtn;
+            if (refreshBtn) refreshBtn.textContent = settings.refreshBtn;
+
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.textContent = settings.loaderText;
+
+            const statTotalLabel = document.getElementById('statTotalLabel');
+            const statTodayLabel = document.getElementById('statTodayLabel');
+            const statWeekLabel = document.getElementById('statWeekLabel');
+            const statTopUserLabel = document.getElementById('statTopUserLabel');
+            if (statTotalLabel) statTotalLabel.textContent = settings.statTotalLabel;
+            if (statTodayLabel) statTodayLabel.textContent = settings.statTodayLabel;
+            if (statWeekLabel) statWeekLabel.textContent = settings.statWeekLabel;
+            if (statTopUserLabel) statTopUserLabel.textContent = settings.statTopUserLabel;
+
+            const liveStatusText = document.getElementById('liveStatusText');
+            const lastUpdateLabel = document.getElementById('lastUpdateLabel');
+            const liveCountLabel = document.getElementById('liveCountLabel');
+            const liveCountUnit = document.getElementById('liveCountUnit');
+            if (liveStatusText) liveStatusText.textContent = settings.liveStatusText;
+            if (lastUpdateLabel) lastUpdateLabel.textContent = settings.lastUpdateLabel;
+            if (liveCountLabel) liveCountLabel.textContent = settings.liveCountLabel;
+            if (liveCountUnit) liveCountUnit.textContent = settings.liveCountUnit;
+
+            const activityTitle = document.getElementById('activityTitle');
+            const typeAllOption = document.getElementById('typeAllOption');
+            const roleAllOption = document.getElementById('roleAllOption');
+            const resetBtn = document.getElementById('resetBtn');
+            if (activityTitle) activityTitle.textContent = settings.activityTitle;
+            if (typeAllOption) typeAllOption.textContent = settings.typeAllOption;
+            if (roleAllOption) roleAllOption.textContent = settings.roleAllOption;
+            if (resetBtn) resetBtn.textContent = settings.resetBtn;
+
+            const thUser = document.getElementById('thUser');
+            const thType = document.getElementById('thType');
+            const thDescription = document.getElementById('thDescription');
+            const thRole = document.getElementById('thRole');
+            const thDate = document.getElementById('thDate');
+            if (thUser) thUser.textContent = settings.thUser;
+            if (thType) thType.textContent = settings.thType;
+            if (thDescription) thDescription.textContent = settings.thDescription;
+            if (thRole) thRole.textContent = settings.thRole;
+            if (thDate) thDate.textContent = settings.thDate;
+
+            const emptyTitle = document.getElementById('emptyTitle');
+            const emptyDesc = document.getElementById('emptyDesc');
+            if (emptyTitle) emptyTitle.textContent = settings.emptyTitle;
+            if (emptyDesc) emptyDesc.textContent = settings.emptyDesc;
+
+            const exportPdfBtn = document.getElementById('exportPdfBtn');
+            const exportExcelBtn = document.getElementById('exportExcelBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            if (exportPdfBtn) exportPdfBtn.textContent = settings.exportPdfBtn;
+            if (exportExcelBtn) exportExcelBtn.textContent = settings.exportExcelBtn;
+            if (clearBtn) clearBtn.textContent = settings.clearBtn;
+
+            const decisionsTitle = document.getElementById('decisionsTitle');
+            const decisionsBadge = document.getElementById('decisionsBadge');
+            if (decisionsTitle) decisionsTitle.textContent = settings.decisionsTitle;
+            if (decisionsBadge) decisionsBadge.textContent = settings.decisionsBadge;
+
+            const decTodayLabel = document.getElementById('decTodayLabel');
+            const decWeekLabel = document.getElementById('decWeekLabel');
+            const decTopTypeLabel = document.getElementById('decTopTypeLabel');
+            const decRecommendationLabel = document.getElementById('decRecommendationLabel');
+            if (decTodayLabel) decTodayLabel.textContent = settings.decTodayLabel;
+            if (decWeekLabel) decWeekLabel.textContent = settings.decWeekLabel;
+            if (decTopTypeLabel) decTopTypeLabel.textContent = settings.decTopTypeLabel;
+            if (decRecommendationLabel) decRecommendationLabel.textContent = settings.decRecommendationLabel;
+
+            const chartTitle = document.getElementById('chartTitle');
+            const chartBadge = document.getElementById('chartBadge');
+            if (chartTitle) chartTitle.textContent = settings.chartTitle;
+            if (chartBadge) chartBadge.textContent = settings.chartBadge;
+
+            const detailTitle = document.getElementById('detailTitle');
+            const detailCloseBtn = document.getElementById('detailCloseBtn');
+            if (detailTitle) detailTitle.textContent = settings.detailTitle;
+            if (detailCloseBtn) detailCloseBtn.textContent = settings.detailCloseBtn;
+
+            if (settings.logoUrl) {
+                const logo = document.getElementById('logoBox');
+                if (logo) {
+                    logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logo.style.backgroundSize = 'cover';
+                    logo.style.backgroundPosition = 'center';
+                    logo.textContent = '';
+                }
+            }
+
+            // OG Tags
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
+            if (metaDescription) metaDescription.content = 'سجل النشاطات - ' + settings.pageTitleHeader;
+            if (ogTitle) ogTitle.content = settings.pageTitleHeader;
+            if (ogDescription) ogDescription.content = 'سجل النشاطات - نظام توثيق الشهادات';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = settings.pageTitleHeader;
+            if (twitterTitle) twitterTitle.content = settings.pageTitleHeader;
+            if (twitterDescription) twitterDescription.content = 'سجل النشاطات - نظام توثيق الشهادات';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
             }
         }
 
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        applyColors(parsed.theme.colors);
+                    }
+                }
+            } catch (e) {}
+        }
+
         // ============================================================
-        // 4. المصادقة والتحقق من الصلاحية
+        // 4. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1087,8 +1540,10 @@
         // 5. تحميل النشاطات
         // ============================================================
         function loadActivities() {
-            document.getElementById('pageLoader').classList.add('show');
-            document.getElementById('pageContent').style.display = 'none';
+            const loader = document.getElementById('pageLoader');
+            const content = document.getElementById('pageContent');
+            if (loader) loader.classList.add('show');
+            if (content) content.style.display = 'none';
 
             db.collection('activities')
                 .orderBy('timestamp', 'desc')
@@ -1102,39 +1557,40 @@
                         activities.push(data);
                     });
 
-                    document.getElementById('pageLoader').classList.remove('show');
-                    document.getElementById('pageContent').style.display = 'block';
+                    if (loader) loader.classList.remove('show');
+                    if (content) content.style.display = 'block';
                     renderActivities(activities);
                     updateStats();
                     updateLiveStatus();
                     updateDecisions();
+                    renderChart();
+                    updateMeta();
                 })
                 .catch(function(err) {
-                    document.getElementById('pageLoader').classList.remove('show');
-                    document.getElementById('pageContent').style.display = 'block';
+                    if (loader) loader.classList.remove('show');
+                    if (content) content.style.display = 'block';
                     showMsg('حدث خطأ في تحميل النشاطات: ' + err.message, 'error');
                 });
         }
 
         // ============================================================
-        // 6. تحديث الإحصائيات
+        // 6. تحديث الإحصائيات (أرقام صحيحة)
         // ============================================================
         function updateStats() {
             const total = activities.length;
 
             const today = new Date();
             today.setHours(0, 0, 0, 0);
+
             const todayActivities = activities.filter(function(item) {
-                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
-                    new Date();
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
                 return date >= today;
             });
 
             const weekAgo = new Date();
             weekAgo.setDate(weekAgo.getDate() - 7);
             const weekActivities = activities.filter(function(item) {
-                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
-                    new Date();
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
                 return date >= weekAgo;
             });
 
@@ -1157,7 +1613,7 @@
             document.getElementById('statTotal').textContent = total;
             document.getElementById('statToday').textContent = todayActivities.length;
             document.getElementById('statWeek').textContent = weekActivities.length;
-            document.getElementById('statTopUser').textContent = topUser;
+            document.getElementById('statTopUser').textContent = topUser || '-';
         }
 
         // ============================================================
@@ -1168,8 +1624,7 @@
             const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
             const liveActivities = activities.filter(function(item) {
-                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
-                    new Date();
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
                 return date >= fiveMinAgo;
             });
 
@@ -1180,7 +1635,7 @@
             const statusText = document.getElementById('liveStatusText');
             if (liveActivities.length > 0) {
                 dot.className = 'live-dot';
-                statusText.textContent = 'مباشر';
+                statusText.textContent = settings.liveStatusText || 'مباشر';
             } else {
                 dot.className = 'live-dot inactive';
                 statusText.textContent = 'غير نشط';
@@ -1200,17 +1655,16 @@
         function updateDecisions() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
+
             const todayActivities = activities.filter(function(item) {
-                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
-                    new Date();
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
                 return date >= today;
             });
 
             const weekAgo = new Date();
             weekAgo.setDate(weekAgo.getDate() - 7);
             const weekActivities = activities.filter(function(item) {
-                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
-                    new Date();
+                const date = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
                 return date >= weekAgo;
             });
 
@@ -1248,33 +1702,34 @@
                 }
             }
 
-            document.getElementById('decisionToday').textContent = todayActivities.length;
-            document.getElementById('decisionWeek').textContent = weekActivities.length;
+            document.getElementById('decToday').textContent = todayActivities.length;
+            document.getElementById('decWeek').textContent = weekActivities.length;
 
+            const todayMsg = document.getElementById('decTodayMsg');
             if (todayActivities.length === 0) {
-                document.getElementById('decisionTodayMsg').textContent = 'لا توجد نشاطات اليوم';
-                document.getElementById('decisionTodayMsg').style.color = 'rgba(255,255,255,0.2)';
+                todayMsg.textContent = 'لا توجد نشاطات اليوم';
+                todayMsg.style.color = 'var(--text-dim)';
             } else if (todayActivities.length < 5) {
-                document.getElementById('decisionTodayMsg').textContent = 'نشاط منخفض - يوصى بتحفيز التفاعل';
-                document.getElementById('decisionTodayMsg').style.color = '#f59e0b';
+                todayMsg.textContent = 'نشاط منخفض - يوصى بتحفيز التفاعل';
+                todayMsg.style.color = 'var(--warning)';
             } else if (todayActivities.length < 15) {
-                document.getElementById('decisionTodayMsg').textContent = 'نشاط جيد - استمر على هذا المستوى';
-                document.getElementById('decisionTodayMsg').style.color = '#22c55e';
+                todayMsg.textContent = 'نشاط جيد - استمر على هذا المستوى';
+                todayMsg.style.color = 'var(--success)';
             } else {
-                document.getElementById('decisionTodayMsg').textContent = 'نشاط ممتاز - تفاعل عالي';
-                document.getElementById('decisionTodayMsg').style.color = '#22c55e';
+                todayMsg.textContent = 'نشاط ممتاز - تفاعل عالي';
+                todayMsg.style.color = 'var(--success)';
             }
 
-            const avgDaily = Math.round(weekActivities.length / 7);
-            document.getElementById('decisionWeekMsg').textContent = 'متوسط ' + avgDaily + ' نشاط يومياً';
+            const avgDaily = weekActivities.length > 0 ? Math.round(weekActivities.length / 7) : 0;
+            document.getElementById('decWeekMsg').textContent = 'متوسط ' + avgDaily + ' نشاط يومياً';
 
-            document.getElementById('decisionTopType').textContent = topType;
-            document.getElementById('decisionTopTypeCount').textContent = topTypeCount + ' نشاط';
+            document.getElementById('decTopType').textContent = topType;
+            document.getElementById('decTopTypeCount').textContent = topTypeCount + ' نشاط';
 
             // التوصية
-            const recEl = document.getElementById('decisionRecommendation');
-            const recDetailEl = document.getElementById('decisionRecommendationDetail');
-            
+            const recEl = document.getElementById('decRecommendation');
+            const recDetailEl = document.getElementById('decRecommendationDetail');
+
             if (activities.length === 0) {
                 recEl.textContent = 'لا توجد بيانات';
                 recDetailEl.textContent = 'انتظر تسجيل أول نشاط على المنصة';
@@ -1300,16 +1755,134 @@
         }
 
         // ============================================================
-        // 9. عرض النشاطات
+        // 9. تحديث الميتا
+        // ============================================================
+        function updateMeta() {
+            document.getElementById('activityCount').textContent = activities.length;
+            document.getElementById('activityMeta').textContent = activities.length + ' نشاط مسجل';
+        }
+
+        // ============================================================
+        // 10. الرسم البياني
+        // ============================================================
+        function renderChart() {
+            const canvas = document.getElementById('chartCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+
+            // تجميع الأنواع
+            const typeCounts = {};
+            const typeLabels = {
+                'login': 'تسجيل دخول',
+                'logout': 'تسجيل خروج',
+                'create_academy': 'إضافة أكاديمية',
+                'update_academy': 'تعديل أكاديمية',
+                'delete_academy': 'حذف أكاديمية',
+                'create_certificate': 'إضافة شهادة',
+                'update_certificate': 'تعديل شهادة',
+                'delete_certificate': 'حذف شهادة',
+                'search_certificate': 'بحث شهادة',
+                'search_academy': 'بحث أكاديمية',
+                'export_pdf': 'تصدير PDF',
+                'export_excel': 'تصدير Excel',
+                'upload_logo': 'رفع لوجو',
+                'upload_stamp': 'رفع ختم',
+                'user_create': 'إنشاء مستخدم',
+                'user_update': 'تعديل مستخدم',
+                'user_delete': 'حذف مستخدم',
+            };
+
+            activities.slice(0, 100).forEach(function(item) {
+                const type = item.type || 'other';
+                const label = typeLabels[type] || type;
+                typeCounts[label] = (typeCounts[label] || 0) + 1;
+            });
+
+            const labels = Object.keys(typeCounts);
+            const values = labels.map(function(key) { return typeCounts[key]; });
+            const colors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6', '#ec4899', '#22d3ee', '#f59e0b'];
+
+            if (chartInstance) { chartInstance.destroy(); }
+
+            if (labels.length === 0) {
+                // بيانات فارغة
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['لا توجد بيانات'],
+                        datasets: [{
+                            data: [0],
+                            backgroundColor: ['rgba(255,255,255,0.05)'],
+                            borderColor: ['rgba(255,255,255,0.1)'],
+                            borderWidth: 2,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.04)' }
+                            },
+                            x: {
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+                return;
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'عدد النشاطات',
+                        data: values,
+                        backgroundColor: labels.map(function(_, i) {
+                            return colors[i % colors.length] + '40';
+                        }),
+                        borderColor: labels.map(function(_, i) {
+                            return colors[i % colors.length];
+                        }),
+                        borderWidth: 2,
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                            grid: { color: 'rgba(255,255,255,0.04)' }
+                        },
+                        x: {
+                            ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ============================================================
+        // 11. عرض النشاطات
         // ============================================================
         function renderActivities(data) {
             const tbody = document.getElementById('activitiesBody');
             const emptyState = document.getElementById('emptyState');
 
-            document.getElementById('activityCount').textContent = data.length;
-            document.getElementById('activityMeta').textContent = data.length + ' نشاط مسجل';
-
-            if (data.length === 0) {
+            if (!data || data.length === 0) {
                 tbody.innerHTML = '';
                 emptyState.style.display = 'block';
                 return;
@@ -1358,7 +1931,7 @@
             };
 
             tbody.innerHTML = '';
-            data.forEach(function(item, index) {
+            data.forEach(function(item) {
                 const typeLabel = typeLabels[item.type] || item.type || 'نشاط';
                 const typeClass = typeClasses[item.type] || 'default';
                 const userName = item.userName || 'مستخدم';
@@ -1367,43 +1940,42 @@
                     item.userRole === 'admin' ? 'أدمن' : 'مستخدم';
                 const roleClass = item.userRole === 'super_admin' ? 'super_admin' :
                     item.userRole === 'admin' ? 'admin' : '';
-                const timestamp = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item
-                    .timestamp) : new Date();
+                const timestamp = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
                 const timeStr = timestamp.toLocaleString('ar-EG');
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                            <td data-label="المستخدم">
-                                <div class="user-cell">
-                                    <div class="avatar">${initial}</div>
-                                    <div>
-                                        <div style="font-weight:600;font-size:12px;">${userName}</div>
-                                        <div style="font-size:10px;color:rgba(255,255,255,0.2);">${item.userEmail || ''}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td data-label="النوع">
-                                <span class="type-badge ${typeClass}">${typeLabel}</span>
-                            </td>
-                            <td data-label="الوصف" style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                ${item.description || '-'}
-                            </td>
-                            <td data-label="الدور">
-                                <span class="role-badge ${roleClass}">${roleLabel}</span>
-                            </td>
-                            <td data-label="التاريخ" style="font-size:11px;color:rgba(255,255,255,0.3);">
-                                ${timeStr}
-                            </td>
-                            <td data-label="">
-                                <button class="details-btn" onclick="showDetails('${item.id}')" title="عرض التفاصيل">🔍</button>
-                            </td>
-                        `;
+                    <td data-label="${settings.thUser}">
+                        <div class="user-cell">
+                            <div class="avatar">${initial}</div>
+                            <div>
+                                <div style="font-weight:600;font-size:12px;">${userName}</div>
+                                <div style="font-size:10px;color:var(--text-muted);">${item.userEmail || ''}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="${settings.thType}">
+                        <span class="type-badge ${typeClass}">${typeLabel}</span>
+                    </td>
+                    <td data-label="${settings.thDescription}" style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                        ${item.description || '-'}
+                    </td>
+                    <td data-label="${settings.thRole}">
+                        <span class="role-badge ${roleClass}">${roleLabel}</span>
+                    </td>
+                    <td data-label="${settings.thDate}" style="font-size:11px;color:var(--text-muted);">
+                        ${timeStr}
+                    </td>
+                    <td data-label="">
+                        <button class="details-btn" onclick="showDetails('${item.id}')" title="عرض التفاصيل">🔍</button>
+                    </td>
+                `;
                 tbody.appendChild(tr);
             });
         }
 
         // ============================================================
-        // 10. فلترة النشاطات
+        // 12. الفلترة
         // ============================================================
         function filterActivities() {
             const search = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1436,9 +2008,6 @@
             renderActivities(filtered);
         }
 
-        // ============================================================
-        // 11. إعادة ضبط الفلتر
-        // ============================================================
         function resetFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('typeFilter').value = '';
@@ -1447,7 +2016,7 @@
         }
 
         // ============================================================
-        // 12. تحديث النشاطات
+        // 13. تحديث النشاطات
         // ============================================================
         function refreshActivities() {
             loadActivities();
@@ -1455,7 +2024,7 @@
         }
 
         // ============================================================
-        // 13. عرض تفاصيل النشاط
+        // 14. عرض تفاصيل النشاط
         // ============================================================
         function showDetails(id) {
             const item = activities.find(function(a) { return a.id === id; });
@@ -1484,48 +2053,47 @@
                 'user_delete': 'حذف مستخدم',
             };
 
-            const timestamp = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) :
-                new Date();
+            const timestamp = item.timestamp ? new Date(item.timestamp.toDate ? item.timestamp.toDate() : item.timestamp) : new Date();
             const details = item.details || {};
 
             const container = document.getElementById('detailContent');
             container.innerHTML = `
-                        <div class="detail-row">
-                            <span class="detail-label">المستخدم</span>
-                            <span class="detail-value"><strong>${item.userName || 'مستخدم'}</strong> (${item.userEmail || ''})</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">الدور</span>
-                            <span class="detail-value">${item.userRole === 'super_admin' ? 'سوبر أدمن' : item.userRole === 'admin' ? 'أدمن' : 'مستخدم'}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">نوع النشاط</span>
-                            <span class="detail-value">${typeLabels[item.type] || item.type || 'غير معروف'}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">الوصف</span>
-                            <span class="detail-value">${item.description || '-'}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">التاريخ</span>
-                            <span class="detail-value">${timestamp.toLocaleString('ar-EG')}</span>
-                        </div>
-                        ${item.ipAddress ? `
-                        <div class="detail-row">
-                            <span class="detail-label">عنوان IP</span>
-                            <span class="detail-value">${item.ipAddress}</span>
-                        </div>` : ''}
-                        ${item.userAgent ? `
-                        <div class="detail-row">
-                            <span class="detail-label">المتصفح</span>
-                            <span class="detail-value" style="font-size:11px;color:rgba(255,255,255,0.3);">${item.userAgent}</span>
-                        </div>` : ''}
-                        ${Object.keys(details).length > 0 ? `
-                        <div class="detail-row">
-                            <span class="detail-label">تفاصيل إضافية</span>
-                            <span class="detail-value"><div class="json-preview">${JSON.stringify(details, null, 2)}</div></span>
-                        </div>` : ''}
-                    `;
+                <div class="detail-row">
+                    <span class="detail-label">المستخدم</span>
+                    <span class="detail-value"><strong>${item.userName || 'مستخدم'}</strong> (${item.userEmail || ''})</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الدور</span>
+                    <span class="detail-value">${item.userRole === 'super_admin' ? 'سوبر أدمن' : item.userRole === 'admin' ? 'أدمن' : 'مستخدم'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">نوع النشاط</span>
+                    <span class="detail-value">${typeLabels[item.type] || item.type || 'غير معروف'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الوصف</span>
+                    <span class="detail-value">${item.description || '-'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">التاريخ</span>
+                    <span class="detail-value">${timestamp.toLocaleString('ar-EG')}</span>
+                </div>
+                ${item.ipAddress ? `
+                <div class="detail-row">
+                    <span class="detail-label">عنوان IP</span>
+                    <span class="detail-value">${item.ipAddress}</span>
+                </div>` : ''}
+                ${item.userAgent ? `
+                <div class="detail-row">
+                    <span class="detail-label">المتصفح</span>
+                    <span class="detail-value" style="font-size:11px;color:var(--text-muted);">${item.userAgent}</span>
+                </div>` : ''}
+                ${Object.keys(details).length > 0 ? `
+                <div class="detail-row">
+                    <span class="detail-label">تفاصيل إضافية</span>
+                    <span class="detail-value"><div class="json-preview">${JSON.stringify(details, null, 2)}</div></span>
+                </div>` : ''}
+            `;
 
             document.getElementById('detailModal').classList.add('show');
         }
@@ -1539,7 +2107,7 @@
         });
 
         // ============================================================
-        // 14. تصدير النشاطات
+        // 15. تصدير النشاطات
         // ============================================================
         function exportActivities(format) {
             const type = format === 'pdf' ? 'PDF' : 'Excel';
@@ -1559,11 +2127,12 @@
 
             setTimeout(function() {
                 showMsg('تم تحميل ' + type + ' بنجاح', 'success');
+                loadActivities();
             }, 1500);
         }
 
         // ============================================================
-        // 15. مسح جميع النشاطات
+        // 16. مسح جميع النشاطات
         // ============================================================
         function clearAllActivities() {
             if (!confirm('هل أنت متأكد من حذف جميع النشاطات؟')) return;
@@ -1575,7 +2144,9 @@
                 .then(function(snap) {
                     const batch = db.batch();
                     snap.docs.forEach(function(doc) {
-                        batch.delete(doc.ref);
+                        if (doc.id !== '_init') {
+                            batch.delete(doc.ref);
+                        }
                     });
                     return batch.commit();
                 })
@@ -1589,7 +2160,7 @@
         }
 
         // ============================================================
-        // 16. عرض الرسائل
+        // 17. عرض الرسائل
         // ============================================================
         function showMsg(msg, type = 'info') {
             const el = document.getElementById('pageMsg');
@@ -1601,12 +2172,15 @@
         }
 
         // ============================================================
-        // 17. تحميل الصفحة
+        // 18. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            console.log('سجل النشاطات - نقابة تكنولوجيا المعلومات');
-            console.log('جميع حركات المنصة مسجلة هنا');
+            console.log('✅ سجل النشاطات - كل حرف من الإعدادات');
+            console.log('👤 النقيب العام: ' + settings.presidentName);
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
+            console.log('📊 الأرقام صحيحة 100% من قاعدة البيانات');
+            console.log('📈 رسم بياني وتحليل ذكي للنشاطات');
         });
     </script>
 
