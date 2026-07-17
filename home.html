@@ -1246,11 +1246,10 @@
                 <form id="studentSearchForm" onsubmit="return searchStudent(event)">
                     <div class="search-box">
                         <div class="search-row">
-                            <input type="text" id="studentName" placeholder="اسم المتدرب" />
                             <input type="text" id="studentNationalId" placeholder="الرقم القومي (14 رقم)" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
                             <button type="submit" class="btn btn-primary" id="searchStudentBtn">بحث</button>
                         </div>
-                        <div class="search-hint" id="studentHint">ابحث باسم المتدرب أو الرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل</div>
+                        <div class="search-hint" id="studentHint">ابحث بالرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل</div>
                     </div>
                 </form>
 
@@ -1393,7 +1392,7 @@
             heroTitle: '',
             heroSubtitle: '',
             certHint: '',
-            studentHint: 'ابحث باسم المتدرب أو الرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل',
+            studentHint: 'ابحث بالرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل',
             academyHint: 'أدخل اسم الأكاديمية أو الرقم الاعتمادي',
             colors: {
                 primary: '#C9A84C',
@@ -1413,42 +1412,118 @@
         };
 
         // ============================================================
-        // 3. جلب الإعدادات من Firestore
+        // 3. جلب الإعدادات من Firestore (باستخدام onSnapshot للتحديث الفوري)
         // ============================================================
+        let settingsListener = null;
+        let designListener = null;
+        let textsListener = null;
+        let securityListener = null;
+
         function loadSettings() {
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
+            // استماع لإعدادات العامة (general)
+            if (settingsListener) {
+                settingsListener();
+                settingsListener = null;
+            }
+            settingsListener = db.collection('settings').doc('general').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.unionName) settings.unionName = data.unionName;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                    if (data.stampUrl) settings.stampUrl = data.stampUrl;
+                    if (data.infoBoxText) settings.infoBoxText = data.infoBoxText;
+                    if (data.servicesText) settings.servicesText = data.servicesText;
+                    if (data.servicesLink) settings.servicesLink = data.servicesLink;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                    if (data.heroTitle) settings.heroTitle = data.heroTitle;
+                    if (data.heroSubtitle) settings.heroSubtitle = data.heroSubtitle;
+                    if (data.certHint) settings.certHint = data.certHint;
+                    if (data.studentHint) settings.studentHint = data.studentHint;
+                    if (data.academyHint) settings.academyHint = data.academyHint;
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                }
+                applySettings();
+                applyColors(settings.colors);
+                applyTexts();
+                console.log('✅ تم تحديث الإعدادات العامة لحظياً');
+            }, function(error) {
+                console.warn('⚠️ خطأ في الاستماع للإعدادات العامة:', error);
+            });
 
-                        if (data.unionName) settings.unionName = data.unionName;
-                        if (data.committeeName) settings.committeeName = data.committeeName;
-                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
-                        if (data.stampUrl) settings.stampUrl = data.stampUrl;
-                        if (data.infoBoxText) settings.infoBoxText = data.infoBoxText;
-                        if (data.servicesText) settings.servicesText = data.servicesText;
-                        if (data.servicesLink) settings.servicesLink = data.servicesLink;
-                        if (data.footerText) settings.footerText = data.footerText;
-                        if (data.presidentName) settings.presidentName = data.presidentName;
-                        if (data.heroTitle) settings.heroTitle = data.heroTitle;
-                        if (data.heroSubtitle) settings.heroSubtitle = data.heroSubtitle;
-                        if (data.certHint) settings.certHint = data.certHint;
-                        if (data.studentHint) settings.studentHint = data.studentHint;
-                        if (data.academyHint) settings.academyHint = data.academyHint;
-
-                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
-
-                        applySettings();
-                        applyColors(settings.colors);
-                    } else {
-                        applySettings();
-                        applyColors(settings.colors);
+            // استماع لإعدادات التصميم (المظهر)
+            if (designListener) {
+                designListener();
+                designListener = null;
+            }
+            designListener = db.collection('settings').doc('design').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
                     }
-                })
-                .catch(function() {
-                    applySettings();
-                    applyColors(settings.colors);
-                });
+                }
+                applyColors(settings.colors);
+                console.log('✅ تم تحديث إعدادات المظهر لحظياً');
+            }, function(error) {
+                console.warn('⚠️ خطأ في الاستماع لإعدادات التصميم:', error);
+            });
+
+            // استماع لإعدادات النصوص
+            if (textsListener) {
+                textsListener();
+                textsListener = null;
+            }
+            textsListener = db.collection('settings').doc('texts').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.heroTitle) settings.heroTitle = data.heroTitle;
+                    if (data.heroSubtitle) settings.heroSubtitle = data.heroSubtitle;
+                    if (data.infoBoxText) settings.infoBoxText = data.infoBoxText;
+                    if (data.servicesText) settings.servicesText = data.servicesText;
+                    if (data.servicesLink) settings.servicesLink = data.servicesLink;
+                    if (data.pageTitle) settings.pageTitle = data.pageTitle;
+                    if (data.loginBtnText) settings.loginBtnText = data.loginBtnText;
+                    if (data.logoutBtnText) settings.logoutBtnText = data.logoutBtnText;
+                    if (data.searchCertBtnText) settings.searchCertBtnText = data.searchCertBtnText;
+                    if (data.searchStudentBtnText) settings.searchStudentBtnText = data.searchStudentBtnText;
+                    if (data.searchAcademyBtnText) settings.searchAcademyBtnText = data.searchAcademyBtnText;
+                    if (data.tabCertText) settings.tabCertText = data.tabCertText;
+                    if (data.tabStudentText) settings.tabStudentText = data.tabStudentText;
+                    if (data.tabAcademyText) settings.tabAcademyText = data.tabAcademyText;
+                    if (data.printBtnText) settings.printBtnText = data.printBtnText;
+                    if (data.pdfBtnText) settings.pdfBtnText = data.pdfBtnText;
+                    if (data.shareBtnText) settings.shareBtnText = data.shareBtnText;
+                    if (data.editBtnText) settings.editBtnText = data.editBtnText;
+                    if (data.deleteBtnText) settings.deleteBtnText = data.deleteBtnText;
+                    if (data.addBtnText) settings.addBtnText = data.addBtnText;
+                    if (data.saveBtnText) settings.saveBtnText = data.saveBtnText;
+                    if (data.cancelBtnText) settings.cancelBtnText = data.cancelBtnText;
+                }
+                applyTexts();
+                console.log('✅ تم تحديث النصوص لحظياً');
+            }, function(error) {
+                console.warn('⚠️ خطأ في الاستماع للنصوص:', error);
+            });
+
+            // استماع لإعدادات الأمان (للعلم فقط)
+            if (securityListener) {
+                securityListener();
+                securityListener = null;
+            }
+            securityListener = db.collection('settings').doc('security').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.maintenanceMode !== undefined) {
+                        if (data.maintenanceMode) {
+                            console.warn('🔒 المنصة في وضع الصيانة');
+                        }
+                    }
+                }
+            }, function(error) {
+                console.warn('⚠️ خطأ في الاستماع لإعدادات الأمان:', error);
+            });
 
             loadLocalSettings();
         }
@@ -1523,6 +1598,23 @@
                 if (favicon) favicon.href = settings.logoUrl;
                 if (appleIcon) appleIcon.href = settings.logoUrl;
             }
+        }
+
+        function applyTexts() {
+            // تطبيق نصوص الأزرار والتبويبات
+            const searchCertBtn = document.getElementById('searchCertBtn');
+            const searchStudentBtn = document.getElementById('searchStudentBtn');
+            const searchAcademyBtn = document.getElementById('searchAcademyBtn');
+            const tabCertBtn = document.getElementById('tabCertBtn');
+            const tabStudentBtn = document.getElementById('tabStudentBtn');
+            const tabAcademyBtn = document.getElementById('tabAcademyBtn');
+
+            if (searchCertBtn && settings.searchCertBtnText) searchCertBtn.textContent = settings.searchCertBtnText;
+            if (searchStudentBtn && settings.searchStudentBtnText) searchStudentBtn.textContent = settings.searchStudentBtnText;
+            if (searchAcademyBtn && settings.searchAcademyBtnText) searchAcademyBtn.textContent = settings.searchAcademyBtnText;
+            if (tabCertBtn && settings.tabCertText) tabCertBtn.textContent = settings.tabCertText;
+            if (tabStudentBtn && settings.tabStudentText) tabStudentBtn.textContent = settings.tabStudentText;
+            if (tabAcademyBtn && settings.tabAcademyText) tabAcademyBtn.textContent = settings.tabAcademyText;
         }
 
         function applyColors(colors) {
@@ -1750,6 +1842,10 @@
 
             const gradeClass = getGradeClass(data.grade);
 
+            const printText = settings.printBtnText || 'طباعة';
+            const pdfText = settings.pdfBtnText || 'تحميل PDF';
+            const shareText = settings.shareBtnText || 'مشاركة';
+
             container.innerHTML = `
                 <div class="certificate-card">
                     <div class="cert-header">
@@ -1774,9 +1870,9 @@
                         <div class="cert-item"><div class="label">تاريخ الحصول</div><div class="value">${formatDate(data.issuedAt)}</div></div>
                     </div>
                     <div class="cert-actions">
-                        <button class="btn btn-success btn-sm" onclick="printCertificate('${data.certificateCode}')">طباعة</button>
-                        <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${data.certificateCode}')">تحميل PDF</button>
-                        <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${data.certificateCode}')">مشاركة</button>
+                        <button class="btn btn-success btn-sm" onclick="printCertificate('${data.certificateCode}')">${printText}</button>
+                        <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${data.certificateCode}')">${pdfText}</button>
+                        <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${data.certificateCode}')">${shareText}</button>
                     </div>
                 </div>
             `;
@@ -2049,11 +2145,10 @@
         function searchStudent(e) {
             e.preventDefault();
 
-            const name = document.getElementById('studentName').value.trim();
             const nationalId = document.getElementById('studentNationalId').value.trim();
 
-            if (!name && !nationalId) {
-                showMsg('studentError', 'الرجاء إدخال اسم المتدرب أو الرقم القومي', 'error');
+            if (!nationalId) {
+                showMsg('studentError', 'الرجاء إدخال الرقم القومي', 'error');
                 return false;
             }
 
@@ -2062,25 +2157,15 @@
             hideResult('studentResult');
             showLoader('studentLoader');
 
-            let results = allCertificates;
-
-            if (name) {
-                results = results.filter(function(c) {
-                    return c.studentName && c.studentName.includes(name);
-                });
-            }
-
-            if (nationalId) {
-                results = results.filter(function(c) {
-                    return c.studentNationalId === nationalId;
-                });
-            }
+            let results = allCertificates.filter(function(c) {
+                return c.studentNationalId === nationalId;
+            });
 
             setTimeout(function() {
                 hideLoader('studentLoader');
 
                 if (results.length === 0) {
-                    showMsg('studentError', 'لم يتم العثور على شهادات للمتدرب', 'error');
+                    showMsg('studentError', 'لم يتم العثور على شهادات لهذا الرقم القومي', 'error');
                     return;
                 }
 
@@ -2120,6 +2205,10 @@
             const firstDate = data.firstDate ? data.firstDate.toLocaleDateString('ar-EG') : '-';
             const lastDate = data.lastDate ? data.lastDate.toLocaleDateString('ar-EG') : '-';
 
+            const printText = settings.printBtnText || 'طباعة';
+            const pdfText = settings.pdfBtnText || 'تحميل PDF';
+            const shareText = settings.shareBtnText || 'مشاركة';
+
             let certsHtml = data.certificates.map(function(cert) {
                 const gradeClass = getGradeClass(cert.grade);
                 return `
@@ -2131,9 +2220,9 @@
                         </div>
                         <div style="font-size:12px;color:var(--text-muted);">${formatDate(cert.issuedAt)}</div>
                         <div class="cert-actions-sm">
-                            <button class="btn btn-success btn-sm" onclick="printCertificate('${cert.certificateCode}')">طباعة</button>
-                            <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${cert.certificateCode}')">PDF</button>
-                            <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${cert.certificateCode}')">مشاركة</button>
+                            <button class="btn btn-success btn-sm" onclick="printCertificate('${cert.certificateCode}')">${printText}</button>
+                            <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${cert.certificateCode}')">${pdfText}</button>
+                            <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${cert.certificateCode}')">${shareText}</button>
                         </div>
                     </div>
                 `;
@@ -2160,8 +2249,8 @@
                         ${certsHtml}
                     </div>
                     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;">
-                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${data.name}')">طباعة الكل</button>
-                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${data.name}')">تحميل الكل PDF</button>
+                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${data.name}')">${printText} الكل</button>
+                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${data.name}')">${pdfText} الكل</button>
                     </div>
                 </div>
             `;
@@ -2473,12 +2562,13 @@
                 }, 500);
             }
 
-            console.log('✅ الصفحة الرئيسية - النسخة النهائية');
+            console.log('✅ الصفحة الرئيسية - النسخة النهائية مع التحديث الفوري');
             console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('👤 النقيب العام: ' + settings.presidentName);
             console.log('📋 تبويب المتدرب شامل كل حاجة (الشهادات، الوسام، الإحصائيات)');
             console.log('🏛️ مودال الأكاديميات مع فلاتر بحث متقدمة');
             console.log('🗑️ تم إزالة تبويب سجل الخريجين (مدمج في بحث المتدرب)');
+            console.log('🔄 التحديثات من الإعدادات تظهر فوراً بدون تحديث الصفحة');
         });
     </script>
 
