@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>إعدادات النظام - نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -13,9 +34,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
 
+    <!-- Cloudinary Widget -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript">
+    </script>
+
     <style>
         /* ============================================================
-           التصميم المتطور لإعدادات النظام
+           التصميم الخرافي لإعدادات النظام
+           كل حرف من الإعدادات + ثيمات
            ============================================================ */
         * {
             margin: 0;
@@ -24,24 +50,57 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #050a18;
-            color: #ffffff;
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
 
-        /* ===== خلفية ذكاء اصطناعي ===== */
+        :root {
+            --primary-color: #C9A84C;
+            --primary-dark: #A8893A;
+            --primary-light: #E8D5A3;
+            --primary-glow: rgba(201,168,76,0.3);
+            --secondary-color: #0A1628;
+            --accent-color: #7C3AED;
+            --accent-light: #A78BFA;
+            --accent-glow: rgba(124,58,237,0.2);
+            --bg-color: #0A0E1A;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-hover: rgba(255,255,255,0.06);
+            --text-color: #FFFFFF;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-dim: rgba(255,255,255,0.15);
+            --success: #10B981;
+            --success-bg: rgba(16,185,129,0.12);
+            --error: #EF4444;
+            --error-bg: rgba(239,68,68,0.12);
+            --warning: #F59E0B;
+            --warning-bg: rgba(245,158,11,0.12);
+            --info: #3B82F6;
+            --info-bg: rgba(59,130,246,0.12);
+            --border: rgba(255,255,255,0.06);
+            --border-light: rgba(255,255,255,0.03);
+            --card-bg: rgba(255,255,255,0.04);
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-lg: 28px;
+        }
+
         .page-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
-            animation: bgPulse 15s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
+            animation: bgPulse 12s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
@@ -53,8 +112,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -72,14 +130,14 @@
             animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: var(--accent-color); opacity: 0.3; }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: var(--accent-color); opacity: 0.3; }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
@@ -95,8 +153,8 @@
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             animation: gridMove 25s linear infinite;
@@ -120,14 +178,13 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 100, 255, 0.05);
+            border: 1px solid rgba(201,168,76,0.04);
             animation: ringSpin 40s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
-        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201,168,76,0.06); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(124,58,237,0.04); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(59,130,246,0.03); animation-duration: 60s; }
 
         @keyframes ringSpin {
             0% { transform: rotate(0deg); }
@@ -148,7 +205,7 @@
             height: 450px;
             top: -150px;
             right: -150px;
-            background: rgba(0, 100, 255, 0.08);
+            background: var(--primary-glow);
         }
 
         .glow-orb:nth-child(2) {
@@ -156,7 +213,7 @@
             height: 550px;
             bottom: -200px;
             left: -200px;
-            background: rgba(138, 43, 226, 0.06);
+            background: var(--accent-glow);
             animation-delay: 6s;
         }
 
@@ -173,20 +230,32 @@
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
-            padding: 14px 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
             animation: headerFloat 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
+            pointer-events: none;
         }
 
         @keyframes headerFloat {
@@ -197,45 +266,78 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .logo-box {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 20px;
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+            transition: all 0.4s ease;
+            animation: logoSpin 20s linear infinite;
+            box-shadow: 0 0 35px var(--primary-glow);
+            position: relative;
             background-size: cover;
             background-position: center;
         }
 
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .logo-box:hover {
-            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
-            transform: scale(1.05);
+            animation-duration: 3s;
+            transform: scale(1.08);
         }
 
         .header-title h1 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            color: #fff;
-            background: linear-gradient(135deg, #ffffff, #60a5fa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--text-color);
         }
 
         .header-title p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-president {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 14px;
+            background: var(--bg-hover);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .header-president:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .header-president .president-icon { font-size: 16px; }
+        .header-president .president-label { font-size: 11px; color: var(--text-muted); font-weight: 300; }
+        .header-president .president-name {
+            font-size: 13px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-right {
@@ -243,9 +345,10 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
-        /* ===== الأزرار ===== */
         .btn {
             padding: 8px 20px;
             border-radius: 30px;
@@ -253,74 +356,89 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
+
+        .btn:hover::before { width: 300px; height: 300px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: #fff;
+            box-shadow: 0 4px 25px var(--primary-glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px var(--primary-glow); }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
         }
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
         .btn-success {
-            background: linear-gradient(135deg, #10b981, #22c55e);
+            background: linear-gradient(135deg, var(--success), #059669);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 25px rgba(16,185,129,0.25);
         }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(135deg, var(--error), #dc2626);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
+            box-shadow: 0 4px 25px rgba(239,68,68,0.25);
         }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4); }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
-        }
-        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4); }
+        .btn-danger:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
-        .btn-block { width: 100%; justify-content: center; }
 
-        /* ===== البطاقات ===== */
+        .role-badge {
+            font-size: 11px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: var(--primary-glow);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
         .card {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 20px 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            margin-bottom: 20px;
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
-        .card:hover {
-            border-color: rgba(0, 100, 255, 0.10);
-        }
+        .card:hover { border-color: var(--primary-color); }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-color);
             margin-bottom: 16px;
             display: flex;
             align-items: center;
@@ -329,14 +447,13 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 100, 255, 0.15);
-            color: #60a5fa;
+            background: var(--primary-glow);
+            color: var(--primary-color);
             padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
         }
 
-        /* ===== الفورم ===== */
         .form-group {
             margin-bottom: 14px;
         }
@@ -345,7 +462,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.45);
+            color: var(--text-muted);
             margin-bottom: 4px;
         }
 
@@ -354,10 +471,10 @@
         .form-group textarea {
             width: 100%;
             padding: 10px 14px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-color);
             font-size: 14px;
             outline: none;
             transition: all 0.3s ease;
@@ -366,14 +483,14 @@
 
         .form-group input::placeholder,
         .form-group textarea::placeholder {
-            color: rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .form-group textarea {
@@ -382,48 +499,41 @@
         }
 
         .form-group select option {
-            background: #0a0f1f;
-            color: #fff;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
         }
 
         .form-row-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
         }
 
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        /* ===== منطقة الرفع ===== */
         .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.10);
-            border-radius: 14px;
-            padding: 24px;
+            border: 2px dashed rgba(255,255,255,0.10);
+            border-radius: var(--radius-sm);
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .upload-area:hover {
-            border-color: rgba(0, 100, 255, 0.3);
-            background: rgba(255, 255, 255, 0.02);
+            border-color: var(--primary-color);
+            background: var(--bg-hover);
         }
 
         .upload-area .preview {
-            max-width: 120px;
-            max-height: 120px;
+            max-width: 100px;
+            max-height: 100px;
             margin: 0 auto 8px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             overflow: hidden;
         }
 
@@ -435,31 +545,29 @@
 
         .upload-area .text {
             font-size: 13px;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
         }
-
         .upload-area .sub {
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.15);
+            color: var(--text-dim);
             margin-top: 4px;
         }
 
         .upload-status {
             display: none;
             font-size: 12px;
-            margin-top: 6px;
             padding: 4px 12px;
             border-radius: 8px;
+            margin-top: 6px;
         }
 
         .upload-status.show { display: inline-block; }
-        .upload-status.success { color: #22c55e; background: rgba(34, 197, 94, 0.10); }
-        .upload-status.error { color: #ef4444; background: rgba(239, 68, 68, 0.10); }
+        .upload-status.success { color: var(--success); background: var(--success-bg); }
+        .upload-status.error { color: var(--error); background: var(--error-bg); }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             padding: 12px 16px;
             margin-bottom: 16px;
             text-align: center;
@@ -467,24 +575,22 @@
         }
 
         .msg.show { display: block; animation: fadeIn 0.3s ease; }
-        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
-        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
-        .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
-        .msg.warning { background: rgba(245, 158, 11, 0.10); border: 1px solid rgba(245, 158, 11, 0.20); color: #f59e0b; }
+        .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
+        .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
+        .msg.info { background: var(--info-bg); border: 1px solid var(--info); color: var(--info); }
 
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(-8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== لودر ===== */
         .loader { display: none; text-align: center; padding: 30px 0; }
         .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0066ff;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -492,48 +598,130 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== الفوتر ===== */
         .footer {
             text-align: center;
             padding: 20px 0 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 1px solid var(--border);
             margin-top: 24px;
-            color: rgba(255, 255, 255, 0.10);
+            color: var(--text-dim);
             font-size: 11px;
         }
 
-        /* ===== مساعدات ===== */
-        .hidden { display: none !important; }
-        .mt-8 { margin-top: 8px; }
-        .mt-12 { margin-top: 12px; }
-        .gap-8 { gap: 8px; }
-        .flex-wrap { display: flex; flex-wrap: wrap; align-items: center; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .text-danger { color: #ef4444; }
+        .tabs-container {
+            display: flex;
+            gap: 6px;
+            background: var(--bg-hover);
+            border-radius: var(--radius);
+            padding: 6px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border-light);
+        }
 
-        /* ===== التجاوب ===== */
-        @media (max-width: 992px) {
-            .settings-grid { grid-template-columns: 1fr; }
-            .form-row-3 { grid-template-columns: 1fr 1fr; }
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-secondary);
+            background: var(--bg-hover);
+        }
+
+        .tab-btn.active {
+            color: var(--text-color);
+            background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(124,58,237,0.15));
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .theme-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .theme-option {
+            background: var(--bg-hover);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-option:hover {
+            border-color: var(--primary-color);
+        }
+
+        .theme-option.active {
+            border-color: var(--primary-color);
+            background: var(--primary-glow);
+        }
+
+        .theme-option .theme-colors {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin: 6px 0;
+        }
+
+        .theme-option .theme-colors span {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .theme-option .theme-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-color);
         }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
-            .header-right { justify-content: center; }
+            .header-right { justify-content: center; flex-wrap: wrap; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
             .container { padding: 10px; }
             .card { padding: 14px 16px; }
             .form-row { grid-template-columns: 1fr; }
-            .form-row-3 { grid-template-columns: 1fr; }
-            .settings-grid { grid-template-columns: 1fr; }
+            .form-row-3 { grid-template-columns: 1fr 1fr; }
             .glow-orb { display: none; }
             .ring { display: none; }
+            .header-title { text-align: center; }
+            .header-president { padding: 3px 10px; }
+            .header-president .president-name { font-size: 12px; }
+            .tabs-container { flex-direction: column; }
+            .tab-btn { text-align: center; }
+            .theme-preview { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 480px) {
             .header-title h1 { font-size: 15px; }
-            .upload-area .preview { max-width: 80px; max-height: 80px; }
-            .btn { padding: 6px 14px; font-size: 12px; }
-            .upload-area { padding: 16px; }
+            .btn { padding: 6px 14px; font-size: 11px; }
+            .logo-box { width: 36px; height: 36px; font-size: 14px; }
+            .form-row-3 { grid-template-columns: 1fr; }
+            .theme-preview { grid-template-columns: 1fr 1fr; }
+            .header-president .president-name { font-size: 11px; }
         }
     </style>
 </head>
@@ -558,7 +746,6 @@
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
-        <div class="ring"></div>
     </div>
 
     <div class="glow-orb"></div>
@@ -568,14 +755,20 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1>إعدادات النظام</h1>
-                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="pageTitleHeader"></h1>
+                    <p id="committeeName"></p>
+                </div>
+                <div class="header-president">
+                    <span class="president-icon">👤</span>
+                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
+                <span class="role-badge" id="roleBadge"></span>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn"></a>
                 <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
             </div>
         </header>
@@ -584,161 +777,425 @@
 
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
-            <div style="color:rgba(255,255,255,0.3);">جاري تحميل الإعدادات...</div>
+            <div style="color:var(--text-muted);" id="loaderText"></div>
         </div>
 
         <div id="pageContent" style="display:none;">
 
-            <!-- الإعدادات العامة -->
-            <div class="card">
-                <div class="card-title">
-                    <span>الإعدادات العامة</span>
-                    <span class="badge">معلومات المنصة</span>
-                </div>
-                <div class="settings-grid">
+            <!-- ===== تبويبات ===== -->
+            <div class="tabs-container" id="tabsContainer">
+                <button class="tab-btn active" data-tab="tabGeneral" id="tabGeneralBtn">عامة</button>
+                <button class="tab-btn" data-tab="tabAppearance" id="tabAppearanceBtn">المظهر</button>
+                <button class="tab-btn" data-tab="tabThemes" id="tabThemesBtn">الثيمات</button>
+                <button class="tab-btn" data-tab="tabTexts" id="tabTextsBtn">النصوص</button>
+                <button class="tab-btn" data-tab="tabImages" id="tabImagesBtn">الصور</button>
+                <button class="tab-btn" data-tab="tabSecurity" id="tabSecurityBtn">الأمان</button>
+            </div>
 
-                    <div>
+            <!-- ===== تبويب عامة ===== -->
+            <div class="tab-content active" id="tabGeneral">
+                <div class="card">
+                    <div class="card-title">
+                        <span id="generalTitle"></span>
+                        <span class="badge" id="generalBadge"></span>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>اسم النقابة</label>
+                            <label id="unionNameLabel"></label>
                             <input type="text" id="unionName" />
                         </div>
                         <div class="form-group">
-                            <label>اسم اللجنة</label>
-                            <input type="text" id="committeeName" />
-                        </div>
-                        <div class="form-group">
-                            <label>مدة العرض الترحيبي (ثواني)</label>
-                            <input type="number" id="splashDuration" min="1" max="15" />
+                            <label id="committeeNameLabel"></label>
+                            <input type="text" id="committeeNameInput" />
                         </div>
                     </div>
-
-                    <div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>نص البوكس تحت البحث</label>
+                            <label id="presidentNameLabel"></label>
+                            <input type="text" id="presidentNameInput" />
+                        </div>
+                        <div class="form-group">
+                            <label id="presidentLabelLabel"></label>
+                            <input type="text" id="presidentLabelInput" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="splashDurationLabel"></label>
+                            <input type="number" id="splashDuration" min="1" max="15" />
+                        </div>
+                        <div class="form-group">
+                            <label id="sessionTimeoutLabel"></label>
+                            <input type="number" id="sessionTimeout" min="5" max="120" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="footerTextLabel"></label>
+                        <input type="text" id="footerTextInput" />
+                    </div>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-primary" onclick="saveGeneral()" id="saveGeneralBtn"></button>
+                        <button class="btn btn-outline btn-sm" onclick="resetGeneral()" id="resetGeneralBtn" style="margin-right:8px;"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== تبويب المظهر ===== -->
+            <div class="tab-content" id="tabAppearance">
+                <div class="card">
+                    <div class="card-title">
+                        <span id="appearanceTitle"></span>
+                        <span class="badge" id="appearanceBadge"></span>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label id="primaryColorLabel"></label>
+                            <input type="color" id="primaryColor" value="#C9A84C" />
+                        </div>
+                        <div class="form-group">
+                            <label id="accentColorLabel"></label>
+                            <input type="color" id="accentColor" value="#7C3AED" />
+                        </div>
+                        <div class="form-group">
+                            <label id="bgColorLabel"></label>
+                            <input type="color" id="bgColor" value="#0A0E1A" />
+                        </div>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label id="textColorLabel"></label>
+                            <input type="color" id="textColor" value="#FFFFFF" />
+                        </div>
+                        <div class="form-group">
+                            <label id="successColorLabel"></label>
+                            <input type="color" id="successColor" value="#10B981" />
+                        </div>
+                        <div class="form-group">
+                            <label id="errorColorLabel"></label>
+                            <input type="color" id="errorColor" value="#EF4444" />
+                        </div>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label id="warningColorLabel"></label>
+                            <input type="color" id="warningColor" value="#F59E0B" />
+                        </div>
+                        <div class="form-group">
+                            <label id="infoColorLabel"></label>
+                            <input type="color" id="infoColor" value="#3B82F6" />
+                        </div>
+                        <div class="form-group">
+                            <label id="borderColorLabel"></label>
+                            <input type="color" id="borderColor" value="#0A1628" />
+                        </div>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label id="fontFamilyLabel"></label>
+                            <select id="fontFamily">
+                                <option value="Cairo">Cairo</option>
+                                <option value="Tajawal">Tajawal</option>
+                                <option value="Amiri">Amiri</option>
+                                <option value="Noto Kufi Arabic">Noto Kufi Arabic</option>
+                                <option value="Almarai">Almarai</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label id="fontSizeLabel"></label>
+                            <select id="fontSize">
+                                <option value="14px">صغير</option>
+                                <option value="16px" selected>متوسط</option>
+                                <option value="18px">كبير</option>
+                                <option value="20px">كبير جداً</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label id="cardStyleLabel"></label>
+                            <select id="cardStyle">
+                                <option value="glass">زجاجي</option>
+                                <option value="solid">صلب</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-primary" onclick="saveAppearance()" id="saveAppearanceBtn"></button>
+                        <button class="btn btn-outline btn-sm" onclick="resetAppearance()" id="resetAppearanceBtn" style="margin-right:8px;"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== تبويب الثيمات ===== -->
+            <div class="tab-content" id="tabThemes">
+                <div class="card">
+                    <div class="card-title">
+                        <span id="themesTitle"></span>
+                        <span class="badge" id="themesBadge"></span>
+                    </div>
+                    <p style="color:var(--text-muted);font-size:13px;margin-bottom:12px;" id="themesDesc"></p>
+                    <div class="theme-preview" id="themePreview">
+                        <div class="theme-option active" data-theme="dark" onclick="applyTheme('dark')">
+                            <div class="theme-colors">
+                                <span style="background:#0A0E1A;"></span>
+                                <span style="background:#C9A84C;"></span>
+                                <span style="background:#7C3AED;"></span>
+                                <span style="background:#FFFFFF;"></span>
+                            </div>
+                            <div class="theme-name">داكن</div>
+                        </div>
+                        <div class="theme-option" data-theme="light" onclick="applyTheme('light')">
+                            <div class="theme-colors">
+                                <span style="background:#F5F7FA;"></span>
+                                <span style="background:#C9A84C;"></span>
+                                <span style="background:#7C3AED;"></span>
+                                <span style="background:#1A1A2E;"></span>
+                            </div>
+                            <div class="theme-name">فاتح</div>
+                        </div>
+                        <div class="theme-option" data-theme="gold" onclick="applyTheme('gold')">
+                            <div class="theme-colors">
+                                <span style="background:#1A120B;"></span>
+                                <span style="background:#C9A84C;"></span>
+                                <span style="background:#E8D5A3;"></span>
+                                <span style="background:#E8D5A3;"></span>
+                            </div>
+                            <div class="theme-name">ذهبي</div>
+                        </div>
+                        <div class="theme-option" data-theme="blue" onclick="applyTheme('blue')">
+                            <div class="theme-colors">
+                                <span style="background:#050A18;"></span>
+                                <span style="background:#3B82F6;"></span>
+                                <span style="background:#60A5FA;"></span>
+                                <span style="background:#E8F0FE;"></span>
+                            </div>
+                            <div class="theme-name">أزرق</div>
+                        </div>
+                        <div class="theme-option" data-theme="purple" onclick="applyTheme('purple')">
+                            <div class="theme-colors">
+                                <span style="background:#0A0518;"></span>
+                                <span style="background:#8B5CF6;"></span>
+                                <span style="background:#A78BFA;"></span>
+                                <span style="background:#EDE7FF;"></span>
+                            </div>
+                            <div class="theme-name">بنفسجي</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-primary" onclick="saveTheme()" id="saveThemeBtn"></button>
+                        <button class="btn btn-outline btn-sm" onclick="resetTheme()" id="resetThemeBtn" style="margin-right:8px;"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== تبويب النصوص ===== -->
+            <div class="tab-content" id="tabTexts">
+                <div class="card">
+                    <div class="card-title">
+                        <span id="textsTitle"></span>
+                        <span class="badge" id="textsBadge"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="heroTitleLabel"></label>
+                            <input type="text" id="heroTitle" />
+                        </div>
+                        <div class="form-group">
+                            <label id="heroSubtitleLabel"></label>
+                            <input type="text" id="heroSubtitle" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="infoBoxTextLabel"></label>
                             <textarea id="infoBoxText" rows="2"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>نص تذييل الصفحة</label>
-                            <input type="text" id="footerText" />
+                            <label id="servicesTextLabel"></label>
+                            <input type="text" id="servicesBtnText" />
                         </div>
                     </div>
-
-                </div>
-
-                <div class="flex-wrap" style="gap:10px;margin-top:8px;">
-                    <button class="btn btn-primary" onclick="saveGeneralSettings()">حفظ الإعدادات العامة</button>
-                    <button class="btn btn-outline" onclick="resetToDefault()">استعادة الافتراضي</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="servicesLinkLabel"></label>
+                            <input type="url" id="servicesBtnLink" />
+                        </div>
+                        <div class="form-group">
+                            <label id="pageTitleLabel"></label>
+                            <input type="text" id="pageTitleInput" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="loginBtnTextLabel"></label>
+                            <input type="text" id="loginBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="logoutBtnTextLabel"></label>
+                            <input type="text" id="logoutBtnText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="searchCertBtnTextLabel"></label>
+                            <input type="text" id="searchCertBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="searchStudentBtnTextLabel"></label>
+                            <input type="text" id="searchStudentBtnText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="searchAcademyBtnTextLabel"></label>
+                            <input type="text" id="searchAcademyBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="tabCertTextLabel"></label>
+                            <input type="text" id="tabCertText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="tabStudentTextLabel"></label>
+                            <input type="text" id="tabStudentText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="tabAcademyTextLabel"></label>
+                            <input type="text" id="tabAcademyText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="printBtnTextLabel"></label>
+                            <input type="text" id="printBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="pdfBtnTextLabel"></label>
+                            <input type="text" id="pdfBtnText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="shareBtnTextLabel"></label>
+                            <input type="text" id="shareBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="editBtnTextLabel"></label>
+                            <input type="text" id="editBtnText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="deleteBtnTextLabel"></label>
+                            <input type="text" id="deleteBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="addBtnTextLabel"></label>
+                            <input type="text" id="addBtnText" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="saveBtnTextLabel"></label>
+                            <input type="text" id="saveBtnText" />
+                        </div>
+                        <div class="form-group">
+                            <label id="cancelBtnTextLabel"></label>
+                            <input type="text" id="cancelBtnText" />
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-primary" onclick="saveTexts()" id="saveTextsBtn"></button>
+                        <button class="btn btn-outline btn-sm" onclick="resetTexts()" id="resetTextsBtn" style="margin-right:8px;"></button>
+                    </div>
                 </div>
             </div>
 
-            <!-- زر خدمات النقابة -->
-            <div class="card">
-                <div class="card-title">
-                    <span>زر خدمات النقابة</span>
-                    <span class="badge">رابط سريع</span>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>نص الزر</label>
-                        <input type="text" id="servicesBtnText" />
+            <!-- ===== تبويب الصور ===== -->
+            <div class="tab-content" id="tabImages">
+                <div class="card">
+                    <div class="card-title">
+                        <span id="imagesTitle"></span>
+                        <span class="badge" id="imagesBadge"></span>
                     </div>
-                    <div class="form-group">
-                        <label>رابط الزر</label>
-                        <input type="url" id="servicesBtnLink" />
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="saveServicesButton()">حفظ زر الخدمات</button>
-            </div>
-
-            <!-- رفع اللوجو والختم - Cloudinary -->
-            <div class="card">
-                <div class="card-title">
-                    <span>رفع اللوجو والختم</span>
-                    <span class="badge">Cloudinary</span>
-                </div>
-
-                <div class="form-row">
-                    <div>
-                        <div class="upload-area" onclick="document.getElementById('logoInput').click()">
-                            <div class="preview" id="logoPreview">
-                                <img src="" alt="لوجو النقابة" style="display:none;" />
+                    <div class="form-row">
+                        <div>
+                            <div class="upload-area" onclick="document.getElementById('logoInput').click()">
+                                <div class="preview" id="logoPreview">
+                                    <img src="" alt="لوجو النقابة" style="display:none;" />
+                                </div>
+                                <div class="text" id="logoPlaceholder"></div>
+                                <div class="sub" id="logoSub"></div>
+                                <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
                             </div>
-                            <div class="text" id="logoPlaceholder">اضغط لرفع لوجو النقابة</div>
-                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
-                            <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
-                        </div>
-                        <div class="flex-wrap" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn">رفع اللوجو</button>
-                            <span class="upload-status" id="logoStatus"></span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="upload-area" onclick="document.getElementById('stampInput').click()">
-                            <div class="preview" id="stampPreview">
-                                <img src="" alt="ختم النقابة" style="display:none;" />
+                            <div class="flex" style="gap:8px;margin-top:8px;">
+                                <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn"></button>
+                                <span class="upload-status" id="logoStatus"></span>
                             </div>
-                            <div class="text" id="stampPlaceholder">اضغط لرفع ختم النقابة</div>
-                            <div class="sub">PNG, JPG, SVG • حد أقصى 2MB</div>
-                            <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
                         </div>
-                        <div class="flex-wrap" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn">رفع الختم</button>
-                            <span class="upload-status" id="stampStatus"></span>
+                        <div>
+                            <div class="upload-area" onclick="document.getElementById('stampInput').click()">
+                                <div class="preview" id="stampPreview">
+                                    <img src="" alt="ختم النقابة" style="display:none;" />
+                                </div>
+                                <div class="text" id="stampPlaceholder"></div>
+                                <div class="sub" id="stampSub"></div>
+                                <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
+                            </div>
+                            <div class="flex" style="gap:8px;margin-top:8px;">
+                                <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn"></button>
+                                <span class="upload-status" id="stampStatus"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="flex-wrap" style="gap:10px;margin-top:12px;">
-                    <button class="btn btn-success btn-sm" onclick="loadImagesFromCloudinary()">تحميل الصور الحالية</button>
-                    <button class="btn btn-danger btn-sm" onclick="clearImagesFromCloudinary()">حذف الصور</button>
+                    <div class="flex" style="gap:10px;margin-top:12px;">
+                        <button class="btn btn-outline btn-sm" onclick="loadImagesFromFirestore()" id="loadImagesBtn"></button>
+                        <button class="btn btn-danger btn-sm" onclick="clearImages()" id="clearImagesBtn"></button>
+                    </div>
                 </div>
             </div>
 
-            <!-- إعدادات الأمان -->
-            <div class="card">
-                <div class="card-title">
-                    <span>إعدادات الأمان</span>
-                    <span class="badge">حماية</span>
-                </div>
-                <div class="form-row-3">
-                    <div class="form-group">
-                        <label>مدة الجلسة (دقائق)</label>
-                        <input type="number" id="sessionTimeout" min="5" max="120" />
+            <!-- ===== تبويب الأمان ===== -->
+            <div class="tab-content" id="tabSecurity">
+                <div class="card" style="border-color:rgba(239,68,68,0.15);">
+                    <div class="card-title">
+                        <span id="securityTitle"></span>
+                        <span class="badge" id="securityBadge"></span>
                     </div>
-                    <div class="form-group">
-                        <label>محاولات الدخول المسموحة</label>
-                        <input type="number" id="maxLoginAttempts" min="3" max="10" />
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label id="maxLoginAttemptsLabel"></label>
+                            <input type="number" id="maxLoginAttempts" min="3" max="10" />
+                        </div>
+                        <div class="form-group">
+                            <label id="maintenanceModeLabel"></label>
+                            <select id="maintenanceMode">
+                                <option value="false">معطل</option>
+                                <option value="true">مفعل</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label id="allowRegistrationLabel"></label>
+                            <select id="allowRegistration">
+                                <option value="true">مفعل</option>
+                                <option value="false">معطل</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>وضع الصيانة</label>
-                        <select id="maintenanceMode">
-                            <option value="false">معطل</option>
-                            <option value="true">مفعل</option>
-                        </select>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-primary" onclick="saveSecurity()" id="saveSecurityBtn"></button>
+                        <button class="btn btn-outline btn-sm" onclick="resetSecurity()" id="resetSecurityBtn" style="margin-right:8px;"></button>
                     </div>
-                </div>
-                <button class="btn btn-primary" onclick="saveSecuritySettings()">حفظ إعدادات الأمان</button>
-            </div>
-
-            <!-- إجراءات خطيرة -->
-            <div class="card" style="border-color:rgba(239,68,68,0.15);">
-                <div class="card-title" style="color:#ef4444;">
-                    <span>إجراءات خطيرة</span>
-                    <span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;">انتباه</span>
-                </div>
-                <div class="flex-wrap" style="gap:10px;">
-                    <button class="btn btn-danger" onclick="resetAllData()">إعادة تعيين جميع البيانات</button>
-                    <button class="btn btn-danger" onclick="clearAllActivities()">حذف سجل النشاطات</button>
-                    <button class="btn btn-warning" onclick="exportBackup()">تصدير نسخة احتياطية</button>
-                    <button class="btn btn-outline" onclick="importBackup()">استيراد نسخة احتياطية</button>
                 </div>
             </div>
 
         </div>
 
         <footer class="footer">
-            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <span id="footerText"></span>
+            <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
+                <span id="presidentFooter"></span>
+                <span id="presidentName"></span>
+            </div>
         </footer>
 
     </div>
@@ -762,62 +1219,426 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // 2. إعدادات Cloudinary
-        // ============================================================
-        const CLOUDINARY = {
-            cloudName: 'dvxh9l4lv',
-            uploadPreset: 'ml_default',
-            folder: 'itwsAcCertification'
-        };
-
-        // ============================================================
-        // 3. متغيرات
+        // 2. متغيرات
         // ============================================================
         let currentUser = null;
         let userRole = null;
         let logoFile = null;
         let stampFile = null;
+        let currentTheme = 'dark';
+
+        const THEMES = {
+            dark: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            },
+            light: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#F5F7FA',
+                text: '#1A1A2E',
+                textSecondary: 'rgba(26,26,46,0.7)',
+                textMuted: 'rgba(26,26,46,0.4)',
+                textDim: 'rgba(26,26,46,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(26,26,46,0.06)',
+                cardBg: 'rgba(255,255,255,0.8)'
+            },
+            gold: {
+                primary: '#C9A84C',
+                accent: '#E8D5A3',
+                background: '#1A120B',
+                text: '#E8D5A3',
+                textSecondary: 'rgba(232,213,163,0.7)',
+                textMuted: 'rgba(232,213,163,0.4)',
+                textDim: 'rgba(232,213,163,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(232,213,163,0.06)',
+                cardBg: 'rgba(201,168,76,0.08)'
+            },
+            blue: {
+                primary: '#3B82F6',
+                accent: '#60A5FA',
+                background: '#050A18',
+                text: '#E8F0FE',
+                textSecondary: 'rgba(232,240,254,0.7)',
+                textMuted: 'rgba(232,240,254,0.4)',
+                textDim: 'rgba(232,240,254,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(59,130,246,0.06)',
+                cardBg: 'rgba(59,130,246,0.06)'
+            },
+            purple: {
+                primary: '#8B5CF6',
+                accent: '#A78BFA',
+                background: '#0A0518',
+                text: '#EDE7FF',
+                textSecondary: 'rgba(237,231,255,0.7)',
+                textMuted: 'rgba(237,231,255,0.4)',
+                textDim: 'rgba(237,231,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(139,92,246,0.06)',
+                cardBg: 'rgba(139,92,246,0.06)'
+            }
+        };
+
         let settings = {
+            pageTitleHeader: 'إعدادات النظام',
             committeeName: 'لجنة التحول الرقمي والتدريب',
+            logoUrl: '',
+            stampUrl: '',
             footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-            logoUrl: ''
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            dashboardBtn: 'لوحة التحكم',
+            loaderText: 'جاري تحميل الإعدادات...',
+            colors: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            }
         };
 
         // ============================================================
-        // 4. جلب الإعدادات
+        // 3. جلب الإعدادات
         // ============================================================
         function loadSettings() {
             db.collection('settings').doc('general').get()
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-                        if (data.committeeName) settings.committeeName = data.committeeName;
-                        if (data.footerText) settings.footerText = data.footerText;
+                        if (data.unionName) document.getElementById('unionName').value = data.unionName;
+                        if (data.committeeName) document.getElementById('committeeNameInput').value = data.committeeName;
+                        if (data.presidentName) document.getElementById('presidentNameInput').value = data.presidentName;
+                        if (data.presidentLabel) document.getElementById('presidentLabelInput').value = data.presidentLabel;
+                        if (data.splashDuration) document.getElementById('splashDuration').value = data.splashDuration;
+                        if (data.sessionTimeout) document.getElementById('sessionTimeout').value = data.sessionTimeout;
+                        if (data.footerText) document.getElementById('footerTextInput').value = data.footerText;
+                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
-                        applySettings();
+                        if (data.stampUrl) settings.stampUrl = data.stampUrl;
+                    }
+                    applySettings();
+                    applyColors(settings.colors);
+                })
+                .catch(function() {
+                    applySettings();
+                    applyColors(settings.colors);
+                });
+
+            // جلب النصوص
+            db.collection('settings').doc('texts').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.heroTitle) document.getElementById('heroTitle').value = data.heroTitle;
+                        if (data.heroSubtitle) document.getElementById('heroSubtitle').value = data.heroSubtitle;
+                        if (data.infoBoxText) document.getElementById('infoBoxText').value = data.infoBoxText;
+                        if (data.servicesText) document.getElementById('servicesBtnText').value = data.servicesText;
+                        if (data.servicesLink) document.getElementById('servicesBtnLink').value = data.servicesLink;
+                        if (data.pageTitle) document.getElementById('pageTitleInput').value = data.pageTitle;
+                        if (data.loginBtnText) document.getElementById('loginBtnText').value = data.loginBtnText;
+                        if (data.logoutBtnText) document.getElementById('logoutBtnText').value = data.logoutBtnText;
+                        if (data.searchCertBtnText) document.getElementById('searchCertBtnText').value = data.searchCertBtnText;
+                        if (data.searchStudentBtnText) document.getElementById('searchStudentBtnText').value = data.searchStudentBtnText;
+                        if (data.searchAcademyBtnText) document.getElementById('searchAcademyBtnText').value = data.searchAcademyBtnText;
+                        if (data.tabCertText) document.getElementById('tabCertText').value = data.tabCertText;
+                        if (data.tabStudentText) document.getElementById('tabStudentText').value = data.tabStudentText;
+                        if (data.tabAcademyText) document.getElementById('tabAcademyText').value = data.tabAcademyText;
+                        if (data.printBtnText) document.getElementById('printBtnText').value = data.printBtnText;
+                        if (data.pdfBtnText) document.getElementById('pdfBtnText').value = data.pdfBtnText;
+                        if (data.shareBtnText) document.getElementById('shareBtnText').value = data.shareBtnText;
+                        if (data.editBtnText) document.getElementById('editBtnText').value = data.editBtnText;
+                        if (data.deleteBtnText) document.getElementById('deleteBtnText').value = data.deleteBtnText;
+                        if (data.addBtnText) document.getElementById('addBtnText').value = data.addBtnText;
+                        if (data.saveBtnText) document.getElementById('saveBtnText').value = data.saveBtnText;
+                        if (data.cancelBtnText) document.getElementById('cancelBtnText').value = data.cancelBtnText;
                     }
                 })
                 .catch(function() {});
+
+            // جلب إعدادات الأمان
+            db.collection('settings').doc('security').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.maxLoginAttempts) document.getElementById('maxLoginAttempts').value = data.maxLoginAttempts;
+                        if (data.maintenanceMode !== undefined) document.getElementById('maintenanceMode').value = data.maintenanceMode ? 'true' : 'false';
+                        if (data.allowRegistration !== undefined) document.getElementById('allowRegistration').value = data.allowRegistration ? 'true' : 'false';
+                    }
+                })
+                .catch(function() {});
+
+            // جلب إعدادات التصميم
+            db.collection('settings').doc('design').get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.colors) {
+                            if (data.colors.primary) document.getElementById('primaryColor').value = data.colors.primary;
+                            if (data.colors.accent) document.getElementById('accentColor').value = data.colors.accent;
+                            if (data.colors.background) document.getElementById('bgColor').value = data.colors.background;
+                            if (data.colors.text) document.getElementById('textColor').value = data.colors.text;
+                            if (data.colors.success) document.getElementById('successColor').value = data.colors.success;
+                            if (data.colors.error) document.getElementById('errorColor').value = data.colors.error;
+                            if (data.colors.warning) document.getElementById('warningColor').value = data.colors.warning;
+                            if (data.colors.info) document.getElementById('infoColor').value = data.colors.info;
+                            if (data.colors.border) document.getElementById('borderColor').value = data.colors.border;
+                        }
+                        if (data.fontFamily) document.getElementById('fontFamily').value = data.fontFamily;
+                        if (data.fontSize) document.getElementById('fontSize').value = data.fontSize;
+                        if (data.cardStyle) document.getElementById('cardStyle').value = data.cardStyle;
+                    }
+                })
+                .catch(function() {});
+
+            // جلب الثيم الحالي من LocalStorage
+            const savedTheme = localStorage.getItem('userTheme');
+            if (savedTheme && THEMES[savedTheme]) {
+                currentTheme = savedTheme;
+                document.querySelectorAll('.theme-option').forEach(function(el) {
+                    el.classList.toggle('active', el.dataset.theme === savedTheme);
+                });
+            }
+
+            loadImagesFromFirestore();
+            applyLabels();
+            updateFooterText();
         }
 
         function applySettings() {
-            document.getElementById('committeeName').textContent = settings.committeeName;
-            document.getElementById('footerText').textContent = settings.footerText;
-            
-            const logoBox = document.getElementById('logoBox');
-            if (settings.logoUrl && settings.logoUrl.trim() !== '') {
-                logoBox.style.backgroundImage = 'url(' + settings.logoUrl + ')';
-                logoBox.style.backgroundSize = 'cover';
-                logoBox.style.backgroundPosition = 'center';
-                logoBox.textContent = '';
-            } else {
-                logoBox.style.backgroundImage = 'linear-gradient(135deg, #0066ff, #8b5cf6)';
-                logoBox.textContent = 'ن.ت';
+            const committeeEl = document.getElementById('committeeName');
+            const footerEl = document.getElementById('footerText');
+            const presidentEl = document.getElementById('headerPresidentName');
+            const presidentLabelEl = document.getElementById('presidentLabel');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
+            const pageTitleEl = document.getElementById('pageTitleHeader');
+
+            if (pageTitleEl) pageTitleEl.textContent = settings.pageTitleHeader;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
+            if (presidentEl) presidentEl.textContent = settings.presidentName;
+            if (footerEl) footerEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
+
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
+
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.textContent = settings.loaderText;
+
+            if (settings.logoUrl) {
+                const logo = document.getElementById('logoBox');
+                if (logo) {
+                    logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logo.style.backgroundSize = 'cover';
+                    logo.style.backgroundPosition = 'center';
+                    logo.textContent = '';
+                }
+            }
+
+            // OG Tags
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (pageTitle) pageTitle.textContent = 'إعدادات النظام - ' + settings.unionName;
+            if (metaDescription) metaDescription.content = 'إعدادات النظام - ' + settings.unionName;
+            if (ogTitle) ogTitle.content = 'إعدادات النظام';
+            if (ogDescription) ogDescription.content = 'إعدادات النظام - نقابة تكنولوجيا المعلومات';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = 'إعدادات النظام';
+            if (twitterTitle) twitterTitle.content = 'إعدادات النظام';
+            if (twitterDescription) twitterDescription.content = 'إعدادات النظام - نقابة تكنولوجيا المعلومات';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
+            }
+        }
+
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        function applyTheme(themeName) {
+            const theme = THEMES[themeName];
+            if (!theme) return;
+
+            currentTheme = themeName;
+            localStorage.setItem('userTheme', themeName);
+
+            document.querySelectorAll('.theme-option').forEach(function(el) {
+                el.classList.toggle('active', el.dataset.theme === themeName);
+            });
+
+            applyColors(theme);
+            showMsg('تم تطبيق الثيم: ' + themeName, 'success');
+        }
+
+        function applyLabels() {
+            const labels = {
+                generalTitle: 'الإعدادات العامة',
+                generalBadge: 'أساسيات المنصة',
+                unionNameLabel: 'اسم النقابة',
+                committeeNameLabel: 'اسم اللجنة',
+                presidentNameLabel: 'اسم النقيب العام',
+                presidentLabelLabel: 'لقب النقيب',
+                splashDurationLabel: 'مدة العرض الترحيبي (ثواني)',
+                sessionTimeoutLabel: 'مدة الجلسة (دقائق)',
+                footerTextLabel: 'نص تذييل الصفحة',
+                saveGeneralBtn: 'حفظ الإعدادات العامة',
+                resetGeneralBtn: 'استعادة الافتراضي',
+                appearanceTitle: 'المظهر والألوان',
+                appearanceBadge: 'تصميم المنصة',
+                primaryColorLabel: 'اللون الأساسي',
+                accentColorLabel: 'اللون الثانوي',
+                bgColorLabel: 'لون الخلفية',
+                textColorLabel: 'لون النص',
+                successColorLabel: 'لون النجاح',
+                errorColorLabel: 'لون الخطأ',
+                warningColorLabel: 'لون التحذير',
+                infoColorLabel: 'لون المعلومات',
+                borderColorLabel: 'لون الحدود',
+                fontFamilyLabel: 'نوع الخط',
+                fontSizeLabel: 'حجم الخط',
+                cardStyleLabel: 'شكل البطاقات',
+                saveAppearanceBtn: 'حفظ المظهر',
+                resetAppearanceBtn: 'استعادة الافتراضي',
+                themesTitle: 'الثيمات',
+                themesBadge: 'اختر ثيمك المفضل',
+                themesDesc: 'اختر الثيم المناسب لك، التغييرات تحفظ محلياً على جهازك',
+                saveThemeBtn: 'حفظ الثيم الحالي',
+                resetThemeBtn: 'استعادة الافتراضي',
+                textsTitle: 'النصوص',
+                textsBadge: 'كل نصوص المنصة',
+                heroTitleLabel: 'عنوان الصفحة الرئيسية',
+                heroSubtitleLabel: 'النص التعريفي للصفحة الرئيسية',
+                infoBoxTextLabel: 'نص البوكس تحت البحث',
+                servicesTextLabel: 'نص زر الخدمات',
+                servicesLinkLabel: 'رابط زر الخدمات',
+                pageTitleLabel: 'عنوان الصفحة',
+                loginBtnTextLabel: 'نص زر تسجيل الدخول',
+                logoutBtnTextLabel: 'نص زر تسجيل الخروج',
+                searchCertBtnTextLabel: 'نص زر بحث عن شهادة',
+                searchStudentBtnTextLabel: 'نص زر بحث عن متدرب',
+                searchAcademyBtnTextLabel: 'نص زر بحث عن أكاديمية',
+                tabCertTextLabel: 'نص تبويب بحث عن شهادة',
+                tabStudentTextLabel: 'نص تبويب بحث عن متدرب',
+                tabAcademyTextLabel: 'نص تبويب بحث عن أكاديمية',
+                printBtnTextLabel: 'نص زر الطباعة',
+                pdfBtnTextLabel: 'نص زر تحميل PDF',
+                shareBtnTextLabel: 'نص زر المشاركة',
+                editBtnTextLabel: 'نص زر التعديل',
+                deleteBtnTextLabel: 'نص زر الحذف',
+                addBtnTextLabel: 'نص زر الإضافة',
+                saveBtnTextLabel: 'نص زر الحفظ',
+                cancelBtnTextLabel: 'نص زر الإلغاء',
+                saveTextsBtn: 'حفظ النصوص',
+                resetTextsBtn: 'استعادة الافتراضي',
+                imagesTitle: 'الصور',
+                imagesBadge: 'اللوجو والختم',
+                logoPlaceholder: 'اضغط لرفع لوجو النقابة',
+                logoSub: 'PNG, JPG, SVG • حد أقصى 2MB',
+                stampPlaceholder: 'اضغط لرفع ختم النقابة',
+                stampSub: 'PNG, JPG, SVG • حد أقصى 2MB',
+                uploadLogoBtn: 'رفع اللوجو',
+                uploadStampBtn: 'رفع الختم',
+                loadImagesBtn: 'تحميل الصور الحالية',
+                clearImagesBtn: 'حذف الصور',
+                securityTitle: 'الأمان',
+                securityBadge: 'حماية المنصة',
+                maxLoginAttemptsLabel: 'محاولات الدخول المسموحة',
+                maintenanceModeLabel: 'وضع الصيانة',
+                allowRegistrationLabel: 'السماح بالتسجيل',
+                saveSecurityBtn: 'حفظ إعدادات الأمان',
+                resetSecurityBtn: 'استعادة الافتراضي'
+            };
+
+            Object.keys(labels).forEach(function(key) {
+                const el = document.getElementById(key);
+                if (el) el.textContent = labels[key];
+            });
+        }
+
+        function updateFooterText() {
+            const val = document.getElementById('footerTextInput').value;
+            if (val) {
+                document.querySelector('.footer span').textContent = val;
             }
         }
 
         // ============================================================
-        // 5. المصادقة
+        // 4. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -828,10 +1649,18 @@
                             const data = doc.data();
                             if (data.role === 'super_admin') {
                                 userRole = data.role;
+                                const roleBadge = document.getElementById('roleBadge');
+                                if (roleBadge) {
+                                    roleBadge.textContent = 'سوبر أدمن';
+                                    roleBadge.style.background = 'rgba(139,92,246,0.15)';
+                                    roleBadge.style.color = '#8b5cf6';
+                                }
                                 loadSettings();
-                                loadAllSettings();
+                                document.getElementById('pageLoader').classList.remove('show');
+                                document.getElementById('pageContent').style.display = 'block';
                             } else {
-                                window.location.href = 'dashboard.html';
+                                showMsg('غير مصرح بالوصول إلى الإعدادات', 'error');
+                                setTimeout(function() { window.location.href = 'dashboard.html'; }, 2000);
                             }
                         } else {
                             window.location.href = 'login.html';
@@ -853,93 +1682,244 @@
         });
 
         // ============================================================
-        // 6. دوال مساعدة
+        // 5. التبويبات
         // ============================================================
-        function showMsg(msg, type) {
-            const el = document.getElementById('pageMsg');
-            el.textContent = msg;
-            el.className = 'msg show ' + type;
-            setTimeout(function() {
-                el.className = 'msg';
-            }, 5000);
-        }
-
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'upload-status show ' + type;
-            setTimeout(function() {
-                el.className = 'upload-status';
-            }, 4000);
-        }
-
-        function getEgyptTime() {
-            const now = new Date();
-            return new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
-        }
-
-        function logActivity(type, description) {
-            db.collection('activities').add({
-                userId: currentUser ? currentUser.uid : 'system',
-                userEmail: currentUser ? currentUser.email : 'system',
-                userName: 'سوبر أدمن',
-                userRole: 'super_admin',
-                type: type,
-                description: description,
-                timestamp: getEgyptTime(),
-                ipAddress: 'auto',
-                userAgent: navigator.userAgent
-            }).catch(function() {});
-        }
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(function(tab) { tab.classList.remove('active'); });
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
 
         // ============================================================
-        // 7. رفع الصور إلى Cloudinary
+        // 6. حفظ الإعدادات العامة
         // ============================================================
-        function uploadToCloudinary(file, publicId) {
-            return new Promise(function(resolve, reject) {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('upload_preset', CLOUDINARY.uploadPreset);
-                formData.append('folder', CLOUDINARY.folder);
-                if (publicId) {
-                    formData.append('public_id', publicId);
-                }
+        function saveGeneral() {
+            const data = {
+                unionName: document.getElementById('unionName').value.trim(),
+                committeeName: document.getElementById('committeeNameInput').value.trim(),
+                presidentName: document.getElementById('presidentNameInput').value.trim(),
+                presidentLabel: document.getElementById('presidentLabelInput').value.trim(),
+                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
+                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+                footerText: document.getElementById('footerTextInput').value.trim(),
+                updatedAt: new Date()
+            };
 
-                const url = 'https://api.cloudinary.com/v1_1/' + CLOUDINARY.cloudName + '/image/upload';
-
-                fetch(url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    if (data.error) {
-                        reject(data.error);
-                    } else {
-                        resolve(data);
-                    }
+            db.collection('settings').doc('general').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ الإعدادات العامة بنجاح', 'success');
+                    updateFooterText();
+                    applySettings();
                 })
                 .catch(function(err) {
-                    reject(err);
+                    showMsg('حدث خطأ: ' + err.message, 'error');
                 });
+        }
+
+        function resetGeneral() {
+            if (!confirm('هل تريد استعادة الإعدادات العامة الافتراضية؟')) return;
+            document.getElementById('unionName').value = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            document.getElementById('committeeNameInput').value = 'لجنة التحول الرقمي والتدريب';
+            document.getElementById('presidentNameInput').value = 'المهندس / محمود جميل';
+            document.getElementById('presidentLabelInput').value = 'النقيب العام:';
+            document.getElementById('splashDuration').value = 3;
+            document.getElementById('sessionTimeout').value = 30;
+            document.getElementById('footerTextInput').value = '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة';
+            updateFooterText();
+            showMsg('تم استعادة الإعدادات الافتراضية', 'success');
+        }
+
+        // ============================================================
+        // 7. حفظ المظهر
+        // ============================================================
+        function saveAppearance() {
+            const colors = {
+                primary: document.getElementById('primaryColor').value,
+                accent: document.getElementById('accentColor').value,
+                background: document.getElementById('bgColor').value,
+                text: document.getElementById('textColor').value,
+                success: document.getElementById('successColor').value,
+                error: document.getElementById('errorColor').value,
+                warning: document.getElementById('warningColor').value,
+                info: document.getElementById('infoColor').value,
+                border: document.getElementById('borderColor').value
+            };
+
+            const data = {
+                colors: colors,
+                fontFamily: document.getElementById('fontFamily').value,
+                fontSize: document.getElementById('fontSize').value,
+                cardStyle: document.getElementById('cardStyle').value,
+                updatedAt: new Date()
+            };
+
+            applyColors(colors);
+
+            db.collection('settings').doc('design').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ إعدادات المظهر بنجاح', 'success');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        function resetAppearance() {
+            if (!confirm('هل تريد استعادة إعدادات المظهر الافتراضية؟')) return;
+            document.getElementById('primaryColor').value = '#C9A84C';
+            document.getElementById('accentColor').value = '#7C3AED';
+            document.getElementById('bgColor').value = '#0A0E1A';
+            document.getElementById('textColor').value = '#FFFFFF';
+            document.getElementById('successColor').value = '#10B981';
+            document.getElementById('errorColor').value = '#EF4444';
+            document.getElementById('warningColor').value = '#F59E0B';
+            document.getElementById('infoColor').value = '#3B82F6';
+            document.getElementById('borderColor').value = '#0A1628';
+            document.getElementById('fontFamily').value = 'Cairo';
+            document.getElementById('fontSize').value = '16px';
+            document.getElementById('cardStyle').value = 'glass';
+            showMsg('تم استعادة إعدادات المظهر الافتراضية', 'success');
+        }
+
+        // ============================================================
+        // 8. حفظ الثيم
+        // ============================================================
+        function saveTheme() {
+            const theme = THEMES[currentTheme];
+            if (!theme) {
+                showMsg('الرجاء اختيار ثيم أولاً', 'info');
+                return;
+            }
+
+            db.collection('settings').doc('design').set({
+                colors: theme,
+                updatedAt: new Date()
+            }, { merge: true })
+            .then(function() {
+                showMsg('تم حفظ الثيم: ' + currentTheme, 'success');
+            })
+            .catch(function(err) {
+                showMsg('حدث خطأ: ' + err.message, 'error');
             });
         }
 
+        function resetTheme() {
+            if (!confirm('هل تريد استعادة الثيم الافتراضي؟')) return;
+            applyTheme('dark');
+            document.querySelectorAll('.theme-option').forEach(function(el) {
+                el.classList.toggle('active', el.dataset.theme === 'dark');
+            });
+            showMsg('تم استعادة الثيم الافتراضي', 'success');
+        }
+
         // ============================================================
-        // 8. رفع اللوجو والختم
+        // 9. حفظ النصوص
+        // ============================================================
+        function saveTexts() {
+            const data = {
+                heroTitle: document.getElementById('heroTitle').value.trim(),
+                heroSubtitle: document.getElementById('heroSubtitle').value.trim(),
+                infoBoxText: document.getElementById('infoBoxText').value.trim(),
+                servicesText: document.getElementById('servicesBtnText').value.trim(),
+                servicesLink: document.getElementById('servicesBtnLink').value.trim(),
+                pageTitle: document.getElementById('pageTitleInput').value.trim(),
+                loginBtnText: document.getElementById('loginBtnText').value.trim(),
+                logoutBtnText: document.getElementById('logoutBtnText').value.trim(),
+                searchCertBtnText: document.getElementById('searchCertBtnText').value.trim(),
+                searchStudentBtnText: document.getElementById('searchStudentBtnText').value.trim(),
+                searchAcademyBtnText: document.getElementById('searchAcademyBtnText').value.trim(),
+                tabCertText: document.getElementById('tabCertText').value.trim(),
+                tabStudentText: document.getElementById('tabStudentText').value.trim(),
+                tabAcademyText: document.getElementById('tabAcademyText').value.trim(),
+                printBtnText: document.getElementById('printBtnText').value.trim(),
+                pdfBtnText: document.getElementById('pdfBtnText').value.trim(),
+                shareBtnText: document.getElementById('shareBtnText').value.trim(),
+                editBtnText: document.getElementById('editBtnText').value.trim(),
+                deleteBtnText: document.getElementById('deleteBtnText').value.trim(),
+                addBtnText: document.getElementById('addBtnText').value.trim(),
+                saveBtnText: document.getElementById('saveBtnText').value.trim(),
+                cancelBtnText: document.getElementById('cancelBtnText').value.trim(),
+                updatedAt: new Date()
+            };
+
+            db.collection('settings').doc('texts').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ النصوص بنجاح', 'success');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        function resetTexts() {
+            if (!confirm('هل تريد استعادة النصوص الافتراضية؟')) return;
+            document.getElementById('heroTitle').value = 'تحقق من صحة شهاداتك التدريبية';
+            document.getElementById('heroSubtitle').value = 'منصة رسمية موثوقة من نقابة تكنولوجيا المعلومات';
+            document.getElementById('infoBoxText').value = 'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.';
+            document.getElementById('servicesBtnText').value = 'خدمات النقابة الإلكترونية';
+            document.getElementById('servicesBtnLink').value = 'https://itws.org.eg/services';
+            document.getElementById('pageTitleInput').value = 'نقابة تكنولوجيا المعلومات';
+            document.getElementById('loginBtnText').value = 'تسجيل الدخول';
+            document.getElementById('logoutBtnText').value = 'تسجيل الخروج';
+            document.getElementById('searchCertBtnText').value = 'بحث';
+            document.getElementById('searchStudentBtnText').value = 'بحث';
+            document.getElementById('searchAcademyBtnText').value = 'بحث';
+            document.getElementById('tabCertText').value = 'بحث عن شهادة';
+            document.getElementById('tabStudentText').value = 'بحث عن متدرب';
+            document.getElementById('tabAcademyText').value = 'بحث عن أكاديمية';
+            document.getElementById('printBtnText').value = 'طباعة';
+            document.getElementById('pdfBtnText').value = 'تحميل PDF';
+            document.getElementById('shareBtnText').value = 'مشاركة';
+            document.getElementById('editBtnText').value = 'تعديل';
+            document.getElementById('deleteBtnText').value = 'حذف';
+            document.getElementById('addBtnText').value = 'إضافة';
+            document.getElementById('saveBtnText').value = 'حفظ';
+            document.getElementById('cancelBtnText').value = 'إلغاء';
+            showMsg('تم استعادة النصوص الافتراضية', 'success');
+        }
+
+        // ============================================================
+        // 10. حفظ إعدادات الأمان
+        // ============================================================
+        function saveSecurity() {
+            const data = {
+                maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
+                maintenanceMode: document.getElementById('maintenanceMode').value === 'true',
+                allowRegistration: document.getElementById('allowRegistration').value === 'true',
+                updatedAt: new Date()
+            };
+
+            db.collection('settings').doc('security').set(data, { merge: true })
+                .then(function() {
+                    showMsg('تم حفظ إعدادات الأمان بنجاح', 'success');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ: ' + err.message, 'error');
+                });
+        }
+
+        function resetSecurity() {
+            if (!confirm('هل تريد استعادة إعدادات الأمان الافتراضية؟')) return;
+            document.getElementById('maxLoginAttempts').value = 5;
+            document.getElementById('maintenanceMode').value = 'false';
+            document.getElementById('allowRegistration').value = 'true';
+            showMsg('تم استعادة إعدادات الأمان الافتراضية', 'success');
+        }
+
+        // ============================================================
+        // 11. الصور واللوجو
         // ============================================================
         function previewLogo(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             if (file.size > 2 * 1024 * 1024) {
                 showMsg('حجم الصورة يتجاوز 2MB', 'error');
                 e.target.value = '';
                 return;
             }
-
             logoFile = file;
             const reader = new FileReader();
             reader.onload = function(ev) {
@@ -954,13 +1934,11 @@
         function previewStamp(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             if (file.size > 2 * 1024 * 1024) {
                 showMsg('حجم الصورة يتجاوز 2MB', 'error');
                 e.target.value = '';
                 return;
             }
-
             stampFile = file;
             const reader = new FileReader();
             reader.onload = function(ev) {
@@ -972,40 +1950,81 @@
             reader.readAsDataURL(file);
         }
 
+        const CLOUDINARY = {
+            cloudName: 'dvxh9l4lv',
+            uploadPreset: 'itwsAcaCertification',
+            folder: 'syndicate_system_logos'
+        };
+
+        function uploadToCloudinary(file, publicId) {
+            return new Promise(function(resolve, reject) {
+                const widget = cloudinary.createUploadWidget({
+                    cloudName: CLOUDINARY.cloudName,
+                    uploadPreset: CLOUDINARY.uploadPreset,
+                    folder: CLOUDINARY.folder,
+                    publicId: publicId,
+                    multiple: false,
+                    sources: ['local', 'url'],
+                    cropping: true,
+                    croppingAspectRatio: 1,
+                    styles: {
+                        palette: {
+                            window: '#0a0e1a',
+                            windowBorder: '#C9A84C',
+                            tabIcon: '#C9A84C',
+                            menuIcons: '#C9A84C',
+                            textDark: '#ffffff',
+                            textLight: '#ffffff',
+                            link: '#C9A84C',
+                            action: '#C9A84C',
+                            inactiveTabIcon: '#666666',
+                            error: '#ef4444',
+                            inProgress: '#C9A84C',
+                            complete: '#22c55e',
+                            sourceBg: '#0a0e1a'
+                        }
+                    }
+                }, function(error, result) {
+                    if (error) { reject(error); return; }
+                    if (result.event === 'success') {
+                        resolve({ secure_url: result.info.secure_url });
+                    } else if (result.event === 'close') {
+                        reject(new Error('تم إلغاء الرفع'));
+                    }
+                });
+                widget.open();
+            });
+        }
+
         function uploadLogoToCloudinary() {
             if (!logoFile) {
                 showMsg('الرجاء اختيار صورة اللوجو أولاً', 'info');
                 return;
             }
-
             const btn = document.getElementById('uploadLogoBtn');
             btn.disabled = true;
             btn.textContent = 'جاري الرفع...';
-
             uploadToCloudinary(logoFile, 'union_logo')
                 .then(function(data) {
                     const url = data.secure_url;
                     return db.collection('settings').doc('general').set({
                         logoUrl: url,
-                        updatedAt: getEgyptTime(),
-                        updatedBy: currentUser ? currentUser.uid : 'system'
-                    }, { merge: true }).then(function() {
-                        return url;
-                    });
+                        updatedAt: new Date()
+                    }, { merge: true }).then(function() { return url; });
                 })
-                .then(function(url) {
+                .then(function() {
                     showMsg('تم رفع اللوجو بنجاح', 'success');
-                    showStatus('logoStatus', 'تم الرفع', 'success');
+                    document.getElementById('logoStatus').textContent = 'تم الرفع';
+                    document.getElementById('logoStatus').className = 'upload-status show success';
                     btn.disabled = false;
                     btn.textContent = 'رفع اللوجو';
                     logoFile = null;
-                    logActivity('upload_logo', 'رفع لوجو النقابة إلى Cloudinary');
-                    loadImagesFromCloudinary();
-                    loadSettings();
+                    loadImagesFromFirestore();
                 })
                 .catch(function(err) {
                     showMsg('حدث خطأ: ' + (err.message || err), 'error');
-                    showStatus('logoStatus', 'فشل الرفع', 'error');
+                    document.getElementById('logoStatus').textContent = 'فشل الرفع';
+                    document.getElementById('logoStatus').className = 'upload-status show error';
                     btn.disabled = false;
                     btn.textContent = 'رفع اللوجو';
                 });
@@ -1016,417 +2035,107 @@
                 showMsg('الرجاء اختيار صورة الختم أولاً', 'info');
                 return;
             }
-
             const btn = document.getElementById('uploadStampBtn');
             btn.disabled = true;
             btn.textContent = 'جاري الرفع...';
-
             uploadToCloudinary(stampFile, 'union_stamp')
                 .then(function(data) {
                     const url = data.secure_url;
                     return db.collection('settings').doc('general').set({
                         stampUrl: url,
-                        updatedAt: getEgyptTime(),
-                        updatedBy: currentUser ? currentUser.uid : 'system'
-                    }, { merge: true }).then(function() {
-                        return url;
-                    });
+                        updatedAt: new Date()
+                    }, { merge: true }).then(function() { return url; });
                 })
-                .then(function(url) {
+                .then(function() {
                     showMsg('تم رفع الختم بنجاح', 'success');
-                    showStatus('stampStatus', 'تم الرفع', 'success');
+                    document.getElementById('stampStatus').textContent = 'تم الرفع';
+                    document.getElementById('stampStatus').className = 'upload-status show success';
                     btn.disabled = false;
                     btn.textContent = 'رفع الختم';
                     stampFile = null;
-                    logActivity('upload_stamp', 'رفع ختم النقابة إلى Cloudinary');
-                    loadImagesFromCloudinary();
+                    loadImagesFromFirestore();
                 })
                 .catch(function(err) {
                     showMsg('حدث خطأ: ' + (err.message || err), 'error');
-                    showStatus('stampStatus', 'فشل الرفع', 'error');
+                    document.getElementById('stampStatus').textContent = 'فشل الرفع';
+                    document.getElementById('stampStatus').className = 'upload-status show error';
                     btn.disabled = false;
                     btn.textContent = 'رفع الختم';
                 });
         }
 
-        // ============================================================
-        // 9. تحميل الصور من Cloudinary
-        // ============================================================
-        function loadImagesFromCloudinary() {
+        function loadImagesFromFirestore() {
             db.collection('settings').doc('general').get()
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-
                         if (data.logoUrl) {
                             const img = document.querySelector('#logoPreview img');
                             img.src = data.logoUrl;
                             img.style.display = 'block';
                             document.getElementById('logoPlaceholder').textContent = 'لوجو موجود';
-                        } else {
-                            document.querySelector('#logoPreview img').style.display = 'none';
-                            document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
+                            const logoBox = document.getElementById('logoBox');
+                            if (logoBox) {
+                                logoBox.style.backgroundImage = 'url(' + data.logoUrl + ')';
+                                logoBox.style.backgroundSize = 'cover';
+                                logoBox.style.backgroundPosition = 'center';
+                                logoBox.textContent = '';
+                            }
                         }
-
                         if (data.stampUrl) {
                             const img = document.querySelector('#stampPreview img');
                             img.src = data.stampUrl;
                             img.style.display = 'block';
                             document.getElementById('stampPlaceholder').textContent = 'ختم موجود';
-                        } else {
-                            document.querySelector('#stampPreview img').style.display = 'none';
-                            document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
                         }
                     }
                 })
                 .catch(function() {});
         }
 
-        // ============================================================
-        // 10. حذف الصور
-        // ============================================================
-        function clearImagesFromCloudinary() {
-            if (!confirm('هل أنت متأكد من حذف اللوجو والختم من Cloudinary؟')) return;
-
+        function clearImages() {
+            if (!confirm('هل أنت متأكد من حذف اللوجو والختم؟')) return;
             db.collection('settings').doc('general').set({
                 logoUrl: '',
                 stampUrl: '',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
+                updatedAt: new Date()
             }, { merge: true })
             .then(function() {
                 document.querySelector('#logoPreview img').style.display = 'none';
                 document.getElementById('logoPlaceholder').textContent = 'اضغط لرفع لوجو النقابة';
                 document.querySelector('#stampPreview img').style.display = 'none';
                 document.getElementById('stampPlaceholder').textContent = 'اضغط لرفع ختم النقابة';
+                const logoBox = document.getElementById('logoBox');
+                if (logoBox) {
+                    logoBox.style.backgroundImage = 'linear-gradient(135deg, var(--primary-color), var(--accent-color))';
+                    logoBox.textContent = 'ن.ت';
+                }
                 showMsg('تم حذف الصور بنجاح', 'success');
-                logActivity('delete', 'حذف اللوجو والختم من Cloudinary');
-                loadSettings();
             })
             .catch(function(err) {
-                showMsg('حدث خطأ: ' + (err.message || err), 'error');
+                showMsg('حدث خطأ: ' + err.message, 'error');
             });
         }
 
         // ============================================================
-        // 11. تحميل جميع الإعدادات
+        // 12. عرض الرسائل
         // ============================================================
-        function loadAllSettings() {
-            document.getElementById('pageLoader').classList.add('show');
-            document.getElementById('pageContent').style.display = 'none';
-
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.unionName) document.getElementById('unionName').value = data.unionName;
-                        if (data.committeeName) document.getElementById('committeeName').value = data.committeeName;
-                        if (data.splashDuration) document.getElementById('splashDuration').value = data.splashDuration;
-                        if (data.infoBoxText) document.getElementById('infoBoxText').value = data.infoBoxText;
-                        if (data.footerText) document.getElementById('footerText').value = data.footerText;
-                        if (data.sessionTimeout) document.getElementById('sessionTimeout').value = data.sessionTimeout;
-                        if (data.maxLoginAttempts) document.getElementById('maxLoginAttempts').value = data.maxLoginAttempts;
-                        if (data.maintenanceMode !== undefined) {
-                            document.getElementById('maintenanceMode').value = data.maintenanceMode ? 'true' : 'false';
-                        }
-                    }
-                })
-                .catch(function() {});
-
-            db.collection('settings').doc('servicesButton').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.text) document.getElementById('servicesBtnText').value = data.text;
-                        if (data.link) document.getElementById('servicesBtnLink').value = data.link;
-                    }
-                })
-                .catch(function() {});
-
-            loadImagesFromCloudinary();
-            updateFooterText();
-
-            document.getElementById('pageLoader').classList.remove('show');
-            document.getElementById('pageContent').style.display = 'block';
-        }
-
-        function updateFooterText() {
-            const val = document.getElementById('footerText').value;
-            if (val) {
-                document.querySelector('.footer span').textContent = val;
-            }
+        function showMsg(msg, type = 'info') {
+            const el = document.getElementById('pageMsg');
+            el.textContent = msg;
+            el.className = 'msg show ' + type;
+            setTimeout(function() { el.className = 'msg'; }, 4000);
         }
 
         // ============================================================
-        // 12. حفظ الإعدادات العامة
+        // 13. تحميل الصفحة
         // ============================================================
-        function saveGeneralSettings() {
-            const data = {
-                unionName: document.getElementById('unionName').value.trim() || 'نقابة تكنولوجيا المعلومات والبرمجيات',
-                committeeName: document.getElementById('committeeName').value.trim() || 'لجنة التحول الرقمي والتدريب',
-                splashDuration: parseInt(document.getElementById('splashDuration').value) || 3,
-                infoBoxText: document.getElementById('infoBoxText').value.trim() ||
-                    'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
-                footerText: document.getElementById('footerText').value.trim() ||
-                    '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
-            };
-
-            db.collection('settings').doc('general').set(data, { merge: true })
-                .then(function() {
-                    showMsg('تم حفظ الإعدادات العامة بنجاح', 'success');
-                    updateFooterText();
-                    loadSettings();
-                    logActivity('update', 'تحديث الإعدادات العامة');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        // ============================================================
-        // 13. حفظ زر الخدمات
-        // ============================================================
-        function saveServicesButton() {
-            const data = {
-                text: document.getElementById('servicesBtnText').value.trim() || 'خدمات النقابة الإلكترونية',
-                link: document.getElementById('servicesBtnLink').value.trim() || 'https://itws.org.eg/services',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
-            };
-
-            db.collection('settings').doc('servicesButton').set(data, { merge: true })
-                .then(function() {
-                    showMsg('تم حفظ زر الخدمات بنجاح', 'success');
-                    logActivity('update', 'تحديث زر خدمات النقابة');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        // ============================================================
-        // 14. حفظ إعدادات الأمان
-        // ============================================================
-        function saveSecuritySettings() {
-            const data = {
-                sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
-                maxLoginAttempts: parseInt(document.getElementById('maxLoginAttempts').value) || 5,
-                maintenanceMode: document.getElementById('maintenanceMode').value === 'true',
-                updatedAt: getEgyptTime(),
-                updatedBy: currentUser ? currentUser.uid : 'system'
-            };
-
-            db.collection('settings').doc('general').set(data, { merge: true })
-                .then(function() {
-                    showMsg('تم حفظ إعدادات الأمان بنجاح', 'success');
-                    logActivity('update', 'تحديث إعدادات الأمان');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        // ============================================================
-        // 15. إعادة التعيين للافتراضي
-        // ============================================================
-        function resetToDefault() {
-            if (!confirm('هل تريد استعادة الإعدادات الافتراضية؟')) return;
-
-            const defaults = {
-                unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
-                committeeName: 'لجنة التحول الرقمي والتدريب',
-                splashDuration: 3,
-                infoBoxText: 'يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها.',
-                footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-                sessionTimeout: 30,
-                maxLoginAttempts: 5,
-                maintenanceMode: false
-            };
-
-            document.getElementById('unionName').value = defaults.unionName;
-            document.getElementById('committeeName').value = defaults.committeeName;
-            document.getElementById('splashDuration').value = defaults.splashDuration;
-            document.getElementById('infoBoxText').value = defaults.infoBoxText;
-            document.getElementById('footerText').value = defaults.footerText;
-            document.getElementById('sessionTimeout').value = defaults.sessionTimeout;
-            document.getElementById('maxLoginAttempts').value = defaults.maxLoginAttempts;
-            document.getElementById('maintenanceMode').value = 'false';
-
-            updateFooterText();
-            showMsg('تم استعادة الإعدادات الافتراضية', 'success');
-        }
-
-        // ============================================================
-        // 16. إجراءات خطيرة
-        // ============================================================
-        function resetAllData() {
-            if (!confirm('تحذير: هذا الإجراء سيحذف جميع البيانات نهائياً! استمرار؟')) return;
-            if (!confirm('تأكيد نهائي: حذف جميع الأكاديميات والشهادات والنشاطات؟')) return;
-
-            showMsg('جاري حذف جميع البيانات...', 'info');
-
-            const collections = ['academies', 'certificates', 'activities', 'searchLogs'];
-            let completed = 0;
-
-            collections.forEach(function(name) {
-                db.collection(name).get()
-                    .then(function(snap) {
-                        const batch = db.batch();
-                        snap.docs.forEach(function(doc) {
-                            if (doc.id !== '_init') {
-                                batch.delete(doc.ref);
-                            }
-                        });
-                        return batch.commit();
-                    })
-                    .then(function() {
-                        completed++;
-                        if (completed === collections.length) {
-                            showMsg('تم حذف جميع البيانات بنجاح', 'success');
-                            logActivity('delete', 'إعادة تعيين جميع البيانات');
-                        }
-                    })
-                    .catch(function(err) {
-                        showMsg('حدث خطأ: ' + err.message, 'error');
-                    });
-            });
-        }
-
-        function clearAllActivities() {
-            if (!confirm('هل تريد حذف سجل النشاطات بالكامل؟')) return;
-
-            db.collection('activities').get()
-                .then(function(snap) {
-                    const batch = db.batch();
-                    snap.docs.forEach(function(doc) {
-                        if (doc.id !== '_init') {
-                            batch.delete(doc.ref);
-                        }
-                    });
-                    return batch.commit();
-                })
-                .then(function() {
-                    showMsg('تم حذف سجل النشاطات', 'success');
-                    logActivity('delete', 'حذف سجل النشاطات');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        function exportBackup() {
-            showMsg('جاري تحميل النسخة الاحتياطية...', 'info');
-
-            const backupData = {
-                settings: {},
-                academies: [],
-                certificates: []
-            };
-
-            db.collection('settings').get()
-                .then(function(snap) {
-                    snap.forEach(function(doc) {
-                        backupData.settings[doc.id] = doc.data();
-                    });
-                    return db.collection('academies').where('isDeleted', '==', false).get();
-                })
-                .then(function(snap) {
-                    snap.forEach(function(doc) {
-                        backupData.academies.push({ id: doc.id, ...doc.data() });
-                    });
-                    return db.collection('certificates').where('isActive', '==', true).get();
-                })
-                .then(function(snap) {
-                    snap.forEach(function(doc) {
-                        backupData.certificates.push({ id: doc.id, ...doc.data() });
-                    });
-
-                    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'backup_' + new Date().toISOString().split('T')[0] + '.json';
-                    a.click();
-                    URL.revokeObjectURL(url);
-
-                    showMsg('تم تحميل النسخة الاحتياطية بنجاح', 'success');
-                    logActivity('export', 'تصدير نسخة احتياطية');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-        }
-
-        function importBackup() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    try {
-                        const data = JSON.parse(ev.target.result);
-                        if (!confirm('سيتم استيراد ' + data.academies.length + ' أكاديمية و ' + data.certificates
-                                .length + ' شهادة. استمرار؟')) return;
-
-                        showMsg('جاري استيراد البيانات...', 'info');
-
-                        if (data.settings) {
-                            for (const key in data.settings) {
-                                db.collection('settings').doc(key).set(data.settings[key], { merge: true })
-                                    .catch(function() {});
-                            }
-                        }
-
-                        if (data.academies) {
-                            data.academies.forEach(function(item) {
-                                const docRef = item.id ? db.collection('academies').doc(item.id) : db
-                                    .collection('academies').doc();
-                                delete item.id;
-                                docRef.set(item).catch(function() {});
-                            });
-                        }
-
-                        if (data.certificates) {
-                            data.certificates.forEach(function(item) {
-                                const docRef = item.id ? db.collection('certificates').doc(item.id) : db
-                                    .collection('certificates').doc();
-                                delete item.id;
-                                docRef.set(item).catch(function() {});
-                            });
-                        }
-
-                        showMsg('تم استيراد النسخة الاحتياطية بنجاح', 'success');
-                        logActivity('import', 'استيراد نسخة احتياطية');
-                        loadAllSettings();
-
-                    } catch (err) {
-                        showMsg('ملف غير صالح: ' + err.message, 'error');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        // ============================================================
-        // 17. تحديث الفوتر
-        // ============================================================
-        document.getElementById('footerText').addEventListener('input', function() {
-            updateFooterText();
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ إعدادات النظام - كل حرف من الإعدادات');
+            console.log('🎨 دعم الثيمات المحلية (LocalStorage)');
+            console.log('🔒 صلاحية السوبر أدمن فقط');
+            console.log('📋 التحكم في كل نصوص المنصة');
         });
-
-        // ============================================================
-        // 18. تحميل أولي
-        // ============================================================
-        console.log('إعدادات النظام - نقابة تكنولوجيا المعلومات');
-        console.log('Cloudinary متصل (upload_preset: ' + CLOUDINARY.uploadPreset + ')');
-        console.log('صلاحية السوبر أدمن فقط');
     </script>
 
 </body>
