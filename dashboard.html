@@ -40,8 +40,8 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي للوحة التحكم - بدون أي نصوص ثابتة
-           كل حرف ولون وصورة من الإعدادات
+           التصميم الخرافي للوحة التحكم
+           كل حرف ولون من الإعدادات
            ============================================================ */
         * {
             margin: 0;
@@ -230,6 +230,7 @@
             padding: 16px;
         }
 
+        /* ===== الهيدر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -267,6 +268,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
             position: relative;
             z-index: 2;
         }
@@ -406,6 +408,7 @@
             font-weight: 600;
         }
 
+        /* ===== البطاقات الإحصائية ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -454,6 +457,7 @@
         }
         .stat-card .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 300; }
 
+        /* ===== الشبكة الداخلية ===== */
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -497,6 +501,7 @@
             font-weight: 600;
         }
 
+        /* ===== قائمة النشاطات ===== */
         .activity-list {
             max-height: 350px;
             overflow-y: auto;
@@ -554,6 +559,7 @@
         .type-badge.search { background: var(--accent-glow); color: var(--accent-light); }
         .type-badge.export { background: rgba(236,72,153,0.15); color: #ec4899; }
 
+        /* ===== الروابط السريعة ===== */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -582,12 +588,14 @@
         .quick-action .icon { font-size: 28px; margin-bottom: 4px; }
         .quick-action .label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
+        /* ===== الرسم البياني ===== */
         .chart-container {
             position: relative;
             height: 200px;
             width: 100%;
         }
 
+        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: var(--radius-sm);
@@ -704,7 +712,7 @@
             </div>
             <div class="header-right">
                 <span class="role-badge" id="roleBadge"></span>
-                <a href="home.html" class="btn btn-outline btn-sm" id="homeBtn"></a>
+                <a href="home.html" class="btn btn-outline btn-sm" id="searchBtn"></a>
                 <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;"></a>
                 <a href="users.html" class="btn btn-outline btn-sm" id="usersBtn" style="display:none;"></a>
                 <a href="#" class="btn btn-outline btn-sm" id="logoutBtn"></a>
@@ -790,9 +798,9 @@
                                 <div class="icon">👥</div>
                                 <div class="label" id="quickUsersLabel"></div>
                             </a>
-                            <a href="graduates.html" class="quick-action" id="quickGraduates">
-                                <div class="icon">🎓</div>
-                                <div class="label" id="quickGraduatesLabel"></div>
+                            <a href="home.html" class="quick-action" id="quickSearch">
+                                <div class="icon">🔍</div>
+                                <div class="label" id="quickSearchLabel"></div>
                             </a>
                         </div>
                     </div>
@@ -848,35 +856,35 @@
         let chartInstance = null;
 
         let settings = {
-            dashboardTitle: '',
-            committeeName: '',
+            dashboardTitle: 'لوحة التحكم',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
-            footerText: '',
-            presidentName: '',
-            presidentLabel: '',
-            homeBtn: '',
-            logoutBtn: '',
-            settingsBtn: '',
-            usersBtn: '',
-            statCertificatesLabel: '',
-            statAcademiesLabel: '',
-            statUsersLabel: '',
-            statSearchesLabel: '',
-            statActivitiesLabel: '',
-            activityTitle: '',
-            activityBadge: '',
-            activityEmpty: '',
-            viewAllBtn: '',
-            quickActionsTitle: '',
-            quickAcademiesLabel: '',
-            quickCertificatesLabel: '',
-            quickActivitiesLabel: '',
-            quickSettingsLabel: '',
-            quickUsersLabel: '',
-            quickGraduatesLabel: '',
-            chartTitle: '',
-            loaderText: '',
-            presidentFooter: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            searchBtn: 'البحث',
+            logoutBtn: 'تسجيل الخروج',
+            settingsBtn: 'الإعدادات',
+            usersBtn: 'المستخدمين',
+            statCertificatesLabel: 'الشهادات الموثقة',
+            statAcademiesLabel: 'الأكاديميات المعتمدة',
+            statUsersLabel: 'المستخدمين النشطين',
+            statSearchesLabel: 'عمليات البحث',
+            statActivitiesLabel: 'إجمالي النشاطات',
+            activityTitle: 'آخر النشاطات',
+            activityBadge: 'مباشر',
+            activityEmpty: 'لا توجد نشاطات حديثة',
+            viewAllBtn: 'عرض الكل',
+            quickActionsTitle: 'روابط سريعة',
+            quickAcademiesLabel: 'الأكاديميات',
+            quickCertificatesLabel: 'الشهادات',
+            quickActivitiesLabel: 'النشاطات',
+            quickSettingsLabel: 'الإعدادات',
+            quickUsersLabel: 'المستخدمين',
+            quickSearchLabel: 'البحث',
+            chartTitle: 'توزيع الشهادات حسب التقدير',
+            loaderText: 'جاري تحميل البيانات...',
+            presidentFooter: 'النقيب العام:',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -909,34 +917,45 @@
                         if (data.footerText) settings.footerText = data.footerText;
                         if (data.presidentName) settings.presidentName = data.presidentName;
                         if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
-                        if (data.homeBtn) settings.homeBtn = data.homeBtn;
-                        if (data.logoutBtn) settings.logoutBtn = data.logoutBtn;
-                        if (data.settingsBtn) settings.settingsBtn = data.settingsBtn;
-                        if (data.usersBtn) settings.usersBtn = data.usersBtn;
-                        if (data.statCertificatesLabel) settings.statCertificatesLabel = data.statCertificatesLabel;
-                        if (data.statAcademiesLabel) settings.statAcademiesLabel = data.statAcademiesLabel;
-                        if (data.statUsersLabel) settings.statUsersLabel = data.statUsersLabel;
-                        if (data.statSearchesLabel) settings.statSearchesLabel = data.statSearchesLabel;
-                        if (data.statActivitiesLabel) settings.statActivitiesLabel = data.statActivitiesLabel;
-                        if (data.activityTitle) settings.activityTitle = data.activityTitle;
-                        if (data.activityBadge) settings.activityBadge = data.activityBadge;
-                        if (data.activityEmpty) settings.activityEmpty = data.activityEmpty;
-                        if (data.viewAllBtn) settings.viewAllBtn = data.viewAllBtn;
-                        if (data.quickActionsTitle) settings.quickActionsTitle = data.quickActionsTitle;
-                        if (data.quickAcademiesLabel) settings.quickAcademiesLabel = data.quickAcademiesLabel;
-                        if (data.quickCertificatesLabel) settings.quickCertificatesLabel = data.quickCertificatesLabel;
-                        if (data.quickActivitiesLabel) settings.quickActivitiesLabel = data.quickActivitiesLabel;
-                        if (data.quickSettingsLabel) settings.quickSettingsLabel = data.quickSettingsLabel;
-                        if (data.quickUsersLabel) settings.quickUsersLabel = data.quickUsersLabel;
-                        if (data.quickGraduatesLabel) settings.quickGraduatesLabel = data.quickGraduatesLabel;
-                        if (data.chartTitle) settings.chartTitle = data.chartTitle;
-                        if (data.loaderText) settings.loaderText = data.loaderText;
-                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
-
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
-                        applySettings();
-                        applyColors(settings.colors);
+                        // نصوص إضافية
+                        db.collection('settings').doc('texts').get()
+                            .then(function(textsDoc) {
+                                if (textsDoc.exists) {
+                                    const texts = textsDoc.data();
+                                    if (texts.searchBtn) settings.searchBtn = texts.searchBtn;
+                                    if (texts.logoutBtn) settings.logoutBtn = texts.logoutBtn;
+                                    if (texts.settingsBtn) settings.settingsBtn = texts.settingsBtn;
+                                    if (texts.usersBtn) settings.usersBtn = texts.usersBtn;
+                                    if (texts.statCertificatesLabel) settings.statCertificatesLabel = texts.statCertificatesLabel;
+                                    if (texts.statAcademiesLabel) settings.statAcademiesLabel = texts.statAcademiesLabel;
+                                    if (texts.statUsersLabel) settings.statUsersLabel = texts.statUsersLabel;
+                                    if (texts.statSearchesLabel) settings.statSearchesLabel = texts.statSearchesLabel;
+                                    if (texts.statActivitiesLabel) settings.statActivitiesLabel = texts.statActivitiesLabel;
+                                    if (texts.activityTitle) settings.activityTitle = texts.activityTitle;
+                                    if (texts.activityBadge) settings.activityBadge = texts.activityBadge;
+                                    if (texts.activityEmpty) settings.activityEmpty = texts.activityEmpty;
+                                    if (texts.viewAllBtn) settings.viewAllBtn = texts.viewAllBtn;
+                                    if (texts.quickActionsTitle) settings.quickActionsTitle = texts.quickActionsTitle;
+                                    if (texts.quickAcademiesLabel) settings.quickAcademiesLabel = texts.quickAcademiesLabel;
+                                    if (texts.quickCertificatesLabel) settings.quickCertificatesLabel = texts.quickCertificatesLabel;
+                                    if (texts.quickActivitiesLabel) settings.quickActivitiesLabel = texts.quickActivitiesLabel;
+                                    if (texts.quickSettingsLabel) settings.quickSettingsLabel = texts.quickSettingsLabel;
+                                    if (texts.quickUsersLabel) settings.quickUsersLabel = texts.quickUsersLabel;
+                                    if (texts.quickSearchLabel) settings.quickSearchLabel = texts.quickSearchLabel;
+                                    if (texts.chartTitle) settings.chartTitle = texts.chartTitle;
+                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
+                                    if (texts.presidentFooter) settings.presidentFooter = texts.presidentFooter;
+                                }
+                                applySettings();
+                                applyColors(settings.colors);
+                            })
+                            .catch(function() {
+                                applySettings();
+                                applyColors(settings.colors);
+                            });
+
                     } else {
                         applySettings();
                         applyColors(settings.colors);
@@ -946,6 +965,8 @@
                     applySettings();
                     applyColors(settings.colors);
                 });
+
+            loadLocalSettings();
         }
 
         function applySettings() {
@@ -956,13 +977,12 @@
             const footerTextEl = document.getElementById('footerText');
             const presidentFooterEl = document.getElementById('presidentFooter');
             const presidentNameFooterEl = document.getElementById('presidentName');
-            const homeBtn = document.getElementById('homeBtn');
+            const searchBtn = document.getElementById('searchBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const settingsBtn = document.getElementById('settingsBtn');
             const usersBtn = document.getElementById('usersBtn');
             const roleBadge = document.getElementById('roleBadge');
 
-            // العناوين
             if (titleEl) titleEl.textContent = settings.dashboardTitle;
             if (committeeEl) committeeEl.textContent = settings.committeeName;
             if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
@@ -971,13 +991,11 @@
             if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
 
-            // الأزرار
-            if (homeBtn) homeBtn.textContent = settings.homeBtn;
+            if (searchBtn) searchBtn.textContent = settings.searchBtn;
             if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
             if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
             if (usersBtn) usersBtn.textContent = settings.usersBtn;
 
-            // الإحصائيات
             const statCertLabel = document.getElementById('statCertificatesLabel');
             const statAcadLabel = document.getElementById('statAcademiesLabel');
             const statUsersLabel = document.getElementById('statUsersLabel');
@@ -990,7 +1008,6 @@
             if (statSearchesLabel) statSearchesLabel.textContent = settings.statSearchesLabel;
             if (statActivitiesLabel) statActivitiesLabel.textContent = settings.statActivitiesLabel;
 
-            // النشاطات
             const activityTitle = document.getElementById('activityTitle');
             const activityBadge = document.getElementById('activityBadge');
             const activityEmpty = document.getElementById('activityEmpty');
@@ -1001,14 +1018,13 @@
             if (activityEmpty) activityEmpty.textContent = settings.activityEmpty;
             if (viewAllBtn) viewAllBtn.textContent = settings.viewAllBtn;
 
-            // الروابط السريعة
             const quickTitle = document.getElementById('quickActionsTitle');
             const quickAcademies = document.getElementById('quickAcademiesLabel');
             const quickCertificates = document.getElementById('quickCertificatesLabel');
             const quickActivities = document.getElementById('quickActivitiesLabel');
             const quickSettings = document.getElementById('quickSettingsLabel');
             const quickUsers = document.getElementById('quickUsersLabel');
-            const quickGraduates = document.getElementById('quickGraduatesLabel');
+            const quickSearch = document.getElementById('quickSearchLabel');
 
             if (quickTitle) quickTitle.textContent = settings.quickActionsTitle;
             if (quickAcademies) quickAcademies.textContent = settings.quickAcademiesLabel;
@@ -1016,17 +1032,14 @@
             if (quickActivities) quickActivities.textContent = settings.quickActivitiesLabel;
             if (quickSettings) quickSettings.textContent = settings.quickSettingsLabel;
             if (quickUsers) quickUsers.textContent = settings.quickUsersLabel;
-            if (quickGraduates) quickGraduates.textContent = settings.quickGraduatesLabel;
+            if (quickSearch) quickSearch.textContent = settings.quickSearchLabel;
 
-            // الرسم البياني
             const chartTitle = document.getElementById('chartTitle');
             if (chartTitle) chartTitle.textContent = settings.chartTitle;
 
-            // لودر
             const loaderText = document.getElementById('loaderText');
             if (loaderText) loaderText.textContent = settings.loaderText;
 
-            // الدور
             if (roleBadge) {
                 if (userRole === 'super_admin') {
                     roleBadge.textContent = 'سوبر أدمن';
@@ -1039,7 +1052,6 @@
                 }
             }
 
-            // Logo
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
                 if (logo) {
@@ -1064,8 +1076,8 @@
             const favicon = document.getElementById('favicon');
             const appleIcon = document.getElementById('appleIcon');
 
-            if (pageTitle) pageTitle.textContent = settings.dashboardTitle + ' - نقابة تكنولوجيا المعلومات';
-            if (metaDescription) metaDescription.content = 'لوحة التحكم - نقابة تكنولوجيا المعلومات';
+            if (pageTitle) pageTitle.textContent = settings.dashboardTitle + ' - ' + settings.unionName;
+            if (metaDescription) metaDescription.content = 'لوحة التحكم - ' + settings.unionName;
             if (ogTitle) ogTitle.content = settings.dashboardTitle;
             if (ogDescription) ogDescription.content = 'لوحة التحكم - نظام توثيق الشهادات';
             if (ogUrl) ogUrl.content = window.location.href;
@@ -1099,7 +1111,6 @@
 
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
 
@@ -1109,7 +1120,48 @@
         }
 
         // ============================================================
-        // 4. المصادقة
+        // 4. الإعدادات المحلية (LocalStorage)
+        // ============================================================
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        const root = document.documentElement;
+                        const colors = parsed.theme.colors;
+                        if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+                        if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+                        if (colors.background) root.style.setProperty('--bg-color', colors.background);
+                        if (colors.text) root.style.setProperty('--text-color', colors.text);
+                        if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+                        if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+                        if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+                        if (colors.success) root.style.setProperty('--success', colors.success);
+                        if (colors.error) root.style.setProperty('--error', colors.error);
+                        if (colors.warning) root.style.setProperty('--warning', colors.warning);
+                        if (colors.info) root.style.setProperty('--info', colors.info);
+                        if (colors.border) root.style.setProperty('--border', colors.border);
+                        if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+                        const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+                        root.style.setProperty('--primary-glow', primaryGlow);
+                        const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+                        root.style.setProperty('--accent-glow', accentGlow);
+
+                        if (colors.background) {
+                            document.body.style.background = colors.background;
+                        }
+                        console.log('✅ تم تطبيق الإعدادات المحلية');
+                    }
+                }
+            } catch (e) {
+                console.log('ℹ️ لا توجد إعدادات محلية');
+            }
+        }
+
+        // ============================================================
+        // 5. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1159,7 +1211,7 @@
         });
 
         // ============================================================
-        // 5. تحميل لوحة التحكم
+        // 6. تحميل لوحة التحكم
         // ============================================================
         function loadDashboard() {
             const loader = document.getElementById('dashboardLoader');
@@ -1209,7 +1261,7 @@
         }
 
         // ============================================================
-        // 6. عرض النشاطات
+        // 7. عرض النشاطات
         // ============================================================
         function renderActivities(snapshot) {
             const container = document.getElementById('activityList');
@@ -1270,7 +1322,7 @@
         }
 
         // ============================================================
-        // 7. الرسم البياني
+        // 8. الرسم البياني
         // ============================================================
         function renderChart(snapshot) {
             const canvas = document.getElementById('chartCanvas');
@@ -1329,7 +1381,7 @@
         }
 
         // ============================================================
-        // 8. عرض الرسائل
+        // 9. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('dashboardMsg');
@@ -1340,14 +1392,15 @@
         }
 
         // ============================================================
-        // 9. تحميل الصفحة
+        // 10. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
             console.log('✅ لوحة التحكم - كل حرف من الإعدادات');
             console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎨 الألوان من الإعدادات');
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('📊 لوحة تحكم متطورة');
+            console.log('🔗 زر البحث يودي إلى شاشة البحث (home.html)');
         });
     </script>
 
