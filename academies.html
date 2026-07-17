@@ -40,8 +40,8 @@
 
     <style>
         /* ============================================================
-           التصميم الخرافي لإدارة الأكاديميات - بدون أي نصوص ثابتة
-           كل حرف ولون وصورة من الإعدادات
+           التصميم الخرافي لإدارة الأكاديميات
+           كل حرف من الإعدادات + بحث متقدم
            ============================================================ */
         * {
             margin: 0;
@@ -267,6 +267,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
             position: relative;
             z-index: 2;
         }
@@ -486,9 +487,10 @@
             margin-top: 2px;
         }
 
+        /* ===== فلتر متقدم ===== */
         .filters-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             gap: 12px;
             margin-bottom: 16px;
         }
@@ -919,9 +921,108 @@
             z-index: 9999;
         }
 
+        .academy-detail-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .academy-detail-modal.show { display: flex; }
+
+        .academy-detail-modal .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 750px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
+        }
+
+        .academy-detail-modal .modal-content::-webkit-scrollbar { width: 4px; }
+        .academy-detail-modal .modal-content::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
+        .academy-detail-modal .modal-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+
+        .academy-detail-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .academy-detail-modal .modal-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .academy-detail-modal .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .academy-detail-modal .detail-item {
+            padding: 10px;
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .academy-detail-modal .detail-item .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .academy-detail-modal .detail-item .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .academy-detail-modal .branches-list {
+            margin-top: 12px;
+        }
+
+        .academy-detail-modal .branch-item-detail {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .academy-detail-modal .branch-item-detail .gov {
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
         @media (max-width: 992px) {
-            .filters-grid { grid-template-columns: 1fr 1fr; }
-            .branch-item .branch-grid { grid-template-columns: 1fr 1fr; }
+            .filters-grid { grid-template-columns: 1fr 1fr 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -933,7 +1034,7 @@
             .card { padding: 14px 16px; }
             .modal { padding: 20px; margin: 10px; border-radius: 20px; }
             .table thead th, .table tbody td { padding: 8px 10px; font-size: 12px; }
-            .filters-grid { grid-template-columns: 1fr; }
+            .filters-grid { grid-template-columns: 1fr 1fr; }
             .branch-item .branch-grid { grid-template-columns: 1fr; }
             .glow-orb { display: none; }
             .ring { display: none; }
@@ -941,6 +1042,8 @@
             .stats-row { grid-template-columns: repeat(2, 1fr); }
             .header-president { padding: 3px 10px; }
             .header-president .president-name { font-size: 12px; }
+            .academy-detail-modal .detail-grid { grid-template-columns: 1fr; }
+            .academy-detail-modal .modal-content { padding: 20px; margin: 10px; border-radius: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -955,6 +1058,7 @@
             .stats-row { grid-template-columns: 1fr 1fr; }
             .branch-item .branch-grid { grid-template-columns: 1fr; }
             .header-president .president-name { font-size: 11px; }
+            .academy-detail-modal .modal-content { padding: 16px; }
         }
     </style>
 </head>
@@ -1032,6 +1136,10 @@
                         <div class="num" id="statGovernorates">0</div>
                         <div class="label" id="statGovernoratesLabel"></div>
                     </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statCertificates">0</div>
+                        <div class="label" id="statCertificatesLabel"></div>
+                    </div>
                 </div>
 
                 <div class="filters-grid">
@@ -1048,6 +1156,10 @@
                         <select id="filterGovernorate" onchange="applyFilters()">
                             <option value="" id="filterAllOption"></option>
                         </select>
+                    </div>
+                    <div class="filter-group">
+                        <label id="filterYearLabel"></label>
+                        <input type="number" id="filterYear" placeholder="" min="2020" max="2030" oninput="applyFilters()" />
                     </div>
                     <div class="filter-group" style="justify-content:flex-end;">
                         <button class="btn btn-ghost btn-sm" onclick="resetFilters()" id="resetFiltersBtn"></button>
@@ -1073,6 +1185,7 @@
                                 <th id="thLicense"></th>
                                 <th id="thBranches"></th>
                                 <th id="thGovernorates"></th>
+                                <th id="thCertificates"></th>
                                 <th id="thStatus"></th>
                                 <th id="thActions"></th>
                             </tr>
@@ -1100,7 +1213,6 @@
 
     </div>
 
-    <!-- ===== حاوية الطباعة ===== -->
     <div id="print-container"></div>
 
     <!-- ===== مودال الإضافة والتعديل ===== -->
@@ -1174,6 +1286,21 @@
         </div>
     </div>
 
+    <!-- ===== مودال عرض تفاصيل الأكاديمية ===== -->
+    <div class="academy-detail-modal" id="academyDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailModalTitle"></h2>
+                <button class="modal-close" onclick="closeDetailModal()">✕</button>
+            </div>
+            <div id="detailModalBody"></div>
+            <div class="modal-footer" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+                <button class="btn btn-outline" onclick="closeDetailModal()" id="detailCloseBtn"></button>
+                <button class="btn btn-success btn-sm" onclick="printAcademyDetails()" id="detailPrintBtn"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ============================================================
         // 1. تهيئة Firebase
@@ -1196,56 +1323,63 @@
         // 2. متغيرات
         // ============================================================
         let academies = [];
+        let allCertificates = [];
         let currentUser = null;
         let userRole = null;
         let deleteTargetId = null;
         let branchCounter = 1;
+        let currentDetailAcademy = null;
 
         let settings = {
-            pageTitleHeader: '',
-            committeeName: '',
+            pageTitleHeader: 'إدارة الأكاديميات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
-            footerText: '',
-            presidentName: '',
-            presidentLabel: '',
-            presidentFooter: '',
-            dashboardBtn: '',
-            addAcademyBtn: '',
-            loaderText: '',
-            statTotalLabel: '',
-            statMainLabel: '',
-            statBranchesLabel: '',
-            statGovernoratesLabel: '',
-            filterNameLabel: '',
-            filterLicenseLabel: '',
-            filterGovernorateLabel: '',
-            filterAllOption: '',
-            resetFiltersBtn: '',
-            academiesListTitle: '',
-            exportPdfBtn: '',
-            thNum: '',
-            thName: '',
-            thLicense: '',
-            thBranches: '',
-            thGovernorates: '',
-            thStatus: '',
-            thActions: '',
-            emptyTitle: '',
-            emptyDesc: '',
-            modalTitle: '',
-            academyNameLabel: '',
-            academyLicenseLabel: '',
-            academyTaxLabel: '',
-            branchesTitle: '',
-            addBranchBtn: '',
-            requiredFields: '',
-            cancelBtn: '',
-            saveBtn: '',
-            deleteTitle: '',
-            deleteConfirmText: '',
-            deleteReasonLabel: '',
-            deleteCancelBtn: '',
-            deleteConfirmBtn: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            dashboardBtn: 'لوحة التحكم',
+            addAcademyBtn: 'إضافة أكاديمية',
+            loaderText: 'جاري تحميل الأكاديميات...',
+            statTotalLabel: 'إجمالي الأكاديميات',
+            statMainLabel: 'أكاديميات رئيسية',
+            statBranchesLabel: 'فروع فرعية',
+            statGovernoratesLabel: 'محافظات',
+            statCertificatesLabel: 'شهادات صادرة',
+            filterNameLabel: 'اسم الأكاديمية',
+            filterLicenseLabel: 'الرقم الاعتمادي',
+            filterGovernorateLabel: 'المحافظة',
+            filterYearLabel: 'سنة التأسيس',
+            filterAllOption: 'جميع المحافظات',
+            resetFiltersBtn: 'إعادة ضبط',
+            academiesListTitle: 'قائمة الأكاديميات',
+            exportPdfBtn: 'طباعة البحث',
+            thNum: '#',
+            thName: 'اسم الأكاديمية',
+            thLicense: 'الرقم الاعتمادي',
+            thBranches: 'الفروع',
+            thGovernorates: 'المحافظات',
+            thCertificates: 'الشهادات',
+            thStatus: 'الحالة',
+            thActions: 'الإجراءات',
+            emptyTitle: 'لا توجد أكاديميات',
+            emptyDesc: 'قم بإضافة أكاديمية جديدة بالضغط على زر "إضافة أكاديمية"',
+            modalTitle: 'إضافة أكاديمية جديدة',
+            academyNameLabel: 'اسم الأكاديمية',
+            academyLicenseLabel: 'الرقم الاعتمادي',
+            academyTaxLabel: 'البطاقة الضريبية',
+            branchesTitle: 'الفروع',
+            addBranchBtn: '+ إضافة فرع',
+            requiredFields: '* الحقول المطلوبة',
+            cancelBtn: 'إلغاء',
+            saveBtn: 'حفظ',
+            deleteTitle: 'تأكيد الحذف',
+            deleteConfirmText: 'هل أنت متأكد من حذف الأكاديمية التالية؟',
+            deleteReasonLabel: 'سبب الحذف',
+            deleteCancelBtn: 'إلغاء',
+            deleteConfirmBtn: 'تأكيد الحذف',
+            detailCloseBtn: 'إغلاق',
+            detailPrintBtn: 'طباعة',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1279,48 +1413,63 @@
                         if (data.presidentName) settings.presidentName = data.presidentName;
                         if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
                         if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
-                        if (data.dashboardBtn) settings.dashboardBtn = data.dashboardBtn;
-                        if (data.addAcademyBtn) settings.addAcademyBtn = data.addAcademyBtn;
-                        if (data.loaderText) settings.loaderText = data.loaderText;
-                        if (data.statTotalLabel) settings.statTotalLabel = data.statTotalLabel;
-                        if (data.statMainLabel) settings.statMainLabel = data.statMainLabel;
-                        if (data.statBranchesLabel) settings.statBranchesLabel = data.statBranchesLabel;
-                        if (data.statGovernoratesLabel) settings.statGovernoratesLabel = data.statGovernoratesLabel;
-                        if (data.filterNameLabel) settings.filterNameLabel = data.filterNameLabel;
-                        if (data.filterLicenseLabel) settings.filterLicenseLabel = data.filterLicenseLabel;
-                        if (data.filterGovernorateLabel) settings.filterGovernorateLabel = data.filterGovernorateLabel;
-                        if (data.filterAllOption) settings.filterAllOption = data.filterAllOption;
-                        if (data.resetFiltersBtn) settings.resetFiltersBtn = data.resetFiltersBtn;
-                        if (data.academiesListTitle) settings.academiesListTitle = data.academiesListTitle;
-                        if (data.exportPdfBtn) settings.exportPdfBtn = data.exportPdfBtn;
-                        if (data.thNum) settings.thNum = data.thNum;
-                        if (data.thName) settings.thName = data.thName;
-                        if (data.thLicense) settings.thLicense = data.thLicense;
-                        if (data.thBranches) settings.thBranches = data.thBranches;
-                        if (data.thGovernorates) settings.thGovernorates = data.thGovernorates;
-                        if (data.thStatus) settings.thStatus = data.thStatus;
-                        if (data.thActions) settings.thActions = data.thActions;
-                        if (data.emptyTitle) settings.emptyTitle = data.emptyTitle;
-                        if (data.emptyDesc) settings.emptyDesc = data.emptyDesc;
-                        if (data.modalTitle) settings.modalTitle = data.modalTitle;
-                        if (data.academyNameLabel) settings.academyNameLabel = data.academyNameLabel;
-                        if (data.academyLicenseLabel) settings.academyLicenseLabel = data.academyLicenseLabel;
-                        if (data.academyTaxLabel) settings.academyTaxLabel = data.academyTaxLabel;
-                        if (data.branchesTitle) settings.branchesTitle = data.branchesTitle;
-                        if (data.addBranchBtn) settings.addBranchBtn = data.addBranchBtn;
-                        if (data.requiredFields) settings.requiredFields = data.requiredFields;
-                        if (data.cancelBtn) settings.cancelBtn = data.cancelBtn;
-                        if (data.saveBtn) settings.saveBtn = data.saveBtn;
-                        if (data.deleteTitle) settings.deleteTitle = data.deleteTitle;
-                        if (data.deleteConfirmText) settings.deleteConfirmText = data.deleteConfirmText;
-                        if (data.deleteReasonLabel) settings.deleteReasonLabel = data.deleteReasonLabel;
-                        if (data.deleteCancelBtn) settings.deleteCancelBtn = data.deleteCancelBtn;
-                        if (data.deleteConfirmBtn) settings.deleteConfirmBtn = data.deleteConfirmBtn;
-
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
-                        applySettings();
-                        applyColors(settings.colors);
+                        db.collection('settings').doc('texts').get()
+                            .then(function(textsDoc) {
+                                if (textsDoc.exists) {
+                                    const texts = textsDoc.data();
+                                    if (texts.dashboardBtn) settings.dashboardBtn = texts.dashboardBtn;
+                                    if (texts.addAcademyBtn) settings.addAcademyBtn = texts.addAcademyBtn;
+                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
+                                    if (texts.statTotalLabel) settings.statTotalLabel = texts.statTotalLabel;
+                                    if (texts.statMainLabel) settings.statMainLabel = texts.statMainLabel;
+                                    if (texts.statBranchesLabel) settings.statBranchesLabel = texts.statBranchesLabel;
+                                    if (texts.statGovernoratesLabel) settings.statGovernoratesLabel = texts.statGovernoratesLabel;
+                                    if (texts.statCertificatesLabel) settings.statCertificatesLabel = texts.statCertificatesLabel;
+                                    if (texts.filterNameLabel) settings.filterNameLabel = texts.filterNameLabel;
+                                    if (texts.filterLicenseLabel) settings.filterLicenseLabel = texts.filterLicenseLabel;
+                                    if (texts.filterGovernorateLabel) settings.filterGovernorateLabel = texts.filterGovernorateLabel;
+                                    if (texts.filterYearLabel) settings.filterYearLabel = texts.filterYearLabel;
+                                    if (texts.filterAllOption) settings.filterAllOption = texts.filterAllOption;
+                                    if (texts.resetFiltersBtn) settings.resetFiltersBtn = texts.resetFiltersBtn;
+                                    if (texts.academiesListTitle) settings.academiesListTitle = texts.academiesListTitle;
+                                    if (texts.exportPdfBtn) settings.exportPdfBtn = texts.exportPdfBtn;
+                                    if (texts.thNum) settings.thNum = texts.thNum;
+                                    if (texts.thName) settings.thName = texts.thName;
+                                    if (texts.thLicense) settings.thLicense = texts.thLicense;
+                                    if (texts.thBranches) settings.thBranches = texts.thBranches;
+                                    if (texts.thGovernorates) settings.thGovernorates = texts.thGovernorates;
+                                    if (texts.thCertificates) settings.thCertificates = texts.thCertificates;
+                                    if (texts.thStatus) settings.thStatus = texts.thStatus;
+                                    if (texts.thActions) settings.thActions = texts.thActions;
+                                    if (texts.emptyTitle) settings.emptyTitle = texts.emptyTitle;
+                                    if (texts.emptyDesc) settings.emptyDesc = texts.emptyDesc;
+                                    if (texts.modalTitle) settings.modalTitle = texts.modalTitle;
+                                    if (texts.academyNameLabel) settings.academyNameLabel = texts.academyNameLabel;
+                                    if (texts.academyLicenseLabel) settings.academyLicenseLabel = texts.academyLicenseLabel;
+                                    if (texts.academyTaxLabel) settings.academyTaxLabel = texts.academyTaxLabel;
+                                    if (texts.branchesTitle) settings.branchesTitle = texts.branchesTitle;
+                                    if (texts.addBranchBtn) settings.addBranchBtn = texts.addBranchBtn;
+                                    if (texts.requiredFields) settings.requiredFields = texts.requiredFields;
+                                    if (texts.cancelBtn) settings.cancelBtn = texts.cancelBtn;
+                                    if (texts.saveBtn) settings.saveBtn = texts.saveBtn;
+                                    if (texts.deleteTitle) settings.deleteTitle = texts.deleteTitle;
+                                    if (texts.deleteConfirmText) settings.deleteConfirmText = texts.deleteConfirmText;
+                                    if (texts.deleteReasonLabel) settings.deleteReasonLabel = texts.deleteReasonLabel;
+                                    if (texts.deleteCancelBtn) settings.deleteCancelBtn = texts.deleteCancelBtn;
+                                    if (texts.deleteConfirmBtn) settings.deleteConfirmBtn = texts.deleteConfirmBtn;
+                                    if (texts.detailCloseBtn) settings.detailCloseBtn = texts.detailCloseBtn;
+                                    if (texts.detailPrintBtn) settings.detailPrintBtn = texts.detailPrintBtn;
+                                }
+                                applySettings();
+                                applyColors(settings.colors);
+                            })
+                            .catch(function() {
+                                applySettings();
+                                applyColors(settings.colors);
+                            });
+
                     } else {
                         applySettings();
                         applyColors(settings.colors);
@@ -1330,6 +1479,8 @@
                     applySettings();
                     applyColors(settings.colors);
                 });
+
+            loadLocalSettings();
         }
 
         function applySettings() {
@@ -1349,55 +1500,56 @@
             if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
 
-            // الأزرار
             const dashboardBtn = document.getElementById('dashboardBtn');
             const addAcademyBtn = document.getElementById('addAcademyBtn');
             if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
             if (addAcademyBtn) addAcademyBtn.textContent = settings.addAcademyBtn;
 
-            // لودر
             const loaderText = document.getElementById('loaderText');
             if (loaderText) loaderText.textContent = settings.loaderText;
 
-            // الإحصائيات
             const statTotalLabel = document.getElementById('statTotalLabel');
             const statMainLabel = document.getElementById('statMainLabel');
             const statBranchesLabel = document.getElementById('statBranchesLabel');
             const statGovernoratesLabel = document.getElementById('statGovernoratesLabel');
+            const statCertificatesLabel = document.getElementById('statCertificatesLabel');
             if (statTotalLabel) statTotalLabel.textContent = settings.statTotalLabel;
             if (statMainLabel) statMainLabel.textContent = settings.statMainLabel;
             if (statBranchesLabel) statBranchesLabel.textContent = settings.statBranchesLabel;
             if (statGovernoratesLabel) statGovernoratesLabel.textContent = settings.statGovernoratesLabel;
+            if (statCertificatesLabel) statCertificatesLabel.textContent = settings.statCertificatesLabel;
 
-            // الفلاتر
             const filterNameLabel = document.getElementById('filterNameLabel');
             const filterLicenseLabel = document.getElementById('filterLicenseLabel');
             const filterGovernorateLabel = document.getElementById('filterGovernorateLabel');
+            const filterYearLabel = document.getElementById('filterYearLabel');
             const filterAllOption = document.getElementById('filterAllOption');
             const resetFiltersBtn = document.getElementById('resetFiltersBtn');
             const filterName = document.getElementById('filterName');
             const filterLicense = document.getElementById('filterLicense');
+            const filterYear = document.getElementById('filterYear');
 
             if (filterNameLabel) filterNameLabel.textContent = settings.filterNameLabel;
             if (filterLicenseLabel) filterLicenseLabel.textContent = settings.filterLicenseLabel;
             if (filterGovernorateLabel) filterGovernorateLabel.textContent = settings.filterGovernorateLabel;
+            if (filterYearLabel) filterYearLabel.textContent = settings.filterYearLabel;
             if (filterAllOption) filterAllOption.textContent = settings.filterAllOption;
             if (resetFiltersBtn) resetFiltersBtn.textContent = settings.resetFiltersBtn;
             if (filterName) filterName.placeholder = settings.filterNameLabel;
             if (filterLicense) filterLicense.placeholder = settings.filterLicenseLabel;
+            if (filterYear) filterYear.placeholder = settings.filterYearLabel;
 
-            // قائمة الأكاديميات
             const academiesListTitle = document.getElementById('academiesListTitle');
             const exportPdfBtn = document.getElementById('exportPdfBtn');
             if (academiesListTitle) academiesListTitle.textContent = settings.academiesListTitle;
             if (exportPdfBtn) exportPdfBtn.textContent = settings.exportPdfBtn;
 
-            // رؤوس الجدول
             const thNum = document.getElementById('thNum');
             const thName = document.getElementById('thName');
             const thLicense = document.getElementById('thLicense');
             const thBranches = document.getElementById('thBranches');
             const thGovernorates = document.getElementById('thGovernorates');
+            const thCertificates = document.getElementById('thCertificates');
             const thStatus = document.getElementById('thStatus');
             const thActions = document.getElementById('thActions');
             if (thNum) thNum.textContent = settings.thNum;
@@ -1405,16 +1557,15 @@
             if (thLicense) thLicense.textContent = settings.thLicense;
             if (thBranches) thBranches.textContent = settings.thBranches;
             if (thGovernorates) thGovernorates.textContent = settings.thGovernorates;
+            if (thCertificates) thCertificates.textContent = settings.thCertificates;
             if (thStatus) thStatus.textContent = settings.thStatus;
             if (thActions) thActions.textContent = settings.thActions;
 
-            // حالة فارغة
             const emptyTitle = document.getElementById('emptyTitle');
             const emptyDesc = document.getElementById('emptyDesc');
             if (emptyTitle) emptyTitle.textContent = settings.emptyTitle;
             if (emptyDesc) emptyDesc.textContent = settings.emptyDesc;
 
-            // مودال
             const modalTitle = document.getElementById('modalTitle');
             const academyNameLabel = document.getElementById('academyNameLabel');
             const academyLicenseLabel = document.getElementById('academyLicenseLabel');
@@ -1441,7 +1592,6 @@
             if (academyLicense) academyLicense.placeholder = settings.academyLicenseLabel;
             if (academyTax) academyTax.placeholder = settings.academyTaxLabel;
 
-            // مودال الحذف
             const deleteTitle = document.getElementById('deleteTitle');
             const deleteConfirmText = document.getElementById('deleteConfirmText');
             const deleteReasonLabel = document.getElementById('deleteReasonLabel');
@@ -1456,7 +1606,11 @@
             if (deleteConfirmBtn) deleteConfirmBtn.textContent = settings.deleteConfirmBtn;
             if (deleteReason) deleteReason.placeholder = settings.deleteReasonLabel;
 
-            // Logo
+            const detailCloseBtn = document.getElementById('detailCloseBtn');
+            const detailPrintBtn = document.getElementById('detailPrintBtn');
+            if (detailCloseBtn) detailCloseBtn.textContent = settings.detailCloseBtn;
+            if (detailPrintBtn) detailPrintBtn.textContent = settings.detailPrintBtn;
+
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
                 if (logo) {
@@ -1482,7 +1636,7 @@
             const appleIcon = document.getElementById('appleIcon');
 
             if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
-            if (metaDescription) metaDescription.content = 'إدارة الأكاديميات - نقابة تكنولوجيا المعلومات';
+            if (metaDescription) metaDescription.content = 'إدارة الأكاديميات - ' + settings.pageTitleHeader;
             if (ogTitle) ogTitle.content = settings.pageTitleHeader;
             if (ogDescription) ogDescription.content = 'إدارة الأكاديميات المعتمدة';
             if (ogUrl) ogUrl.content = window.location.href;
@@ -1516,13 +1670,24 @@
 
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
 
             if (colors.background) {
                 document.body.style.background = colors.background;
             }
+        }
+
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        applyColors(parsed.theme.colors);
+                    }
+                }
+            } catch (e) {}
         }
 
         // ============================================================
@@ -1537,7 +1702,7 @@
                             const data = doc.data();
                             if (data.role === 'super_admin' || data.role === 'admin') {
                                 userRole = data.role;
-                                loadAcademies();
+                                loadCertificates();
                             } else {
                                 window.location.href = 'home.html';
                             }
@@ -1554,7 +1719,27 @@
         });
 
         // ============================================================
-        // 5. تحميل الأكاديميات
+        // 5. تحميل الشهادات
+        // ============================================================
+        function loadCertificates() {
+            db.collection('certificates').where('isActive', '==', true).get()
+                .then(function(snapshot) {
+                    allCertificates = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        allCertificates.push(data);
+                    });
+                    loadAcademies();
+                })
+                .catch(function(err) {
+                    console.error('Error loading certificates:', err);
+                    loadAcademies();
+                });
+        }
+
+        // ============================================================
+        // 6. تحميل الأكاديميات
         // ============================================================
         function loadAcademies() {
             const loader = document.getElementById('pageLoader');
@@ -1591,7 +1776,7 @@
         }
 
         // ============================================================
-        // 6. تحديث الإحصائيات
+        // 7. تحديث الإحصائيات
         // ============================================================
         function updateStats() {
             const total = academies.length;
@@ -1609,19 +1794,30 @@
                 }
             });
 
+            // عدد الشهادات لكل أكاديمية
+            let totalCertificates = 0;
+            academies.forEach(function(a) {
+                const certCount = allCertificates.filter(function(c) {
+                    return c.academyId === a.id;
+                }).length;
+                totalCertificates += certCount;
+            });
+
             const statTotal = document.getElementById('statTotal');
             const statMain = document.getElementById('statMain');
             const statBranches = document.getElementById('statBranches');
             const statGovs = document.getElementById('statGovernorates');
+            const statCerts = document.getElementById('statCertificates');
 
             if (statTotal) statTotal.textContent = total;
             if (statMain) statMain.textContent = mainCount;
             if (statBranches) statBranches.textContent = branchesCount;
             if (statGovs) statGovs.textContent = govs.size;
+            if (statCerts) statCerts.textContent = totalCertificates;
         }
 
         // ============================================================
-        // 7. عرض الأكاديميات
+        // 8. عرض الأكاديميات
         // ============================================================
         function renderAcademies(filteredData) {
             const data = filteredData || academies;
@@ -1645,7 +1841,12 @@
                 const branchCount = academy.branches ? academy.branches.length : 0;
                 const govs = academy.branches ? academy.branches.map(function(b) { return b.governorate; }).filter(
                     function(g) { return g; }) : [];
-                const govsStr = govs.length > 0 ? govs.join('، ') : '-';
+                const govsStr = govs.length > 0 ? govs.slice(0, 2).join('، ') + (govs.length > 2 ? '...' : '') : '-';
+
+                const certCount = allCertificates.filter(function(c) {
+                    return c.academyId === academy.id;
+                }).length;
+
                 const statusHtml = academy.isDeleted ?
                     '<span class="status-badge inactive">محذوفة</span>' :
                     '<span class="status-badge active">نشطة</span>';
@@ -1654,7 +1855,7 @@
                     <tr>
                         <td data-label="${settings.thNum}"><span style="color:var(--text-muted);font-weight:600;">${index + 1}</span></td>
                         <td data-label="${settings.thName}">
-                            <div class="academy-name">${academy.name || '-'}</div>
+                            <div class="academy-name" onclick="showAcademyDetails('${academy.id}')" style="cursor:pointer;">${academy.name || '-'}</div>
                             <div style="font-size:11px;color:var(--text-dim);">${academy.licenseNumber || '-'}</div>
                         </td>
                         <td data-label="${settings.thLicense}">
@@ -1662,11 +1863,13 @@
                         </td>
                         <td data-label="${settings.thBranches}">${branchCount}</td>
                         <td data-label="${settings.thGovernorates}" style="font-size:12px;">${govsStr}</td>
+                        <td data-label="${settings.thCertificates}" style="font-weight:600;color:var(--primary-color);">${certCount}</td>
                         <td data-label="${settings.thStatus}">${statusHtml}</td>
                         <td data-label="${settings.thActions}">
                             <div class="actions">
-                                <button class="btn btn-primary btn-sm" onclick="editAcademy('${academy.id}')">${settings.thActions}</button>
-                                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">${settings.deleteTitle}</button>
+                                <button class="btn btn-primary btn-sm" onclick="showAcademyDetails('${academy.id}')">عرض</button>
+                                <button class="btn btn-success btn-sm" onclick="editAcademy('${academy.id}')">تعديل</button>
+                                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${academy.id}')">حذف</button>
                             </div>
                         </td>
                     </tr>
@@ -1675,7 +1878,141 @@
         }
 
         // ============================================================
-        // 8. الفلاتر
+        // 9. عرض تفاصيل الأكاديمية
+        // ============================================================
+        function showAcademyDetails(id) {
+            const academy = academies.find(function(a) { return a.id === id; });
+            if (!academy) {
+                showMsg('الأكاديمية غير موجودة', 'error');
+                return;
+            }
+
+            currentDetailAcademy = academy;
+
+            const certCount = allCertificates.filter(function(c) {
+                return c.academyId === academy.id;
+            }).length;
+
+            const titleEl = document.getElementById('detailModalTitle');
+            if (titleEl) titleEl.textContent = academy.name || 'تفاصيل الأكاديمية';
+
+            const bodyEl = document.getElementById('detailModalBody');
+
+            let branchesHtml = '';
+            if (academy.branches && academy.branches.length > 0) {
+                branchesHtml = academy.branches.map(function(b, i) {
+                    return `
+                        <div class="branch-item-detail">
+                            <div>
+                                <span class="gov">${b.governorate || '-'}</span>
+                                ${b.isMainBranch ? ' <span style="font-size:10px;color:var(--primary-color);background:var(--primary-glow);padding:0 8px;border-radius:12px;">الرئيسي</span>' : ''}
+                            </div>
+                            <div style="font-size:12px;color:var(--text-muted);">${b.address || '-'}</div>
+                            <div style="font-size:12px;color:var(--text-muted);">${b.phone || '-'}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                branchesHtml = '<div style="color:var(--text-muted);padding:10px;">لا توجد فروع مسجلة</div>';
+            }
+
+            bodyEl.innerHTML = `
+                <div style="margin-bottom:12px;background:var(--bg-hover);padding:14px;border-radius:var(--radius-sm);border:1px solid var(--border-light);">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div><span style="font-size:10px;color:var(--text-muted);">${settings.academyNameLabel}</span><br><span style="font-weight:700;font-size:16px;">${academy.name || '-'}</span></div>
+                        <div><span style="font-size:10px;color:var(--text-muted);">${settings.academyLicenseLabel}</span><br><span style="font-family:'Courier New',monospace;color:var(--primary-color);">${academy.licenseNumber || '-'}</span></div>
+                        <div><span style="font-size:10px;color:var(--text-muted);">${settings.academyTaxLabel}</span><br><span>${academy.taxNumber || '-'}</span></div>
+                        <div><span style="font-size:10px;color:var(--text-muted);">الشهادات الصادرة</span><br><span style="font-weight:700;font-size:18px;color:var(--primary-color);">${certCount}</span></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <div style="font-weight:700;color:var(--text-color);margin-bottom:8px;">الفروع (${academy.branches ? academy.branches.length : 0})</div>
+                    <div class="branches-list">
+                        ${branchesHtml}
+                    </div>
+                </div>
+
+                <div style="font-size:11px;color:var(--text-dim);border-top:1px solid var(--border-light);padding-top:10px;">
+                    تم التسجيل: ${formatDate(academy.createdAt)}
+                </div>
+            `;
+
+            document.getElementById('academyDetailModal').classList.add('show');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('academyDetailModal').classList.remove('show');
+            currentDetailAcademy = null;
+        }
+
+        function printAcademyDetails() {
+            if (!currentDetailAcademy) {
+                showMsg('لا توجد بيانات للطباعة', 'info');
+                return;
+            }
+            // فتح طباعة للمودال
+            const content = document.getElementById('academyDetailModal').innerHTML;
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html dir="rtl">
+                <head><meta charset="UTF-8"><title>${currentDetailAcademy.name}</title>
+                <style>
+                    * { margin:0; padding:0; box-sizing:border-box; }
+                    body { font-family:'Cairo','Segoe UI',sans-serif; direction:rtl; padding:30px; background:#fff; color:#1a1a2e; }
+                    .container { max-width:700px; margin:0 auto; }
+                    .header { text-align:center; border-bottom:3px solid #C9A84C; padding-bottom:16px; margin-bottom:16px; }
+                    .header h1 { font-size:24px; color:#C9A84C; }
+                    .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+                    .item { padding:10px; background:#f8faff; border-radius:8px; border:1px solid #eee; }
+                    .item .label { font-size:10px; color:#888; text-transform:uppercase; }
+                    .item .value { font-size:14px; font-weight:600; color:#1a1a2e; }
+                    .branches { margin-top:12px; }
+                    .branch { padding:8px 12px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; flex-wrap:wrap; }
+                    .footer { text-align:center; margin-top:20px; padding-top:10px; border-top:1px solid #eee; font-size:10px; color:#aaa; }
+                    @media print { body { padding:20px; } }
+                </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>${currentDetailAcademy.name}</h1>
+                            <p style="color:#666;">${currentDetailAcademy.licenseNumber || ''}</p>
+                        </div>
+                        <div class="detail-grid">
+                            <div class="item"><div class="label">اسم الأكاديمية</div><div class="value">${currentDetailAcademy.name || '-'}</div></div>
+                            <div class="item"><div class="label">الرقم الاعتمادي</div><div class="value">${currentDetailAcademy.licenseNumber || '-'}</div></div>
+                            <div class="item"><div class="label">البطاقة الضريبية</div><div class="value">${currentDetailAcademy.taxNumber || '-'}</div></div>
+                            <div class="item"><div class="label">الشهادات الصادرة</div><div class="value">${allCertificates.filter(c => c.academyId === currentDetailAcademy.id).length}</div></div>
+                        </div>
+                        <div class="branches">
+                            <h3 style="margin-bottom:8px;">الفروع (${currentDetailAcademy.branches ? currentDetailAcademy.branches.length : 0})</h3>
+                            ${currentDetailAcademy.branches ? currentDetailAcademy.branches.map(b => `
+                                <div class="branch">
+                                    <span><strong>${b.governorate || '-'}</strong> ${b.isMainBranch ? '(الرئيسي)' : ''}</span>
+                                    <span style="color:#666;">${b.address || ''}</span>
+                                    <span style="color:#666;">${b.phone || ''}</span>
+                                </div>
+                            `).join('') : '<div style="color:#666;">لا توجد فروع</div>'}
+                        </div>
+                        <div class="footer">تم التسجيل: ${formatDate(currentDetailAcademy.createdAt)}</div>
+                    </div>
+                    <script>
+                        window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 500); };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        document.getElementById('academyDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDetailModal();
+        });
+
+        // ============================================================
+        // 10. الفلاتر المتقدمة
         // ============================================================
         function populateGovernorates() {
             const select = document.getElementById('filterGovernorate');
@@ -1702,6 +2039,7 @@
             const nameFilter = document.getElementById('filterName')?.value.trim().toLowerCase() || '';
             const licenseFilter = document.getElementById('filterLicense')?.value.trim().toLowerCase() || '';
             const govFilter = document.getElementById('filterGovernorate')?.value || '';
+            const yearFilter = document.getElementById('filterYear')?.value || '';
 
             const filtered = academies.filter(function(academy) {
                 let match = true;
@@ -1727,6 +2065,16 @@
                     match = match && hasGov;
                 }
 
+                if (yearFilter) {
+                    const year = parseInt(yearFilter);
+                    if (academy.createdAt) {
+                        const date = academy.createdAt.toDate ? academy.createdAt.toDate() : new Date(academy.createdAt);
+                        match = match && date.getFullYear() === year;
+                    } else {
+                        match = false;
+                    }
+                }
+
                 return match;
             });
 
@@ -1737,15 +2085,17 @@
             const nameInput = document.getElementById('filterName');
             const licenseInput = document.getElementById('filterLicense');
             const govSelect = document.getElementById('filterGovernorate');
+            const yearInput = document.getElementById('filterYear');
 
             if (nameInput) nameInput.value = '';
             if (licenseInput) licenseInput.value = '';
             if (govSelect) govSelect.value = '';
+            if (yearInput) yearInput.value = '';
             renderAcademies();
         }
 
         // ============================================================
-        // 9. إدارة الفروع في المودال
+        // 11. إدارة الفروع في المودال
         // ============================================================
         function getBranchTemplate(isMain) {
             const div = document.createElement('div');
@@ -1760,7 +2110,6 @@
             const grid = document.createElement('div');
             grid.className = 'branch-grid';
 
-            // المحافظة
             const govGroup = document.createElement('div');
             govGroup.className = 'form-group';
             const govLabel = document.createElement('label');
@@ -1786,7 +2135,6 @@
             govGroup.appendChild(govSelect);
             grid.appendChild(govGroup);
 
-            // العنوان
             const addrGroup = document.createElement('div');
             addrGroup.className = 'form-group';
             const addrLabel = document.createElement('label');
@@ -1800,7 +2148,6 @@
             addrGroup.appendChild(addrInput);
             grid.appendChild(addrGroup);
 
-            // الهاتف
             const phoneGroup = document.createElement('div');
             phoneGroup.className = 'form-group';
             const phoneLabel = document.createElement('label');
@@ -1882,7 +2229,7 @@
         }
 
         // ============================================================
-        // 10. فتح مودال الإضافة
+        // 12. فتح مودال الإضافة
         // ============================================================
         function openAddModal() {
             const titleEl = document.getElementById('modalTitle');
@@ -1899,7 +2246,7 @@
         }
 
         // ============================================================
-        // 11. تعديل أكاديمية
+        // 13. تعديل أكاديمية
         // ============================================================
         function editAcademy(id) {
             const academy = academies.find(function(a) { return a.id === id; });
@@ -1947,7 +2294,7 @@
         }
 
         // ============================================================
-        // 12. حفظ الأكاديمية
+        // 14. حفظ الأكاديمية
         // ============================================================
         function saveAcademy(e) {
             e.preventDefault();
@@ -2016,7 +2363,7 @@
             savePromise.then(function() {
                 closeModal();
                 showMsg('تم ' + (actionType === 'update' ? 'تحديث' : 'إضافة') + ' الأكاديمية بنجاح', 'success');
-                loadAcademies();
+                loadCertificates();
             }).catch(function(err) {
                 showMsg('حدث خطأ: ' + err.message, 'error');
             });
@@ -2025,7 +2372,7 @@
         }
 
         // ============================================================
-        // 13. مودال الحذف
+        // 15. مودال الحذف
         // ============================================================
         function openDeleteModal(id) {
             const academy = academies.find(function(a) { return a.id === id; });
@@ -2091,14 +2438,14 @@
                     ipAddress: 'auto',
                     userAgent: navigator.userAgent
                 }).catch(function() {});
-                loadAcademies();
+                loadCertificates();
             }).catch(function(err) {
                 showMsg('حدث خطأ: ' + err.message, 'error');
             });
         }
 
         // ============================================================
-        // 14. إغلاق المودالات
+        // 16. إغلاق المودالات
         // ============================================================
         function closeModal() {
             const modal = document.getElementById('academyModal');
@@ -2114,7 +2461,7 @@
         });
 
         // ============================================================
-        // 15. عرض الرسائل
+        // 17. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
@@ -2126,7 +2473,16 @@
         }
 
         // ============================================================
-        // 16. تصدير نتائج البحث كـ PDF
+        // 18. دوال مساعدة
+        // ============================================================
+        function formatDate(date) {
+            if (!date) return '-';
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        // ============================================================
+        // 19. تصدير نتائج البحث كـ PDF
         // ============================================================
         function exportSearchResultsPDF() {
             const tbody = document.getElementById('academiesBody');
@@ -2149,7 +2505,8 @@
                         license: cells[2]?.textContent.trim() || '-',
                         branches: cells[3]?.textContent.trim() || '-',
                         governorates: cells[4]?.textContent.trim() || '-',
-                        status: cells[5]?.textContent.trim() || '-'
+                        certificates: cells[5]?.textContent.trim() || '-',
+                        status: cells[6]?.textContent.trim() || '-'
                     });
                 }
             });
@@ -2171,6 +2528,7 @@
                         <td>${item.license}</td>
                         <td>${item.branches}</td>
                         <td>${item.governorates}</td>
+                        <td>${item.certificates}</td>
                         <td>${item.status}</td>
                     </tr>
                 `;
@@ -2207,6 +2565,7 @@
                                 <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thLicense || 'الرقم الاعتمادي'}</th>
                                 <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thBranches || 'الفروع'}</th>
                                 <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thGovernorates || 'المحافظات'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thCertificates || 'الشهادات'}</th>
                                 <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thStatus || 'الحالة'}</th>
                             </tr>
                         </thead>
@@ -2217,7 +2576,7 @@
 
                     <div style="text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#999;">
                         <div>تم إنشاء هذا التقرير بواسطة نظام نقابة تكنولوجيا المعلومات</div>
-                        <div style="margin-top:6px;font-size:12px;color:var(--primary-color);font-weight:700;">${settings.presidentLabel}: ${settings.presidentName}</div>
+                        <div style="margin-top:6px;font-size:12px;color:var(--primary-color);font-weight:700;">${settings.presidentFooter}: ${settings.presidentName}</div>
                         <div style="font-size:9px;color:#aaa;margin-top:4px;">${settings.footerText} | الإصدار 1.0</div>
                     </div>
                 </div>
@@ -2250,14 +2609,16 @@
         }
 
         // ============================================================
-        // 17. تحميل الصفحة
+        // 20. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
             console.log('✅ إدارة الأكاديميات - كل حرف من الإعدادات');
             console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎨 الألوان من الإعدادات');
-            console.log('🏛️ إدارة الأكاديميات متطورة');
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
+            console.log('🔍 فلتر متقدم: اسم، رقم اعتمادي، محافظة، سنة');
+            console.log('📊 إحصائيات الشهادات لكل أكاديمية');
+            console.log('🖨️ طباعة تقرير الأكاديميات');
         });
     </script>
 
