@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>التقارير - نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -17,11 +38,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
 
-    <!-- html2pdf -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
-    </script>
-
     <style>
+        /* ============================================================
+           التصميم الخرافي لتقارير المنصة
+           كل حرف ولون من الإعدادات
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -29,12 +50,46 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #050a18;
-            color: #ffffff;
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        :root {
+            --primary-color: #C9A84C;
+            --primary-dark: #A8893A;
+            --primary-light: #E8D5A3;
+            --primary-glow: rgba(201,168,76,0.3);
+            --secondary-color: #0A1628;
+            --accent-color: #7C3AED;
+            --accent-light: #A78BFA;
+            --accent-glow: rgba(124,58,237,0.2);
+            --bg-color: #0A0E1A;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-hover: rgba(255,255,255,0.06);
+            --text-color: #FFFFFF;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-dim: rgba(255,255,255,0.15);
+            --success: #10B981;
+            --success-bg: rgba(16,185,129,0.12);
+            --error: #EF4444;
+            --error-bg: rgba(239,68,68,0.12);
+            --warning: #F59E0B;
+            --warning-bg: rgba(245,158,11,0.12);
+            --info: #3B82F6;
+            --info-bg: rgba(59,130,246,0.12);
+            --border: rgba(255,255,255,0.06);
+            --border-light: rgba(255,255,255,0.03);
+            --card-bg: rgba(255,255,255,0.04);
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-lg: 28px;
         }
 
         .page-bg {
@@ -42,10 +97,10 @@
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
-            animation: bgPulse 15s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
+            animation: bgPulse 12s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
@@ -57,8 +112,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -76,14 +130,14 @@
             animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: var(--accent-color); opacity: 0.3; }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: var(--accent-color); opacity: 0.3; }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
@@ -99,8 +153,8 @@
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             animation: gridMove 25s linear infinite;
@@ -124,14 +178,13 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 100, 255, 0.05);
+            border: 1px solid rgba(201,168,76,0.04);
             animation: ringSpin 40s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
-        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201,168,76,0.06); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(124,58,237,0.04); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(59,130,246,0.03); animation-duration: 60s; }
 
         @keyframes ringSpin {
             0% { transform: rotate(0deg); }
@@ -152,7 +205,7 @@
             height: 450px;
             top: -150px;
             right: -150px;
-            background: rgba(0, 100, 255, 0.08);
+            background: var(--primary-glow);
         }
 
         .glow-orb:nth-child(2) {
@@ -160,7 +213,7 @@
             height: 550px;
             bottom: -200px;
             left: -200px;
-            background: rgba(138, 43, 226, 0.06);
+            background: var(--accent-glow);
             animation-delay: 6s;
         }
 
@@ -178,18 +231,31 @@
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
-            padding: 14px 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
             animation: headerFloat 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
+            pointer-events: none;
         }
 
         @keyframes headerFloat {
@@ -200,24 +266,30 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .logo-box {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 20px;
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             animation: logoSpin 20s linear infinite;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+            box-shadow: 0 0 35px var(--primary-glow);
+            position: relative;
+            background-size: cover;
+            background-position: center;
         }
 
         @keyframes logoSpin {
@@ -227,23 +299,45 @@
 
         .logo-box:hover {
             animation-duration: 3s;
-            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .header-title h1 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            color: #fff;
-            background: linear-gradient(135deg, #ffffff, #60a5fa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--text-color);
         }
 
         .header-title p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-president {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 14px;
+            background: var(--bg-hover);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .header-president:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .header-president .president-icon { font-size: 16px; }
+        .header-president .president-label { font-size: 11px; color: var(--text-muted); font-weight: 300; }
+        .header-president .president-name {
+            font-size: 13px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-right {
@@ -251,6 +345,8 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .btn {
@@ -260,72 +356,65 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
+
+        .btn:hover::before { width: 300px; height: 300px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: #fff;
+            box-shadow: 0 4px 25px var(--primary-glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px var(--primary-glow); }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
         }
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
-
-        .btn-success {
-            background: linear-gradient(135deg, #10b981, #22c55e);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
-        }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
-        }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4); }
-
-        .btn-ghost {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.10); transform: translateY(-2px); }
+        .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
         .card {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 20px 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            margin-bottom: 24px;
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
         }
 
-        .card:hover {
-            border-color: rgba(0, 100, 255, 0.10);
-        }
+        .card:hover { border-color: var(--primary-color); }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-color);
             margin-bottom: 14px;
             display: flex;
             align-items: center;
@@ -336,107 +425,85 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 100, 255, 0.15);
-            color: #60a5fa;
+            background: var(--primary-glow);
+            color: var(--primary-color);
             padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
         }
 
-        .filters-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .filters-row .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .filters-row .filter-group label {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .filters-row .filter-group input,
-        .filters-row .filter-group select {
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            width: 100%;
-        }
-
-        .filters-row .filter-group input::placeholder {
-            color: rgba(255, 255, 255, 0.12);
-        }
-
-        .filters-row .filter-group input:focus,
-        .filters-row .filter-group select:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
-        }
-
-        .filters-row .filter-group select option {
-            background: #0a0f1f;
-            color: #fff;
-        }
-
         .stats-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             margin-bottom: 16px;
         }
 
         .stats-row .stat-mini {
             text-align: center;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 12px 14px;
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
             transition: all 0.3s ease;
         }
 
         .stats-row .stat-mini:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(0, 100, 255, 0.08);
+            background: var(--bg-hover);
+            border-color: var(--primary-color);
         }
 
         .stats-row .stat-mini .num {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
-            color: #60a5fa;
+            color: var(--primary-color);
             line-height: 1.2;
         }
 
         .stats-row .stat-mini .label {
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.25);
+            color: var(--text-muted);
             margin-top: 2px;
         }
 
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
             margin-bottom: 16px;
         }
 
-        .charts-grid .chart-container {
-            position: relative;
-            height: 200px;
+        .filter-bar input,
+        .filter-bar select {
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-color);
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+            font-family: inherit;
         }
+
+        .filter-bar input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .filter-bar select option {
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .filter-bar .btn { flex-shrink: 0; }
 
         .table-responsive {
             overflow-x: auto;
@@ -450,13 +517,13 @@
         }
 
         .table thead {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
         }
 
         .table thead th {
             text-align: right;
             padding: 10px 12px;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
             font-weight: 600;
             font-size: 11px;
             text-transform: uppercase;
@@ -466,42 +533,31 @@
 
         .table tbody td {
             padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-light);
             vertical-align: middle;
         }
 
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
         .table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--bg-hover);
         }
 
-        .rank-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        .table .rank-badge {
             font-weight: 700;
-            font-size: 12px;
+            font-size: 14px;
+            color: var(--primary-color);
         }
 
-        .rank-badge.gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
-        .rank-badge.silver { background: linear-gradient(135deg, #9ca3af, #6b7280); color: #fff; }
-        .rank-badge.bronze { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
-        .rank-badge.normal { background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.4); }
-
-        .export-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
+        .table .rank-1 { color: #f59e0b; }
+        .table .rank-2 { color: #94a3b8; }
+        .table .rank-3 { color: #cd7f32; }
 
         .msg {
             display: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             padding: 12px 16px;
             margin-bottom: 16px;
             text-align: center;
@@ -509,17 +565,22 @@
         }
 
         .msg.show { display: block; animation: fadeIn 0.3s ease; }
-        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
-        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
-        .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
+        .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
+        .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
+        .msg.info { background: var(--info-bg); border: 1px solid var(--info); color: var(--info); }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
         .loader { display: none; text-align: center; padding: 30px 0; }
         .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0066ff;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -530,193 +591,176 @@
         .footer {
             text-align: center;
             padding: 20px 0 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 1px solid var(--border);
             margin-top: 24px;
-            color: rgba(255, 255, 255, 0.10);
+            color: var(--text-dim);
             font-size: 11px;
         }
 
-        #print-container {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 800px;
-            z-index: 9999;
-        }
-
-        .report-print-wrapper {
-            width: 780px;
-            padding: 30px 35px;
-            background: #ffffff;
-            color: #1a1a2e;
-            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            direction: rtl;
-            border: 3px solid #0066ff;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        .chart-container {
             position: relative;
-            margin: 0 auto;
+            height: 200px;
+            width: 100%;
         }
 
-        .report-print-wrapper .report-header {
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+        .empty-state .title { font-size: 18px; font-weight: 700; color: var(--text-secondary); }
+        .empty-state .desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 650px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
+        .modal::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid #0066ff;
-            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
             margin-bottom: 16px;
         }
 
-        .report-print-wrapper .report-header .left {
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .modal-close {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 14px;
-        }
-
-        .report-print-wrapper .report-header .left .logo-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #0066ff;
-        }
-
-        .report-print-wrapper .report-header .left .text h1 {
-            font-size: 18px;
-            font-weight: 800;
-            color: #0066ff;
-            margin: 0;
-        }
-
-        .report-print-wrapper .report-header .left .text p {
-            font-size: 11px;
-            color: #666;
-            margin: 1px 0 0;
-        }
-
-        .report-print-wrapper .report-title {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 800;
-            color: #0066ff;
-            margin: 6px 0 2px;
-        }
-
-        .report-print-wrapper .report-subtitle {
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 14px;
-        }
-
-        .report-print-wrapper .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-            margin-top: 10px;
-        }
-
-        .report-print-wrapper .report-table th {
-            background: #0066ff;
-            color: #fff;
-            padding: 6px 8px;
-            text-align: center;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .report-print-wrapper .report-table td {
-            padding: 5px 8px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-            font-size: 10px;
-        }
-
-        .report-print-wrapper .report-table tr:nth-child(even) {
-            background: #f8faff;
-        }
-
-        .report-print-wrapper .report-footer {
-            text-align: center;
-            margin-top: 14px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-            font-size: 10px;
-            color: #999;
-        }
-
-        .report-print-wrapper .report-footer .signature {
-            margin-top: 6px;
-            font-size: 12px;
-            color: #0066ff;
-            font-weight: 700;
-        }
-
-        .report-print-wrapper .report-stats {
-            display: flex;
             justify-content: center;
-            gap: 16px;
-            margin: 6px 0 10px;
-            font-size: 11px;
-            color: #666;
-            flex-wrap: wrap;
         }
 
-        .report-print-wrapper .report-stats span {
-            background: #f0f4ff;
-            padding: 3px 12px;
-            border-radius: 20px;
+        .modal-close:hover {
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: var(--error);
+        }
+
+        .modal-body .detail-row {
+            display: flex;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .modal-body .detail-label {
+            width: 100px;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .modal-body .detail-value {
+            font-size: 13px;
+            color: var(--text-color);
+            word-break: break-word;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
         }
 
         @media (max-width: 992px) {
-            .filters-row { grid-template-columns: 1fr 1fr; }
-            .charts-grid { grid-template-columns: 1fr 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
-            .header-right { justify-content: center; }
+            .header-right { justify-content: center; flex-wrap: wrap; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
             .container { padding: 10px; }
             .card { padding: 14px 16px; }
-            .filters-row { grid-template-columns: 1fr; }
-            .charts-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; }
+            .filter-bar input, .filter-bar select { min-width: unset; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
             .glow-orb { display: none; }
             .ring { display: none; }
-            .header-left { justify-content: center; }
             .header-title { text-align: center; }
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
-            .report-print-wrapper { padding: 20px; width: 95%; }
-            .report-print-wrapper .report-header { flex-direction: column; text-align: center; }
-            .report-print-wrapper .report-header .left { flex-direction: column; }
+            .header-president { padding: 3px 10px; }
+            .header-president .president-name { font-size: 12px; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .modal { padding: 20px; margin: 10px; border-radius: 20px; }
         }
 
         @media (max-width: 480px) {
             .header-title h1 { font-size: 15px; }
+            .btn { padding: 6px 14px; font-size: 11px; }
+            .logo-box { width: 36px; height: 36px; font-size: 14px; }
             .stats-row { grid-template-columns: 1fr 1fr; }
-            .stat-mini .num { font-size: 18px; }
-            .export-actions { flex-direction: column; }
-            .export-actions .btn { width: 100%; justify-content: center; }
-            .report-print-wrapper .report-table th,
-            .report-print-wrapper .report-table td { font-size: 9px; padding: 3px 4px; }
-            .report-print-wrapper .report-title { font-size: 18px; }
-            .report-print-wrapper .report-stats { flex-direction: column; gap: 4px; align-items: center; }
-        }
-
-        @media print {
-            * { display: none !important; }
-            body::before {
-                content: 'لا يمكن طباعة هذه الصفحة';
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                inset: 0;
-                background: #050a18;
-                color: #ef4444;
-                font-size: 28px;
-                z-index: 999999;
-                font-family: 'Segoe UI', 'Tahoma', sans-serif;
-            }
+            .table thead { display: none; }
+            .table tbody td { display: block; padding: 6px 10px; border-bottom: none; }
+            .table tbody td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); display: inline-block; width: 80px; }
+            .table tbody tr { border-bottom: 1px solid var(--border); padding: 8px 0; display: block; }
+            .header-president .president-name { font-size: 11px; }
+            .modal { padding: 16px; }
+            .chart-container { height: 160px; }
         }
     </style>
 </head>
@@ -741,7 +785,6 @@
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
-        <div class="ring"></div>
     </div>
 
     <div class="glow-orb"></div>
@@ -751,15 +794,20 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1>التقارير التحليلية</h1>
-                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="pageTitleHeader"></h1>
+                    <p id="committeeName"></p>
+                </div>
+                <div class="header-president">
+                    <span class="president-icon">👤</span>
+                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
-                <button class="btn btn-primary btn-sm" onclick="loadReports()">تحديث</button>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn"></a>
+                <a href="#" class="btn btn-outline btn-sm" id="refreshBtn" onclick="loadReports()">تحديث</a>
             </div>
         </header>
 
@@ -767,219 +815,213 @@
 
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
-            <div style="color:rgba(255,255,255,0.3);">جاري تحميل التقارير...</div>
+            <div style="color:var(--text-muted);" id="loaderText"></div>
         </div>
 
         <div id="pageContent" style="display:none;">
 
-            <!-- الفلاتر -->
+            <!-- ===== إحصائيات سريعة ===== -->
+            <div class="card">
+                <div class="stats-row" id="statsRow">
+                    <div class="stat-mini">
+                        <div class="num" id="statTotalCertificates">0</div>
+                        <div class="label" id="statTotalCertificatesLabel"></div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statTotalAcademies">0</div>
+                        <div class="label" id="statTotalAcademiesLabel"></div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statTotalBranches">0</div>
+                        <div class="label" id="statTotalBranchesLabel"></div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statTotalGovernorates">0</div>
+                        <div class="label" id="statTotalGovernoratesLabel"></div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statTotalStudents">0</div>
+                        <div class="label" id="statTotalStudentsLabel"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== فلتر ===== -->
+            <div class="card">
+                <div class="filter-bar">
+                    <input type="text" id="searchInput" placeholder="بحث باسم الأكاديمية، الفرع، المحافظة..." oninput="applyFilters()" />
+                    <select id="governorateFilter" onchange="applyFilters()">
+                        <option value="">جميع المحافظات</option>
+                    </select>
+                    <button class="btn btn-outline btn-sm" onclick="resetFilters()" id="resetBtn">إعادة ضبط</button>
+                </div>
+            </div>
+
+            <!-- ===== ترتيب الأكاديميات ===== -->
             <div class="card">
                 <div class="card-title">
-                    <span>فلترة التقارير</span>
-                    <span class="badge">اختر الفترة</span>
-                </div>
-                <div class="filters-row">
-                    <div class="filter-group">
-                        <label>من تاريخ</label>
-                        <input type="date" id="filterDateFrom" />
-                    </div>
-                    <div class="filter-group">
-                        <label>إلى تاريخ</label>
-                        <input type="date" id="filterDateTo" />
-                    </div>
-                    <div class="filter-group">
-                        <label>الأكاديمية</label>
-                        <select id="filterAcademy">
-                            <option value="">جميع الأكاديميات</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>المحافظة</label>
-                        <select id="filterGovernorate">
-                            <option value="">جميع المحافظات</option>
-                        </select>
-                    </div>
-                    <div class="filter-group" style="justify-content:flex-end;">
-                        <button class="btn btn-primary btn-sm" onclick="applyFilters()" style="width:100%;">تطبيق الفلترة</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الإحصائيات السريعة -->
-            <div class="stats-row" id="statsRow">
-                <div class="stat-mini">
-                    <div class="num" id="statTotal">0</div>
-                    <div class="label">إجمالي الشهادات</div>
-                </div>
-                <div class="stat-mini">
-                    <div class="num" id="statActive">0</div>
-                    <div class="label">شهادات نشطة</div>
-                </div>
-                <div class="stat-mini">
-                    <div class="num" id="statGovernorates">0</div>
-                    <div class="label">محافظات</div>
-                </div>
-                <div class="stat-mini">
-                    <div class="num" id="statAcademies">0</div>
-                    <div class="label">أكاديميات</div>
-                </div>
-                <div class="stat-mini">
-                    <div class="num" id="statBranches">0</div>
-                    <div class="label">فروع نشطة</div>
-                </div>
-                <div class="stat-mini">
-                    <div class="num" id="statStudents">0</div>
-                    <div class="label">خريجين</div>
-                </div>
-            </div>
-
-            <!-- الرسوم البيانية -->
-            <div class="charts-grid">
-                <div class="card">
-                    <div class="card-title">الشهادات حسب المحافظة</div>
-                    <div class="chart-container">
-                        <canvas id="governorateChart"></canvas>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">الشهادات حسب الأكاديمية</div>
-                    <div class="chart-container">
-                        <canvas id="academyChart"></canvas>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">الشهادات حسب التقدير</div>
-                    <div class="chart-container">
-                        <canvas id="gradeChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TOP 10 الطلاب -->
-            <div class="card">
-                <div class="card-title">
-                    <span>🏆 أفضل 10 طلاب من حيث عدد الشهادات</span>
-                    <span class="badge" id="topCount">0 طالب</span>
-                    <button class="btn btn-success btn-sm" onclick="exportReport('topStudents')">طباعة</button>
+                    <span id="academiesRankTitle"></span>
+                    <span class="badge" id="academiesRankBadge"></span>
                 </div>
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="academiesRankTable">
                         <thead>
                             <tr>
-                                <th>الترتيب</th>
-                                <th>اسم الطالب</th>
-                                <th>الرقم القومي</th>
-                                <th>عدد الشهادات</th>
-                                <th>النسبة المئوية</th>
+                                <th id="thRank">#</th>
+                                <th id="thAcademyName">اسم الأكاديمية</th>
+                                <th id="thAcademyLicense">الرقم الاعتمادي</th>
+                                <th id="thCertCount">عدد الشهادات</th>
+                                <th id="thBranchCount">عدد الفروع</th>
+                                <th id="thTopBranch">أفضل فرع</th>
+                                <th id="thEvaluation">التقييم</th>
+                            </tr>
+                        </thead>
+                        <tbody id="academiesRankBody"></tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="academiesEmpty" style="display:none;">
+                    <div class="icon">🏛️</div>
+                    <div class="title">لا توجد أكاديميات</div>
+                    <div class="desc">لم يتم تسجيل أي أكاديمية حتى الآن</div>
+                </div>
+            </div>
+
+            <!-- ===== ترتيب الفروع ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span id="branchesRankTitle"></span>
+                    <span class="badge" id="branchesRankBadge"></span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="branchesRankTable">
+                        <thead>
+                            <tr>
+                                <th id="thBRank">#</th>
+                                <th id="thBAcademy">الأكاديمية</th>
+                                <th id="thBGovernorate">المحافظة</th>
+                                <th id="thBAddress">العنوان</th>
+                                <th id="thBCertCount">عدد الشهادات</th>
+                                <th id="thBEvaluation">التقييم</th>
+                            </tr>
+                        </thead>
+                        <tbody id="branchesRankBody"></tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="branchesEmpty" style="display:none;">
+                    <div class="icon">📍</div>
+                    <div class="title">لا توجد فروع</div>
+                    <div class="desc">لم يتم تسجيل أي فرع حتى الآن</div>
+                </div>
+            </div>
+
+            <!-- ===== ترتيب المحافظات ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span id="governoratesRankTitle"></span>
+                    <span class="badge" id="governoratesRankBadge"></span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="governoratesRankTable">
+                        <thead>
+                            <tr>
+                                <th id="thGRank">#</th>
+                                <th id="thGName">المحافظة</th>
+                                <th id="thGCertCount">عدد الشهادات</th>
+                                <th id="thGAcademies">عدد الأكاديميات</th>
+                                <th id="thGBranches">عدد الفروع</th>
+                                <th id="thGEvaluation">التقييم</th>
+                            </tr>
+                        </thead>
+                        <tbody id="governoratesRankBody"></tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="governoratesEmpty" style="display:none;">
+                    <div class="icon">🗺️</div>
+                    <div class="title">لا توجد محافظات</div>
+                    <div class="desc">لم يتم تسجيل أي محافظة حتى الآن</div>
+                </div>
+            </div>
+
+            <!-- ===== أفضل 10 متدربين ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span id="topStudentsTitle"></span>
+                    <span class="badge" id="topStudentsBadge"></span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="topStudentsTable">
+                        <thead>
+                            <tr>
+                                <th id="thSRank">#</th>
+                                <th id="thSName">اسم المتدرب</th>
+                                <th id="thSNational">الرقم القومي</th>
+                                <th id="thSCertCount">عدد الشهادات</th>
+                                <th id="thSAcademies">الأكاديميات</th>
+                                <th id="thSGrades">التقديرات</th>
                             </tr>
                         </thead>
                         <tbody id="topStudentsBody"></tbody>
                     </table>
                 </div>
-            </div>
-
-            <!-- تفاصيل المحافظات -->
-            <div class="card">
-                <div class="card-title">
-                    <span>تفاصيل المحافظات</span>
-                    <span class="badge" id="govCount">0 محافظة</span>
-                    <button class="btn btn-success btn-sm" onclick="exportReport('governorates')">طباعة</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>المحافظة</th>
-                                <th>عدد الشهادات</th>
-                                <th>النسبة المئوية</th>
-                            </tr>
-                        </thead>
-                        <tbody id="governoratesBody"></tbody>
-                    </table>
+                <div class="empty-state" id="topStudentsEmpty" style="display:none;">
+                    <div class="icon">🎓</div>
+                    <div class="title">لا توجد بيانات</div>
+                    <div class="desc">لم يتم تسجيل أي متدرب حتى الآن</div>
                 </div>
             </div>
 
-            <!-- تفاصيل الأكاديميات -->
+            <!-- ===== الرسوم البيانية ===== -->
             <div class="card">
                 <div class="card-title">
-                    <span>تفاصيل الأكاديميات</span>
-                    <span class="badge" id="acadCount">0 أكاديمية</span>
-                    <button class="btn btn-success btn-sm" onclick="exportReport('academies')">طباعة</button>
+                    <span id="chartsTitle"></span>
+                    <span class="badge" id="chartsBadge"></span>
                 </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الأكاديمية</th>
-                                <th>الرقم الاعتمادي</th>
-                                <th>عدد الشهادات</th>
-                                <th>الفروع النشطة</th>
-                                <th>النسبة المئوية</th>
-                            </tr>
-                        </thead>
-                        <tbody id="academiesBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- تفاصيل الفروع -->
-            <div class="card">
-                <div class="card-title">
-                    <span>تفاصيل الفروع</span>
-                    <span class="badge" id="branchCount">0 فرع</span>
-                    <button class="btn btn-success btn-sm" onclick="exportReport('branches')">طباعة</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الفرع</th>
-                                <th>الأكاديمية</th>
-                                <th>المحافظة</th>
-                                <th>عدد الشهادات</th>
-                                <th>النسبة المئوية</th>
-                            </tr>
-                        </thead>
-                        <tbody id="branchesBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- أزرار التصدير -->
-            <div class="card">
-                <div class="card-title">
-                    <span>تصدير التقارير</span>
-                    <span class="badge">جميع البيانات</span>
-                </div>
-                <div class="export-actions">
-                    <button class="btn btn-success btn-sm" onclick="exportReport('all')">تصدير الكل PDF</button>
-                    <button class="btn btn-primary btn-sm" onclick="exportReport('topStudents')">أفضل الطلاب PDF</button>
-                    <button class="btn btn-primary btn-sm" onclick="exportReport('governorates')">المحافظات PDF</button>
-                    <button class="btn btn-primary btn-sm" onclick="exportReport('academies')">الأكاديميات PDF</button>
-                    <button class="btn btn-primary btn-sm" onclick="exportReport('branches')">الفروع PDF</button>
-                    <span style="flex:1;text-align:left;font-size:11px;color:rgba(255,255,255,0.12);">
-                        تقارير تحليلية شاملة
-                    </span>
+                <div class="charts-grid">
+                    <div>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-align:center;" id="chart1Label">توزيع الشهادات حسب الأكاديمية</div>
+                        <div class="chart-container"><canvas id="chartAcademies"></canvas></div>
+                    </div>
+                    <div>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-align:center;" id="chart2Label">توزيع الشهادات حسب المحافظة</div>
+                        <div class="chart-container"><canvas id="chartGovernorates"></canvas></div>
+                    </div>
+                    <div>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-align:center;" id="chart3Label">توزيع التقديرات</div>
+                        <div class="chart-container"><canvas id="chartGrades"></canvas></div>
+                    </div>
+                    <div>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-align:center;" id="chart4Label">أكثر الأكاديميات إنتاجاً للشهادات</div>
+                        <div class="chart-container"><canvas id="chartTopAcademies"></canvas></div>
+                    </div>
                 </div>
             </div>
 
         </div>
 
         <footer class="footer">
-            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <span id="footerText"></span>
+            <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
+                <span id="presidentFooter"></span>
+                <span id="presidentName"></span>
+            </div>
         </footer>
 
     </div>
 
-    <!-- ===== حاوية الطباعة ===== -->
-    <div id="print-container"></div>
+    <!-- ===== مودال تفاصيل المتدرب ===== -->
+    <div class="modal-overlay" id="studentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="studentModalTitle">تفاصيل المتدرب</h2>
+                <button class="modal-close" onclick="closeStudentModal()">✕</button>
+            </div>
+            <div class="modal-body" id="studentModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeStudentModal()" id="studentModalClose">إغلاق</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- ============================================================
-    جافا سكريبت
-    ============================================================ -->
     <script>
         // ============================================================
         // 1. تهيئة Firebase
@@ -1003,24 +1045,82 @@
         // ============================================================
         let currentUser = null;
         let userRole = null;
+        let allCertificates = [];
+        let allAcademies = [];
         let chartInstances = {};
 
         let settings = {
-            unionName: 'نقابة تكنولوجيا المعلومات',
+            pageTitleHeader: 'تقارير المنصة',
             committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
             footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
-            presidentName: 'المهندس / محمود جميل'
-        };
-
-        let reportData = {
-            certificates: [],
-            academies: {},
-            governorates: {},
-            academyStats: {},
-            branchStats: {},
-            gradeStats: {},
-            topStudents: []
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            dashboardBtn: 'لوحة التحكم',
+            loaderText: 'جاري تحميل البيانات...',
+            statTotalCertificatesLabel: 'إجمالي الشهادات',
+            statTotalAcademiesLabel: 'الأكاديميات',
+            statTotalBranchesLabel: 'الفروع',
+            statTotalGovernoratesLabel: 'المحافظات',
+            statTotalStudentsLabel: 'المتدربين',
+            resetBtn: 'إعادة ضبط',
+            academiesRankTitle: 'ترتيب الأكاديميات حسب عدد الشهادات',
+            academiesRankBadge: 'من الأعلى للأدنى',
+            branchesRankTitle: 'ترتيب الفروع حسب عدد الشهادات',
+            branchesRankBadge: 'من الأعلى للأدنى',
+            governoratesRankTitle: 'ترتيب المحافظات حسب عدد الشهادات',
+            governoratesRankBadge: 'من الأعلى للأدنى',
+            topStudentsTitle: 'أفضل 10 متدربين',
+            topStudentsBadge: 'الأكثر حصولاً على شهادات',
+            chartsTitle: 'الرسوم البيانية',
+            chartsBadge: 'تحليلات مرئية',
+            thRank: '#',
+            thAcademyName: 'اسم الأكاديمية',
+            thAcademyLicense: 'الرقم الاعتمادي',
+            thCertCount: 'عدد الشهادات',
+            thBranchCount: 'عدد الفروع',
+            thTopBranch: 'أفضل فرع',
+            thEvaluation: 'التقييم',
+            thBRank: '#',
+            thBAcademy: 'الأكاديمية',
+            thBGovernorate: 'المحافظة',
+            thBAddress: 'العنوان',
+            thBCertCount: 'عدد الشهادات',
+            thBEvaluation: 'التقييم',
+            thGRank: '#',
+            thGName: 'المحافظة',
+            thGCertCount: 'عدد الشهادات',
+            thGAcademies: 'عدد الأكاديميات',
+            thGBranches: 'عدد الفروع',
+            thGEvaluation: 'التقييم',
+            thSRank: '#',
+            thSName: 'اسم المتدرب',
+            thSNational: 'الرقم القومي',
+            thSCertCount: 'عدد الشهادات',
+            thSAcademies: 'الأكاديميات',
+            thSGrades: 'التقديرات',
+            chart1Label: 'توزيع الشهادات حسب الأكاديمية',
+            chart2Label: 'توزيع الشهادات حسب المحافظة',
+            chart3Label: 'توزيع التقديرات',
+            chart4Label: 'أكثر الأكاديميات إنتاجاً للشهادات',
+            studentModalTitle: 'تفاصيل المتدرب',
+            studentModalClose: 'إغلاق',
+            colors: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            }
         };
 
         // ============================================================
@@ -1031,27 +1131,298 @@
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-                        if (data.unionName) settings.unionName = data.unionName;
+
+                        if (data.pageTitleHeader) settings.pageTitleHeader = data.pageTitleHeader;
                         if (data.committeeName) settings.committeeName = data.committeeName;
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
                         if (data.footerText) settings.footerText = data.footerText;
                         if (data.presidentName) settings.presidentName = data.presidentName;
+                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
+                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+
+                        db.collection('settings').doc('texts').get()
+                            .then(function(textsDoc) {
+                                if (textsDoc.exists) {
+                                    const texts = textsDoc.data();
+                                    if (texts.dashboardBtn) settings.dashboardBtn = texts.dashboardBtn;
+                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
+                                    if (texts.statTotalCertificatesLabel) settings.statTotalCertificatesLabel = texts.statTotalCertificatesLabel;
+                                    if (texts.statTotalAcademiesLabel) settings.statTotalAcademiesLabel = texts.statTotalAcademiesLabel;
+                                    if (texts.statTotalBranchesLabel) settings.statTotalBranchesLabel = texts.statTotalBranchesLabel;
+                                    if (texts.statTotalGovernoratesLabel) settings.statTotalGovernoratesLabel = texts.statTotalGovernoratesLabel;
+                                    if (texts.statTotalStudentsLabel) settings.statTotalStudentsLabel = texts.statTotalStudentsLabel;
+                                    if (texts.resetBtn) settings.resetBtn = texts.resetBtn;
+                                    if (texts.academiesRankTitle) settings.academiesRankTitle = texts.academiesRankTitle;
+                                    if (texts.academiesRankBadge) settings.academiesRankBadge = texts.academiesRankBadge;
+                                    if (texts.branchesRankTitle) settings.branchesRankTitle = texts.branchesRankTitle;
+                                    if (texts.branchesRankBadge) settings.branchesRankBadge = texts.branchesRankBadge;
+                                    if (texts.governoratesRankTitle) settings.governoratesRankTitle = texts.governoratesRankTitle;
+                                    if (texts.governoratesRankBadge) settings.governoratesRankBadge = texts.governoratesRankBadge;
+                                    if (texts.topStudentsTitle) settings.topStudentsTitle = texts.topStudentsTitle;
+                                    if (texts.topStudentsBadge) settings.topStudentsBadge = texts.topStudentsBadge;
+                                    if (texts.chartsTitle) settings.chartsTitle = texts.chartsTitle;
+                                    if (texts.chartsBadge) settings.chartsBadge = texts.chartsBadge;
+                                    if (texts.thRank) settings.thRank = texts.thRank;
+                                    if (texts.thAcademyName) settings.thAcademyName = texts.thAcademyName;
+                                    if (texts.thAcademyLicense) settings.thAcademyLicense = texts.thAcademyLicense;
+                                    if (texts.thCertCount) settings.thCertCount = texts.thCertCount;
+                                    if (texts.thBranchCount) settings.thBranchCount = texts.thBranchCount;
+                                    if (texts.thTopBranch) settings.thTopBranch = texts.thTopBranch;
+                                    if (texts.thEvaluation) settings.thEvaluation = texts.thEvaluation;
+                                    if (texts.thBRank) settings.thBRank = texts.thBRank;
+                                    if (texts.thBAcademy) settings.thBAcademy = texts.thBAcademy;
+                                    if (texts.thBGovernorate) settings.thBGovernorate = texts.thBGovernorate;
+                                    if (texts.thBAddress) settings.thBAddress = texts.thBAddress;
+                                    if (texts.thBCertCount) settings.thBCertCount = texts.thBCertCount;
+                                    if (texts.thBEvaluation) settings.thBEvaluation = texts.thBEvaluation;
+                                    if (texts.thGRank) settings.thGRank = texts.thGRank;
+                                    if (texts.thGName) settings.thGName = texts.thGName;
+                                    if (texts.thGCertCount) settings.thGCertCount = texts.thGCertCount;
+                                    if (texts.thGAcademies) settings.thGAcademies = texts.thGAcademies;
+                                    if (texts.thGBranches) settings.thGBranches = texts.thGBranches;
+                                    if (texts.thGEvaluation) settings.thGEvaluation = texts.thGEvaluation;
+                                    if (texts.thSRank) settings.thSRank = texts.thSRank;
+                                    if (texts.thSName) settings.thSName = texts.thSName;
+                                    if (texts.thSNational) settings.thSNational = texts.thSNational;
+                                    if (texts.thSCertCount) settings.thSCertCount = texts.thSCertCount;
+                                    if (texts.thSAcademies) settings.thSAcademies = texts.thSAcademies;
+                                    if (texts.thSGrades) settings.thSGrades = texts.thSGrades;
+                                    if (texts.chart1Label) settings.chart1Label = texts.chart1Label;
+                                    if (texts.chart2Label) settings.chart2Label = texts.chart2Label;
+                                    if (texts.chart3Label) settings.chart3Label = texts.chart3Label;
+                                    if (texts.chart4Label) settings.chart4Label = texts.chart4Label;
+                                    if (texts.studentModalTitle) settings.studentModalTitle = texts.studentModalTitle;
+                                    if (texts.studentModalClose) settings.studentModalClose = texts.studentModalClose;
+                                }
+                                applySettings();
+                                applyColors(settings.colors);
+                            })
+                            .catch(function() {
+                                applySettings();
+                                applyColors(settings.colors);
+                            });
+
+                    } else {
                         applySettings();
+                        applyColors(settings.colors);
                     }
                 })
-                .catch(function() {});
+                .catch(function() {
+                    applySettings();
+                    applyColors(settings.colors);
+                });
+
+            loadLocalSettings();
         }
 
         function applySettings() {
-            document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
-            document.getElementById('footerText').textContent = settings.footerText;
+            const titleEl = document.getElementById('pageTitleHeader');
+            const committeeEl = document.getElementById('committeeName');
+            const presidentLabelEl = document.getElementById('presidentLabel');
+            const presidentNameEl = document.getElementById('headerPresidentName');
+            const footerTextEl = document.getElementById('footerText');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
+
+            if (titleEl) titleEl.textContent = settings.pageTitleHeader;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
+            if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
+            if (footerTextEl) footerTextEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
+
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
+
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.textContent = settings.loaderText;
+
+            const statTotalCertificatesLabel = document.getElementById('statTotalCertificatesLabel');
+            const statTotalAcademiesLabel = document.getElementById('statTotalAcademiesLabel');
+            const statTotalBranchesLabel = document.getElementById('statTotalBranchesLabel');
+            const statTotalGovernoratesLabel = document.getElementById('statTotalGovernoratesLabel');
+            const statTotalStudentsLabel = document.getElementById('statTotalStudentsLabel');
+            if (statTotalCertificatesLabel) statTotalCertificatesLabel.textContent = settings.statTotalCertificatesLabel;
+            if (statTotalAcademiesLabel) statTotalAcademiesLabel.textContent = settings.statTotalAcademiesLabel;
+            if (statTotalBranchesLabel) statTotalBranchesLabel.textContent = settings.statTotalBranchesLabel;
+            if (statTotalGovernoratesLabel) statTotalGovernoratesLabel.textContent = settings.statTotalGovernoratesLabel;
+            if (statTotalStudentsLabel) statTotalStudentsLabel.textContent = settings.statTotalStudentsLabel;
+
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) resetBtn.textContent = settings.resetBtn;
+
+            const academiesRankTitle = document.getElementById('academiesRankTitle');
+            const academiesRankBadge = document.getElementById('academiesRankBadge');
+            if (academiesRankTitle) academiesRankTitle.textContent = settings.academiesRankTitle;
+            if (academiesRankBadge) academiesRankBadge.textContent = settings.academiesRankBadge;
+
+            const branchesRankTitle = document.getElementById('branchesRankTitle');
+            const branchesRankBadge = document.getElementById('branchesRankBadge');
+            if (branchesRankTitle) branchesRankTitle.textContent = settings.branchesRankTitle;
+            if (branchesRankBadge) branchesRankBadge.textContent = settings.branchesRankBadge;
+
+            const governoratesRankTitle = document.getElementById('governoratesRankTitle');
+            const governoratesRankBadge = document.getElementById('governoratesRankBadge');
+            if (governoratesRankTitle) governoratesRankTitle.textContent = settings.governoratesRankTitle;
+            if (governoratesRankBadge) governoratesRankBadge.textContent = settings.governoratesRankBadge;
+
+            const topStudentsTitle = document.getElementById('topStudentsTitle');
+            const topStudentsBadge = document.getElementById('topStudentsBadge');
+            if (topStudentsTitle) topStudentsTitle.textContent = settings.topStudentsTitle;
+            if (topStudentsBadge) topStudentsBadge.textContent = settings.topStudentsBadge;
+
+            const chartsTitle = document.getElementById('chartsTitle');
+            const chartsBadge = document.getElementById('chartsBadge');
+            if (chartsTitle) chartsTitle.textContent = settings.chartsTitle;
+            if (chartsBadge) chartsBadge.textContent = settings.chartsBadge;
+
+            const thRank = document.getElementById('thRank');
+            const thAcademyName = document.getElementById('thAcademyName');
+            const thAcademyLicense = document.getElementById('thAcademyLicense');
+            const thCertCount = document.getElementById('thCertCount');
+            const thBranchCount = document.getElementById('thBranchCount');
+            const thTopBranch = document.getElementById('thTopBranch');
+            const thEvaluation = document.getElementById('thEvaluation');
+            if (thRank) thRank.textContent = settings.thRank;
+            if (thAcademyName) thAcademyName.textContent = settings.thAcademyName;
+            if (thAcademyLicense) thAcademyLicense.textContent = settings.thAcademyLicense;
+            if (thCertCount) thCertCount.textContent = settings.thCertCount;
+            if (thBranchCount) thBranchCount.textContent = settings.thBranchCount;
+            if (thTopBranch) thTopBranch.textContent = settings.thTopBranch;
+            if (thEvaluation) thEvaluation.textContent = settings.thEvaluation;
+
+            const thBRank = document.getElementById('thBRank');
+            const thBAcademy = document.getElementById('thBAcademy');
+            const thBGovernorate = document.getElementById('thBGovernorate');
+            const thBAddress = document.getElementById('thBAddress');
+            const thBCertCount = document.getElementById('thBCertCount');
+            const thBEvaluation = document.getElementById('thBEvaluation');
+            if (thBRank) thBRank.textContent = settings.thBRank;
+            if (thBAcademy) thBAcademy.textContent = settings.thBAcademy;
+            if (thBGovernorate) thBGovernorate.textContent = settings.thBGovernorate;
+            if (thBAddress) thBAddress.textContent = settings.thBAddress;
+            if (thBCertCount) thBCertCount.textContent = settings.thBCertCount;
+            if (thBEvaluation) thBEvaluation.textContent = settings.thBEvaluation;
+
+            const thGRank = document.getElementById('thGRank');
+            const thGName = document.getElementById('thGName');
+            const thGCertCount = document.getElementById('thGCertCount');
+            const thGAcademies = document.getElementById('thGAcademies');
+            const thGBranches = document.getElementById('thGBranches');
+            const thGEvaluation = document.getElementById('thGEvaluation');
+            if (thGRank) thGRank.textContent = settings.thGRank;
+            if (thGName) thGName.textContent = settings.thGName;
+            if (thGCertCount) thGCertCount.textContent = settings.thGCertCount;
+            if (thGAcademies) thGAcademies.textContent = settings.thGAcademies;
+            if (thGBranches) thGBranches.textContent = settings.thGBranches;
+            if (thGEvaluation) thGEvaluation.textContent = settings.thGEvaluation;
+
+            const thSRank = document.getElementById('thSRank');
+            const thSName = document.getElementById('thSName');
+            const thSNational = document.getElementById('thSNational');
+            const thSCertCount = document.getElementById('thSCertCount');
+            const thSAcademies = document.getElementById('thSAcademies');
+            const thSGrades = document.getElementById('thSGrades');
+            if (thSRank) thSRank.textContent = settings.thSRank;
+            if (thSName) thSName.textContent = settings.thSName;
+            if (thSNational) thSNational.textContent = settings.thSNational;
+            if (thSCertCount) thSCertCount.textContent = settings.thSCertCount;
+            if (thSAcademies) thSAcademies.textContent = settings.thSAcademies;
+            if (thSGrades) thSGrades.textContent = settings.thSGrades;
+
+            const chart1Label = document.getElementById('chart1Label');
+            const chart2Label = document.getElementById('chart2Label');
+            const chart3Label = document.getElementById('chart3Label');
+            const chart4Label = document.getElementById('chart4Label');
+            if (chart1Label) chart1Label.textContent = settings.chart1Label;
+            if (chart2Label) chart2Label.textContent = settings.chart2Label;
+            if (chart3Label) chart3Label.textContent = settings.chart3Label;
+            if (chart4Label) chart4Label.textContent = settings.chart4Label;
+
+            const studentModalTitle = document.getElementById('studentModalTitle');
+            const studentModalClose = document.getElementById('studentModalClose');
+            if (studentModalTitle) studentModalTitle.textContent = settings.studentModalTitle;
+            if (studentModalClose) studentModalClose.textContent = settings.studentModalClose;
+
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
-                logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
-                logo.style.backgroundSize = 'cover';
-                logo.style.backgroundPosition = 'center';
-                logo.textContent = '';
+                if (logo) {
+                    logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logo.style.backgroundSize = 'cover';
+                    logo.style.backgroundPosition = 'center';
+                    logo.textContent = '';
+                }
             }
+
+            // OG Tags
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
+            if (metaDescription) metaDescription.content = 'تقارير المنصة - ' + settings.pageTitleHeader;
+            if (ogTitle) ogTitle.content = settings.pageTitleHeader;
+            if (ogDescription) ogDescription.content = 'تقارير وتحليلات المنصة';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = settings.pageTitleHeader;
+            if (twitterTitle) twitterTitle.content = settings.pageTitleHeader;
+            if (twitterDescription) twitterDescription.content = 'تقارير وتحليلات المنصة';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
+            }
+        }
+
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        applyColors(parsed.theme.colors);
+                    }
+                }
+            } catch (e) {}
         }
 
         // ============================================================
@@ -1066,7 +1437,7 @@
                             const data = doc.data();
                             if (data.role === 'super_admin' || data.role === 'admin') {
                                 userRole = data.role;
-                                loadAcademiesAndGovernorates();
+                                loadReports();
                             } else {
                                 window.location.href = 'home.html';
                             }
@@ -1083,691 +1454,707 @@
         });
 
         // ============================================================
-        // 5. تحميل الأكاديميات والمحافظات للفلاتر
-        // ============================================================
-        function loadAcademiesAndGovernorates() {
-            Promise.all([
-                db.collection('academies').where('isDeleted', '==', false).get(),
-                db.collection('certificates').get()
-            ]).then(function(results) {
-                const acadSnap = results[0];
-                const certSnap = results[1];
-
-                // الأكاديميات
-                const acadSelect = document.getElementById('filterAcademy');
-                acadSelect.innerHTML = '<option value="">جميع الأكاديميات</option>';
-                acadSnap.forEach(function(doc) {
-                    const data = doc.data();
-                    const opt = document.createElement('option');
-                    opt.value = doc.id;
-                    opt.textContent = data.name || '';
-                    acadSelect.appendChild(opt);
-                });
-
-                // المحافظات
-                const govSelect = document.getElementById('filterGovernorate');
-                govSelect.innerHTML = '<option value="">جميع المحافظات</option>';
-                const govs = new Set();
-                certSnap.forEach(function(doc) {
-                    const data = doc.data();
-                    if (data.branchGovernorate) govs.add(data.branchGovernorate);
-                });
-                govs.forEach(function(g) {
-                    const opt = document.createElement('option');
-                    opt.value = g;
-                    opt.textContent = g;
-                    govSelect.appendChild(opt);
-                });
-
-                loadReports();
-            }).catch(function() {
-                loadReports();
-            });
-        }
-
-        // ============================================================
-        // 6. تحميل التقارير
+        // 5. تحميل التقارير
         // ============================================================
         function loadReports() {
-            document.getElementById('pageLoader').classList.add('show');
-            document.getElementById('pageContent').style.display = 'none';
+            const loader = document.getElementById('pageLoader');
+            const content = document.getElementById('pageContent');
+            if (loader) loader.classList.add('show');
+            if (content) content.style.display = 'none';
 
-            db.collection('certificates').get()
-                .then(function(snapshot) {
-                    reportData.certificates = [];
-                    snapshot.forEach(function(doc) {
-                        const data = doc.data();
-                        data.id = doc.id;
-                        reportData.certificates.push(data);
-                    });
+            Promise.all([
+                db.collection('certificates').get(),
+                db.collection('academies').where('isDeleted', '==', false).get()
+            ]).then(function(results) {
+                const certSnap = results[0];
+                const acadSnap = results[1];
 
-                    // تحليل البيانات
-                    analyzeData();
-
-                    document.getElementById('pageLoader').classList.remove('show');
-                    document.getElementById('pageContent').style.display = 'block';
-
-                }).catch(function(err) {
-                    document.getElementById('pageLoader').classList.remove('show');
-                    document.getElementById('pageContent').style.display = 'block';
-                    showMsg('حدث خطأ في تحميل التقارير: ' + err.message, 'error');
+                allCertificates = [];
+                certSnap.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allCertificates.push(data);
                 });
+
+                allAcademies = [];
+                acadSnap.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allAcademies.push(data);
+                });
+
+                if (loader) loader.classList.remove('show');
+                if (content) content.style.display = 'block';
+
+                populateGovernorates();
+                renderAllReports();
+            }).catch(function(err) {
+                if (loader) loader.classList.remove('show');
+                if (content) content.style.display = 'block';
+                showMsg('حدث خطأ في تحميل البيانات: ' + err.message, 'error');
+            });
         }
 
         // ============================================================
-        // 7. تحليل البيانات
+        // 6. عرض جميع التقارير
         // ============================================================
-        function analyzeData() {
-            const certs = reportData.certificates;
-            const total = certs.length;
-
-            // إحصائيات عامة
-            const active = certs.filter(function(c) { return c.isActive !== false; }).length;
-
-            // المحافظات
-            const govStats = {};
-            const acadStats = {};
-            const branchStats = {};
-            const gradeStats = {};
-            const studentStats = {};
-
-            certs.forEach(function(cert) {
-                // التقديرات
-                if (cert.grade) {
-                    gradeStats[cert.grade] = (gradeStats[cert.grade] || 0) + 1;
-                }
-
-                // الطلاب (للـ Top 10)
-                if (cert.studentName && cert.isActive !== false) {
-                    const key = cert.studentName + '|' + (cert.studentNationalId || '');
-                    if (!studentStats[key]) {
-                        studentStats[key] = {
-                            name: cert.studentName,
-                            nationalId: cert.studentNationalId || 'غير محدد',
-                            count: 0
-                        };
-                    }
-                    studentStats[key].count++;
-                }
-
-                // الأكاديميات
-                const acadId = cert.academyId;
-                if (acadId) {
-                    if (!acadStats[acadId]) {
-                        acadStats[acadId] = {
-                            name: cert.academyName || acadId,
-                            license: cert.academyLicenseNumber || '',
-                            count: 0,
-                            branches: {}
-                        };
-                    }
-                    acadStats[acadId].count++;
-
-                    // الفروع والمحافظات
-                    const branchId = cert.branchId || 'main';
-                    const branchName = cert.branchName || cert.branchId || 'الفرع الرئيسي';
-                    const gov = cert.branchGovernorate || 'غير محدد';
-
-                    if (!acadStats[acadId].branches[branchId]) {
-                        acadStats[acadId].branches[branchId] = {
-                            name: branchName,
-                            governorate: gov,
-                            count: 0
-                        };
-                    }
-                    acadStats[acadId].branches[branchId].count++;
-
-                    // المحافظات
-                    if (gov) {
-                        govStats[gov] = (govStats[gov] || 0) + 1;
-                    }
-                }
-            });
-
-            reportData.governorates = govStats;
-            reportData.academyStats = acadStats;
-            reportData.gradeStats = gradeStats;
-
-            // Top 10 الطلاب
-            const sortedStudents = Object.keys(studentStats).sort(function(a, b) {
-                return studentStats[b].count - studentStats[a].count;
-            }).slice(0, 10);
-
-            reportData.topStudents = sortedStudents.map(function(key) {
-                return studentStats[key];
-            });
-
-            // بناء الفروع
-            const branchStatsFlat = {};
-            Object.keys(acadStats).forEach(function(acadId) {
-                const acad = acadStats[acadId];
-                Object.keys(acad.branches).forEach(function(branchId) {
-                    const branch = acad.branches[branchId];
-                    const key = acadId + '_' + branchId;
-                    branchStatsFlat[key] = {
-                        name: branch.name,
-                        academyName: acad.name,
-                        governorate: branch.governorate,
-                        count: branch.count
-                    };
-                });
-            });
-            reportData.branchStats = branchStatsFlat;
-
-            // عرض البيانات
-            renderStats(total, active);
-            renderTopStudents(reportData.topStudents, total);
-            renderGovernorates(govStats, total);
-            renderAcademies(acadStats, total);
-            renderBranches(branchStatsFlat, total);
-            renderCharts(govStats, acadStats, gradeStats);
+        function renderAllReports() {
+            renderStats();
+            renderAcademiesRank();
+            renderBranchesRank();
+            renderGovernoratesRank();
+            renderTopStudents();
+            renderCharts();
         }
 
         // ============================================================
-        // 8. عرض الإحصائيات
+        // 7. الإحصائيات
         // ============================================================
-        function renderStats(total, active) {
-            const govCount = Object.keys(reportData.governorates).length;
-            const acadCount = Object.keys(reportData.academyStats).length;
-            const branchCount = Object.keys(reportData.branchStats).length;
+        function renderStats() {
+            const totalCertificates = allCertificates.length;
+            const totalAcademies = allAcademies.length;
 
+            let totalBranches = 0;
+            const governorates = new Set();
             const students = new Set();
-            reportData.certificates.forEach(function(c) {
-                if (c.studentName && c.isActive !== false) {
-                    students.add(c.studentName);
+
+            allAcademies.forEach(function(a) {
+                if (a.branches) {
+                    totalBranches += a.branches.length;
+                    a.branches.forEach(function(b) {
+                        if (b.governorate) governorates.add(b.governorate);
+                    });
                 }
             });
 
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statActive').textContent = active;
-            document.getElementById('statGovernorates').textContent = govCount;
-            document.getElementById('statAcademies').textContent = acadCount;
-            document.getElementById('statBranches').textContent = branchCount;
-            document.getElementById('statStudents').textContent = students.size;
+            allCertificates.forEach(function(c) {
+                if (c.studentName) students.add(c.studentName + (c.studentNationalId || ''));
+                if (c.studentNationalId) students.add(c.studentNationalId);
+            });
+
+            document.getElementById('statTotalCertificates').textContent = totalCertificates;
+            document.getElementById('statTotalAcademies').textContent = totalAcademies;
+            document.getElementById('statTotalBranches').textContent = totalBranches;
+            document.getElementById('statTotalGovernorates').textContent = governorates.size;
+            document.getElementById('statTotalStudents').textContent = students.size;
         }
 
         // ============================================================
-        // 9. عرض Top 10 الطلاب
+        // 8. ترتيب الأكاديميات
         // ============================================================
-        function renderTopStudents(topStudents, total) {
+        function renderAcademiesRank() {
+            const tbody = document.getElementById('academiesRankBody');
+            const empty = document.getElementById('academiesEmpty');
+
+            if (allAcademies.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            // حساب عدد الشهادات لكل أكاديمية
+            const academyStats = allAcademies.map(function(academy) {
+                const certCount = allCertificates.filter(function(c) {
+                    return c.academyId === academy.id;
+                }).length;
+
+                // أفضل فرع (الأكثر إنتاجاً)
+                let topBranch = null;
+                let topBranchCount = 0;
+                if (academy.branches) {
+                    academy.branches.forEach(function(branch) {
+                        const branchCerts = allCertificates.filter(function(c) {
+                            return c.academyId === academy.id && c.branchId === branch.branchId;
+                        }).length;
+                        if (branchCerts > topBranchCount) {
+                            topBranchCount = branchCerts;
+                            topBranch = branch;
+                        }
+                    });
+                }
+
+                return {
+                    academy: academy,
+                    certCount: certCount,
+                    branchCount: academy.branches ? academy.branches.length : 0,
+                    topBranch: topBranch,
+                    topBranchCount: topBranchCount
+                };
+            });
+
+            // ترتيب تنازلي
+            academyStats.sort(function(a, b) { return b.certCount - a.certCount; });
+
+            // تقييم
+            const maxCerts = academyStats.length > 0 ? academyStats[0].certCount : 0;
+
+            tbody.innerHTML = academyStats.map(function(item, index) {
+                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+                const evaluation = maxCerts > 0 ? Math.round((item.certCount / maxCerts) * 100) : 0;
+                const evalLabel = evaluation >= 80 ? 'ممتاز' : evaluation >= 60 ? 'جيد جداً' : evaluation >= 40 ? 'جيد' :
+                    evaluation >= 20 ? 'مقبول' : 'ضعيف';
+                const evalColor = evaluation >= 80 ? 'var(--success)' : evaluation >= 60 ? 'var(--info)' : evaluation >= 40 ?
+                    'var(--warning)' : 'var(--error)';
+
+                const topBranchName = item.topBranch ? item.topBranch.governorate + ' (' + item.topBranchCount + ' شهادة)' :
+                    '-';
+
+                return `
+                    <tr>
+                        <td data-label="${settings.thRank}"><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                        <td data-label="${settings.thAcademyName}"><strong>${item.academy.name || '-'}</strong></td>
+                        <td data-label="${settings.thAcademyLicense}">${item.academy.licenseNumber || '-'}</td>
+                        <td data-label="${settings.thCertCount}" style="font-weight:700;color:var(--primary-color);">${item.certCount}</td>
+                        <td data-label="${settings.thBranchCount}">${item.branchCount}</td>
+                        <td data-label="${settings.thTopBranch}" style="font-size:12px;color:var(--text-muted);">${topBranchName}</td>
+                        <td data-label="${settings.thEvaluation}"><span style="color:${evalColor};font-weight:700;">${evalLabel} (${evaluation}%)</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 9. ترتيب الفروع
+        // ============================================================
+        function renderBranchesRank() {
+            const tbody = document.getElementById('branchesRankBody');
+            const empty = document.getElementById('branchesEmpty');
+
+            const branches = [];
+            allAcademies.forEach(function(academy) {
+                if (academy.branches) {
+                    academy.branches.forEach(function(branch) {
+                        const certCount = allCertificates.filter(function(c) {
+                            return c.academyId === academy.id && c.branchId === branch.branchId;
+                        }).length;
+                        branches.push({
+                            academy: academy,
+                            branch: branch,
+                            certCount: certCount
+                        });
+                    });
+                }
+            });
+
+            if (branches.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            branches.sort(function(a, b) { return b.certCount - a.certCount; });
+
+            const maxCerts = branches.length > 0 ? branches[0].certCount : 0;
+
+            // عرض أفضل 50 فرع فقط
+            const topBranches = branches.slice(0, 50);
+
+            tbody.innerHTML = topBranches.map(function(item, index) {
+                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+                const evaluation = maxCerts > 0 ? Math.round((item.certCount / maxCerts) * 100) : 0;
+                const evalLabel = evaluation >= 80 ? 'ممتاز' : evaluation >= 60 ? 'جيد جداً' : evaluation >= 40 ? 'جيد' :
+                    evaluation >= 20 ? 'مقبول' : 'ضعيف';
+                const evalColor = evaluation >= 80 ? 'var(--success)' : evaluation >= 60 ? 'var(--info)' : evaluation >= 40 ?
+                    'var(--warning)' : 'var(--error)';
+
+                return `
+                    <tr>
+                        <td data-label="${settings.thBRank}"><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                        <td data-label="${settings.thBAcademy}"><strong>${item.academy.name || '-'}</strong></td>
+                        <td data-label="${settings.thBGovernorate}">${item.branch.governorate || '-'}</td>
+                        <td data-label="${settings.thBAddress}" style="font-size:12px;color:var(--text-muted);">${item.branch.address || '-'}</td>
+                        <td data-label="${settings.thBCertCount}" style="font-weight:700;color:var(--primary-color);">${item.certCount}</td>
+                        <td data-label="${settings.thBEvaluation}"><span style="color:${evalColor};font-weight:700;">${evalLabel} (${evaluation}%)</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 10. ترتيب المحافظات
+        // ============================================================
+        function renderGovernoratesRank() {
+            const tbody = document.getElementById('governoratesRankBody');
+            const empty = document.getElementById('governoratesEmpty');
+
+            const governoratesMap = {};
+
+            allAcademies.forEach(function(academy) {
+                if (academy.branches) {
+                    academy.branches.forEach(function(branch) {
+                        if (branch.governorate) {
+                            const gov = branch.governorate;
+                            if (!governoratesMap[gov]) {
+                                governoratesMap[gov] = {
+                                    certificates: 0,
+                                    academies: new Set(),
+                                    branches: 0
+                                };
+                            }
+                            governoratesMap[gov].academies.add(academy.id);
+                            governoratesMap[gov].branches++;
+                        }
+                    });
+                }
+            });
+
+            // حساب الشهادات لكل محافظة
+            allCertificates.forEach(function(cert) {
+                const branchGov = cert.branchGovernorate;
+                if (branchGov && governoratesMap[branchGov]) {
+                    governoratesMap[branchGov].certificates++;
+                } else {
+                    // محاولة إيجاد المحافظة من الأكاديمية
+                    const academy = allAcademies.find(function(a) { return a.id === cert.academyId; });
+                    if (academy && academy.branches) {
+                        const branch = academy.branches.find(function(b) { return b.branchId === cert.branchId; });
+                        if (branch && branch.governorate && governoratesMap[branch.governorate]) {
+                            governoratesMap[branch.governorate].certificates++;
+                        }
+                    }
+                }
+            });
+
+            const govArray = Object.keys(governoratesMap).map(function(key) {
+                return {
+                    name: key,
+                    certificates: governoratesMap[key].certificates || 0,
+                    academies: governoratesMap[key].academies.size,
+                    branches: governoratesMap[key].branches
+                };
+            });
+
+            if (govArray.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            govArray.sort(function(a, b) { return b.certificates - a.certificates; });
+
+            const maxCerts = govArray.length > 0 ? govArray[0].certificates : 0;
+
+            tbody.innerHTML = govArray.map(function(item, index) {
+                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+                const evaluation = maxCerts > 0 ? Math.round((item.certificates / maxCerts) * 100) : 0;
+                const evalLabel = evaluation >= 80 ? 'ممتاز' : evaluation >= 60 ? 'جيد جداً' : evaluation >= 40 ? 'جيد' :
+                    evaluation >= 20 ? 'مقبول' : 'ضعيف';
+                const evalColor = evaluation >= 80 ? 'var(--success)' : evaluation >= 60 ? 'var(--info)' : evaluation >= 40 ?
+                    'var(--warning)' : 'var(--error)';
+
+                return `
+                    <tr>
+                        <td data-label="${settings.thGRank}"><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                        <td data-label="${settings.thGName}"><strong>${item.name}</strong></td>
+                        <td data-label="${settings.thGCertCount}" style="font-weight:700;color:var(--primary-color);">${item.certificates}</td>
+                        <td data-label="${settings.thGAcademies}">${item.academies}</td>
+                        <td data-label="${settings.thGBranches}">${item.branches}</td>
+                        <td data-label="${settings.thGEvaluation}"><span style="color:${evalColor};font-weight:700;">${evalLabel} (${evaluation}%)</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // 11. أفضل 10 متدربين
+        // ============================================================
+        function renderTopStudents() {
             const tbody = document.getElementById('topStudentsBody');
-            document.getElementById('topCount').textContent = topStudents.length + ' طالب';
+            const empty = document.getElementById('topStudentsEmpty');
 
-            if (topStudents.length === 0) {
-                tbody.innerHTML =
-                    '<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
-                return;
-            }
+            // تجميع بيانات المتدربين
+            const studentsMap = {};
 
-            tbody.innerHTML = topStudents.map(function(student, index) {
-                const rank = index + 1;
-                let rankClass = 'normal';
-                let rankLabel = rank;
-                if (rank === 1) { rankClass = 'gold';
-                    rankLabel = '🥇'; } else if (rank === 2) { rankClass = 'silver';
-                    rankLabel = '🥈'; } else if (rank === 3) { rankClass = 'bronze';
-                    rankLabel = '🥉'; }
-
-                const percentage = total > 0 ? ((student.count / total) * 100).toFixed(1) : 0;
-
-                return `
-                    <tr>
-                        <td><span class="rank-badge ${rankClass}">${rankLabel}</span></td>
-                        <td><strong>${student.name}</strong></td>
-                        <td style="font-family:monospace;font-size:12px;color:rgba(255,255,255,0.3);">${student.nationalId}</td>
-                        <td><span style="font-size:18px;font-weight:700;color:#60a5fa;">${student.count}</span></td>
-                        <td>${percentage}%</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // ============================================================
-        // 10. عرض المحافظات
-        // ============================================================
-        function renderGovernorates(govStats, total) {
-            const tbody = document.getElementById('governoratesBody');
-            const sorted = Object.keys(govStats).sort(function(a, b) {
-                return govStats[b] - govStats[a];
+            allCertificates.forEach(function(cert) {
+                const key = cert.studentNationalId || cert.studentName || 'متدرب';
+                if (!studentsMap[key]) {
+                    studentsMap[key] = {
+                        name: cert.studentName || 'متدرب',
+                        nationalId: cert.studentNationalId || '-',
+                        certificates: [],
+                        academies: new Set(),
+                        grades: []
+                    };
+                }
+                studentsMap[key].certificates.push(cert);
+                if (cert.academyName) studentsMap[key].academies.add(cert.academyName);
+                if (cert.grade) studentsMap[key].grades.push(cert.grade);
             });
 
-            document.getElementById('govCount').textContent = sorted.length + ' محافظة';
-
-            if (sorted.length === 0) {
-                tbody.innerHTML =
-                    '<tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = sorted.map(function(gov, index) {
-                const count = govStats[gov];
-                const percentage = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><strong>${gov}</strong></td>
-                        <td>${count}</td>
-                        <td>${percentage}%</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // ============================================================
-        // 11. عرض الأكاديميات
-        // ============================================================
-        function renderAcademies(acadStats, total) {
-            const tbody = document.getElementById('academiesBody');
-            const sorted = Object.keys(acadStats).sort(function(a, b) {
-                return acadStats[b].count - acadStats[a].count;
+            const studentsArray = Object.values(studentsMap).map(function(s) {
+                return {
+                    name: s.name,
+                    nationalId: s.nationalId,
+                    count: s.certificates.length,
+                    academies: Array.from(s.academies).join('، '),
+                    grades: s.grades.join('، ')
+                };
             });
 
-            document.getElementById('acadCount').textContent = sorted.length + ' أكاديمية';
+            studentsArray.sort(function(a, b) { return b.count - a.count; });
 
-            if (sorted.length === 0) {
-                tbody.innerHTML =
-                    '<tr><td colspan="6" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
+            const top10 = studentsArray.slice(0, 10);
+
+            if (top10.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
                 return;
             }
+            empty.style.display = 'none';
 
-            tbody.innerHTML = sorted.map(function(acadId, index) {
-                const acad = acadStats[acadId];
-                const percentage = total > 0 ? ((acad.count / total) * 100).toFixed(1) : 0;
-                const branchesCount = Object.keys(acad.branches).length;
+            tbody.innerHTML = top10.map(function(student, index) {
+                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
                 return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><strong>${acad.name}</strong></td>
-                        <td style="font-family:monospace;font-size:12px;color:rgba(255,255,255,0.3);">${acad.license}</td>
-                        <td>${acad.count}</td>
-                        <td>${branchesCount}</td>
-                        <td>${percentage}%</td>
+                    <tr onclick="showStudentDetails('${student.name}', '${student.nationalId}')" style="cursor:pointer;">
+                        <td data-label="${settings.thSRank}"><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                        <td data-label="${settings.thSName}"><strong>${student.name}</strong></td>
+                        <td data-label="${settings.thSNational}" style="font-family:'Courier New',monospace;font-size:12px;color:var(--text-muted);">${student.nationalId}</td>
+                        <td data-label="${settings.thSCertCount}" style="font-weight:700;color:var(--primary-color);">${student.count}</td>
+                        <td data-label="${settings.thSAcademies}" style="font-size:12px;color:var(--text-muted);">${student.academies}</td>
+                        <td data-label="${settings.thSGrades}" style="font-size:12px;color:var(--text-muted);">${student.grades}</td>
                     </tr>
                 `;
             }).join('');
         }
 
         // ============================================================
-        // 12. عرض الفروع
+        // 12. عرض تفاصيل المتدرب
         // ============================================================
-        function renderBranches(branchStats, total) {
-            const tbody = document.getElementById('branchesBody');
-            const sorted = Object.keys(branchStats).sort(function(a, b) {
-                return branchStats[b].count - branchStats[a].count;
+        function showStudentDetails(name, nationalId) {
+            const studentCerts = allCertificates.filter(function(c) {
+                return (c.studentName === name) || (c.studentNationalId === nationalId && nationalId !== '-');
             });
 
-            document.getElementById('branchCount').textContent = sorted.length + ' فرع';
-
-            if (sorted.length === 0) {
-                tbody.innerHTML =
-                    '<tr><td colspan="6" style="text-align:center;color:rgba(255,255,255,0.2);">لا توجد بيانات</td></tr>';
+            if (studentCerts.length === 0) {
+                showMsg('لم يتم العثور على بيانات للمتدرب', 'info');
                 return;
             }
 
-            tbody.innerHTML = sorted.map(function(key, index) {
-                const branch = branchStats[key];
-                const percentage = total > 0 ? ((branch.count / total) * 100).toFixed(1) : 0;
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><strong>${branch.name}</strong></td>
-                        <td>${branch.academyName}</td>
-                        <td>${branch.governorate}</td>
-                        <td>${branch.count}</td>
-                        <td>${percentage}%</td>
-                    </tr>
-                `;
-            }).join('');
+            const body = document.getElementById('studentModalBody');
+            body.innerHTML = `
+                <div style="margin-bottom:12px;">
+                    <div class="detail-row"><span class="detail-label">الاسم</span><span class="detail-value"><strong>${name}</strong></span></div>
+                    <div class="detail-row"><span class="detail-label">الرقم القومي</span><span class="detail-value">${nationalId}</span></div>
+                    <div class="detail-row"><span class="detail-label">عدد الشهادات</span><span class="detail-value" style="color:var(--primary-color);font-weight:700;">${studentCerts.length}</span></div>
+                </div>
+                <div style="font-weight:700;color:var(--text-color);margin-bottom:6px;">قائمة الشهادات</div>
+                ${studentCerts.map(function(cert) {
+                    return `
+                        <div style="background:var(--bg-hover);border:1px solid var(--border-light);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:4px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+                            <span>${cert.courseName || '-'}</span>
+                            <span style="color:var(--primary-color);font-weight:600;">${cert.grade || '-'}</span>
+                            <span style="font-size:11px;color:var(--text-muted);">${cert.academyName || '-'}</span>
+                            <span style="font-size:11px;color:var(--text-muted);">${cert.certificateCode || '-'}</span>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+
+            document.getElementById('studentModal').classList.add('show');
         }
 
+        function closeStudentModal() {
+            document.getElementById('studentModal').classList.remove('show');
+        }
+
+        document.getElementById('studentModal').addEventListener('click', function(e) {
+            if (e.target === this) closeStudentModal();
+        });
+
         // ============================================================
-        // 13. عرض الرسوم البيانية
+        // 13. الرسوم البيانية
         // ============================================================
-        function renderCharts(govStats, acadStats, gradeStats) {
-            const colors = ['#0066ff', '#8b5cf6', '#10b981', '#eab308', '#f97316', '#ef4444', '#ec4899', '#06b6d4', '#84cc16',
-                '#8b5cf6'
+        function renderCharts() {
+            // تهيئة المخططات
+            const chartConfigs = [
+                { id: 'chartAcademies', type: 'pie', label: 'الشهادات حسب الأكاديمية' },
+                { id: 'chartGovernorates', type: 'pie', label: 'الشهادات حسب المحافظة' },
+                { id: 'chartGrades', type: 'bar', label: 'توزيع التقديرات' },
+                { id: 'chartTopAcademies', type: 'bar', label: 'أكثر الأكاديميات إنتاجاً' }
             ];
 
-            // محافظات
-            const govLabels = Object.keys(govStats).slice(0, 10);
-            const govValues = govLabels.map(function(key) { return govStats[key]; });
-
-            renderChart('governorateChart', govLabels, govValues, 'الشهادات حسب المحافظة', colors);
-
-            // أكاديميات
-            const acadLabels = Object.keys(acadStats).slice(0, 8);
-            const acadValues = acadLabels.map(function(key) { return acadStats[key].count; });
-            const acadColors = acadLabels.map(function(_, i) { return colors[i % colors.length]; });
-
-            renderChart('academyChart', acadLabels.map(function(key) { return acadStats[key].name; }), acadValues,
-                'الشهادات حسب الأكاديمية', acadColors);
-
-            // تقديرات
-            const gradeLabels = Object.keys(gradeStats).sort();
-            const gradeValues = gradeLabels.map(function(key) { return gradeStats[key]; });
-            const gradeColors = gradeLabels.map(function(key) {
-                if (key.startsWith('A')) return '#10b981';
-                if (key.startsWith('B')) return '#3b82f6';
-                if (key.startsWith('C')) return '#eab308';
-                if (key.startsWith('D')) return '#f97316';
-                return '#ef4444';
+            // تدمير المخططات السابقة
+            Object.values(chartInstances).forEach(function(chart) {
+                if (chart) chart.destroy();
             });
+            chartInstances = {};
 
-            renderChart('gradeChart', gradeLabels, gradeValues, 'الشهادات حسب التقدير', gradeColors);
-        }
+            // 1. توزيع الشهادات حسب الأكاديمية (Pie)
+            const academyCerts = {};
+            allCertificates.forEach(function(cert) {
+                const key = cert.academyName || 'غير معروف';
+                academyCerts[key] = (academyCerts[key] || 0) + 1;
+            });
+            const acadLabels = Object.keys(academyCerts);
+            const acadData = Object.values(academyCerts);
+            const acadColors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6', '#ec4899', '#22d3ee', '#f59e0b',
+                '#14b8a6'
+            ];
 
-        function renderChart(canvasId, labels, values, label, colors) {
-            const ctx = document.getElementById(canvasId);
-            if (!ctx) return;
-
-            if (chartInstances[canvasId]) {
-                chartInstances[canvasId].destroy();
-            }
-
-            if (labels.length === 0) {
-                labels = ['لا توجد بيانات'];
-                values = [0];
-                colors = ['rgba(255,255,255,0.1)'];
-            }
-
-            chartInstances[canvasId] = new Chart(ctx, {
-                type: values.length <= 5 ? 'doughnut' : 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: label,
-                        data: values,
-                        backgroundColor: colors.map(function(c) { return c + '60'; }),
-                        borderColor: colors,
-                        borderWidth: 2,
-                        borderRadius: 6,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: 'rgba(255,255,255,0.4)',
-                                font: { size: 9 },
-                                padding: 6,
-                                boxWidth: 12,
+            if (acadLabels.length > 0) {
+                const ctx1 = document.getElementById('chartAcademies').getContext('2d');
+                chartInstances.chartAcademies = new Chart(ctx1, {
+                    type: 'pie',
+                    data: {
+                        labels: acadLabels.slice(0, 10),
+                        datasets: [{
+                            data: acadData.slice(0, 10),
+                            backgroundColor: acadColors.slice(0, 10).map(function(c) { return c + '80'; }),
+                            borderColor: acadColors.slice(0, 10),
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: 'rgba(255,255,255,0.6)', font: { size: 10 } }
                             }
                         }
+                    }
+                });
+            }
+
+            // 2. توزيع الشهادات حسب المحافظة (Pie)
+            const govCerts = {};
+            allCertificates.forEach(function(cert) {
+                const key = cert.branchGovernorate || 'غير محدد';
+                govCerts[key] = (govCerts[key] || 0) + 1;
+            });
+            const govLabels = Object.keys(govCerts);
+            const govData = Object.values(govCerts);
+
+            if (govLabels.length > 0) {
+                const ctx2 = document.getElementById('chartGovernorates').getContext('2d');
+                chartInstances.chartGovernorates = new Chart(ctx2, {
+                    type: 'pie',
+                    data: {
+                        labels: govLabels.slice(0, 10),
+                        datasets: [{
+                            data: govData.slice(0, 10),
+                            backgroundColor: ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6',
+                                '#ec4899', '#22d3ee', '#f59e0b', '#14b8a6'
+                            ].slice(0, 10).map(function(c) { return c + '80'; }),
+                            borderColor: ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444', '#8b5cf6',
+                                '#ec4899', '#22d3ee', '#f59e0b', '#14b8a6'
+                            ].slice(0, 10),
+                            borderWidth: 2,
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: 'rgba(255,255,255,0.2)', font: { size: 9 } },
-                            grid: { color: 'rgba(255,255,255,0.04)' }
-                        },
-                        x: {
-                            ticks: { color: 'rgba(255,255,255,0.2)', font: { size: 8 } },
-                            grid: { display: false }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: 'rgba(255,255,255,0.6)', font: { size: 10 } }
+                            }
                         }
                     }
+                });
+            }
+
+            // 3. توزيع التقديرات (Bar)
+            const gradeCount = {};
+            allCertificates.forEach(function(cert) {
+                if (cert.grade) {
+                    const key = cert.grade;
+                    gradeCount[key] = (gradeCount[key] || 0) + 1;
                 }
+            });
+            const gradeLabels = Object.keys(gradeCount).sort();
+            const gradeData = gradeLabels.map(function(key) { return gradeCount[key]; });
+            const gradeColors = ['#10b981', '#10b981', '#3b82f6', '#3b82f6', '#eab308', '#eab308', '#f97316', '#f97316',
+                '#ef4444', '#ef4444'
+            ];
+
+            if (gradeLabels.length > 0) {
+                const ctx3 = document.getElementById('chartGrades').getContext('2d');
+                chartInstances.chartGrades = new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: gradeLabels,
+                        datasets: [{
+                            label: 'عدد الشهادات',
+                            data: gradeData,
+                            backgroundColor: gradeLabels.map(function(_, i) {
+                                const colors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444'];
+                                return colors[i % colors.length] + '50';
+                            }),
+                            borderColor: gradeLabels.map(function(_, i) {
+                                const colors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#ef4444'];
+                                return colors[i % colors.length];
+                            }),
+                            borderWidth: 2,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.04)' }
+                            },
+                            x: {
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 4. أكثر الأكاديميات إنتاجاً (Bar)
+            const topAcad = Object.keys(academyCerts).map(function(key) {
+                return { name: key, count: academyCerts[key] };
+            });
+            topAcad.sort(function(a, b) { return b.count - a.count; });
+            const top10Acad = topAcad.slice(0, 10);
+            const topAcadLabels = top10Acad.map(function(item) { return item.name; });
+            const topAcadData = top10Acad.map(function(item) { return item.count; });
+
+            if (topAcadLabels.length > 0) {
+                const ctx4 = document.getElementById('chartTopAcademies').getContext('2d');
+                chartInstances.chartTopAcademies = new Chart(ctx4, {
+                    type: 'bar',
+                    data: {
+                        labels: topAcadLabels,
+                        datasets: [{
+                            label: 'عدد الشهادات',
+                            data: topAcadData,
+                            backgroundColor: topAcadLabels.map(function(_, i) {
+                                const colors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#8b5cf6'];
+                                return colors[i % colors.length] + '50';
+                            }),
+                            borderColor: topAcadLabels.map(function(_, i) {
+                                const colors = ['#10b981', '#3b82f6', '#eab308', '#f97316', '#8b5cf6'];
+                                return colors[i % colors.length];
+                            }),
+                            borderWidth: 2,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.04)' }
+                            },
+                            x: {
+                                beginAtZero: true,
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.04)' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ============================================================
+        // 14. الفلاتر
+        // ============================================================
+        function populateGovernorates() {
+            const select = document.getElementById('governorateFilter');
+            const govs = new Set();
+            allAcademies.forEach(function(a) {
+                if (a.branches) {
+                    a.branches.forEach(function(b) {
+                        if (b.governorate) govs.add(b.governorate);
+                    });
+                }
+            });
+            // إضافة المحافظات من الشهادات مباشرة
+            allCertificates.forEach(function(c) {
+                if (c.branchGovernorate) govs.add(c.branchGovernorate);
+            });
+            govs.forEach(function(g) {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.textContent = g;
+                select.appendChild(opt);
             });
         }
 
-        // ============================================================
-        // 14. تطبيق الفلاتر
-        // ============================================================
         function applyFilters() {
-            const dateFrom = document.getElementById('filterDateFrom').value;
-            const dateTo = document.getElementById('filterDateTo').value;
-            const academyFilter = document.getElementById('filterAcademy').value;
-            const govFilter = document.getElementById('filterGovernorate').value;
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            const govFilter = document.getElementById('governorateFilter').value;
 
-            let filtered = reportData.certificates;
-
-            if (dateFrom) {
-                const from = new Date(dateFrom);
-                filtered = filtered.filter(function(c) {
-                    const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) : null;
-                    return d && d >= from;
+            // فلترة الأكاديميات
+            let filteredAcademies = allAcademies;
+            if (search) {
+                filteredAcademies = filteredAcademies.filter(function(a) {
+                    return (a.name || '').toLowerCase().includes(search) ||
+                        (a.licenseNumber || '').toLowerCase().includes(search) ||
+                        (a.branches && a.branches.some(function(b) {
+                            return (b.governorate || '').toLowerCase().includes(search) ||
+                                (b.address || '').toLowerCase().includes(search);
+                        }));
                 });
             }
-
-            if (dateTo) {
-                const to = new Date(dateTo);
-                to.setHours(23, 59, 59, 999);
-                filtered = filtered.filter(function(c) {
-                    const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) : null;
-                    return d && d <= to;
-                });
-            }
-
-            if (academyFilter) {
-                filtered = filtered.filter(function(c) { return c.academyId === academyFilter; });
-            }
-
             if (govFilter) {
-                filtered = filtered.filter(function(c) { return c.branchGovernorate === govFilter; });
-            }
-
-            const tempCerts = reportData.certificates;
-            reportData.certificates = filtered;
-            analyzeData();
-            reportData.certificates = tempCerts;
-
-            showMsg('تم تطبيق الفلترة بنجاح', 'success');
-        }
-
-        // ============================================================
-        // 15. تصدير التقارير
-        // ============================================================
-        function exportReport(type) {
-            const logoHtml = settings.logoUrl ?
-                `<img src="${settings.logoUrl}" class="logo-img" alt="لوجو النقابة" />` :
-                '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0066ff,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;">ن.ت</div>';
-
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ar-EG');
-            const timeStr = now.toLocaleTimeString('ar-EG');
-
-            let title = 'تقرير تحليلي شامل';
-            let filename = 'تقرير_تحليلي_' + now.toISOString().split('T')[0];
-            let content = '';
-
-            const buildReport = function() {
-                const total = reportData.certificates.length;
-                let html = `
-                    <div class="report-print-wrapper" id="report-print-content">
-                        <div class="report-header">
-                            <div class="left">
-                                ${logoHtml}
-                                <div class="text">
-                                    <h1>${settings.unionName}</h1>
-                                    <p>${settings.committeeName}</p>
-                                </div>
-                            </div>
-                            <div style="text-align:left;font-size:12px;color:#666;">
-                                <div>التاريخ: ${dateStr}</div>
-                                <div>الوقت: ${timeStr}</div>
-                            </div>
-                        </div>
-                        <div class="report-title">${title}</div>
-                        <div class="report-subtitle">تقرير تحليلي عن أداء المنصة</div>
-                `;
-
-                // إحصائيات سريعة
-                const active = reportData.certificates.filter(function(c) { return c.isActive !== false; }).length;
-                const govCount = Object.keys(reportData.governorates).length;
-                const acadCount = Object.keys(reportData.academyStats).length;
-
-                html += `
-                    <div class="report-stats">
-                        <span>إجمالي الشهادات: ${total}</span>
-                        <span>شهادات نشطة: ${active}</span>
-                        <span>المحافظات: ${govCount}</span>
-                        <span>الأكاديميات: ${acadCount}</span>
-                    </div>
-                `;
-
-                // Top 10 الطلاب
-                if (type === 'all' || type === 'topStudents') {
-                    const topStudents = reportData.topStudents;
-                    html += `
-                        <h4 style="margin:12px 0 6px;color:#0066ff;">أفضل 10 طلاب</h4>
-                        <table class="report-table">
-                            <thead><tr><th>#</th><th>اسم الطالب</th><th>الرقم القومي</th><th>عدد الشهادات</th><th>النسبة</th></tr></thead>
-                            <tbody>
-                    `;
-                    topStudents.forEach(function(student, i) {
-                        const pct = total > 0 ? ((student.count / total) * 100).toFixed(1) : 0;
-                        html +=
-                            `<tr><td>${i+1}</td><td>${student.name}</td><td>${student.nationalId}</td><td>${student.count}</td><td>${pct}%</td></tr>`;
+                filteredAcademies = filteredAcademies.filter(function(a) {
+                    return a.branches && a.branches.some(function(b) {
+                        return b.governorate === govFilter;
                     });
-                    html += `</tbody></table>`;
-                }
-
-                // المحافظات
-                if (type === 'all' || type === 'governorates') {
-                    const govs = Object.keys(reportData.governorates).sort(function(a, b) {
-                        return reportData.governorates[b] - reportData.governorates[a];
-                    });
-                    html += `
-                        <h4 style="margin:12px 0 6px;color:#0066ff;">المحافظات</h4>
-                        <table class="report-table">
-                            <thead><tr><th>#</th><th>المحافظة</th><th>عدد الشهادات</th><th>النسبة</th></tr></thead>
-                            <tbody>
-                    `;
-                    govs.forEach(function(gov, i) {
-                        const count = reportData.governorates[gov];
-                        const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
-                        html += `<tr><td>${i+1}</td><td>${gov}</td><td>${count}</td><td>${pct}%</td></tr>`;
-                    });
-                    html += `</tbody></table>`;
-                }
-
-                // الأكاديميات
-                if (type === 'all' || type === 'academies') {
-                    const acads = Object.keys(reportData.academyStats).sort(function(a, b) {
-                        return reportData.academyStats[b].count - reportData.academyStats[a].count;
-                    });
-                    html += `
-                        <h4 style="margin:12px 0 6px;color:#0066ff;">الأكاديميات</h4>
-                        <table class="report-table">
-                            <thead><tr><th>#</th><th>الأكاديمية</th><th>الرقم الاعتمادي</th><th>عدد الشهادات</th><th>الفروع</th><th>النسبة</th></tr></thead>
-                            <tbody>
-                    `;
-                    acads.forEach(function(acadId, i) {
-                        const acad = reportData.academyStats[acadId];
-                        const pct = total > 0 ? ((acad.count / total) * 100).toFixed(1) : 0;
-                        const branches = Object.keys(acad.branches).length;
-                        html +=
-                            `<tr><td>${i+1}</td><td>${acad.name}</td><td>${acad.license}</td><td>${acad.count}</td><td>${branches}</td><td>${pct}%</td></tr>`;
-                    });
-                    html += `</tbody></table>`;
-                }
-
-                // الفروع
-                if (type === 'all' || type === 'branches') {
-                    const branches = Object.keys(reportData.branchStats).sort(function(a, b) {
-                        return reportData.branchStats[b].count - reportData.branchStats[a].count;
-                    });
-                    html += `
-                        <h4 style="margin:12px 0 6px;color:#0066ff;">الفروع</h4>
-                        <table class="report-table">
-                            <thead><tr><th>#</th><th>الفرع</th><th>الأكاديمية</th><th>المحافظة</th><th>عدد الشهادات</th><th>النسبة</th></tr></thead>
-                            <tbody>
-                    `;
-                    branches.forEach(function(key, i) {
-                        const branch = reportData.branchStats[key];
-                        const pct = total > 0 ? ((branch.count / total) * 100).toFixed(1) : 0;
-                        html +=
-                            `<tr><td>${i+1}</td><td>${branch.name}</td><td>${branch.academyName}</td><td>${branch.governorate}</td><td>${branch.count}</td><td>${pct}%</td></tr>`;
-                    });
-                    html += `</tbody></table>`;
-                }
-
-                html += `
-                        <div class="report-footer">
-                            <div>تم إنشاء هذا التقرير بواسطة نظام نقابة تكنولوجيا المعلومات</div>
-                            <div class="signature">النقيب العام: ${settings.presidentName}</div>
-                            <div style="font-size:9px;color:#aaa;margin-top:4px;">${settings.footerText} | الإصدار 1.0</div>
-                        </div>
-                    </div>
-                `;
-
-                return html;
-            };
-
-            // تحديث العنوان واسم الملف حسب النوع
-            if (type === 'topStudents') {
-                title = 'تقرير أفضل 10 طلاب';
-                filename = 'تقرير_افضل_الطلاب_' + now.toISOString().split('T')[0];
-            } else if (type === 'governorates') {
-                title = 'تقرير المحافظات';
-                filename = 'تقرير_المحافظات_' + now.toISOString().split('T')[0];
-            } else if (type === 'academies') {
-                title = 'تقرير الأكاديميات';
-                filename = 'تقرير_الأكاديميات_' + now.toISOString().split('T')[0];
-            } else if (type === 'branches') {
-                title = 'تقرير الفروع';
-                filename = 'تقرير_الفروع_' + now.toISOString().split('T')[0];
-            }
-
-            const html = buildReport();
-            const container = document.getElementById('print-container');
-            container.innerHTML = html;
-
-            const element = document.getElementById('report-print-content');
-
-            const opt = {
-                margin: 10,
-                filename: filename + '.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save()
-                .then(function() {
-                    container.innerHTML = '';
-                    showMsg('تم تصدير التقرير بنجاح', 'success');
-
-                    db.collection('activities').add({
-                        userId: currentUser ? currentUser.uid : 'system',
-                        userEmail: currentUser ? currentUser.email : 'system',
-                        userName: 'أدمن',
-                        userRole: userRole || 'admin',
-                        type: 'export_pdf',
-                        description: 'تصدير تقرير: ' + title,
-                        timestamp: new Date(),
-                        ipAddress: 'auto',
-                        userAgent: navigator.userAgent
-                    }).catch(function() {});
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ في تصدير التقرير: ' + err.message, 'error');
-                    container.innerHTML = '';
                 });
+            }
+
+            // إعادة عرض الجداول مع البيانات المفلترة
+            // نعيد عرض كل شيء مع البيانات الجديدة
+            const oldAcademies = allAcademies;
+            allAcademies = filteredAcademies;
+            renderAcademiesRank();
+            renderBranchesRank();
+            renderGovernoratesRank();
+            allAcademies = oldAcademies;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('governorateFilter').value = '';
+            applyFilters();
         }
 
         // ============================================================
-        // 16. عرض الرسائل
+        // 15. عرض الرسائل
         // ============================================================
-        function showMsg(msg, type) {
+        function showMsg(msg, type = 'info') {
             const el = document.getElementById('pageMsg');
             el.textContent = msg;
             el.className = 'msg show ' + type;
-            setTimeout(function() { el.className = 'msg'; }, 4000);
+            setTimeout(function() {
+                el.className = 'msg';
+            }, 4000);
         }
 
         // ============================================================
-        // 17. تحميل الصفحة
+        // 16. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            console.log('✅ التقارير التحليلية - نقابة تكنولوجيا المعلومات');
-            console.log('🔒 نظام أمني متطور');
-            console.log('🧠 محسّن بالذكاء الاصطناعي');
-            console.log('📊 تقارير تحليلية متقدمة');
-            console.log('🏆 أفضل 10 طلاب');
+            console.log('✅ تقارير المنصة - كل حرف من الإعدادات');
+            console.log('👤 النقيب العام: ' + settings.presidentName);
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
+            console.log('📊 تقارير متكاملة: الأكاديميات، الفروع، المحافظات، المتدربين');
+            console.log('🏆 ترتيب وتقييم كل شيء');
         });
     </script>
 
