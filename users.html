@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>إدارة المستخدمين - نقابة تكنولوجيا المعلومات</title>
+    <title id="pageTitle"></title>
+    <meta name="description" id="metaDescription" content="" />
+    <meta name="keywords" id="metaKeywords" content="" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" id="ogTitle" content="" />
+    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:image" id="ogImage" content="" />
+    <meta property="og:url" id="ogUrl" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="" />
+    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:image" id="twitterImage" content="" />
+
+    <!-- Icons -->
+    <link rel="icon" id="favicon" href="" />
+    <link rel="apple-touch-icon" id="appleIcon" href="" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -15,7 +36,8 @@
 
     <style>
         /* ============================================================
-           التصميم المتطور لإدارة المستخدمين
+           التصميم الخرافي لإدارة المستخدمين
+           كل حرف من الإعدادات
            ============================================================ */
         * {
             margin: 0;
@@ -24,24 +46,57 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-            background: #050a18;
-            color: #ffffff;
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
         }
 
-        /* ===== خلفية ذكاء اصطناعي ===== */
+        :root {
+            --primary-color: #C9A84C;
+            --primary-dark: #A8893A;
+            --primary-light: #E8D5A3;
+            --primary-glow: rgba(201,168,76,0.3);
+            --secondary-color: #0A1628;
+            --accent-color: #7C3AED;
+            --accent-light: #A78BFA;
+            --accent-glow: rgba(124,58,237,0.2);
+            --bg-color: #0A0E1A;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-hover: rgba(255,255,255,0.06);
+            --text-color: #FFFFFF;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-dim: rgba(255,255,255,0.15);
+            --success: #10B981;
+            --success-bg: rgba(16,185,129,0.12);
+            --error: #EF4444;
+            --error-bg: rgba(239,68,68,0.12);
+            --warning: #F59E0B;
+            --warning-bg: rgba(245,158,11,0.12);
+            --info: #3B82F6;
+            --info-bg: rgba(59,130,246,0.12);
+            --border: rgba(255,255,255,0.06);
+            --border-light: rgba(255,255,255,0.03);
+            --card-bg: rgba(255,255,255,0.04);
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-lg: 28px;
+        }
+
         .page-bg {
             position: fixed;
             inset: 0;
             z-index: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 100, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.04) 0%, transparent 60%);
-            animation: bgPulse 15s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
+            animation: bgPulse 12s ease-in-out infinite alternate;
         }
 
         @keyframes bgPulse {
@@ -53,8 +108,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -72,14 +126,14 @@
             animation: particleFloat 22s infinite ease-in-out;
         }
 
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: rgba(0, 150, 255, 0.4); }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: rgba(138, 43, 226, 0.4); }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: rgba(0, 200, 255, 0.5); }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: rgba(255, 100, 200, 0.3); }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: rgba(0, 255, 200, 0.4); }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: rgba(100, 50, 255, 0.3); }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: rgba(0, 150, 255, 0.5); }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: rgba(200, 100, 255, 0.35); }
+        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: var(--accent-color); opacity: 0.3; }
+        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: var(--primary-color); opacity: 0.3; }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: var(--accent-color); opacity: 0.25; }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: var(--primary-color); opacity: 0.4; }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: var(--accent-color); opacity: 0.3; }
 
         @keyframes particleFloat {
             0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
@@ -95,8 +149,8 @@
             inset: 0;
             z-index: 1;
             background-image:
-                linear-gradient(rgba(0, 150, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 150, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             animation: gridMove 25s linear infinite;
@@ -120,14 +174,13 @@
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 100, 255, 0.05);
+            border: 1px solid rgba(201,168,76,0.04);
             animation: ringSpin 40s linear infinite;
         }
 
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(0, 100, 255, 0.08); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(138, 43, 226, 0.06); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(0, 200, 255, 0.04); animation-duration: 60s; }
-        .ring:nth-child(4) { width: 950px; height: 950px; border-color: rgba(100, 50, 255, 0.03); animation-duration: 70s; animation-direction: reverse; }
+        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201,168,76,0.06); }
+        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(124,58,237,0.04); animation-duration: 50s; animation-direction: reverse; }
+        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(59,130,246,0.03); animation-duration: 60s; }
 
         @keyframes ringSpin {
             0% { transform: rotate(0deg); }
@@ -148,7 +201,7 @@
             height: 450px;
             top: -150px;
             right: -150px;
-            background: rgba(0, 100, 255, 0.08);
+            background: var(--primary-glow);
         }
 
         .glow-orb:nth-child(2) {
@@ -156,7 +209,7 @@
             height: 550px;
             bottom: -200px;
             left: -200px;
-            background: rgba(138, 43, 226, 0.06);
+            background: var(--accent-glow);
             animation-delay: 6s;
         }
 
@@ -173,20 +226,32 @@
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 24px;
-            padding: 14px 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
             animation: headerFloat 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
+            pointer-events: none;
         }
 
         @keyframes headerFloat {
@@ -197,24 +262,30 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .logo-box {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 20px;
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             animation: logoSpin 20s linear infinite;
-            box-shadow: 0 0 30px rgba(0, 100, 255, 0.2);
+            box-shadow: 0 0 35px var(--primary-glow);
+            position: relative;
+            background-size: cover;
+            background-position: center;
         }
 
         @keyframes logoSpin {
@@ -224,23 +295,45 @@
 
         .logo-box:hover {
             animation-duration: 3s;
-            box-shadow: 0 0 50px rgba(0, 100, 255, 0.4);
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .header-title h1 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            color: #fff;
-            background: linear-gradient(135deg, #ffffff, #60a5fa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--text-color);
         }
 
         .header-title p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-president {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 14px;
+            background: var(--bg-hover);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .header-president:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .header-president .president-icon { font-size: 16px; }
+        .header-president .president-label { font-size: 11px; color: var(--text-muted); font-weight: 300; }
+        .header-president .president-name {
+            font-size: 13px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .header-right {
@@ -248,6 +341,8 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .btn {
@@ -257,73 +352,88 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #0066ff, #8b5cf6);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 100, 255, 0.25);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 100, 255, 0.4); }
+
+        .btn:hover::before { width: 300px; height: 300px; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: #fff;
+            box-shadow: 0 4px 25px var(--primary-glow);
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px var(--primary-glow); }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
         }
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
         .btn-success {
-            background: linear-gradient(135deg, #10b981, #22c55e);
+            background: linear-gradient(135deg, var(--success), #059669);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 25px rgba(16,185,129,0.25);
         }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(135deg, var(--error), #dc2626);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
+            box-shadow: 0 4px 25px rgba(239,68,68,0.25);
         }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4); }
-
-        .btn-ghost {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.10); transform: translateY(-2px); }
+        .btn-danger:hover { transform: translateY(-3px) scale(1.02); }
 
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
-        /* ===== البطاقات ===== */
+        .role-badge {
+            font-size: 11px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: var(--primary-glow);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
         .card {
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 20px 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            margin-bottom: 24px;
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
         }
 
-        .card:hover {
-            border-color: rgba(0, 100, 255, 0.10);
-        }
+        .card:hover { border-color: var(--primary-color); }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-color);
             margin-bottom: 14px;
             display: flex;
             align-items: center;
@@ -334,44 +444,86 @@
 
         .card-title .badge {
             font-size: 10px;
-            background: rgba(0, 100, 255, 0.15);
-            color: #60a5fa;
+            background: var(--primary-glow);
+            color: var(--primary-color);
             padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
         }
 
-        /* ===== شريط البحث ===== */
-        .search-bar {
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stats-row .stat-mini {
+            text-align: center;
+            padding: 10px 12px;
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .stats-row .stat-mini:hover {
+            background: var(--bg-hover);
+            border-color: var(--primary-color);
+        }
+
+        .stats-row .stat-mini .num {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        .stats-row .stat-mini .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .filter-bar {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             margin-bottom: 16px;
         }
 
-        .search-bar input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 18px;
-            border-radius: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
-            font-size: 14px;
+        .filter-bar input,
+        .filter-bar select {
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-color);
+            font-size: 13px;
             outline: none;
             transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+            font-family: inherit;
         }
 
-        .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.12);
+        .filter-bar input::placeholder {
+            color: var(--text-muted);
         }
 
-        .search-bar input:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
-        /* ===== الجدول ===== */
+        .filter-bar select option {
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .filter-bar .btn { flex-shrink: 0; }
+
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -384,13 +536,13 @@
         }
 
         .table thead {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
         }
 
         .table thead th {
             text-align: right;
             padding: 10px 12px;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
             font-weight: 600;
             font-size: 11px;
             text-transform: uppercase;
@@ -400,7 +552,7 @@
 
         .table tbody td {
             padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-light);
             vertical-align: middle;
         }
 
@@ -409,36 +561,36 @@
         }
 
         .table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-hover);
         }
 
         .table .user-name {
             font-weight: 600;
-            color: #fff;
+            color: var(--text-color);
         }
 
         .table .user-email {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
         }
 
-        .table .role-badge {
+        .table .role-badge-table {
             padding: 3px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
         }
 
-        .role-badge.super_admin {
-            background: rgba(139, 92, 246, 0.15);
+        .role-badge-table.super_admin {
+            background: rgba(139,92,246,0.15);
             color: #8b5cf6;
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139,92,246,0.1);
         }
 
-        .role-badge.admin {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
-            border: 1px solid rgba(59, 130, 246, 0.1);
+        .role-badge-table.admin {
+            background: var(--info-bg);
+            color: var(--info);
+            border: 1px solid rgba(59,130,246,0.1);
         }
 
         .table .status-badge {
@@ -449,15 +601,15 @@
         }
 
         .status-badge.active {
-            background: rgba(16, 185, 129, 0.12);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.1);
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid rgba(16,185,129,0.1);
         }
 
         .status-badge.inactive {
-            background: rgba(239, 68, 68, 0.12);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.1);
+            background: var(--error-bg);
+            color: var(--error);
+            border: 1px solid rgba(239,68,68,0.1);
         }
 
         .table .actions {
@@ -472,13 +624,12 @@
             border-radius: 20px;
         }
 
-        /* ===== مودال ===== */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(20px);
             justify-content: center;
             align-items: center;
@@ -486,28 +637,26 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .modal-overlay.show {
-            display: flex;
-        }
+        .modal-overlay.show { display: flex; }
 
         .modal {
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--card-bg);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             padding: 32px;
             max-width: 550px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow);
             animation: slideUp 0.3s ease;
         }
 
         .modal::-webkit-scrollbar { width: 4px; }
-        .modal::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
-        .modal::-webkit-scrollbar-thumb { background: rgba(0, 100, 255, 0.3); border-radius: 4px; }
+        .modal::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
+        .modal::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
 
         @keyframes slideUp {
             0% { opacity: 0; transform: translateY(30px) scale(0.96); }
@@ -525,23 +674,23 @@
             align-items: center;
             margin-bottom: 18px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border);
         }
 
         .modal-header h2 {
             font-size: 20px;
             font-weight: 800;
-            color: #fff;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
         .modal-close {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.3);
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -554,9 +703,9 @@
         }
 
         .modal-close:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.2);
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: var(--error);
         }
 
         .modal-body {
@@ -571,7 +720,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.45);
+            color: var(--text-muted);
             margin-bottom: 4px;
         }
 
@@ -579,10 +728,10 @@
         .form-group select {
             width: 100%;
             padding: 10px 14px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-color);
             font-size: 14px;
             outline: none;
             transition: all 0.3s ease;
@@ -590,18 +739,18 @@
         }
 
         .form-group input::placeholder {
-            color: rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
         }
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 0 4px rgba(0, 100, 255, 0.06);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .form-group select option {
-            background: #0a0f1f;
-            color: #fff;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
 
         .form-row {
@@ -616,7 +765,7 @@
             justify-content: flex-end;
             flex-wrap: wrap;
             padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-top: 1px solid var(--border);
         }
 
         .modal-footer .btn {
@@ -624,10 +773,9 @@
             border-radius: 30px;
         }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             padding: 12px 16px;
             margin-bottom: 16px;
             text-align: center;
@@ -635,17 +783,17 @@
         }
 
         .msg.show { display: block; animation: fadeIn 0.3s ease; }
-        .msg.error { background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.20); color: #ef4444; }
-        .msg.success { background: rgba(16, 185, 129, 0.10); border: 1px solid rgba(16, 185, 129, 0.20); color: #10b981; }
-        .msg.info { background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #3b82f6; }
+        .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
+        .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
+        .msg.info { background: var(--info-bg); border: 1px solid var(--info); color: var(--info); }
 
         .loader { display: none; text-align: center; padding: 30px 0; }
         .loader.show { display: block; }
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top-color: #0066ff;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -656,100 +804,79 @@
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
         }
 
         .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-        .empty-state .title { font-size: 18px; font-weight: 700; color: rgba(255, 255, 255, 0.4); }
-        .empty-state .desc { font-size: 13px; color: rgba(255, 255, 255, 0.15); margin-top: 4px; }
+        .empty-state .title { font-size: 18px; font-weight: 700; color: var(--text-secondary); }
+        .empty-state .desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
         .footer {
             text-align: center;
             padding: 20px 0 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 1px solid var(--border);
             margin-top: 24px;
-            color: rgba(255, 255, 255, 0.10);
+            color: var(--text-dim);
             font-size: 11px;
         }
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-bottom: 16px;
+        .delete-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1001;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .stats-row .stat-mini {
-            text-align: center;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.3s ease;
-        }
+        .delete-modal.show { display: flex; }
 
-        .stats-row .stat-mini:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(0, 100, 255, 0.08);
-        }
-
-        .stats-row .stat-mini .num {
-            font-size: 22px;
-            font-weight: 800;
-            color: #60a5fa;
-            line-height: 1.2;
-        }
-
-        .stats-row .stat-mini .label {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.25);
-            margin-top: 2px;
+        .delete-modal .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
         }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
-            .header-right { justify-content: center; }
+            .header-right { justify-content: center; flex-wrap: wrap; }
+            .header-left { justify-content: center; flex-wrap: wrap; }
             .form-row { grid-template-columns: 1fr; }
             .container { padding: 10px; }
             .card { padding: 14px 16px; }
             .modal { padding: 20px; margin: 10px; border-radius: 20px; }
-            .table thead th,
-            .table tbody td { padding: 8px 10px; font-size: 12px; }
+            .table thead th, .table tbody td { padding: 8px 10px; font-size: 12px; }
             .glow-orb { display: none; }
             .ring { display: none; }
-            .header-left { justify-content: center; }
             .header-title { text-align: center; }
             .stats-row { grid-template-columns: repeat(2, 1fr); }
-            .search-bar { flex-direction: column; }
-            .search-bar input { min-width: unset; }
+            .header-president { padding: 3px 10px; }
+            .header-president .president-name { font-size: 12px; }
+            .filter-bar { flex-direction: column; }
+            .filter-bar input, .filter-bar select { min-width: unset; }
         }
 
         @media (max-width: 480px) {
             .table thead { display: none; }
             .table tbody td { display: block; padding: 6px 10px; border-bottom: none; }
-            .table tbody td::before { content: attr(data-label); font-weight: 600; color: rgba(255, 255, 255, 0.3); display: inline-block; width: 80px; }
-            .table tbody tr { border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding: 8px 0; display: block; }
+            .table tbody td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); display: inline-block; width: 80px; }
+            .table tbody tr { border-bottom: 1px solid var(--border); padding: 8px 0; display: block; }
             .table .actions { justify-content: center; margin-top: 4px; }
             .header-title h1 { font-size: 15px; }
             .modal { padding: 16px; }
             .stats-row { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media print {
-            * { display: none !important; }
-            body::before {
-                content: 'لا يمكن طباعة هذه الصفحة';
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                inset: 0;
-                background: #050a18;
-                color: #ef4444;
-                font-size: 28px;
-                z-index: 999999;
-                font-family: 'Segoe UI', 'Tahoma', sans-serif;
-            }
+            .header-president .president-name { font-size: 11px; }
+            .filter-bar { flex-direction: column; }
         }
     </style>
 </head>
@@ -774,7 +901,6 @@
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
-        <div class="ring"></div>
     </div>
 
     <div class="glow-orb"></div>
@@ -784,15 +910,21 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'">ن.ت</div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1>إدارة المستخدمين</h1>
-                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="pageTitleHeader"></h1>
+                    <p id="committeeName"></p>
+                </div>
+                <div class="header-president">
+                    <span class="president-icon">👤</span>
+                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
-                <a href="dashboard.html" class="btn btn-outline btn-sm">لوحة التحكم</a>
-                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()">إضافة مستخدم</a>
+                <span class="role-badge" id="roleBadge"></span>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn"></a>
+                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()" id="addUserBtn"></a>
                 <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
             </div>
         </header>
@@ -801,7 +933,7 @@
 
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
-            <div style="color:rgba(255,255,255,0.3);">جاري تحميل المستخدمين...</div>
+            <div style="color:var(--text-muted);" id="loaderText"></div>
         </div>
 
         <div id="pageContent" style="display:none;">
@@ -810,31 +942,45 @@
                 <div class="stats-row" id="statsRow">
                     <div class="stat-mini">
                         <div class="num" id="statTotal">0</div>
-                        <div class="label">إجمالي المستخدمين</div>
+                        <div class="label" id="statTotalLabel"></div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statActive">0</div>
-                        <div class="label">نشط</div>
+                        <div class="label" id="statActiveLabel"></div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statAdmins">0</div>
-                        <div class="label">أدمن</div>
+                        <div class="label" id="statAdminsLabel"></div>
                     </div>
                     <div class="stat-mini">
                         <div class="num" id="statSuperAdmins">0</div>
-                        <div class="label">سوبر أدمن</div>
+                        <div class="label" id="statSuperAdminsLabel"></div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statOnline">0</div>
+                        <div class="label" id="statOnlineLabel"></div>
                     </div>
                 </div>
 
-                <div class="search-bar">
+                <div class="filter-bar">
                     <input type="text" id="searchInput" placeholder="بحث عن مستخدم (الاسم، البريد، الدور)..." oninput="filterUsers()" />
-                    <span style="color:rgba(255,255,255,0.15);font-size:12px;display:flex;align-items:center;" id="countDisplay">0 مستخدم</span>
+                    <select id="roleFilter" onchange="filterUsers()">
+                        <option value="">جميع الأدوار</option>
+                        <option value="super_admin">سوبر أدمن</option>
+                        <option value="admin">أدمن</option>
+                    </select>
+                    <select id="statusFilter" onchange="filterUsers()">
+                        <option value="">جميع الحالات</option>
+                        <option value="active">نشط</option>
+                        <option value="inactive">محذوف</option>
+                    </select>
+                    <button class="btn btn-outline btn-sm" onclick="resetFilters()" id="resetBtn"></button>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-title">
-                    <span>قائمة المستخدمين</span>
+                    <span id="usersListTitle"></span>
                     <span class="badge" id="userCount">0</span>
                 </div>
 
@@ -842,12 +988,12 @@
                     <table class="table" id="usersTable">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>المستخدم</th>
-                                <th>الدور</th>
-                                <th>الحالة</th>
-                                <th>آخر دخول</th>
-                                <th>الإجراءات</th>
+                                <th id="thNum">#</th>
+                                <th id="thUser">المستخدم</th>
+                                <th id="thRole">الدور</th>
+                                <th id="thStatus">الحالة</th>
+                                <th id="thLastLogin">آخر ظهور</th>
+                                <th id="thActions">الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="usersBody"></tbody>
@@ -856,15 +1002,19 @@
 
                 <div class="empty-state" id="emptyState" style="display:none;">
                     <div class="icon">👥</div>
-                    <div class="title">لا توجد مستخدمين</div>
-                    <div class="desc">قم بإضافة مستخدم جديد بالضغط على زر "إضافة مستخدم"</div>
+                    <div class="title" id="emptyTitle"></div>
+                    <div class="desc" id="emptyDesc"></div>
                 </div>
             </div>
 
         </div>
 
         <footer class="footer">
-            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <span id="footerText"></span>
+            <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
+                <span id="presidentFooter"></span>
+                <span id="presidentName"></span>
+            </div>
         </footer>
 
     </div>
@@ -873,7 +1023,7 @@
     <div class="modal-overlay" id="userModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="modalTitle">إضافة مستخدم جديد</h2>
+                <h2 id="modalTitle"></h2>
                 <button class="modal-close" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
@@ -882,79 +1032,70 @@
                     <input type="hidden" id="editUid" value="" />
 
                     <div class="form-group">
-                        <label>البريد الإلكتروني *</label>
-                        <input type="email" id="userEmail" placeholder="admin@itws.com" required />
+                        <label id="emailLabel"></label>
+                        <input type="email" id="userEmail" placeholder="" required />
                     </div>
 
                     <div class="form-group" id="passwordGroup">
-                        <label>كلمة المرور *</label>
-                        <input type="password" id="userPassword" placeholder="••••••••" minlength="6" />
-                        <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:2px;">6 أحرف على الأقل</div>
+                        <label id="passwordLabel"></label>
+                        <input type="password" id="userPassword" placeholder="" minlength="6" />
+                        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="passwordHint"></div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>الاسم الكامل *</label>
-                            <input type="text" id="userName" placeholder="أدخل الاسم" required />
+                            <label id="nameLabel"></label>
+                            <input type="text" id="userName" placeholder="" required />
                         </div>
                         <div class="form-group">
-                            <label>رقم الهاتف *</label>
-                            <input type="text" id="userPhone" placeholder="01234567890" required />
+                            <label id="phoneLabel"></label>
+                            <input type="text" id="userPhone" placeholder="" required />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>الدور *</label>
+                        <label id="roleLabel"></label>
                         <select id="userRole" required>
                             <option value="admin">أدمن</option>
                             <option value="super_admin">سوبر أدمن</option>
                         </select>
                     </div>
 
-                    <div style="color:rgba(255,255,255,0.12);font-size:11px;margin-top:8px;">
-                        * الحقول المطلوبة
-                    </div>
+                    <div style="color:var(--text-muted);font-size:11px;margin-top:8px;" id="requiredFields"></div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal()">إلغاء</button>
-                <button class="btn btn-primary" onclick="document.getElementById('userForm').dispatchEvent(new Event('submit'))">
-                    حفظ
-                </button>
+                <button class="btn btn-outline" onclick="closeModal()" id="cancelBtn"></button>
+                <button class="btn btn-primary" onclick="document.getElementById('userForm').dispatchEvent(new Event('submit'))" id="saveBtn"></button>
             </div>
         </div>
     </div>
 
-    <!-- ===== مودال تأكيد الحذف ===== -->
-    <div class="modal-overlay" id="deleteModal">
-        <div class="modal" style="max-width:450px;">
+    <!-- ===== مودال الحذف ===== -->
+    <div class="delete-modal" id="deleteModal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h2 style="color:#ef4444;">تأكيد الحذف</h2>
+                <h2 style="color:var(--error);" id="deleteTitle"></h2>
                 <button class="modal-close" onclick="closeDeleteModal()">✕</button>
             </div>
             <div class="modal-body">
-                <p style="color:rgba(255,255,255,0.6);margin-bottom:12px;">
-                    هل أنت متأكد من حذف المستخدم التالي؟
-                </p>
-                <div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:14px;">
-                    <p style="font-weight:700;color:#fff;" id="deleteUserName">-</p>
-                    <p style="font-size:12px;color:rgba(255,255,255,0.3);" id="deleteUserEmail">-</p>
+                <p style="color:var(--text-secondary);margin-bottom:12px;" id="deleteConfirmText"></p>
+                <div style="background:var(--bg-hover);border-radius:var(--radius-sm);padding:14px;">
+                    <p style="font-weight:700;color:var(--text-color);" id="deleteUserName">-</p>
+                    <p style="font-size:12px;color:var(--text-muted);" id="deleteUserEmail">-</p>
                 </div>
                 <div class="form-group" style="margin-top:12px;">
-                    <label>سبب الحذف *</label>
-                    <input type="text" id="deleteReason" placeholder="أدخل سبب الحذف (للإدارة)" required />
+                    <label id="deleteReasonLabel"></label>
+                    <input type="text" id="deleteReason" placeholder="" required />
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeDeleteModal()">إلغاء</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">تأكيد الحذف</button>
+                <button class="btn btn-outline" onclick="closeDeleteModal()" id="deleteCancelBtn"></button>
+                <button class="btn btn-danger" onclick="confirmDelete()" id="deleteConfirmBtn"></button>
             </div>
         </div>
     </div>
 
-    <!-- ============================================================
-    جافا سكريبت
-    ============================================================ -->
     <script>
         // ============================================================
         // 1. تهيئة Firebase
@@ -981,12 +1122,65 @@
         let currentUserRole = null;
         let deleteTargetUid = null;
         let editingUid = null;
+        let onlineUsers = new Set();
 
         let settings = {
-            unionName: 'نقابة تكنولوجيا المعلومات',
+            pageTitleHeader: 'إدارة المستخدمين',
             committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة'
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            dashboardBtn: 'لوحة التحكم',
+            addUserBtn: 'إضافة مستخدم',
+            logoutBtn: 'تسجيل الخروج',
+            loaderText: 'جاري تحميل المستخدمين...',
+            statTotalLabel: 'إجمالي المستخدمين',
+            statActiveLabel: 'نشط',
+            statAdminsLabel: 'أدمن',
+            statSuperAdminsLabel: 'سوبر أدمن',
+            statOnlineLabel: 'متصلون الآن',
+            resetBtn: 'إعادة ضبط',
+            usersListTitle: 'قائمة المستخدمين',
+            thNum: '#',
+            thUser: 'المستخدم',
+            thRole: 'الدور',
+            thStatus: 'الحالة',
+            thLastLogin: 'آخر ظهور',
+            thActions: 'الإجراءات',
+            emptyTitle: 'لا توجد مستخدمين',
+            emptyDesc: 'قم بإضافة مستخدم جديد بالضغط على زر "إضافة مستخدم"',
+            modalTitle: 'إضافة مستخدم جديد',
+            emailLabel: 'البريد الإلكتروني',
+            passwordLabel: 'كلمة المرور',
+            passwordHint: '6 أحرف على الأقل',
+            nameLabel: 'الاسم الكامل',
+            phoneLabel: 'رقم الهاتف',
+            roleLabel: 'الدور',
+            requiredFields: '* الحقول المطلوبة',
+            cancelBtn: 'إلغاء',
+            saveBtn: 'حفظ',
+            deleteTitle: 'تأكيد الحذف',
+            deleteConfirmText: 'هل أنت متأكد من حذف المستخدم التالي؟',
+            deleteReasonLabel: 'سبب الحذف',
+            deleteCancelBtn: 'إلغاء',
+            deleteConfirmBtn: 'تأكيد الحذف',
+            colors: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            }
         };
 
         // ============================================================
@@ -997,30 +1191,263 @@
                 .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data();
-                        if (data.unionName) settings.unionName = data.unionName;
+
+                        if (data.pageTitleHeader) settings.pageTitleHeader = data.pageTitleHeader;
                         if (data.committeeName) settings.committeeName = data.committeeName;
                         if (data.logoUrl) settings.logoUrl = data.logoUrl;
                         if (data.footerText) settings.footerText = data.footerText;
+                        if (data.presidentName) settings.presidentName = data.presidentName;
+                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
+                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+
+                        db.collection('settings').doc('texts').get()
+                            .then(function(textsDoc) {
+                                if (textsDoc.exists) {
+                                    const texts = textsDoc.data();
+                                    if (texts.dashboardBtn) settings.dashboardBtn = texts.dashboardBtn;
+                                    if (texts.addUserBtn) settings.addUserBtn = texts.addUserBtn;
+                                    if (texts.logoutBtn) settings.logoutBtn = texts.logoutBtn;
+                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
+                                    if (texts.statTotalLabel) settings.statTotalLabel = texts.statTotalLabel;
+                                    if (texts.statActiveLabel) settings.statActiveLabel = texts.statActiveLabel;
+                                    if (texts.statAdminsLabel) settings.statAdminsLabel = texts.statAdminsLabel;
+                                    if (texts.statSuperAdminsLabel) settings.statSuperAdminsLabel = texts.statSuperAdminsLabel;
+                                    if (texts.statOnlineLabel) settings.statOnlineLabel = texts.statOnlineLabel;
+                                    if (texts.resetBtn) settings.resetBtn = texts.resetBtn;
+                                    if (texts.usersListTitle) settings.usersListTitle = texts.usersListTitle;
+                                    if (texts.thNum) settings.thNum = texts.thNum;
+                                    if (texts.thUser) settings.thUser = texts.thUser;
+                                    if (texts.thRole) settings.thRole = texts.thRole;
+                                    if (texts.thStatus) settings.thStatus = texts.thStatus;
+                                    if (texts.thLastLogin) settings.thLastLogin = texts.thLastLogin;
+                                    if (texts.thActions) settings.thActions = texts.thActions;
+                                    if (texts.emptyTitle) settings.emptyTitle = texts.emptyTitle;
+                                    if (texts.emptyDesc) settings.emptyDesc = texts.emptyDesc;
+                                    if (texts.modalTitle) settings.modalTitle = texts.modalTitle;
+                                    if (texts.emailLabel) settings.emailLabel = texts.emailLabel;
+                                    if (texts.passwordLabel) settings.passwordLabel = texts.passwordLabel;
+                                    if (texts.passwordHint) settings.passwordHint = texts.passwordHint;
+                                    if (texts.nameLabel) settings.nameLabel = texts.nameLabel;
+                                    if (texts.phoneLabel) settings.phoneLabel = texts.phoneLabel;
+                                    if (texts.roleLabel) settings.roleLabel = texts.roleLabel;
+                                    if (texts.requiredFields) settings.requiredFields = texts.requiredFields;
+                                    if (texts.cancelBtn) settings.cancelBtn = texts.cancelBtn;
+                                    if (texts.saveBtn) settings.saveBtn = texts.saveBtn;
+                                    if (texts.deleteTitle) settings.deleteTitle = texts.deleteTitle;
+                                    if (texts.deleteConfirmText) settings.deleteConfirmText = texts.deleteConfirmText;
+                                    if (texts.deleteReasonLabel) settings.deleteReasonLabel = texts.deleteReasonLabel;
+                                    if (texts.deleteCancelBtn) settings.deleteCancelBtn = texts.deleteCancelBtn;
+                                    if (texts.deleteConfirmBtn) settings.deleteConfirmBtn = texts.deleteConfirmBtn;
+                                }
+                                applySettings();
+                                applyColors(settings.colors);
+                            })
+                            .catch(function() {
+                                applySettings();
+                                applyColors(settings.colors);
+                            });
+
+                    } else {
                         applySettings();
+                        applyColors(settings.colors);
                     }
                 })
-                .catch(function() {});
+                .catch(function() {
+                    applySettings();
+                    applyColors(settings.colors);
+                });
+
+            loadLocalSettings();
         }
 
         function applySettings() {
-            document.getElementById('committeeName').textContent = settings.committeeName || 'لجنة التحول الرقمي والتدريب';
-            document.getElementById('footerText').textContent = settings.footerText;
+            const titleEl = document.getElementById('pageTitleHeader');
+            const committeeEl = document.getElementById('committeeName');
+            const presidentLabelEl = document.getElementById('presidentLabel');
+            const presidentNameEl = document.getElementById('headerPresidentName');
+            const footerTextEl = document.getElementById('footerText');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
+
+            if (titleEl) titleEl.textContent = settings.pageTitleHeader;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
+            if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
+            if (footerTextEl) footerTextEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
+
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            const addUserBtn = document.getElementById('addUserBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
+            if (addUserBtn) addUserBtn.textContent = settings.addUserBtn;
+            if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
+
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.textContent = settings.loaderText;
+
+            const statTotalLabel = document.getElementById('statTotalLabel');
+            const statActiveLabel = document.getElementById('statActiveLabel');
+            const statAdminsLabel = document.getElementById('statAdminsLabel');
+            const statSuperAdminsLabel = document.getElementById('statSuperAdminsLabel');
+            const statOnlineLabel = document.getElementById('statOnlineLabel');
+            if (statTotalLabel) statTotalLabel.textContent = settings.statTotalLabel;
+            if (statActiveLabel) statActiveLabel.textContent = settings.statActiveLabel;
+            if (statAdminsLabel) statAdminsLabel.textContent = settings.statAdminsLabel;
+            if (statSuperAdminsLabel) statSuperAdminsLabel.textContent = settings.statSuperAdminsLabel;
+            if (statOnlineLabel) statOnlineLabel.textContent = settings.statOnlineLabel;
+
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) resetBtn.textContent = settings.resetBtn;
+
+            const usersListTitle = document.getElementById('usersListTitle');
+            if (usersListTitle) usersListTitle.textContent = settings.usersListTitle;
+
+            const thNum = document.getElementById('thNum');
+            const thUser = document.getElementById('thUser');
+            const thRole = document.getElementById('thRole');
+            const thStatus = document.getElementById('thStatus');
+            const thLastLogin = document.getElementById('thLastLogin');
+            const thActions = document.getElementById('thActions');
+            if (thNum) thNum.textContent = settings.thNum;
+            if (thUser) thUser.textContent = settings.thUser;
+            if (thRole) thRole.textContent = settings.thRole;
+            if (thStatus) thStatus.textContent = settings.thStatus;
+            if (thLastLogin) thLastLogin.textContent = settings.thLastLogin;
+            if (thActions) thActions.textContent = settings.thActions;
+
+            const emptyTitle = document.getElementById('emptyTitle');
+            const emptyDesc = document.getElementById('emptyDesc');
+            if (emptyTitle) emptyTitle.textContent = settings.emptyTitle;
+            if (emptyDesc) emptyDesc.textContent = settings.emptyDesc;
+
+            const modalTitle = document.getElementById('modalTitle');
+            const emailLabel = document.getElementById('emailLabel');
+            const passwordLabel = document.getElementById('passwordLabel');
+            const passwordHint = document.getElementById('passwordHint');
+            const nameLabel = document.getElementById('nameLabel');
+            const phoneLabel = document.getElementById('phoneLabel');
+            const roleLabel = document.getElementById('roleLabel');
+            const requiredFields = document.getElementById('requiredFields');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const userEmail = document.getElementById('userEmail');
+            const userPassword = document.getElementById('userPassword');
+            const userName = document.getElementById('userName');
+            const userPhone = document.getElementById('userPhone');
+
+            if (modalTitle) modalTitle.textContent = settings.modalTitle;
+            if (emailLabel) emailLabel.textContent = settings.emailLabel;
+            if (passwordLabel) passwordLabel.textContent = settings.passwordLabel;
+            if (passwordHint) passwordHint.textContent = settings.passwordHint;
+            if (nameLabel) nameLabel.textContent = settings.nameLabel;
+            if (phoneLabel) phoneLabel.textContent = settings.phoneLabel;
+            if (roleLabel) roleLabel.textContent = settings.roleLabel;
+            if (requiredFields) requiredFields.textContent = settings.requiredFields;
+            if (cancelBtn) cancelBtn.textContent = settings.cancelBtn;
+            if (saveBtn) saveBtn.textContent = settings.saveBtn;
+            if (userEmail) userEmail.placeholder = settings.emailLabel;
+            if (userPassword) userPassword.placeholder = settings.passwordLabel;
+            if (userName) userName.placeholder = settings.nameLabel;
+            if (userPhone) userPhone.placeholder = settings.phoneLabel;
+
+            const deleteTitle = document.getElementById('deleteTitle');
+            const deleteConfirmText = document.getElementById('deleteConfirmText');
+            const deleteReasonLabel = document.getElementById('deleteReasonLabel');
+            const deleteCancelBtn = document.getElementById('deleteCancelBtn');
+            const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+            const deleteReason = document.getElementById('deleteReason');
+
+            if (deleteTitle) deleteTitle.textContent = settings.deleteTitle;
+            if (deleteConfirmText) deleteConfirmText.textContent = settings.deleteConfirmText;
+            if (deleteReasonLabel) deleteReasonLabel.textContent = settings.deleteReasonLabel;
+            if (deleteCancelBtn) deleteCancelBtn.textContent = settings.deleteCancelBtn;
+            if (deleteConfirmBtn) deleteConfirmBtn.textContent = settings.deleteConfirmBtn;
+            if (deleteReason) deleteReason.placeholder = settings.deleteReasonLabel;
+
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
-                logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
-                logo.style.backgroundSize = 'cover';
-                logo.style.backgroundPosition = 'center';
-                logo.textContent = '';
+                if (logo) {
+                    logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logo.style.backgroundSize = 'cover';
+                    logo.style.backgroundPosition = 'center';
+                    logo.textContent = '';
+                }
+            }
+
+            // OG Tags
+            const pageTitle = document.getElementById('pageTitle');
+            const metaDescription = document.getElementById('metaDescription');
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
+            if (metaDescription) metaDescription.content = 'إدارة المستخدمين - ' + settings.pageTitleHeader;
+            if (ogTitle) ogTitle.content = settings.pageTitleHeader;
+            if (ogDescription) ogDescription.content = 'إدارة المستخدمين - نظام توثيق الشهادات';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = settings.pageTitleHeader;
+            if (twitterTitle) twitterTitle.content = settings.pageTitleHeader;
+            if (twitterDescription) twitterDescription.content = 'إدارة المستخدمين - نظام توثيق الشهادات';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
             }
         }
 
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        applyColors(parsed.theme.colors);
+                    }
+                }
+            } catch (e) {}
+        }
+
         // ============================================================
-        // 4. المصادقة والتحقق من الصلاحية (سوبر أدمن فقط)
+        // 4. المصادقة والصلاحيات
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1031,13 +1458,17 @@
                             const data = doc.data();
                             if (data.role === 'super_admin') {
                                 currentUserRole = 'super_admin';
+                                const roleBadge = document.getElementById('roleBadge');
+                                if (roleBadge) {
+                                    roleBadge.textContent = 'سوبر أدمن';
+                                    roleBadge.style.background = 'rgba(139,92,246,0.15)';
+                                    roleBadge.style.color = '#8b5cf6';
+                                }
                                 loadUsers();
+                                startOnlineTracking();
                             } else {
-                                // غير مصرح - توجيه إلى لوحة التحكم
-                                showMsg('❌ غير مصرح بالوصول إلى إدارة المستخدمين', 'error');
-                                setTimeout(function() {
-                                    window.location.href = 'dashboard.html';
-                                }, 2000);
+                                showMsg('غير مصرح بالوصول إلى إدارة المستخدمين', 'error');
+                                setTimeout(function() { window.location.href = 'dashboard.html'; }, 2000);
                             }
                         } else {
                             window.location.href = 'login.html';
@@ -1051,9 +1482,6 @@
             }
         });
 
-        // ============================================================
-        // 5. تسجيل الخروج
-        // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             auth.signOut().then(function() {
@@ -1062,11 +1490,76 @@
         });
 
         // ============================================================
+        // 5. تتبع المستخدمين النشطين
+        // ============================================================
+        function startOnlineTracking() {
+            // تحديث حالة المستخدم الحالي
+            if (currentUser) {
+                updateUserOnlineStatus(currentUser.uid, true);
+            }
+
+            // تحديث كل دقيقة
+            setInterval(function() {
+                if (currentUser) {
+                    updateUserOnlineStatus(currentUser.uid, true);
+                }
+                updateOnlineStatuses();
+            }, 60000);
+
+            // عند إغلاق الصفحة
+            window.addEventListener('beforeunload', function() {
+                if (currentUser) {
+                    updateUserOnlineStatus(currentUser.uid, false);
+                }
+            });
+
+            updateOnlineStatuses();
+        }
+
+        function updateUserOnlineStatus(uid, isOnline) {
+            db.collection('users').doc(uid).update({
+                isOnline: isOnline,
+                lastSeen: isOnline ? null : new Date(),
+                lastActive: new Date()
+            }).catch(function() {});
+        }
+
+        function updateOnlineStatuses() {
+            // تحديث حالة المستخدمين في الواجهة
+            const now = new Date();
+            const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
+
+            users.forEach(function(user) {
+                if (user.uid === currentUser?.uid) {
+                    // المستخدم الحالي دائماً نشط
+                    user.isOnline = true;
+                } else if (user.lastActive) {
+                    const lastActive = user.lastActive.toDate ? user.lastActive.toDate() : new Date(user.lastActive);
+                    user.isOnline = lastActive >= fiveMinutesAgo;
+                } else {
+                    user.isOnline = false;
+                }
+            });
+
+            // تحديث الإحصائيات
+            const onlineCount = users.filter(function(u) { return u.isOnline === true; }).length;
+            document.getElementById('statOnline').textContent = onlineCount;
+
+            // إعادة عرض المستخدمين إذا كان الفلتر الحالي هو "نشط"
+            const currentFilter = document.getElementById('statusFilter').value;
+            if (currentFilter === 'active') {
+                renderUsers(getFilteredUsers());
+            }
+        }
+
+        // ============================================================
         // 6. تحميل المستخدمين
         // ============================================================
         function loadUsers() {
-            document.getElementById('pageLoader').classList.add('show');
-            document.getElementById('pageContent').style.display = 'none';
+            const loader = document.getElementById('pageLoader');
+            const content = document.getElementById('pageContent');
+            if (loader) loader.classList.add('show');
+            if (content) content.style.display = 'none';
 
             db.collection('users')
                 .get()
@@ -1080,19 +1573,23 @@
 
                     // ترتيب حسب تاريخ الإنشاء
                     users.sort(function(a, b) {
-                        return (b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) -
-                            (a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt));
+                        const dateA = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) :
+                            new Date(0);
+                        const dateB = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) :
+                            new Date(0);
+                        return dateB - dateA;
                     });
 
-                    document.getElementById('pageLoader').classList.remove('show');
-                    document.getElementById('pageContent').style.display = 'block';
+                    if (loader) loader.classList.remove('show');
+                    if (content) content.style.display = 'block';
                     updateStats();
                     renderUsers();
+                    updateOnlineStatuses();
                 })
                 .catch(function(err) {
-                    document.getElementById('pageLoader').classList.remove('show');
-                    document.getElementById('pageContent').style.display = 'block';
-                    showMsg('❌ حدث خطأ في تحميل المستخدمين: ' + err.message, 'error');
+                    if (loader) loader.classList.remove('show');
+                    if (content) content.style.display = 'block';
+                    showMsg('حدث خطأ في تحميل المستخدمين: ' + err.message, 'error');
                 });
         }
 
@@ -1104,11 +1601,13 @@
             const active = users.filter(function(u) { return u.isActive !== false; }).length;
             const admins = users.filter(function(u) { return u.role === 'admin'; }).length;
             const superAdmins = users.filter(function(u) { return u.role === 'super_admin'; }).length;
+            const online = users.filter(function(u) { return u.isOnline === true; }).length;
 
             document.getElementById('statTotal').textContent = total;
             document.getElementById('statActive').textContent = active;
             document.getElementById('statAdmins').textContent = admins;
             document.getElementById('statSuperAdmins').textContent = superAdmins;
+            document.getElementById('statOnline').textContent = online;
         }
 
         // ============================================================
@@ -1120,7 +1619,6 @@
             const emptyState = document.getElementById('emptyState');
 
             document.getElementById('userCount').textContent = data.length;
-            document.getElementById('countDisplay').textContent = data.length + ' مستخدم';
 
             if (data.length === 0) {
                 tbody.innerHTML = '';
@@ -1134,35 +1632,48 @@
                 const isCurrentUser = user.uid === currentUser?.uid;
                 const roleLabel = user.role === 'super_admin' ? 'سوبر أدمن' : 'أدمن';
                 const roleClass = user.role === 'super_admin' ? 'super_admin' : 'admin';
-                const statusClass = user.isActive !== false ? 'active' : 'inactive';
-                const statusLabel = user.isActive !== false ? 'نشط' : 'محذوف';
 
-                const lastLogin = user.lastLogin ? (user.lastLogin.toDate ? user.lastLogin.toDate() : new Date(user
-                    .lastLogin)) : null;
+                const isOnline = user.isOnline === true;
+                const statusClass = user.isActive !== false ? (isOnline ? 'active' : 'inactive') : 'inactive';
+                const statusLabel = user.isActive !== false ? (isOnline ? '🟢 نشط' : '⚪ غير نشط') : '🔴 محذوف';
+
+                const lastSeen = user.lastSeen ? (user.lastSeen.toDate ? user.lastSeen.toDate() : new Date(user.lastSeen)) :
+                    null;
+                const lastActive = user.lastActive ? (user.lastActive.toDate ? user.lastActive.toDate() : new Date(user
+                    .lastActive)) : null;
+
+                let lastDisplay = 'لم يسجل بعد';
+                if (isOnline) {
+                    lastDisplay = '🟢 متصل الآن';
+                } else if (lastSeen) {
+                    lastDisplay = lastSeen.toLocaleString('ar-EG');
+                } else if (lastActive) {
+                    lastDisplay = lastActive.toLocaleString('ar-EG');
+                }
 
                 return `
                     <tr>
-                        <td data-label="#"><span style="color:rgba(255,255,255,0.2);font-weight:600;">${index + 1}</span></td>
-                        <td data-label="المستخدم">
+                        <td data-label="${settings.thNum}"><span style="color:var(--text-muted);font-weight:600;">${index + 1}</span></td>
+                        <td data-label="${settings.thUser}">
                             <div class="user-name">${user.displayName || '-'}</div>
                             <div class="user-email">${user.email || '-'}</div>
                         </td>
-                        <td data-label="الدور">
-                            <span class="role-badge ${roleClass}">${roleLabel}</span>
+                        <td data-label="${settings.thRole}">
+                            <span class="role-badge-table ${roleClass}">${roleLabel}</span>
                         </td>
-                        <td data-label="الحالة">
+                        <td data-label="${settings.thStatus}">
                             <span class="status-badge ${statusClass}">${statusLabel}</span>
                         </td>
-                        <td data-label="آخر دخول">
-                            ${lastLogin ? lastLogin.toLocaleString('ar-EG') : 'لم يسجل بعد'}
+                        <td data-label="${settings.thLastLogin}" style="font-size:11px;color:var(--text-muted);">
+                            ${lastDisplay}
                         </td>
-                        <td data-label="الإجراءات">
+                        <td data-label="${settings.thActions}">
                             <div class="actions">
                                 ${!isCurrentUser ? `
-                                    <button class="btn btn-primary btn-sm" onclick="editUser('${user.uid}')">تعديل</button>
+                                    <button class="btn btn-success btn-sm" onclick="editUser('${user.uid}')">تعديل</button>
                                     <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${user.uid}')">حذف</button>
                                 ` : `
-                                    <span style="font-size:10px;color:rgba(255,255,255,0.2);">أنت</span>
+                                    <span style="font-size:10px;color:var(--text-muted);">أنت</span>
                                 `}
                             </div>
                         </td>
@@ -1172,34 +1683,60 @@
         }
 
         // ============================================================
-        // 9. فلترة المستخدمين
+        // 9. الفلترة
         // ============================================================
-        function filterUsers() {
+        function getFilteredUsers() {
             const search = document.getElementById('searchInput').value.trim().toLowerCase();
-            if (!search) {
-                renderUsers(users);
-                return;
-            }
+            const roleFilter = document.getElementById('roleFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
 
-            const filtered = users.filter(function(user) {
-                return (user.displayName || '').toLowerCase().includes(search) ||
-                    (user.email || '').toLowerCase().includes(search) ||
-                    (user.role || '').toLowerCase().includes(search) ||
-                    (user.phone || '').includes(search);
+            return users.filter(function(user) {
+                let match = true;
+
+                if (search) {
+                    match = match && (
+                        (user.displayName || '').toLowerCase().includes(search) ||
+                        (user.email || '').toLowerCase().includes(search) ||
+                        (user.role || '').toLowerCase().includes(search) ||
+                        (user.phone || '').includes(search)
+                    );
+                }
+
+                if (roleFilter) {
+                    match = match && user.role === roleFilter;
+                }
+
+                if (statusFilter === 'active') {
+                    match = match && user.isActive !== false;
+                } else if (statusFilter === 'inactive') {
+                    match = match && user.isActive === false;
+                }
+
+                return match;
             });
+        }
 
-            renderUsers(filtered);
+        function filterUsers() {
+            renderUsers(getFilteredUsers());
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('roleFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            renderUsers(users);
         }
 
         // ============================================================
         // 10. فتح مودال الإضافة
         // ============================================================
         function openAddModal() {
-            document.getElementById('modalTitle').textContent = 'إضافة مستخدم جديد';
+            document.getElementById('modalTitle').textContent = settings.modalTitle;
             document.getElementById('editUid').value = '';
             document.getElementById('userForm').reset();
             document.getElementById('passwordGroup').style.display = 'block';
             document.getElementById('userPassword').required = true;
+            document.getElementById('userEmail').disabled = false;
             document.getElementById('userModal').classList.add('show');
             editingUid = null;
         }
@@ -1210,7 +1747,7 @@
         function editUser(uid) {
             const user = users.find(function(u) { return u.uid === uid; });
             if (!user) {
-                showMsg('❌ المستخدم غير موجود', 'error');
+                showMsg('المستخدم غير موجود', 'error');
                 return;
             }
 
@@ -1242,17 +1779,17 @@
             const role = document.getElementById('userRole').value;
 
             if (!email || !name || !phone) {
-                showMsg('⚠️ الرجاء ملء جميع الحقول المطلوبة', 'info');
+                showMsg('الرجاء ملء جميع الحقول المطلوبة', 'info');
                 return false;
             }
 
             if (!editUid && !password) {
-                showMsg('⚠️ الرجاء إدخال كلمة المرور للمستخدم الجديد', 'info');
+                showMsg('الرجاء إدخال كلمة المرور للمستخدم الجديد', 'info');
                 return false;
             }
 
             if (!editUid && password.length < 6) {
-                showMsg('⚠️ كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'info');
+                showMsg('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'info');
                 return false;
             }
 
@@ -1267,15 +1804,14 @@
             let savePromise;
 
             if (editUid) {
-                // تحديث مستخدم موجود
                 savePromise = db.collection('users').doc(editUid).update(userData);
             } else {
-                // إنشاء مستخدم جديد
                 userData.createdAt = new Date();
                 userData.createdBy = currentUser?.uid || 'system';
                 userData.isActive = true;
                 userData.email = email;
                 userData.lastLogin = null;
+                userData.isOnline = false;
 
                 savePromise = auth.createUserWithEmailAndPassword(email, password)
                     .then(function(cred) {
@@ -1289,9 +1825,8 @@
 
             savePromise.then(function() {
                 closeModal();
-                showMsg('✅ تم ' + (editUid ? 'تحديث' : 'إضافة') + ' المستخدم بنجاح', 'success');
+                showMsg('تم ' + (editUid ? 'تحديث' : 'إضافة') + ' المستخدم بنجاح', 'success');
 
-                // تسجيل النشاط
                 db.collection('activities').add({
                     userId: currentUser?.uid || 'system',
                     userEmail: currentUser?.email || 'system',
@@ -1312,9 +1847,9 @@
 
                 loadUsers();
             }).catch(function(err) {
-                let msg = '❌ حدث خطأ: ' + err.message;
+                let msg = 'حدث خطأ: ' + err.message;
                 if (err.code === 'auth/email-already-in-use') {
-                    msg = '❌ البريد الإلكتروني مستخدم بالفعل';
+                    msg = 'البريد الإلكتروني مستخدم بالفعل';
                 }
                 showMsg(msg, 'error');
             });
@@ -1328,7 +1863,7 @@
         function openDeleteModal(uid) {
             const user = users.find(function(u) { return u.uid === uid; });
             if (!user) {
-                showMsg('❌ المستخدم غير موجود', 'error');
+                showMsg('المستخدم غير موجود', 'error');
                 return;
             }
 
@@ -1347,29 +1882,30 @@
         function confirmDelete() {
             const reason = document.getElementById('deleteReason').value.trim();
             if (!reason) {
-                showMsg('⚠️ الرجاء إدخال سبب الحذف', 'info');
+                showMsg('الرجاء إدخال سبب الحذف', 'info');
                 return;
             }
 
             if (!deleteTargetUid) {
-                showMsg('❌ لم يتم تحديد المستخدم', 'error');
+                showMsg('لم يتم تحديد المستخدم', 'error');
                 return;
             }
 
             const user = users.find(function(u) { return u.uid === deleteTargetUid; });
             if (!user) {
-                showMsg('❌ المستخدم غير موجود', 'error');
+                showMsg('المستخدم غير موجود', 'error');
                 return;
             }
 
             db.collection('users').doc(deleteTargetUid).update({
                 isActive: false,
+                isOnline: false,
                 deletedAt: new Date(),
                 deletedBy: currentUser?.uid || 'system',
                 deletionReason: reason
             }).then(function() {
                 closeDeleteModal();
-                showMsg('✅ تم حذف المستخدم بنجاح', 'success');
+                showMsg('تم حذف المستخدم بنجاح', 'success');
 
                 db.collection('activities').add({
                     userId: currentUser?.uid || 'system',
@@ -1390,7 +1926,7 @@
 
                 loadUsers();
             }).catch(function(err) {
-                showMsg('❌ حدث خطأ: ' + err.message, 'error');
+                showMsg('حدث خطأ: ' + err.message, 'error');
             });
         }
 
@@ -1417,6 +1953,7 @@
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
+            if (!el) return;
             el.textContent = msg;
             el.className = 'msg show ' + type;
             setTimeout(function() { el.className = 'msg'; }, 4000);
@@ -1427,9 +1964,12 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            console.log('✅ إدارة المستخدمين - نقابة تكنولوجيا المعلومات');
+            console.log('✅ إدارة المستخدمين - كل حرف من الإعدادات');
+            console.log('👤 النقيب العام: ' + settings.presidentName);
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
             console.log('🔒 صلاحية السوبر أدمن فقط');
-            console.log('🔐 نظام أمني متطور');
+            console.log('🟢 تتبع المستخدمين النشطين في الوقت الفعلي');
+            console.log('📊 إحصائيات دقيقة عن المستخدمين');
         });
     </script>
 
