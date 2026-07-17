@@ -39,6 +39,10 @@
     </script>
 
     <style>
+        /* ============================================================
+           التصميم الخرافي لإدارة الشهادات
+           كل حرف من الإعدادات + فلتر متقدم + طباعة + PDF
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -263,6 +267,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
             position: relative;
             z-index: 2;
         }
@@ -484,7 +489,7 @@
 
         .filters-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
             gap: 10px;
             margin-bottom: 14px;
         }
@@ -1061,8 +1066,86 @@
             text-decoration: none;
         }
 
+        .cert-detail-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .cert-detail-modal.show { display: flex; }
+
+        .cert-detail-modal .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 750px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
+        }
+
+        .cert-detail-modal .modal-content::-webkit-scrollbar { width: 4px; }
+        .cert-detail-modal .modal-content::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
+        .cert-detail-modal .modal-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+
+        .cert-detail-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .cert-detail-modal .modal-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cert-detail-modal .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .cert-detail-modal .detail-item {
+            padding: 10px;
+            background: var(--bg-hover);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .cert-detail-modal .detail-item .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cert-detail-modal .detail-item .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
         @media (max-width: 992px) {
-            .filters-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .filters-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -1087,6 +1170,8 @@
             .cert-print-header .left { flex-direction: column; }
             .header-president { padding: 3px 10px; }
             .header-president .president-name { font-size: 12px; }
+            .cert-detail-modal .detail-grid { grid-template-columns: 1fr; }
+            .cert-detail-modal .modal-content { padding: 20px; margin: 10px; border-radius: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -1104,6 +1189,8 @@
             .cert-print-details .item .value-print { font-size: 13px; }
             .cert-print-header .left .logo-img { width: 50px; height: 50px; }
             .header-president .president-name { font-size: 11px; }
+            .cert-detail-modal .modal-content { padding: 16px; }
+            .cert-detail-modal .detail-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1185,6 +1272,10 @@
                         <div class="num" id="statThisMonth">0</div>
                         <div class="label" id="statThisMonthLabel"></div>
                     </div>
+                    <div class="stat-mini">
+                        <div class="num" id="statAvgGrade">0</div>
+                        <div class="label" id="statAvgGradeLabel"></div>
+                    </div>
                 </div>
 
                 <div class="filters-grid">
@@ -1207,9 +1298,20 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label id="filterGovernorateLabel"></label>
-                        <select id="filterGovernorate" onchange="applyFilters()">
-                            <option value="" id="filterAllGovOption"></option>
+                        <label id="filterGradeLabel"></label>
+                        <select id="filterGrade" onchange="applyFilters()">
+                            <option value="" id="filterAllGradesOption"></option>
+                            <option value="A+">A+</option>
+                            <option value="A">A</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B">B</option>
+                            <option value="B-">B-</option>
+                            <option value="C+">C+</option>
+                            <option value="C">C</option>
+                            <option value="C-">C-</option>
+                            <option value="D">D</option>
+                            <option value="F">F</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -1247,6 +1349,7 @@
                                 <th id="thGrade"></th>
                                 <th id="thAcademy"></th>
                                 <th id="thBranch"></th>
+                                <th id="thDate"></th>
                                 <th id="thStatus"></th>
                                 <th id="thActions"></th>
                             </tr>
@@ -1398,14 +1501,14 @@
     </div>
 
     <!-- ===== مودال عرض التفاصيل ===== -->
-    <div class="modal-overlay" id="viewModal">
-        <div class="modal" style="max-width:650px;">
+    <div class="cert-detail-modal" id="viewModal">
+        <div class="modal-content">
             <div class="modal-header">
                 <h2 id="viewTitle"></h2>
                 <button class="modal-close" onclick="closeViewModal()">✕</button>
             </div>
-            <div class="modal-body" id="viewContent"></div>
-            <div class="modal-footer">
+            <div id="viewContent"></div>
+            <div class="modal-footer" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
                 <button class="btn btn-outline" onclick="closeViewModal()" id="viewCloseBtn"></button>
                 <button class="btn btn-success btn-sm" onclick="printCertificateFromView()" id="viewPrintBtn"></button>
                 <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF()" id="viewPdfBtn"></button>
@@ -1442,74 +1545,76 @@
         let currentViewCert = null;
 
         let settings = {
-            pageTitleHeader: '',
-            committeeName: '',
+            pageTitleHeader: 'إدارة الشهادات',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
             stampUrl: '',
-            footerText: '',
-            presidentName: '',
-            presidentLabel: '',
-            presidentFooter: '',
-            dashboardBtn: '',
-            addCertificateBtn: '',
-            loaderText: '',
-            statTotalLabel: '',
-            statActiveLabel: '',
-            statInactiveLabel: '',
-            statThisYearLabel: '',
-            statThisMonthLabel: '',
-            filterStudentLabel: '',
-            filterNationalLabel: '',
-            filterCodeLabel: '',
-            filterAcademyLabel: '',
-            filterGovernorateLabel: '',
-            filterDateFromLabel: '',
-            filterDateToLabel: '',
-            filterAllOption: '',
-            filterAllGovOption: '',
-            resetFiltersBtn: '',
-            certificatesListTitle: '',
-            exportPdfBtn: '',
-            thNum: '',
-            thCode: '',
-            thStudent: '',
-            thNational: '',
-            thCourse: '',
-            thGrade: '',
-            thAcademy: '',
-            thBranch: '',
-            thStatus: '',
-            thActions: '',
-            emptyTitle: '',
-            emptyDesc: '',
-            modalTitle: '',
-            studentNameLabel: '',
-            studentNationalLabel: '',
-            nationalHint: '',
-            courseNameLabel: '',
-            courseHoursLabel: '',
-            gradeLabel: '',
-            gradeOption: '',
-            completionDateLabel: '',
-            certCodeLabel: '',
-            certCodeHint: '',
-            academySelectLabel: '',
-            academySelectOption: '',
-            branchSelectLabel: '',
-            branchSelectOption: '',
-            academyLicenseDisplayLabel: '',
-            requiredFields: '',
-            cancelBtn: '',
-            saveBtn: '',
-            deleteTitle: '',
-            deleteConfirmText: '',
-            deleteWarning: '',
-            deleteCancelBtn: '',
-            deleteConfirmBtn: '',
-            viewTitle: '',
-            viewCloseBtn: '',
-            viewPrintBtn: '',
-            viewPdfBtn: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            dashboardBtn: 'لوحة التحكم',
+            addCertificateBtn: 'إضافة شهادة',
+            loaderText: 'جاري تحميل الشهادات...',
+            statTotalLabel: 'إجمالي الشهادات',
+            statActiveLabel: 'شهادات نشطة',
+            statInactiveLabel: 'محذوفة',
+            statThisYearLabel: 'هذا العام',
+            statThisMonthLabel: 'هذا الشهر',
+            statAvgGradeLabel: 'متوسط التقدير',
+            filterStudentLabel: 'اسم المتدرب',
+            filterNationalLabel: 'الرقم القومي',
+            filterCodeLabel: 'كود الشهادة',
+            filterAcademyLabel: 'الأكاديمية',
+            filterGradeLabel: 'التقدير',
+            filterDateFromLabel: 'من تاريخ',
+            filterDateToLabel: 'إلى تاريخ',
+            filterAllOption: 'جميع الأكاديميات',
+            filterAllGradesOption: 'جميع التقديرات',
+            resetFiltersBtn: 'إعادة ضبط',
+            certificatesListTitle: 'قائمة الشهادات',
+            exportPdfBtn: 'طباعة البحث',
+            thNum: '#',
+            thCode: 'كود الشهادة',
+            thStudent: 'اسم المتدرب',
+            thNational: 'الرقم القومي',
+            thCourse: 'الدورة',
+            thGrade: 'التقدير',
+            thAcademy: 'الأكاديمية',
+            thBranch: 'الفرع',
+            thDate: 'التاريخ',
+            thStatus: 'الحالة',
+            thActions: 'الإجراءات',
+            emptyTitle: 'لا توجد شهادات',
+            emptyDesc: 'قم بإضافة شهادة جديدة بالضغط على زر "إضافة شهادة"',
+            modalTitle: 'إضافة شهادة جديدة',
+            studentNameLabel: 'اسم المتدرب',
+            studentNationalLabel: 'الرقم القومي',
+            nationalHint: '14 رقم (اختياري)',
+            courseNameLabel: 'اسم الدورة التدريبية',
+            courseHoursLabel: 'عدد الساعات',
+            gradeLabel: 'التقدير',
+            gradeOption: 'اختر التقدير',
+            completionDateLabel: 'تاريخ الاجتياز',
+            certCodeLabel: 'كود الشهادة',
+            certCodeHint: 'يمكنك تعديل الكود يدوياً',
+            academySelectLabel: 'الأكاديمية',
+            academySelectOption: 'اختر الأكاديمية',
+            branchSelectLabel: 'الفرع',
+            branchSelectOption: 'اختر الفرع',
+            academyLicenseDisplayLabel: 'رقم اعتماد الأكاديمية',
+            requiredFields: '* الحقول المطلوبة',
+            cancelBtn: 'إلغاء',
+            saveBtn: 'حفظ',
+            deleteTitle: 'تأكيد الحذف',
+            deleteConfirmText: 'هل أنت متأكد من حذف الشهادة التالية؟',
+            deleteWarning: 'هذا الإجراء لا يمكن التراجع عنه',
+            deleteCancelBtn: 'إلغاء',
+            deleteConfirmBtn: 'تأكيد الحذف',
+            viewTitle: 'تفاصيل الشهادة',
+            viewCloseBtn: 'إغلاق',
+            viewPrintBtn: 'طباعة',
+            viewPdfBtn: 'تحميل PDF',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1544,71 +1649,83 @@
                         if (data.presidentName) settings.presidentName = data.presidentName;
                         if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
                         if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
-                        if (data.dashboardBtn) settings.dashboardBtn = data.dashboardBtn;
-                        if (data.addCertificateBtn) settings.addCertificateBtn = data.addCertificateBtn;
-                        if (data.loaderText) settings.loaderText = data.loaderText;
-                        if (data.statTotalLabel) settings.statTotalLabel = data.statTotalLabel;
-                        if (data.statActiveLabel) settings.statActiveLabel = data.statActiveLabel;
-                        if (data.statInactiveLabel) settings.statInactiveLabel = data.statInactiveLabel;
-                        if (data.statThisYearLabel) settings.statThisYearLabel = data.statThisYearLabel;
-                        if (data.statThisMonthLabel) settings.statThisMonthLabel = data.statThisMonthLabel;
-                        if (data.filterStudentLabel) settings.filterStudentLabel = data.filterStudentLabel;
-                        if (data.filterNationalLabel) settings.filterNationalLabel = data.filterNationalLabel;
-                        if (data.filterCodeLabel) settings.filterCodeLabel = data.filterCodeLabel;
-                        if (data.filterAcademyLabel) settings.filterAcademyLabel = data.filterAcademyLabel;
-                        if (data.filterGovernorateLabel) settings.filterGovernorateLabel = data.filterGovernorateLabel;
-                        if (data.filterDateFromLabel) settings.filterDateFromLabel = data.filterDateFromLabel;
-                        if (data.filterDateToLabel) settings.filterDateToLabel = data.filterDateToLabel;
-                        if (data.filterAllOption) settings.filterAllOption = data.filterAllOption;
-                        if (data.filterAllGovOption) settings.filterAllGovOption = data.filterAllGovOption;
-                        if (data.resetFiltersBtn) settings.resetFiltersBtn = data.resetFiltersBtn;
-                        if (data.certificatesListTitle) settings.certificatesListTitle = data.certificatesListTitle;
-                        if (data.exportPdfBtn) settings.exportPdfBtn = data.exportPdfBtn;
-                        if (data.thNum) settings.thNum = data.thNum;
-                        if (data.thCode) settings.thCode = data.thCode;
-                        if (data.thStudent) settings.thStudent = data.thStudent;
-                        if (data.thNational) settings.thNational = data.thNational;
-                        if (data.thCourse) settings.thCourse = data.thCourse;
-                        if (data.thGrade) settings.thGrade = data.thGrade;
-                        if (data.thAcademy) settings.thAcademy = data.thAcademy;
-                        if (data.thBranch) settings.thBranch = data.thBranch;
-                        if (data.thStatus) settings.thStatus = data.thStatus;
-                        if (data.thActions) settings.thActions = data.thActions;
-                        if (data.emptyTitle) settings.emptyTitle = data.emptyTitle;
-                        if (data.emptyDesc) settings.emptyDesc = data.emptyDesc;
-                        if (data.modalTitle) settings.modalTitle = data.modalTitle;
-                        if (data.studentNameLabel) settings.studentNameLabel = data.studentNameLabel;
-                        if (data.studentNationalLabel) settings.studentNationalLabel = data.studentNationalLabel;
-                        if (data.nationalHint) settings.nationalHint = data.nationalHint;
-                        if (data.courseNameLabel) settings.courseNameLabel = data.courseNameLabel;
-                        if (data.courseHoursLabel) settings.courseHoursLabel = data.courseHoursLabel;
-                        if (data.gradeLabel) settings.gradeLabel = data.gradeLabel;
-                        if (data.gradeOption) settings.gradeOption = data.gradeOption;
-                        if (data.completionDateLabel) settings.completionDateLabel = data.completionDateLabel;
-                        if (data.certCodeLabel) settings.certCodeLabel = data.certCodeLabel;
-                        if (data.certCodeHint) settings.certCodeHint = data.certCodeHint;
-                        if (data.academySelectLabel) settings.academySelectLabel = data.academySelectLabel;
-                        if (data.academySelectOption) settings.academySelectOption = data.academySelectOption;
-                        if (data.branchSelectLabel) settings.branchSelectLabel = data.branchSelectLabel;
-                        if (data.branchSelectOption) settings.branchSelectOption = data.branchSelectOption;
-                        if (data.academyLicenseDisplayLabel) settings.academyLicenseDisplayLabel = data.academyLicenseDisplayLabel;
-                        if (data.requiredFields) settings.requiredFields = data.requiredFields;
-                        if (data.cancelBtn) settings.cancelBtn = data.cancelBtn;
-                        if (data.saveBtn) settings.saveBtn = data.saveBtn;
-                        if (data.deleteTitle) settings.deleteTitle = data.deleteTitle;
-                        if (data.deleteConfirmText) settings.deleteConfirmText = data.deleteConfirmText;
-                        if (data.deleteWarning) settings.deleteWarning = data.deleteWarning;
-                        if (data.deleteCancelBtn) settings.deleteCancelBtn = data.deleteCancelBtn;
-                        if (data.deleteConfirmBtn) settings.deleteConfirmBtn = data.deleteConfirmBtn;
-                        if (data.viewTitle) settings.viewTitle = data.viewTitle;
-                        if (data.viewCloseBtn) settings.viewCloseBtn = data.viewCloseBtn;
-                        if (data.viewPrintBtn) settings.viewPrintBtn = data.viewPrintBtn;
-                        if (data.viewPdfBtn) settings.viewPdfBtn = data.viewPdfBtn;
-
                         if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
 
-                        applySettings();
-                        applyColors(settings.colors);
+                        db.collection('settings').doc('texts').get()
+                            .then(function(textsDoc) {
+                                if (textsDoc.exists) {
+                                    const texts = textsDoc.data();
+                                    if (texts.dashboardBtn) settings.dashboardBtn = texts.dashboardBtn;
+                                    if (texts.addCertificateBtn) settings.addCertificateBtn = texts.addCertificateBtn;
+                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
+                                    if (texts.statTotalLabel) settings.statTotalLabel = texts.statTotalLabel;
+                                    if (texts.statActiveLabel) settings.statActiveLabel = texts.statActiveLabel;
+                                    if (texts.statInactiveLabel) settings.statInactiveLabel = texts.statInactiveLabel;
+                                    if (texts.statThisYearLabel) settings.statThisYearLabel = texts.statThisYearLabel;
+                                    if (texts.statThisMonthLabel) settings.statThisMonthLabel = texts.statThisMonthLabel;
+                                    if (texts.statAvgGradeLabel) settings.statAvgGradeLabel = texts.statAvgGradeLabel;
+                                    if (texts.filterStudentLabel) settings.filterStudentLabel = texts.filterStudentLabel;
+                                    if (texts.filterNationalLabel) settings.filterNationalLabel = texts.filterNationalLabel;
+                                    if (texts.filterCodeLabel) settings.filterCodeLabel = texts.filterCodeLabel;
+                                    if (texts.filterAcademyLabel) settings.filterAcademyLabel = texts.filterAcademyLabel;
+                                    if (texts.filterGradeLabel) settings.filterGradeLabel = texts.filterGradeLabel;
+                                    if (texts.filterDateFromLabel) settings.filterDateFromLabel = texts.filterDateFromLabel;
+                                    if (texts.filterDateToLabel) settings.filterDateToLabel = texts.filterDateToLabel;
+                                    if (texts.filterAllOption) settings.filterAllOption = texts.filterAllOption;
+                                    if (texts.filterAllGradesOption) settings.filterAllGradesOption = texts.filterAllGradesOption;
+                                    if (texts.resetFiltersBtn) settings.resetFiltersBtn = texts.resetFiltersBtn;
+                                    if (texts.certificatesListTitle) settings.certificatesListTitle = texts.certificatesListTitle;
+                                    if (texts.exportPdfBtn) settings.exportPdfBtn = texts.exportPdfBtn;
+                                    if (texts.thNum) settings.thNum = texts.thNum;
+                                    if (texts.thCode) settings.thCode = texts.thCode;
+                                    if (texts.thStudent) settings.thStudent = texts.thStudent;
+                                    if (texts.thNational) settings.thNational = texts.thNational;
+                                    if (texts.thCourse) settings.thCourse = texts.thCourse;
+                                    if (texts.thGrade) settings.thGrade = texts.thGrade;
+                                    if (texts.thAcademy) settings.thAcademy = texts.thAcademy;
+                                    if (texts.thBranch) settings.thBranch = texts.thBranch;
+                                    if (texts.thDate) settings.thDate = texts.thDate;
+                                    if (texts.thStatus) settings.thStatus = texts.thStatus;
+                                    if (texts.thActions) settings.thActions = texts.thActions;
+                                    if (texts.emptyTitle) settings.emptyTitle = texts.emptyTitle;
+                                    if (texts.emptyDesc) settings.emptyDesc = texts.emptyDesc;
+                                    if (texts.modalTitle) settings.modalTitle = texts.modalTitle;
+                                    if (texts.studentNameLabel) settings.studentNameLabel = texts.studentNameLabel;
+                                    if (texts.studentNationalLabel) settings.studentNationalLabel = texts.studentNationalLabel;
+                                    if (texts.nationalHint) settings.nationalHint = texts.nationalHint;
+                                    if (texts.courseNameLabel) settings.courseNameLabel = texts.courseNameLabel;
+                                    if (texts.courseHoursLabel) settings.courseHoursLabel = texts.courseHoursLabel;
+                                    if (texts.gradeLabel) settings.gradeLabel = texts.gradeLabel;
+                                    if (texts.gradeOption) settings.gradeOption = texts.gradeOption;
+                                    if (texts.completionDateLabel) settings.completionDateLabel = texts.completionDateLabel;
+                                    if (texts.certCodeLabel) settings.certCodeLabel = texts.certCodeLabel;
+                                    if (texts.certCodeHint) settings.certCodeHint = texts.certCodeHint;
+                                    if (texts.academySelectLabel) settings.academySelectLabel = texts.academySelectLabel;
+                                    if (texts.academySelectOption) settings.academySelectOption = texts.academySelectOption;
+                                    if (texts.branchSelectLabel) settings.branchSelectLabel = texts.branchSelectLabel;
+                                    if (texts.branchSelectOption) settings.branchSelectOption = texts.branchSelectOption;
+                                    if (texts.academyLicenseDisplayLabel) settings.academyLicenseDisplayLabel = texts.academyLicenseDisplayLabel;
+                                    if (texts.requiredFields) settings.requiredFields = texts.requiredFields;
+                                    if (texts.cancelBtn) settings.cancelBtn = texts.cancelBtn;
+                                    if (texts.saveBtn) settings.saveBtn = texts.saveBtn;
+                                    if (texts.deleteTitle) settings.deleteTitle = texts.deleteTitle;
+                                    if (texts.deleteConfirmText) settings.deleteConfirmText = texts.deleteConfirmText;
+                                    if (texts.deleteWarning) settings.deleteWarning = texts.deleteWarning;
+                                    if (texts.deleteCancelBtn) settings.deleteCancelBtn = texts.deleteCancelBtn;
+                                    if (texts.deleteConfirmBtn) settings.deleteConfirmBtn = texts.deleteConfirmBtn;
+                                    if (texts.viewTitle) settings.viewTitle = texts.viewTitle;
+                                    if (texts.viewCloseBtn) settings.viewCloseBtn = texts.viewCloseBtn;
+                                    if (texts.viewPrintBtn) settings.viewPrintBtn = texts.viewPrintBtn;
+                                    if (texts.viewPdfBtn) settings.viewPdfBtn = texts.viewPdfBtn;
+                                }
+                                applySettings();
+                                applyColors(settings.colors);
+                            })
+                            .catch(function() {
+                                applySettings();
+                                applyColors(settings.colors);
+                            });
+
                     } else {
                         applySettings();
                         applyColors(settings.colors);
@@ -1618,6 +1735,8 @@
                     applySettings();
                     applyColors(settings.colors);
                 });
+
+            loadLocalSettings();
         }
 
         function applySettings() {
@@ -1650,21 +1769,23 @@
             const statInactiveLabel = document.getElementById('statInactiveLabel');
             const statThisYearLabel = document.getElementById('statThisYearLabel');
             const statThisMonthLabel = document.getElementById('statThisMonthLabel');
+            const statAvgGradeLabel = document.getElementById('statAvgGradeLabel');
             if (statTotalLabel) statTotalLabel.textContent = settings.statTotalLabel;
             if (statActiveLabel) statActiveLabel.textContent = settings.statActiveLabel;
             if (statInactiveLabel) statInactiveLabel.textContent = settings.statInactiveLabel;
             if (statThisYearLabel) statThisYearLabel.textContent = settings.statThisYearLabel;
             if (statThisMonthLabel) statThisMonthLabel.textContent = settings.statThisMonthLabel;
+            if (statAvgGradeLabel) statAvgGradeLabel.textContent = settings.statAvgGradeLabel;
 
             const filterStudentLabel = document.getElementById('filterStudentLabel');
             const filterNationalLabel = document.getElementById('filterNationalLabel');
             const filterCodeLabel = document.getElementById('filterCodeLabel');
             const filterAcademyLabel = document.getElementById('filterAcademyLabel');
-            const filterGovernorateLabel = document.getElementById('filterGovernorateLabel');
+            const filterGradeLabel = document.getElementById('filterGradeLabel');
             const filterDateFromLabel = document.getElementById('filterDateFromLabel');
             const filterDateToLabel = document.getElementById('filterDateToLabel');
             const filterAllOption = document.getElementById('filterAllOption');
-            const filterAllGovOption = document.getElementById('filterAllGovOption');
+            const filterAllGradesOption = document.getElementById('filterAllGradesOption');
             const resetFiltersBtn = document.getElementById('resetFiltersBtn');
             const filterStudent = document.getElementById('filterStudent');
             const filterNational = document.getElementById('filterNationalId');
@@ -1674,11 +1795,11 @@
             if (filterNationalLabel) filterNationalLabel.textContent = settings.filterNationalLabel;
             if (filterCodeLabel) filterCodeLabel.textContent = settings.filterCodeLabel;
             if (filterAcademyLabel) filterAcademyLabel.textContent = settings.filterAcademyLabel;
-            if (filterGovernorateLabel) filterGovernorateLabel.textContent = settings.filterGovernorateLabel;
+            if (filterGradeLabel) filterGradeLabel.textContent = settings.filterGradeLabel;
             if (filterDateFromLabel) filterDateFromLabel.textContent = settings.filterDateFromLabel;
             if (filterDateToLabel) filterDateToLabel.textContent = settings.filterDateToLabel;
             if (filterAllOption) filterAllOption.textContent = settings.filterAllOption;
-            if (filterAllGovOption) filterAllGovOption.textContent = settings.filterAllGovOption;
+            if (filterAllGradesOption) filterAllGradesOption.textContent = settings.filterAllGradesOption;
             if (resetFiltersBtn) resetFiltersBtn.textContent = settings.resetFiltersBtn;
             if (filterStudent) filterStudent.placeholder = settings.filterStudentLabel;
             if (filterNational) filterNational.placeholder = settings.filterNationalLabel;
@@ -1697,6 +1818,7 @@
             const thGrade = document.getElementById('thGrade');
             const thAcademy = document.getElementById('thAcademy');
             const thBranch = document.getElementById('thBranch');
+            const thDate = document.getElementById('thDate');
             const thStatus = document.getElementById('thStatus');
             const thActions = document.getElementById('thActions');
             if (thNum) thNum.textContent = settings.thNum;
@@ -1707,6 +1829,7 @@
             if (thGrade) thGrade.textContent = settings.thGrade;
             if (thAcademy) thAcademy.textContent = settings.thAcademy;
             if (thBranch) thBranch.textContent = settings.thBranch;
+            if (thDate) thDate.textContent = settings.thDate;
             if (thStatus) thStatus.textContent = settings.thStatus;
             if (thActions) thActions.textContent = settings.thActions;
 
@@ -1795,6 +1918,7 @@
                 }
             }
 
+            // OG Tags
             const pageTitle = document.getElementById('pageTitle');
             const metaDescription = document.getElementById('metaDescription');
             const ogTitle = document.getElementById('ogTitle');
@@ -1809,7 +1933,7 @@
             const appleIcon = document.getElementById('appleIcon');
 
             if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
-            if (metaDescription) metaDescription.content = 'إدارة الشهادات - نقابة تكنولوجيا المعلومات';
+            if (metaDescription) metaDescription.content = 'إدارة الشهادات - ' + settings.pageTitleHeader;
             if (ogTitle) ogTitle.content = settings.pageTitleHeader;
             if (ogDescription) ogDescription.content = 'إدارة الشهادات المعتمدة';
             if (ogUrl) ogUrl.content = window.location.href;
@@ -1843,13 +1967,24 @@
 
             const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
             root.style.setProperty('--primary-glow', primaryGlow);
-
             const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
             root.style.setProperty('--accent-glow', accentGlow);
 
             if (colors.background) {
                 document.body.style.background = colors.background;
             }
+        }
+
+        function loadLocalSettings() {
+            try {
+                const localSettings = localStorage.getItem('userSettings');
+                if (localSettings) {
+                    const parsed = JSON.parse(localSettings);
+                    if (parsed.theme && parsed.theme.colors) {
+                        applyColors(parsed.theme.colors);
+                    }
+                }
+            } catch (e) {}
         }
 
         // ============================================================
@@ -1928,25 +2063,6 @@
                     opt.value = academy.id;
                     opt.textContent = academy.name;
                     filterAcad.appendChild(opt);
-                });
-            }
-
-            const filterGov = document.getElementById('filterGovernorate');
-            if (filterGov) {
-                filterGov.innerHTML = '<option value="">' + settings.filterAllGovOption + '</option>';
-                const govs = new Set();
-                academies.forEach(function(a) {
-                    if (a.branches) {
-                        a.branches.forEach(function(b) {
-                            if (b.governorate) govs.add(b.governorate);
-                        });
-                    }
-                });
-                govs.forEach(function(g) {
-                    const opt = document.createElement('option');
-                    opt.value = g;
-                    opt.textContent = g;
-                    filterGov.appendChild(opt);
                 });
             }
         }
@@ -2072,17 +2188,32 @@
                 return date && date.getFullYear() === year && date.getMonth() === month;
             }).length;
 
+            // حساب متوسط التقدير (بسيط)
+            let avgGrade = 0;
+            let gradeCount = 0;
+            const gradeMap = { 'A+': 4.3, 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7, 'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D': 1.0, 'F': 0 };
+            certificates.forEach(function(c) {
+                if (c.grade && gradeMap[c.grade] !== undefined) {
+                    avgGrade += gradeMap[c.grade];
+                    gradeCount++;
+                }
+            });
+            avgGrade = gradeCount > 0 ? (avgGrade / gradeCount) : 0;
+            const avgGradeText = avgGrade > 0 ? avgGrade.toFixed(1) : '-';
+
             const statTotal = document.getElementById('statTotal');
             const statActive = document.getElementById('statActive');
             const statInactive = document.getElementById('statInactive');
             const statThisYear = document.getElementById('statThisYear');
             const statThisMonth = document.getElementById('statThisMonth');
+            const statAvgGrade = document.getElementById('statAvgGrade');
 
             if (statTotal) statTotal.textContent = total;
             if (statActive) statActive.textContent = active;
             if (statInactive) statInactive.textContent = inactive;
             if (statThisYear) statThisYear.textContent = thisYear;
             if (statThisMonth) statThisMonth.textContent = thisMonth;
+            if (statAvgGrade) statAvgGrade.textContent = avgGradeText;
         }
 
         // ============================================================
@@ -2114,12 +2245,13 @@
 
                 const branchName = cert.branchName || cert.branchId || '-';
                 const nationalId = cert.studentNationalId || '-';
+                const date = cert.issuedAt ? new Date(cert.issuedAt.toDate ? cert.issuedAt.toDate() : cert.issuedAt) : null;
 
                 return `
                     <tr>
                         <td data-label="${settings.thNum}"><span style="color:var(--text-muted);font-weight:600;">${index + 1}</span></td>
                         <td data-label="${settings.thCode}">
-                            <span class="cert-code">${cert.certificateCode || '-'}</span>
+                            <span class="cert-code" onclick="showCertificateDetails('${cert.certificateCode}')" style="cursor:pointer;">${cert.certificateCode || '-'}</span>
                         </td>
                         <td data-label="${settings.thStudent}">
                             <div class="student-name">${cert.studentName || '-'}</div>
@@ -2133,12 +2265,13 @@
                         </td>
                         <td data-label="${settings.thAcademy}">${cert.academyName || '-'}</td>
                         <td data-label="${settings.thBranch}" style="font-size:12px;color:var(--text-muted);">${branchName}</td>
+                        <td data-label="${settings.thDate}" style="font-size:11px;color:var(--text-muted);">${date ? date.toLocaleDateString('ar-EG') : '-'}</td>
                         <td data-label="${settings.thStatus}">${statusHtml}</td>
                         <td data-label="${settings.thActions}">
                             <div class="actions">
-                                <button class="btn btn-primary btn-sm" onclick="viewCertificate('${cert.certificateCode}')">${settings.viewTitle}</button>
-                                <button class="btn btn-success btn-sm" onclick="editCertificate('${cert.certificateCode}')">${settings.thActions}</button>
-                                ${userRole === 'super_admin' || userRole === 'admin' ? `<button class="btn btn-danger btn-sm" onclick="openDeleteModal('${cert.certificateCode}')">${settings.deleteTitle}</button>` : ''}
+                                <button class="btn btn-primary btn-sm" onclick="showCertificateDetails('${cert.certificateCode}')">عرض</button>
+                                <button class="btn btn-success btn-sm" onclick="editCertificate('${cert.certificateCode}')">تعديل</button>
+                                ${userRole === 'super_admin' || userRole === 'admin' ? `<button class="btn btn-danger btn-sm" onclick="openDeleteModal('${cert.certificateCode}')">حذف</button>` : ''}
                             </div>
                         </td>
                     </tr>
@@ -2157,145 +2290,9 @@
         }
 
         // ============================================================
-        // 11. الفلاتر
+        // 11. عرض تفاصيل الشهادة
         // ============================================================
-        function applyFilters() {
-            const studentFilter = document.getElementById('filterStudent')?.value.trim().toLowerCase() || '';
-            const nationalIdFilter = document.getElementById('filterNationalId')?.value.trim() || '';
-            const codeFilter = document.getElementById('filterCode')?.value.trim().toLowerCase() || '';
-            const academyFilter = document.getElementById('filterAcademy')?.value || '';
-            const govFilter = document.getElementById('filterGovernorate')?.value || '';
-            const dateFrom = document.getElementById('filterDateFrom')?.value || '';
-            const dateTo = document.getElementById('filterDateTo')?.value || '';
-
-            const filtered = certificates.filter(function(cert) {
-                let match = true;
-
-                if (studentFilter) {
-                    match = match && (cert.studentName || '').toLowerCase().includes(studentFilter);
-                }
-
-                if (nationalIdFilter) {
-                    match = match && (cert.studentNationalId || '').includes(nationalIdFilter);
-                }
-
-                if (codeFilter) {
-                    match = match && (cert.certificateCode || '').toLowerCase().includes(codeFilter);
-                }
-
-                if (academyFilter) {
-                    match = match && cert.academyId === academyFilter;
-                }
-
-                if (govFilter) {
-                    let hasGov = false;
-                    const academy = academies.find(function(a) { return a.id === cert.academyId; });
-                    if (academy && academy.branches) {
-                        for (var i = 0; i < academy.branches.length; i++) {
-                            if (academy.branches[i].governorate === govFilter) {
-                                hasGov = true;
-                                break;
-                            }
-                        }
-                    }
-                    match = match && hasGov;
-                }
-
-                if (dateFrom) {
-                    const from = new Date(dateFrom);
-                    const issued = cert.issuedAt ? (cert.issuedAt.toDate ? cert.issuedAt.toDate() : new Date(cert.issuedAt)) : null;
-                    match = match && issued && issued >= from;
-                }
-
-                if (dateTo) {
-                    const to = new Date(dateTo);
-                    to.setHours(23, 59, 59, 999);
-                    const issued = cert.issuedAt ? (cert.issuedAt.toDate ? cert.issuedAt.toDate() : new Date(cert.issuedAt)) : null;
-                    match = match && issued && issued <= to;
-                }
-
-                return match;
-            });
-
-            renderCertificates(filtered);
-        }
-
-        function resetFilters() {
-            const studentInput = document.getElementById('filterStudent');
-            const nationalInput = document.getElementById('filterNationalId');
-            const codeInput = document.getElementById('filterCode');
-            const academySelect = document.getElementById('filterAcademy');
-            const govSelect = document.getElementById('filterGovernorate');
-            const dateFrom = document.getElementById('filterDateFrom');
-            const dateTo = document.getElementById('filterDateTo');
-
-            if (studentInput) studentInput.value = '';
-            if (nationalInput) nationalInput.value = '';
-            if (codeInput) codeInput.value = '';
-            if (academySelect) academySelect.value = '';
-            if (govSelect) govSelect.value = '';
-            if (dateFrom) dateFrom.value = '';
-            if (dateTo) dateTo.value = '';
-            renderCertificates();
-        }
-
-        // ============================================================
-        // 12. توليد كود الشهادة
-        // ============================================================
-        function generateAndSetCode() {
-            generateCertificateCode().then(function(code) {
-                const displayEl = document.getElementById('certificateCodeDisplay');
-                const hiddenEl = document.getElementById('certificateCodeHidden');
-                if (displayEl) displayEl.value = code;
-                if (hiddenEl) hiddenEl.value = code;
-            }).catch(function() {
-                const year = new Date().getFullYear();
-                const displayEl = document.getElementById('certificateCodeDisplay');
-                const hiddenEl = document.getElementById('certificateCodeHidden');
-                if (displayEl) displayEl.value = year + '-0001';
-                if (hiddenEl) hiddenEl.value = year + '-0001';
-            });
-        }
-
-        // ============================================================
-        // 13. فتح مودال الإضافة
-        // ============================================================
-        function openAddModal() {
-            const titleEl = document.getElementById('modalTitle');
-            const editEl = document.getElementById('editCode');
-            const formEl = document.getElementById('certForm');
-            const licenseDisplay = document.getElementById('academyLicenseDisplay');
-            const branchSelect = document.getElementById('branchSelect');
-            const academySelect = document.getElementById('academySelect');
-
-            if (titleEl) titleEl.textContent = settings.modalTitle;
-            if (editEl) editEl.value = '';
-            if (formEl) formEl.reset();
-            if (licenseDisplay) licenseDisplay.value = '';
-            if (branchSelect) branchSelect.innerHTML = '<option value="">' + settings.branchSelectOption + '</option>';
-            if (academySelect) academySelect.value = '';
-
-            const today = new Date().toISOString().split('T')[0];
-            const completionDate = document.getElementById('completionDate');
-            if (completionDate) completionDate.value = today;
-
-            const codeDisplay = document.getElementById('certificateCodeDisplay');
-            if (codeDisplay) {
-                codeDisplay.readOnly = false;
-                codeDisplay.style.background = 'var(--bg-hover)';
-                codeDisplay.style.color = 'var(--text-color)';
-            }
-
-            generateAndSetCode();
-
-            const modal = document.getElementById('certModal');
-            if (modal) modal.classList.add('show');
-        }
-
-        // ============================================================
-        // 14. عرض الشهادة
-        // ============================================================
-        function viewCertificate(code) {
+        function showCertificateDetails(code) {
             const cert = certificates.find(function(c) { return c.certificateCode === code; });
             if (!cert) {
                 showMsg('الشهادة غير موجودة', 'error');
@@ -2304,43 +2301,49 @@
 
             currentViewCert = cert;
 
+            const viewTitle = document.getElementById('viewTitle');
+            if (viewTitle) viewTitle.textContent = settings.viewTitle;
+
             const container = document.getElementById('viewContent');
             if (!container) return;
 
             const gradeClass = getGradeClass(cert.grade);
             const statusText = cert.isActive !== false ? 'نشطة' : 'محذوفة';
             const statusColor = cert.isActive !== false ? 'var(--success)' : 'var(--error)';
+            const date = cert.issuedAt ? new Date(cert.issuedAt.toDate ? cert.issuedAt.toDate() : cert.issuedAt) : null;
 
             container.innerHTML = `
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.certCodeLabel}</strong><br><span style="font-family:'Courier New',monospace;font-size:16px;color:var(--primary-color);">${cert.certificateCode || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.thStatus}</strong><br><span style="color:${statusColor};font-weight:600;">${statusText}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.studentNameLabel}</strong><br><span style="font-weight:600;font-size:16px;">${cert.studentName || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.studentNationalLabel}</strong><br><span style="font-family:'Courier New',monospace;font-size:14px;color:var(--text-muted);">${cert.studentNationalId || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.courseNameLabel}</strong><br><span>${cert.courseName || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.courseHoursLabel}</strong><br><span>${cert.courseHours || 'غير محدد'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.gradeLabel}</strong><br><span class="grade-badge grade-${gradeClass}" style="font-size:16px;padding:4px 16px;">${cert.grade || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.completionDateLabel}</strong><br><span>${cert.completionDate ? new Date(cert.completionDate.toDate ? cert.completionDate.toDate() : cert.completionDate).toLocaleDateString('ar-EG') : '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">تاريخ الإصدار</strong><br><span>${cert.issuedAt ? new Date(cert.issuedAt.toDate ? cert.issuedAt.toDate() : cert.issuedAt).toLocaleString('ar-EG') : '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.thAcademy}</strong><br><span>${cert.academyName || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">${settings.thBranch}</strong><br><span>${cert.branchName || cert.branchId || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">رقم الاعتماد</strong><br><span>${cert.academyLicenseNumber || '-'}</span></div>
-                    <div><strong style="color:var(--text-muted);font-size:12px;">المحافظة</strong><br><span>${cert.branchGovernorate || '-'}</span></div>
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="label">${settings.thCode}</div><div class="value" style="font-family:'Courier New',monospace;color:var(--primary-color);">${cert.certificateCode || '-'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.thStatus}</div><div class="value" style="color:${statusColor};font-weight:600;">${statusText}</div></div>
+                    <div class="detail-item"><div class="label">${settings.studentNameLabel}</div><div class="value" style="font-weight:600;font-size:16px;">${cert.studentName || '-'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.studentNationalLabel}</div><div class="value" style="font-family:'Courier New',monospace;color:var(--text-muted);">${cert.studentNationalId || '-'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.courseNameLabel}</div><div class="value">${cert.courseName || '-'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.courseHoursLabel}</div><div class="value">${cert.courseHours || 'غير محدد'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.gradeLabel}</div><div class="value"><span class="grade-badge grade-${gradeClass}" style="font-size:16px;padding:4px 16px;">${cert.grade || '-'}</span></div></div>
+                    <div class="detail-item"><div class="label">${settings.completionDateLabel}</div><div class="value">${cert.completionDate ? new Date(cert.completionDate.toDate ? cert.completionDate.toDate() : cert.completionDate).toLocaleDateString('ar-EG') : '-'}</div></div>
+                    <div class="detail-item"><div class="label">تاريخ الإصدار</div><div class="value">${date ? date.toLocaleDateString('ar-EG') : '-'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.thAcademy}</div><div class="value">${cert.academyName || '-'}</div></div>
+                    <div class="detail-item"><div class="label">${settings.thBranch}</div><div class="value">${cert.branchName || cert.branchId || '-'}</div></div>
+                    <div class="detail-item"><div class="label">رقم الاعتماد</div><div class="value">${cert.academyLicenseNumber || '-'}</div></div>
+                    <div class="detail-item"><div class="label">المحافظة</div><div class="value">${cert.branchGovernorate || '-'}</div></div>
                 </div>
             `;
 
-            const modal = document.getElementById('viewModal');
-            if (modal) modal.classList.add('show');
+            document.getElementById('viewModal').classList.add('show');
         }
 
         function closeViewModal() {
-            const modal = document.getElementById('viewModal');
-            if (modal) modal.classList.remove('show');
+            document.getElementById('viewModal').classList.remove('show');
             currentViewCert = null;
         }
 
+        document.getElementById('viewModal').addEventListener('click', function(e) {
+            if (e.target === this) closeViewModal();
+        });
+
         // ============================================================
-        // 15. طباعة الشهادة من مودال العرض
+        // 12. طباعة الشهادة من مودال العرض
         // ============================================================
         function printCertificateFromView() {
             if (!currentViewCert) {
@@ -2351,20 +2354,20 @@
         }
 
         // ============================================================
-        // 16. تحميل PDF
+        // 13. تحميل PDF
         // ============================================================
         function downloadCertificatePDF() {
             if (!currentViewCert) {
                 showMsg('لا توجد شهادة للتحميل', 'error');
                 return;
             }
-            alert('جاري تحميل PDF...');
+            printCertificate(currentViewCert.certificateCode, true);
         }
 
         // ============================================================
-        // 17. طباعة الشهادة
+        // 14. طباعة الشهادة (PDF أو طباعة)
         // ============================================================
-        function printCertificate(certCode) {
+        function printCertificate(certCode, asPDF = false) {
             const cert = certificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
                 showMsg('الشهادة غير موجودة', 'error');
@@ -2380,6 +2383,7 @@
                 '';
 
             const gradeClass = getGradeClass(cert.grade);
+            const date = cert.issuedAt ? new Date(cert.issuedAt.toDate ? cert.issuedAt.toDate() : cert.issuedAt) : null;
 
             const html = `
                 <div class="certificate-print-wrapper" id="certificate-print-content">
@@ -2438,7 +2442,7 @@
                         <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
                         <br/>
                         <span style="font-size:9px;color:#aaa;">
-                            ${new Date().toLocaleDateString('ar-EG')}
+                            ${date ? date.toLocaleDateString('ar-EG') : ''}
                             ${settings.servicesLink ? `| <a href="${settings.servicesLink}" target="_blank">${settings.servicesText}</a>` : ''}
                         </span>
                     </div>
@@ -2449,6 +2453,21 @@
             if (!container) return;
 
             container.innerHTML = html;
+
+            if (asPDF) {
+                const element = container.firstElementChild;
+                const opt = {
+                    margin: 10,
+                    filename: 'شهادة_' + cert.certificateCode + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save()
+                    .then(function() { container.innerHTML = ''; })
+                    .catch(function(err) { alert('حدث خطأ في تحميل PDF: ' + err.message); });
+                return;
+            }
 
             const printWindow = window.open('', '_blank', 'width=800,height=600');
             const content = container.innerHTML;
@@ -2488,142 +2507,133 @@
         }
 
         // ============================================================
-        // 18. تصدير نتائج البحث كـ PDF
+        // 15. الفلاتر
         // ============================================================
-        function exportSearchResultsPDF() {
-            const tbody = document.getElementById('certificatesBody');
-            if (!tbody) return;
+        function applyFilters() {
+            const studentFilter = document.getElementById('filterStudent')?.value.trim().toLowerCase() || '';
+            const nationalIdFilter = document.getElementById('filterNationalId')?.value.trim() || '';
+            const codeFilter = document.getElementById('filterCode')?.value.trim().toLowerCase() || '';
+            const academyFilter = document.getElementById('filterAcademy')?.value || '';
+            const gradeFilter = document.getElementById('filterGrade')?.value || '';
+            const dateFrom = document.getElementById('filterDateFrom')?.value || '';
+            const dateTo = document.getElementById('filterDateTo')?.value || '';
 
-            const rows = tbody.querySelectorAll('tr');
+            const filtered = certificates.filter(function(cert) {
+                let match = true;
 
-            if (rows.length === 0) {
-                showMsg('لا توجد بيانات لطباعتها', 'info');
-                return;
-            }
-
-            const data = [];
-            rows.forEach(function(row, index) {
-                const cells = row.querySelectorAll('td');
-                if (cells.length > 0) {
-                    data.push({
-                        num: index + 1,
-                        code: cells[1]?.textContent.trim() || '-',
-                        student: cells[2]?.textContent.trim() || '-',
-                        nationalId: cells[3]?.textContent.trim() || '-',
-                        course: cells[4]?.textContent.trim() || '-',
-                        grade: cells[5]?.textContent.trim() || '-',
-                        academy: cells[6]?.textContent.trim() || '-',
-                        branch: cells[7]?.textContent.trim() || '-',
-                        status: cells[8]?.textContent.trim() || '-'
-                    });
+                if (studentFilter) {
+                    match = match && (cert.studentName || '').toLowerCase().includes(studentFilter);
                 }
+
+                if (nationalIdFilter) {
+                    match = match && (cert.studentNationalId || '').includes(nationalIdFilter);
+                }
+
+                if (codeFilter) {
+                    match = match && (cert.certificateCode || '').toLowerCase().includes(codeFilter);
+                }
+
+                if (academyFilter) {
+                    match = match && cert.academyId === academyFilter;
+                }
+
+                if (gradeFilter) {
+                    match = match && cert.grade === gradeFilter;
+                }
+
+                if (dateFrom) {
+                    const from = new Date(dateFrom);
+                    const issued = cert.issuedAt ? (cert.issuedAt.toDate ? cert.issuedAt.toDate() : new Date(cert.issuedAt)) : null;
+                    match = match && issued && issued >= from;
+                }
+
+                if (dateTo) {
+                    const to = new Date(dateTo);
+                    to.setHours(23, 59, 59, 999);
+                    const issued = cert.issuedAt ? (cert.issuedAt.toDate ? cert.issuedAt.toDate() : new Date(cert.issuedAt)) : null;
+                    match = match && issued && issued <= to;
+                }
+
+                return match;
             });
 
-            const total = data.length;
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ar-EG');
+            renderCertificates(filtered);
+        }
 
-            const logoHtml = settings.logoUrl ?
-                `<img src="${settings.logoUrl}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);" />` :
-                '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--primary-color),var(--accent-color));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;">ن.ت</div>';
+        function resetFilters() {
+            const studentInput = document.getElementById('filterStudent');
+            const nationalInput = document.getElementById('filterNationalId');
+            const codeInput = document.getElementById('filterCode');
+            const academySelect = document.getElementById('filterAcademy');
+            const gradeSelect = document.getElementById('filterGrade');
+            const dateFrom = document.getElementById('filterDateFrom');
+            const dateTo = document.getElementById('filterDateTo');
 
-            let tableRows = '';
-            data.forEach(function(item) {
-                const gradeClass = getGradeClass(item.grade);
-                const gradeColor = gradeClass === 'a' ? '#10b981' : gradeClass === 'b' ? '#3b82f6' : gradeClass === 'c' ? '#eab308' : '#ef4444';
-                tableRows += `
-                    <tr>
-                        <td>${item.num}</td>
-                        <td>${item.code}</td>
-                        <td>${item.student}</td>
-                        <td>${item.nationalId}</td>
-                        <td>${item.course}</td>
-                        <td><span style="font-weight:700;color:${gradeColor};">${item.grade}</span></td>
-                        <td>${item.academy}</td>
-                        <td>${item.branch}</td>
-                        <td>${item.status}</td>
-                    </tr>
-                `;
-            });
-
-            const html = `
-                <div style="width:780px;padding:30px 35px;background:#ffffff;color:#1a1a2e;font-family:'Cairo','Segoe UI','Tahoma',sans-serif;direction:rtl;border:3px solid var(--primary-color);border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.1);margin:0 auto;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--primary-color);padding-bottom:14px;margin-bottom:16px;">
-                        <div style="display:flex;align-items:center;gap:14px;">
-                            ${logoHtml}
-                            <div>
-                                <h1 style="font-size:18px;font-weight:800;color:var(--primary-color);margin:0;">${settings.pageTitleHeader || 'نقابة تكنولوجيا المعلومات'}</h1>
-                                <p style="font-size:11px;color:#666;margin:1px 0 0;">${settings.committeeName}</p>
-                            </div>
-                        </div>
-                        <div style="text-align:left;font-size:12px;color:#666;">
-                            <div>التاريخ: ${dateStr}</div>
-                        </div>
-                    </div>
-
-                    <div style="text-align:center;font-size:22px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;">${settings.certificatesListTitle || 'تقرير الشهادات'}</div>
-                    <div style="text-align:center;font-size:12px;color:#666;margin-bottom:14px;">قائمة الشهادات المسجلة في النظام</div>
-
-                    <div style="display:flex;justify-content:center;gap:20px;margin:8px 0 12px;font-size:12px;color:#666;flex-wrap:wrap;">
-                        <span style="background:#f0f4ff;padding:4px 14px;border-radius:20px;">إجمالي الشهادات: ${total}</span>
-                        <span style="background:#f0f4ff;padding:4px 14px;border-radius:20px;">التاريخ: ${dateStr}</span>
-                    </div>
-
-                    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;">
-                        <thead>
-                            <tr>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thNum || '#'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thCode || 'كود الشهادة'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thStudent || 'اسم المتدرب'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thNational || 'الرقم القومي'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thCourse || 'الدورة'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thGrade || 'التقدير'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thAcademy || 'الأكاديمية'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thBranch || 'الفرع'}</th>
-                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thStatus || 'الحالة'}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tableRows}
-                        </tbody>
-                    </table>
-
-                    <div style="text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#999;">
-                        <div>تم إنشاء هذا التقرير بواسطة نظام نقابة تكنولوجيا المعلومات</div>
-                        <div style="margin-top:6px;font-size:12px;color:var(--primary-color);font-weight:700;">${settings.presidentLabel}: ${settings.presidentName}</div>
-                        <div style="font-size:9px;color:#aaa;margin-top:4px;">${settings.footerText} | الإصدار 1.0</div>
-                    </div>
-                </div>
-            `;
-
-            const container = document.getElementById('print-container');
-            if (!container) return;
-
-            container.innerHTML = html;
-
-            const element = container.firstElementChild;
-
-            const opt = {
-                margin: 10,
-                filename: 'تقرير_الشهادات_' + now.toISOString().split('T')[0] + '.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save()
-                .then(function() {
-                    container.innerHTML = '';
-                    showMsg('تم تصدير التقرير بنجاح', 'success');
-                })
-                .catch(function(err) {
-                    showMsg('حدث خطأ في تصدير التقرير: ' + err.message, 'error');
-                    container.innerHTML = '';
-                });
+            if (studentInput) studentInput.value = '';
+            if (nationalInput) nationalInput.value = '';
+            if (codeInput) codeInput.value = '';
+            if (academySelect) academySelect.value = '';
+            if (gradeSelect) gradeSelect.value = '';
+            if (dateFrom) dateFrom.value = '';
+            if (dateTo) dateTo.value = '';
+            renderCertificates();
         }
 
         // ============================================================
-        // 19. تعديل شهادة
+        // 16. توليد كود الشهادة
+        // ============================================================
+        function generateAndSetCode() {
+            generateCertificateCode().then(function(code) {
+                const displayEl = document.getElementById('certificateCodeDisplay');
+                const hiddenEl = document.getElementById('certificateCodeHidden');
+                if (displayEl) displayEl.value = code;
+                if (hiddenEl) hiddenEl.value = code;
+            }).catch(function() {
+                const year = new Date().getFullYear();
+                const displayEl = document.getElementById('certificateCodeDisplay');
+                const hiddenEl = document.getElementById('certificateCodeHidden');
+                if (displayEl) displayEl.value = year + '-0001';
+                if (hiddenEl) hiddenEl.value = year + '-0001';
+            });
+        }
+
+        // ============================================================
+        // 17. فتح مودال الإضافة
+        // ============================================================
+        function openAddModal() {
+            const titleEl = document.getElementById('modalTitle');
+            const editEl = document.getElementById('editCode');
+            const formEl = document.getElementById('certForm');
+            const licenseDisplay = document.getElementById('academyLicenseDisplay');
+            const branchSelect = document.getElementById('branchSelect');
+            const academySelect = document.getElementById('academySelect');
+
+            if (titleEl) titleEl.textContent = settings.modalTitle;
+            if (editEl) editEl.value = '';
+            if (formEl) formEl.reset();
+            if (licenseDisplay) licenseDisplay.value = '';
+            if (branchSelect) branchSelect.innerHTML = '<option value="">' + settings.branchSelectOption + '</option>';
+            if (academySelect) academySelect.value = '';
+
+            const today = new Date().toISOString().split('T')[0];
+            const completionDate = document.getElementById('completionDate');
+            if (completionDate) completionDate.value = today;
+
+            const codeDisplay = document.getElementById('certificateCodeDisplay');
+            if (codeDisplay) {
+                codeDisplay.readOnly = false;
+                codeDisplay.style.background = 'var(--bg-hover)';
+                codeDisplay.style.color = 'var(--text-color)';
+            }
+
+            generateAndSetCode();
+
+            const modal = document.getElementById('certModal');
+            if (modal) modal.classList.add('show');
+        }
+
+        // ============================================================
+        // 18. تعديل شهادة
         // ============================================================
         function editCertificate(code) {
             const cert = certificates.find(function(c) { return c.certificateCode === code; });
@@ -2680,7 +2690,7 @@
         }
 
         // ============================================================
-        // 20. حفظ الشهادة
+        // 19. حفظ الشهادة
         // ============================================================
         function saveCertificate(e) {
             e.preventDefault();
@@ -2812,7 +2822,7 @@
         }
 
         // ============================================================
-        // 21. مودال الحذف
+        // 20. مودال الحذف
         // ============================================================
         function openDeleteModal(code) {
             const cert = certificates.find(function(c) { return c.certificateCode === code; });
@@ -2882,7 +2892,7 @@
         }
 
         // ============================================================
-        // 22. إغلاق المودالات
+        // 21. إغلاق المودالات
         // ============================================================
         function closeModal() {
             const modal = document.getElementById('certModal');
@@ -2897,12 +2907,8 @@
             if (e.target === this) closeDeleteModal();
         });
 
-        document.getElementById('viewModal')?.addEventListener('click', function(e) {
-            if (e.target === this) closeViewModal();
-        });
-
         // ============================================================
-        // 23. عرض الرسائل
+        // 22. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
@@ -2914,14 +2920,154 @@
         }
 
         // ============================================================
+        // 23. تصدير نتائج البحث كـ PDF
+        // ============================================================
+        function exportSearchResultsPDF() {
+            const tbody = document.getElementById('certificatesBody');
+            if (!tbody) return;
+
+            const rows = tbody.querySelectorAll('tr');
+
+            if (rows.length === 0) {
+                showMsg('لا توجد بيانات لطباعتها', 'info');
+                return;
+            }
+
+            const data = [];
+            rows.forEach(function(row, index) {
+                const cells = row.querySelectorAll('td');
+                if (cells.length > 0) {
+                    data.push({
+                        num: index + 1,
+                        code: cells[1]?.textContent.trim() || '-',
+                        student: cells[2]?.textContent.trim() || '-',
+                        nationalId: cells[3]?.textContent.trim() || '-',
+                        course: cells[4]?.textContent.trim() || '-',
+                        grade: cells[5]?.textContent.trim() || '-',
+                        academy: cells[6]?.textContent.trim() || '-',
+                        branch: cells[7]?.textContent.trim() || '-',
+                        date: cells[8]?.textContent.trim() || '-',
+                        status: cells[9]?.textContent.trim() || '-'
+                    });
+                }
+            });
+
+            const total = data.length;
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-EG');
+
+            const logoHtml = settings.logoUrl ?
+                `<img src="${settings.logoUrl}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);" />` :
+                '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--primary-color),var(--accent-color));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;">ن.ت</div>';
+
+            let tableRows = '';
+            data.forEach(function(item) {
+                const gradeClass = getGradeClass(item.grade);
+                const gradeColor = gradeClass === 'a' ? '#10b981' : gradeClass === 'b' ? '#3b82f6' : gradeClass === 'c' ? '#eab308' : '#ef4444';
+                tableRows += `
+                    <tr>
+                        <td>${item.num}</td>
+                        <td>${item.code}</td>
+                        <td>${item.student}</td>
+                        <td>${item.nationalId}</td>
+                        <td>${item.course}</td>
+                        <td><span style="font-weight:700;color:${gradeColor};">${item.grade}</span></td>
+                        <td>${item.academy}</td>
+                        <td>${item.branch}</td>
+                        <td>${item.date}</td>
+                        <td>${item.status}</td>
+                    </tr>
+                `;
+            });
+
+            const html = `
+                <div style="width:780px;padding:30px 35px;background:#ffffff;color:#1a1a2e;font-family:'Cairo','Segoe UI','Tahoma',sans-serif;direction:rtl;border:3px solid var(--primary-color);border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,0.1);margin:0 auto;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--primary-color);padding-bottom:14px;margin-bottom:16px;">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            ${logoHtml}
+                            <div>
+                                <h1 style="font-size:18px;font-weight:800;color:var(--primary-color);margin:0;">${settings.pageTitleHeader || 'نقابة تكنولوجيا المعلومات'}</h1>
+                                <p style="font-size:11px;color:#666;margin:1px 0 0;">${settings.committeeName}</p>
+                            </div>
+                        </div>
+                        <div style="text-align:left;font-size:12px;color:#666;">
+                            <div>التاريخ: ${dateStr}</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align:center;font-size:22px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;">${settings.certificatesListTitle || 'تقرير الشهادات'}</div>
+                    <div style="text-align:center;font-size:12px;color:#666;margin-bottom:14px;">قائمة الشهادات المسجلة في النظام</div>
+
+                    <div style="display:flex;justify-content:center;gap:20px;margin:8px 0 12px;font-size:12px;color:#666;flex-wrap:wrap;">
+                        <span style="background:#f0f4ff;padding:4px 14px;border-radius:20px;">إجمالي الشهادات: ${total}</span>
+                        <span style="background:#f0f4ff;padding:4px 14px;border-radius:20px;">التاريخ: ${dateStr}</span>
+                    </div>
+
+                    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;">
+                        <thead>
+                            <tr>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thNum || '#'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thCode || 'كود الشهادة'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thStudent || 'اسم المتدرب'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thNational || 'الرقم القومي'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thCourse || 'الدورة'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thGrade || 'التقدير'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thAcademy || 'الأكاديمية'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thBranch || 'الفرع'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thDate || 'التاريخ'}</th>
+                                <th style="background:var(--primary-color);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;">${settings.thStatus || 'الحالة'}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+
+                    <div style="text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid #eee;font-size:10px;color:#999;">
+                        <div>تم إنشاء هذا التقرير بواسطة نظام نقابة تكنولوجيا المعلومات</div>
+                        <div style="margin-top:6px;font-size:12px;color:var(--primary-color);font-weight:700;">${settings.presidentFooter}: ${settings.presidentName}</div>
+                        <div style="font-size:9px;color:#aaa;margin-top:4px;">${settings.footerText} | الإصدار 1.0</div>
+                    </div>
+                </div>
+            `;
+
+            const container = document.getElementById('print-container');
+            if (!container) return;
+
+            container.innerHTML = html;
+
+            const element = container.firstElementChild;
+
+            const opt = {
+                margin: 10,
+                filename: 'تقرير_الشهادات_' + now.toISOString().split('T')[0] + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save()
+                .then(function() {
+                    container.innerHTML = '';
+                    showMsg('تم تصدير التقرير بنجاح', 'success');
+                })
+                .catch(function(err) {
+                    showMsg('حدث خطأ في تصدير التقرير: ' + err.message, 'error');
+                    container.innerHTML = '';
+                });
+        }
+
+        // ============================================================
         // 24. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
             console.log('✅ إدارة الشهادات - كل حرف من الإعدادات');
             console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎨 الألوان من الإعدادات');
-            console.log('📋 دعم الرقم القومي للمتدربين');
+            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
+            console.log('🔍 فلتر متقدم: اسم، رقم قومي، كود، أكاديمية، تقدير، تاريخ');
+            console.log('📊 إحصائيات متقدمة مع متوسط التقدير');
+            console.log('🖨️ طباعة وتصدير PDF');
         });
     </script>
 
