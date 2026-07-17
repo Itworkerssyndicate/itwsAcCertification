@@ -1300,7 +1300,7 @@
         <!-- ===== زر خدمات النقابة ===== -->
         <div class="services-btn-container">
             <a href="#" class="services-btn" id="servicesBtn">
-                <span id="servicesBtnText"></span>
+                <span id="موقع خدمات النقابة الاليكترونية"></span>
                 <span class="arrow">←</span>
             </a>
         </div>
@@ -1551,8 +1551,11 @@
             if (presidentFooterEl) presidentFooterEl.textContent = 'النقيب العام: ';
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
             if (infoBoxTextEl) infoBoxTextEl.textContent = settings.infoBoxText;
-            if (servicesBtnTextEl) servicesBtnTextEl.textContent = settings.servicesText;
-            if (servicesBtnEl) servicesBtnEl.href = settings.servicesLink;
+            if (servicesBtnTextEl) servicesBtnTextEl.textContent = 'موقع خدمات النقابة الاليكترونية';
+            if (servicesBtnEl) {
+                                 servicesBtnEl.href = 'https://linktr.ee/itws.eg';
+                                 servicesBtnEl.target = '_blank';
+                                 }
             if (heroTitleEl) heroTitleEl.textContent = settings.heroTitle;
             if (heroSubtitleEl) heroSubtitleEl.textContent = settings.heroSubtitle;
             if (certHintEl) certHintEl.textContent = settings.certHint;
