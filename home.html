@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="keywords" id="metaKeywords" content="" />
+    <title id="pageTitle">نقابة تكنولوجيا المعلومات والبرمجيات</title>
+    <meta name="description" id="metaDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="keywords" id="metaKeywords" content="شهادات, تدريب, نقابة, تكنولوجيا المعلومات, تحقق, توثيق" />
 
     <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="" />
-    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:title" id="ogTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta property="og:description" id="ogDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:image" id="ogImage" content="" />
     <meta property="og:url" id="ogUrl" content="" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:locale" content="ar_EG" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="" />
-    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:title" id="twitterTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="twitter:description" id="twitterDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta name="twitter:image" id="twitterImage" content="" />
 
     <!-- Icons -->
@@ -228,6 +228,156 @@
             max-width: 1300px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        /* ===== زر تغيير الألوان ===== */
+        .color-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border);
+            color: var(--text-color);
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .color-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 40px var(--primary-glow);
+        }
+
+        .color-picker-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .color-picker-modal.active {
+            display: flex;
+        }
+
+        .color-picker-modal .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 30px 35px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            animation: modalIn 0.4s ease;
+        }
+
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .color-picker-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .color-picker-modal .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .color-picker-modal .modal-header .close-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-picker-modal .modal-header .close-btn:hover {
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .color-picker-modal .color-group {
+            margin-bottom: 14px;
+        }
+
+        .color-picker-modal .color-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .color-picker-modal .color-group input[type="color"] {
+            width: 100%;
+            height: 45px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-hover);
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .color-picker-modal .color-group input[type="color"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .color-picker-modal .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .color-picker-modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-reset {
+            background: var(--bg-hover);
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .btn-reset:hover {
+            background: var(--error-bg);
+            border-color: var(--error);
+            color: var(--error);
         }
 
         .header {
@@ -948,11 +1098,6 @@
 
         .academies-modal.active { display: flex; }
 
-        @keyframes modalIn {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
         .academies-modal .modal-content {
             background: var(--card-bg);
             backdrop-filter: blur(35px);
@@ -1126,6 +1271,8 @@
             .academies-modal .pagination button { padding: 6px 16px; font-size: 12px; }
             .header-president { padding: 3px 10px; }
             .header-president .president-name { font-size: 12px; }
+            .color-toggle-btn { bottom: 20px; left: 20px; width: 44px; height: 44px; font-size: 18px; }
+            .color-picker-modal .modal-content { padding: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -1145,6 +1292,8 @@
             .academies-modal .modal-content { padding: 16px; }
             .academies-modal .academy-item .name { font-size: 14px; }
             .header-president .president-name { font-size: 11px; }
+            .color-toggle-btn { bottom: 16px; left: 16px; width: 40px; height: 40px; font-size: 16px; }
+            .color-picker-modal .modal-content { padding: 16px; }
         }
     </style>
 </head>
@@ -1179,7 +1328,7 @@
         <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='index.html'"></div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'"></div>
                 <div class="header-title">
                     <h1 id="unionName"></h1>
                     <p id="committeeName"></p>
@@ -1299,10 +1448,10 @@
 
         <!-- ===== زر خدمات النقابة ===== -->
         <div class="services-btn-container">
-           <a href="#" class="services-btn" id="servicesBtn">
-           <span id="servicesBtnText"></span>
-           <span class="arrow">←</span>
-          </a>
+            <a href="#" class="services-btn" id="servicesBtn">
+                <span id="servicesBtnText"></span>
+                <span class="arrow">←</span>
+            </a>
         </div>
 
         <!-- ===== الفوتر ===== -->
@@ -1317,6 +1466,41 @@
     </div>
 
     <div id="print-container"></div>
+
+    <!-- ===== زر تغيير الألوان ===== -->
+    <button class="color-toggle-btn" id="colorToggleBtn" title="تغيير الألوان">
+        🎨
+    </button>
+
+    <!-- ===== مودال تغيير الألوان ===== -->
+    <div class="color-picker-modal" id="colorPickerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎨 تخصيص الألوان</h3>
+                <button class="close-btn" onclick="closeColorPicker()">✕</button>
+            </div>
+            <div class="color-group">
+                <label>اللون الأساسي</label>
+                <input type="color" id="localPrimaryColor" value="#C9A84C" />
+            </div>
+            <div class="color-group">
+                <label>اللون الثانوي</label>
+                <input type="color" id="localAccentColor" value="#7C3AED" />
+            </div>
+            <div class="color-group">
+                <label>لون الخلفية</label>
+                <input type="color" id="localBgColor" value="#0A0E1A" />
+            </div>
+            <div class="color-group">
+                <label>لون النص</label>
+                <input type="color" id="localTextColor" value="#FFFFFF" />
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveLocalColors()">حفظ التغييرات</button>
+                <button class="btn btn-reset" onclick="resetLocalColors()">استعادة الافتراضي</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ===== مودال الأكاديميات ===== -->
     <div class="academies-modal" id="academiesModal">
@@ -1369,7 +1553,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // 2. متغيرات
+        // 2. متغيرات عامة
         // ============================================================
         let currentUser = null;
         let isAdmin = false;
@@ -1380,13 +1564,13 @@
         const modalItemsPerPage = 8;
 
         let settings = {
-            unionName: 'نقابة تكنولوجيا المعلومات',
+            unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
             committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
             stampUrl: '',
             infoBoxText: '',
-            servicesText: '',
-            servicesLink: '',
+            servicesText: 'موقع خدمات النقابة الإلكترونية',
+            servicesLink: 'https://linktr.ee/itws.eg',
             footerText: '',
             presidentName: '',
             heroTitle: '',
@@ -1412,20 +1596,107 @@
         };
 
         // ============================================================
-        // 3. جلب الإعدادات من Firestore (باستخدام onSnapshot للتحديث الفوري)
+        // 3. إعدادات الألوان المحلية (LocalStorage)
         // ============================================================
-        let settingsListener = null;
-        let designListener = null;
-        let textsListener = null;
-        let securityListener = null;
-
-        function loadSettings() {
-            // استماع لإعدادات العامة (general)
-            if (settingsListener) {
-                settingsListener();
-                settingsListener = null;
+        function loadLocalColors() {
+            try {
+                const saved = localStorage.getItem('homeLocalColors');
+                if (saved) {
+                    const colors = JSON.parse(saved);
+                    if (colors.primary) document.getElementById('localPrimaryColor').value = colors.primary;
+                    if (colors.accent) document.getElementById('localAccentColor').value = colors.accent;
+                    if (colors.background) document.getElementById('localBgColor').value = colors.background;
+                    if (colors.text) document.getElementById('localTextColor').value = colors.text;
+                    applyLocalColors(colors);
+                }
+            } catch (e) {
+                console.log('ℹ️ لا توجد ألوان محلية');
             }
-            settingsListener = db.collection('settings').doc('general').onSnapshot(function(doc) {
+        }
+
+        function applyLocalColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        function saveLocalColors() {
+            const colors = {
+                primary: document.getElementById('localPrimaryColor').value,
+                accent: document.getElementById('localAccentColor').value,
+                background: document.getElementById('localBgColor').value,
+                text: document.getElementById('localTextColor').value,
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            };
+
+            localStorage.setItem('homeLocalColors', JSON.stringify(colors));
+            applyLocalColors(colors);
+            closeColorPicker();
+            showMsg('تم حفظ الألوان المحلية بنجاح', 'success');
+        }
+
+        function resetLocalColors() {
+            localStorage.removeItem('homeLocalColors');
+            // إعادة تطبيق الألوان من الإعدادات
+            applyColors(settings.colors);
+            document.getElementById('localPrimaryColor').value = settings.colors.primary || '#C9A84C';
+            document.getElementById('localAccentColor').value = settings.colors.accent || '#7C3AED';
+            document.getElementById('localBgColor').value = settings.colors.background || '#0A0E1A';
+            document.getElementById('localTextColor').value = settings.colors.text || '#FFFFFF';
+            closeColorPicker();
+            showMsg('تم استعادة الألوان الافتراضية', 'success');
+        }
+
+        function openColorPicker() {
+            document.getElementById('colorPickerModal').classList.add('active');
+        }
+
+        function closeColorPicker() {
+            document.getElementById('colorPickerModal').classList.remove('active');
+        }
+
+        // ============================================================
+        // 4. إعدادات الـ Listeners (التحديث الفوري)
+        // ============================================================
+        let generalUnsubscribe = null;
+        let textsUnsubscribe = null;
+        let designUnsubscribe = null;
+        let securityUnsubscribe = null;
+        let academiesUnsubscribe = null;
+        let certificatesUnsubscribe = null;
+
+        function startListeners() {
+            // ===== استماع للإعدادات العامة =====
+            if (generalUnsubscribe) generalUnsubscribe();
+            generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.unionName) settings.unionName = data.unionName;
@@ -1445,37 +1716,19 @@
                     if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
                 }
                 applySettings();
-                applyColors(settings.colors);
-                applyTexts();
-                console.log('✅ تم تحديث الإعدادات العامة لحظياً');
+                // التحقق من وجود ألوان محلية
+                const localColors = localStorage.getItem('homeLocalColors');
+                if (!localColors) {
+                    applyColors(settings.colors);
+                }
+                console.log('✅ تحديث فوري: الإعدادات العامة (Home)');
             }, function(error) {
                 console.warn('⚠️ خطأ في الاستماع للإعدادات العامة:', error);
             });
 
-            // استماع لإعدادات التصميم (المظهر)
-            if (designListener) {
-                designListener();
-                designListener = null;
-            }
-            designListener = db.collection('settings').doc('design').onSnapshot(function(doc) {
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.colors) {
-                        settings.colors = { ...settings.colors, ...data.colors };
-                    }
-                }
-                applyColors(settings.colors);
-                console.log('✅ تم تحديث إعدادات المظهر لحظياً');
-            }, function(error) {
-                console.warn('⚠️ خطأ في الاستماع لإعدادات التصميم:', error);
-            });
-
-            // استماع لإعدادات النصوص
-            if (textsListener) {
-                textsListener();
-                textsListener = null;
-            }
-            textsListener = db.collection('settings').doc('texts').onSnapshot(function(doc) {
+            // ===== استماع للنصوص =====
+            if (textsUnsubscribe) textsUnsubscribe();
+            textsUnsubscribe = db.collection('settings').doc('texts').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.heroTitle) settings.heroTitle = data.heroTitle;
@@ -1483,9 +1736,6 @@
                     if (data.infoBoxText) settings.infoBoxText = data.infoBoxText;
                     if (data.servicesText) settings.servicesText = data.servicesText;
                     if (data.servicesLink) settings.servicesLink = data.servicesLink;
-                    if (data.pageTitle) settings.pageTitle = data.pageTitle;
-                    if (data.loginBtnText) settings.loginBtnText = data.loginBtnText;
-                    if (data.logoutBtnText) settings.logoutBtnText = data.logoutBtnText;
                     if (data.searchCertBtnText) settings.searchCertBtnText = data.searchCertBtnText;
                     if (data.searchStudentBtnText) settings.searchStudentBtnText = data.searchStudentBtnText;
                     if (data.searchAcademyBtnText) settings.searchAcademyBtnText = data.searchAcademyBtnText;
@@ -1495,39 +1745,85 @@
                     if (data.printBtnText) settings.printBtnText = data.printBtnText;
                     if (data.pdfBtnText) settings.pdfBtnText = data.pdfBtnText;
                     if (data.shareBtnText) settings.shareBtnText = data.shareBtnText;
-                    if (data.editBtnText) settings.editBtnText = data.editBtnText;
-                    if (data.deleteBtnText) settings.deleteBtnText = data.deleteBtnText;
-                    if (data.addBtnText) settings.addBtnText = data.addBtnText;
-                    if (data.saveBtnText) settings.saveBtnText = data.saveBtnText;
-                    if (data.cancelBtnText) settings.cancelBtnText = data.cancelBtnText;
+                    if (data.loginBtnText) settings.loginBtnText = data.loginBtnText;
+                    if (data.logoutBtnText) settings.logoutBtnText = data.logoutBtnText;
                 }
                 applyTexts();
-                console.log('✅ تم تحديث النصوص لحظياً');
+                console.log('✅ تحديث فوري: النصوص (Home)');
             }, function(error) {
                 console.warn('⚠️ خطأ في الاستماع للنصوص:', error);
             });
 
-            // استماع لإعدادات الأمان (للعلم فقط)
-            if (securityListener) {
-                securityListener();
-                securityListener = null;
-            }
-            securityListener = db.collection('settings').doc('security').onSnapshot(function(doc) {
+            // ===== استماع للتصميم =====
+            if (designUnsubscribe) designUnsubscribe();
+            designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
-                    if (data.maintenanceMode !== undefined) {
-                        if (data.maintenanceMode) {
-                            console.warn('🔒 المنصة في وضع الصيانة');
-                        }
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
+                    }
+                }
+                // التحقق من وجود ألوان محلية
+                const localColors = localStorage.getItem('homeLocalColors');
+                if (!localColors) {
+                    applyColors(settings.colors);
+                }
+                console.log('✅ تحديث فوري: التصميم (Home)');
+            }, function(error) {
+                console.warn('⚠️ خطأ في الاستماع للتصميم:', error);
+            });
+
+            // ===== استماع للأمان =====
+            if (securityUnsubscribe) securityUnsubscribe();
+            securityUnsubscribe = db.collection('settings').doc('security').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.maintenanceMode) {
+                        console.warn('🔒 المنصة في وضع الصيانة');
                     }
                 }
             }, function(error) {
-                console.warn('⚠️ خطأ في الاستماع لإعدادات الأمان:', error);
+                console.warn('⚠️ خطأ في الاستماع للأمان:', error);
             });
 
-            loadLocalSettings();
+            // ===== استماع للأكاديميات (مرتبة حسب الرقم الاعتمادي) =====
+            if (academiesUnsubscribe) academiesUnsubscribe();
+            academiesUnsubscribe = db.collection('academies')
+                .where('isDeleted', '==', false)
+                .orderBy('licenseNumber')
+                .onSnapshot(function(snapshot) {
+                    allAcademies = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        allAcademies.push(data);
+                    });
+                    filteredAcademies = [...allAcademies];
+                    populateModalGovernorates();
+                    loadModalAcademies();
+                    console.log('✅ تحديث فوري: الأكاديميات مرتبة حسب الرقم الاعتمادي (' + allAcademies.length + ')');
+                }, function(error) {
+                    console.warn('⚠️ خطأ في الاستماع للأكاديميات:', error);
+                });
+
+            // ===== استماع للشهادات =====
+            if (certificatesUnsubscribe) certificatesUnsubscribe();
+            certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
+                allCertificates = [];
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allCertificates.push(data);
+                });
+                console.log('✅ تحديث فوري: الشهادات (' + allCertificates.length + ')');
+            }, function(error) {
+                console.warn('⚠️ خطأ في الاستماع للشهادات:', error);
+            });
         }
 
+        // ============================================================
+        // 5. تطبيق الإعدادات
+        // ============================================================
         function applySettings() {
             const unionNameEl = document.getElementById('unionName');
             const committeeNameEl = document.getElementById('committeeName');
@@ -1551,17 +1847,18 @@
             if (presidentFooterEl) presidentFooterEl.textContent = 'النقيب العام: ';
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
             if (infoBoxTextEl) infoBoxTextEl.textContent = settings.infoBoxText;
-            if (servicesBtnTextEl) servicesBtnTextEl.textContent = 'موقع خدمات النقابة الاليكترونية';
+            if (servicesBtnTextEl) servicesBtnTextEl.textContent = settings.servicesText || 'موقع خدمات النقابة الإلكترونية';
             if (servicesBtnEl) {
-                                 servicesBtnEl.href = 'https://linktr.ee/itws.eg';
-                                 servicesBtnEl.target = '_blank';
-                                 }
+                servicesBtnEl.href = settings.servicesLink || 'https://linktr.ee/itws.eg';
+                servicesBtnEl.target = '_blank';
+            }
             if (heroTitleEl) heroTitleEl.textContent = settings.heroTitle;
             if (heroSubtitleEl) heroSubtitleEl.textContent = settings.heroSubtitle;
             if (certHintEl) certHintEl.textContent = settings.certHint;
             if (studentHintEl) studentHintEl.textContent = settings.studentHint;
             if (academyHintEl) academyHintEl.textContent = settings.academyHint;
 
+            // ===== تحديث اللوجو =====
             if (settings.logoUrl) {
                 const logoBox = document.getElementById('logoBox');
                 if (logoBox) {
@@ -1572,9 +1869,13 @@
                 }
             }
 
-            // OG Tags
+            // ===== تحديث عنوان الصفحة (ثابت) =====
             const pageTitle = document.getElementById('pageTitle');
-            const metaDescription = document.getElementById('metaDescription');
+            if (pageTitle) {
+                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            }
+
+            // ===== OG Tags =====
             const ogTitle = document.getElementById('ogTitle');
             const ogDescription = document.getElementById('ogDescription');
             const ogImage = document.getElementById('ogImage');
@@ -1586,14 +1887,12 @@
             const favicon = document.getElementById('favicon');
             const appleIcon = document.getElementById('appleIcon');
 
-            if (pageTitle) pageTitle.textContent = settings.unionName;
-            if (metaDescription) metaDescription.content = settings.heroSubtitle;
-            if (ogTitle) ogTitle.content = settings.unionName;
-            if (ogDescription) ogDescription.content = settings.heroSubtitle;
+            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (ogDescription) ogDescription.content = settings.heroSubtitle || 'النظام الرسمي للتحقق من صحة الشهادات التدريبية';
             if (ogUrl) ogUrl.content = window.location.href;
-            if (ogSiteName) ogSiteName.content = settings.unionName;
-            if (twitterTitle) twitterTitle.content = settings.unionName;
-            if (twitterDescription) twitterDescription.content = settings.heroSubtitle;
+            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (twitterDescription) twitterDescription.content = settings.heroSubtitle || 'النظام الرسمي للتحقق من صحة الشهادات التدريبية';
 
             if (settings.logoUrl) {
                 if (ogImage) ogImage.content = settings.logoUrl;
@@ -1604,13 +1903,14 @@
         }
 
         function applyTexts() {
-            // تطبيق نصوص الأزرار والتبويبات
             const searchCertBtn = document.getElementById('searchCertBtn');
             const searchStudentBtn = document.getElementById('searchStudentBtn');
             const searchAcademyBtn = document.getElementById('searchAcademyBtn');
             const tabCertBtn = document.getElementById('tabCertBtn');
             const tabStudentBtn = document.getElementById('tabStudentBtn');
             const tabAcademyBtn = document.getElementById('tabAcademyBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
 
             if (searchCertBtn && settings.searchCertBtnText) searchCertBtn.textContent = settings.searchCertBtnText;
             if (searchStudentBtn && settings.searchStudentBtnText) searchStudentBtn.textContent = settings.searchStudentBtnText;
@@ -1618,9 +1918,21 @@
             if (tabCertBtn && settings.tabCertText) tabCertBtn.textContent = settings.tabCertText;
             if (tabStudentBtn && settings.tabStudentText) tabStudentBtn.textContent = settings.tabStudentText;
             if (tabAcademyBtn && settings.tabAcademyText) tabAcademyBtn.textContent = settings.tabAcademyText;
+            if (loginBtn && settings.loginBtnText) loginBtn.textContent = settings.loginBtnText;
+            if (logoutBtn && settings.logoutBtnText) logoutBtn.textContent = settings.logoutBtnText;
         }
 
         function applyColors(colors) {
+            // التحقق من وجود ألوان محلية
+            const localColors = localStorage.getItem('homeLocalColors');
+            if (localColors) {
+                try {
+                    const parsed = JSON.parse(localColors);
+                    applyLocalColors(parsed);
+                    return;
+                } catch (e) {}
+            }
+
             const root = document.documentElement;
             if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
             if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
@@ -1647,48 +1959,7 @@
         }
 
         // ============================================================
-        // 4. الإعدادات المحلية (LocalStorage)
-        // ============================================================
-        function loadLocalSettings() {
-            try {
-                const localSettings = localStorage.getItem('userSettings');
-                if (localSettings) {
-                    const parsed = JSON.parse(localSettings);
-                    if (parsed.theme && parsed.theme.colors) {
-                        const root = document.documentElement;
-                        const colors = parsed.theme.colors;
-                        if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
-                        if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
-                        if (colors.background) root.style.setProperty('--bg-color', colors.background);
-                        if (colors.text) root.style.setProperty('--text-color', colors.text);
-                        if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
-                        if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
-                        if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
-                        if (colors.success) root.style.setProperty('--success', colors.success);
-                        if (colors.error) root.style.setProperty('--error', colors.error);
-                        if (colors.warning) root.style.setProperty('--warning', colors.warning);
-                        if (colors.info) root.style.setProperty('--info', colors.info);
-                        if (colors.border) root.style.setProperty('--border', colors.border);
-                        if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
-
-                        const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
-                        root.style.setProperty('--primary-glow', primaryGlow);
-                        const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
-                        root.style.setProperty('--accent-glow', accentGlow);
-
-                        if (colors.background) {
-                            document.body.style.background = colors.background;
-                        }
-                        console.log('✅ تم تطبيق الإعدادات المحلية');
-                    }
-                }
-            } catch (e) {
-                console.log('ℹ️ لا توجد إعدادات محلية');
-            }
-        }
-
-        // ============================================================
-        // 5. دوال مساعدة
+        // 6. دوال مساعدة
         // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
@@ -1697,6 +1968,9 @@
             if (!el) return;
             el.textContent = msg;
             el.className = 'msg show ' + type;
+            setTimeout(function() {
+                el.className = 'msg';
+            }, 4000);
         }
         function hideMsg(id) {
             const el = document.getElementById(id);
@@ -1723,7 +1997,7 @@
         }
 
         // ============================================================
-        // 6. المصادقة
+        // 7. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1765,40 +2039,6 @@
             e.preventDefault();
             window.location.href = 'dashboard.html';
         });
-
-        // ============================================================
-        // 7. تحميل البيانات
-        // ============================================================
-        function loadData() {
-            Promise.all([
-                db.collection('academies').where('isDeleted', '==', false).get(),
-                db.collection('certificates').where('isActive', '==', true).get()
-            ]).then(function(results) {
-                const acadSnap = results[0];
-                const certSnap = results[1];
-
-                allAcademies = [];
-                acadSnap.forEach(function(doc) {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    allAcademies.push(data);
-                });
-
-                allCertificates = [];
-                certSnap.forEach(function(doc) {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    allCertificates.push(data);
-                });
-
-                filteredAcademies = [...allAcademies];
-                populateModalGovernorates();
-                console.log('✅ تم تحميل البيانات: ' + allAcademies.length + ' أكاديمية، ' + allCertificates.length + ' شهادة');
-                loadModalAcademies();
-            }).catch(function(err) {
-                console.error('❌ خطأ في تحميل البيانات:', err);
-            });
-        }
 
         // ============================================================
         // 8. البحث عن شهادة
@@ -2128,7 +2368,7 @@
 
             if (navigator.share) {
                 navigator.share({
-                    title: 'شهادة معتمدة من نقابة تكنولوجيا المعلومات',
+                    title: 'شهادة معتمدة من نقابة تكنولوجيا المعلومات والبرمجيات',
                     text: caption,
                     url: window.location.href + '?code=' + cert.certificateCode
                 }).catch(function() {});
@@ -2143,7 +2383,7 @@
         }
 
         // ============================================================
-        // 12. البحث عن متدرب (الشامل - كل حاجة في مكان واحد)
+        // 12. البحث عن متدرب
         // ============================================================
         function searchStudent(e) {
             e.preventDefault();
@@ -2172,7 +2412,6 @@
                     return;
                 }
 
-                // تجميع بيانات المتدرب
                 const studentData = {
                     name: results[0]?.studentName || 'متدرب',
                     nationalId: results[0]?.studentNationalId || '-',
@@ -2390,7 +2629,7 @@
         }
 
         // ============================================================
-        // 14. مودال الأكاديميات مع فلاتر
+        // 14. مودال الأكاديميات
         // ============================================================
         function openAcademiesModal() {
             document.getElementById('academiesModal').classList.add('active');
@@ -2550,12 +2789,29 @@
         });
 
         // ============================================================
-        // 16. التحميل الأولي
+        // 16. أزرار الألوان
+        // ============================================================
+        document.getElementById('colorToggleBtn').addEventListener('click', openColorPicker);
+
+        document.getElementById('colorPickerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeColorPicker();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeColorPicker();
+        });
+
+        // ============================================================
+        // 17. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            loadSettings();
-            loadData();
+            // تحميل الألوان المحلية
+            loadLocalColors();
 
+            // بدء المستمعين
+            startListeners();
+
+            // معالجة الكود من الرابط
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
             if (code) {
@@ -2565,13 +2821,13 @@
                 }, 500);
             }
 
-            console.log('✅ الصفحة الرئيسية - النسخة النهائية مع التحديث الفوري');
-            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
-            console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('📋 تبويب المتدرب شامل كل حاجة (الشهادات، الوسام، الإحصائيات)');
-            console.log('🏛️ مودال الأكاديميات مع فلاتر بحث متقدمة');
-            console.log('🗑️ تم إزالة تبويب سجل الخريجين (مدمج في بحث المتدرب)');
-            console.log('🔄 التحديثات من الإعدادات تظهر فوراً بدون تحديث الصفحة');
+            console.log('✅ الصفحة الرئيسية (Home) - التحديث الفوري');
+            console.log('🔄 أي تغيير في الإعدادات يظهر فوراً');
+            console.log('🔄 أي تغيير في البيانات يظهر فوراً');
+            console.log('🎨 الألوان المحلية تتغير فقط على جهازك');
+            console.log('📊 الأكاديميات مرتبة حسب الرقم الاعتمادي');
+            console.log('📸 اللوجو يتحديث فوراً عند المشاركة');
+            console.log('🔒 زر الإعدادات يظهر فقط للسوبر أدمن');
         });
     </script>
 
