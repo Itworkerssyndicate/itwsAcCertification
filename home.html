@@ -1612,12 +1612,14 @@
         };
 
         let currentTheme = localStorage.getItem('homeTheme') || 'dark';
+        let hasLocalTheme = localStorage.getItem('homeTheme') ? true : false;
 
         function applyTheme(themeName) {
             const theme = THEMES[themeName];
             if (!theme) return;
 
             currentTheme = themeName;
+            hasLocalTheme = true;
             localStorage.setItem('homeTheme', themeName);
 
             const root = document.documentElement;
@@ -1633,23 +1635,13 @@
             document.body.style.background = theme.background;
 
             closeThemeModal();
-            // تم حذف رسالة toast
-        }
-
-        function getThemeName(name) {
-            const names = {
-                dark: 'داكن',
-                light: 'فاتح',
-                gold: 'ذهبي',
-                blue: 'أزرق',
-                purple: 'بنفسجي'
-            };
-            return names[name] || name;
         }
 
         function resetTheme() {
             localStorage.removeItem('homeTheme');
-            applyTheme('dark');
+            hasLocalTheme = false;
+            // تطبيق الألوان من الإعدادات (الافتراضي)
+            applyColorsFromSettings();
         }
 
         function loadTheme() {
@@ -1657,7 +1649,51 @@
             if (saved && THEMES[saved]) {
                 applyTheme(saved);
             } else {
-                applyTheme('dark');
+                hasLocalTheme = false;
+                // تطبيق الألوان من الإعدادات
+                applyColorsFromSettings();
+            }
+        }
+
+        function applyColorsFromSettings() {
+            const root = document.documentElement;
+            const colors = settings.colors || {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            };
+
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
             }
         }
 
@@ -1759,7 +1795,13 @@
                     if (data.certHint) settings.certHint = data.certHint;
                     if (data.studentHint) settings.studentHint = data.studentHint;
                     if (data.academyHint) settings.academyHint = data.academyHint;
-                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
+                        // لو مفيش ثيم محلي، طبق الألوان الجديدة
+                        if (!hasLocalTheme) {
+                            applyColorsFromSettings();
+                        }
+                    }
                 }
                 applySettings();
                 checkReady();
@@ -1804,6 +1846,9 @@
                     const data = doc.data();
                     if (data.colors) {
                         settings.colors = { ...settings.colors, ...data.colors };
+                        if (!hasLocalTheme) {
+                            applyColorsFromSettings();
+                        }
                     }
                 }
                 checkReady();
@@ -2794,7 +2839,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('الصفحة الرئيسية - جاري التحميل');
 
-            // تحميل الثيم المحلي أولاً
+            // تحميل الثيم
             loadTheme();
 
             // إظهار المحتوى
@@ -2814,7 +2859,8 @@
             console.log('الصفحة الرئيسية - التحميل المسبق للإعدادات');
             console.log('أي تغيير في الإعدادات يظهر فوراً');
             console.log('الأكاديميات مرتبة حسب الرقم الاعتمادي');
-            console.log('🎨 الثيمات محلية لكل مستخدم');
+            console.log('🎨 الثيم الافتراضي من إعدادات السوبر أدمن');
+            console.log('🎨 التغيير المحلي يبقى عند المستخدم');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
         });
     </script>
