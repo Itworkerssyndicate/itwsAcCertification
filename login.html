@@ -436,16 +436,19 @@
                 <span id="backHomeText">العودة إلى الصفحة الرئيسية</span>
             </button>
 
-            <div class="login-footer">
-                <span id="loginFooterText">ليس لديك حساب؟</span>
-                <a href="#" id="contactSupport">تواصل مع الدعم الفني</a>
-            </div>
-
             <div class="login-version" id="loginVersion">v2.0</div>
         </div>
     </div>
 
     <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
         // ============================================================
         // 1. تهيئة Firebase
         // ============================================================
@@ -656,6 +659,14 @@
                         if (doc.exists) {
                             const data = doc.data();
                             if (data.isActive !== false) {
+                                // تسجيل نشاط الدخول
+                                db.collection('activities').add({
+                                    type: 'login',
+                                    userName: data.fullName || data.name || 'مستخدم',
+                                    userId: user.uid,
+                                    description: 'تسجيل دخول',
+                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                                }).catch(function() {});
                                 return { user: user, data: data };
                             } else {
                                 auth.signOut();
@@ -670,7 +681,7 @@
                 .then(function(result) {
                     showMsg('تم تسجيل الدخول بنجاح، جاري التوجيه...', 'success');
                     setTimeout(function() {
-                        window.location.href = 'home.html';
+                        window.location.href = 'dashboard.html';
                     }, 1000);
                 })
                 .catch(function(error) {
@@ -699,8 +710,8 @@
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
-                // مستخدم مسجل دخول بالفعل، توجيه للصفحة الرئيسية
-                window.location.href = 'home.html';
+                // مستخدم مسجل دخول بالفعل، توجيه للوحة التحكم
+                window.location.href = 'dashboard.html';
             }
         });
 
@@ -709,6 +720,7 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('شاشة تسجيل الدخول - التحميل المسبق للإعدادات');
+            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
             loadSettings();
         });
     </script>
