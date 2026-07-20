@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle">نقابة تكنولوجيا المعلومات و البرمجيات - نظام التوثيق الأكاديمي</title>
-    <meta name="description" id="metaDescription" content="النظام الرسمي للتحقق الأكاديمي - نقابة تكنولوجيا المعلومات و البرمجيات" />
-    <meta name="keywords" id="metaKeywords" content="شهادات, تدريب, نقابة, تكنولوجيا المعلومات, تحقق, توثيق, برمجة ,برمجه, كورسات, كورس, شهاده, شهادة, لغة, لغات" />
+    <title id="pageTitle">نقابة تكنولوجيا المعلومات والبرمجيات</title>
+    <meta name="description" id="metaDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="keywords" id="metaKeywords" content="شهادات, تدريب, نقابة, تكنولوجيا المعلومات, تحقق, توثيق" />
 
     <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="نقابة تكنولوجيا المعلومات و البرمجيات" />
-    <meta property="og:description" id="ogDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات" />
+    <meta property="og:title" id="ogTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta property="og:description" id="ogDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:image" id="ogImage" content="" />
     <meta property="og:url" id="ogUrl" content="" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات و البرمجيات" />
+    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:locale" content="ar_EG" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="نقابة تكنولوجيا المعلومات و البرمجيات" />
-    <meta name="twitter:description" id="twitterDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات" />
+    <meta name="twitter:title" id="twitterTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="twitter:description" id="twitterDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta name="twitter:image" id="twitterImage" content="" />
 
     <!-- Icons -->
@@ -34,12 +34,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
     </script>
 
-    <!-- html2pdf -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
-    </script>
-
     <style>
-        /* ===== تصميم شاشة الترحيب (Splash Screen) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -71,7 +66,6 @@
             --radius: 20px;
         }
 
-        /* ===== الخلفية ===== */
         .splash-bg {
             position: fixed;
             inset: 0;
@@ -87,7 +81,6 @@
             100% { transform: scale(1.04) rotate(1.5deg); opacity: 0.9; }
         }
 
-        /* ===== الجسيمات ===== */
         .particles {
             position: fixed;
             inset: 0;
@@ -118,7 +111,6 @@
             75% { transform: translate(40px, -30px) scale(1.3); opacity: 0.7; }
         }
 
-        /* ===== الحلقات ===== */
         .rings {
             position: fixed;
             inset: 0;
@@ -145,7 +137,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== المحتوى ===== */
         .splash-container {
             position: relative;
             z-index: 10;
@@ -253,7 +244,6 @@
             font-weight: 600;
         }
 
-        /* ===== شريط التحميل ===== */
         .progress-container {
             margin-top: 24px;
             width: 100%;
@@ -288,7 +278,6 @@
             letter-spacing: 2px;
         }
 
-        /* ===== الفوتر ===== */
         .splash-footer {
             position: fixed;
             bottom: 20px;
@@ -302,7 +291,6 @@
             letter-spacing: 1px;
         }
 
-        /* ===== رسالة ===== */
         .msg {
             display: none;
             border-radius: 12px;
@@ -322,7 +310,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== تخطيط للشاشات الصغيرة ===== */
         @media (max-width: 768px) {
             .splash-card { padding: 30px 24px; max-width: 400px; }
             .splash-logo { width: 90px; height: 90px; font-size: 36px; }
@@ -342,10 +329,8 @@
 </head>
 <body>
 
-    <!-- ===== الخلفية ===== -->
     <div class="splash-bg"></div>
 
-    <!-- ===== الجسيمات ===== -->
     <div class="particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -357,57 +342,36 @@
         <div class="particle"></div>
     </div>
 
-    <!-- ===== الحلقات ===== -->
     <div class="rings">
         <div class="ring"></div>
         <div class="ring"></div>
         <div class="ring"></div>
     </div>
 
-    <!-- ===== المحتوى ===== -->
     <div class="splash-container">
         <div class="splash-card">
-            <!-- اللوجو -->
             <div class="splash-logo" id="splashLogo">ن.ت</div>
-
-            <!-- الاسم -->
-            <h1 class="splash-title" id="splashTitle">نقابة تكنولوجيا المعلومات</h1>
-
-            <!-- النص التعريفي -->
+            <h1 class="splash-title" id="splashTitle">نقابة تكنولوجيا المعلومات والبرمجيات</h1>
             <p class="splash-subtitle" id="splashSubtitle">النظام الرسمي للتحقق من صحة الشهادات التدريبية</p>
-
-            <!-- اللجنة -->
             <p class="splash-committee" id="splashCommittee">لجنة التحول الرقمي والتدريب</p>
-
-            <!-- فاصل -->
             <div class="splash-divider"></div>
-
-            <!-- النقيب -->
             <p class="splash-president" id="splashPresident">
                 <span id="presidentLabel">النقيب العام:</span>
-                <span id="presidentName">المهندس / محمود جميل</span>
+                <span id="presidentName">المهندس محمود جميل</span>
             </p>
-
-            <!-- شريط التحميل -->
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
             <p class="progress-text" id="progressText">جاري تحميل المنصة...</p>
-
-            <!-- رسالة الخطأ -->
             <div class="msg" id="splashMsg"></div>
         </div>
     </div>
 
-    <!-- ===== الفوتر ===== -->
     <div class="splash-footer" id="splashFooter">
-        <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات - جميع الحقوق محفوظة</span>
+        <span id="footerText"></span>
     </div>
 
     <script>
-        // ============================================================
-        // 1. تهيئة Firebase
-        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
             authDomain: "itwsaccertification.firebaseapp.com",
@@ -422,15 +386,12 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // ============================================================
-        // 2. متغيرات
-        // ============================================================
         let settings = {
-            unionName: 'نقابة تكنولوجيا المعلومات',
+            unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
             committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
-            footerText: '© 2026 نقابة تكنولوجيا المعلومات - جميع الحقوق محفوظة',
-            presidentName: 'المهندس / محمود جميل',
+            footerText: '',
+            presidentName: 'المهندس محمود جميل',
             presidentLabel: 'النقيب العام:',
             heroSubtitle: 'النظام الرسمي للتحقق من صحة الشهادات التدريبية',
             colors: {
@@ -443,50 +404,8 @@
         };
 
         let splashDuration = 3;
+        let isReady = false;
 
-        // ============================================================
-        // 3. جلب الإعدادات (onSnapshot للتحديث الفوري)
-        // ============================================================
-        function loadSettings() {
-            db.collection('settings').doc('general').onSnapshot(function(doc) {
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.unionName) settings.unionName = data.unionName;
-                    if (data.committeeName) settings.committeeName = data.committeeName;
-                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
-                    if (data.footerText) settings.footerText = data.footerText;
-                    if (data.presidentName) settings.presidentName = data.presidentName;
-                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
-                    if (data.heroSubtitle) settings.heroSubtitle = data.heroSubtitle;
-                    if (data.splashDuration) splashDuration = data.splashDuration || 3;
-                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
-                }
-                applySettings();
-                applyColors(settings.colors);
-                console.log('  تحديث فوري: الإعدادات العامة (Splash)');
-            }, function(error) {
-                console.warn('⚠️ خطأ في الاستماع للإعدادات:', error);
-                applySettings();
-                applyColors(settings.colors);
-            });
-
-            db.collection('settings').doc('design').onSnapshot(function(doc) {
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.colors) {
-                        settings.colors = { ...settings.colors, ...data.colors };
-                    }
-                }
-                applyColors(settings.colors);
-                console.log('  تحديث فوري: التصميم (Splash)');
-            }, function(error) {
-                console.warn('⚠️ خطأ في الاستماع للتصميم:', error);
-            });
-        }
-
-        // ============================================================
-        // 4. تطبيق الإعدادات
-        // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('splashTitle');
             const subtitleEl = document.getElementById('splashSubtitle');
@@ -517,13 +436,11 @@
                 }
             }
 
-            // ===== تحديث عنوان الصفحة =====
             const pageTitle = document.getElementById('pageTitle');
             if (pageTitle) {
-                pageTitle.textContent = settings.unionName + ' - النظام الرسمي للتحقق من الشهادات';
+                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات';
             }
 
-            // ===== OG Tags =====
             const ogTitle = document.getElementById('ogTitle');
             const ogDescription = document.getElementById('ogDescription');
             const ogImage = document.getElementById('ogImage');
@@ -535,11 +452,11 @@
             const favicon = document.getElementById('favicon');
             const appleIcon = document.getElementById('appleIcon');
 
-            if (ogTitle) ogTitle.content = settings.unionName + ' - النظام الرسمي للتحقق من الشهادات';
+            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
             if (ogDescription) ogDescription.content = settings.heroSubtitle || 'النظام الرسمي للتحقق من صحة الشهادات التدريبية';
             if (ogUrl) ogUrl.content = window.location.href;
-            if (ogSiteName) ogSiteName.content = settings.unionName;
-            if (twitterTitle) twitterTitle.content = settings.unionName + ' - النظام الرسمي للتحقق من الشهادات';
+            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
             if (twitterDescription) twitterDescription.content = settings.heroSubtitle || 'النظام الرسمي للتحقق من صحة الشهادات التدريبية';
 
             if (settings.logoUrl) {
@@ -550,9 +467,6 @@
             }
         }
 
-        // ============================================================
-        // 5. تطبيق الألوان
-        // ============================================================
         function applyColors(colors) {
             const root = document.documentElement;
             if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
@@ -571,36 +485,15 @@
             }
         }
 
-        // ============================================================
-        // 6. التوجيه للصفحة الرئيسية
-        // ============================================================
         function redirectToHome() {
             const progressText = document.getElementById('progressText');
-            if (progressText) progressText.textContent = 'جاري التوجية';
-
+            if (progressText) progressText.textContent = 'تم التحميل بنجاح جاري التوجيه...';
             setTimeout(function() {
                 window.location.href = 'home.html';
             }, 500);
         }
 
-        // ============================================================
-        // 7. عرض رسالة
-        // ============================================================
-        function showMsg(msg, type) {
-            const el = document.getElementById('splashMsg');
-            if (!el) return;
-            el.textContent = msg;
-            el.className = 'msg show ' + type;
-        }
-
-        // ============================================================
-        // 8. بدء التشغيل
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('شاشة الترحيب (Splash Screen)');
-
-            loadSettings();
-
+        function startSplash() {
             const progressBar = document.getElementById('progressBar');
             const progressText = document.getElementById('progressText');
 
@@ -631,11 +524,77 @@
             setTimeout(function() {
                 if (currentStep < steps.length) {
                     if (progressBar) progressBar.style.width = '100%';
-                    if (progressText) progressText.textContent = ' جاري التوجيه';
+                    if (progressText) progressText.textContent = 'تم التحميل جاري التوجيه...';
                     clearInterval(interval);
                     setTimeout(redirectToHome, 300);
                 }
             }, (duration * 1000) + 1000);
+        }
+
+        function loadSettings() {
+            let loadedCount = 0;
+            const totalDocs = 2;
+
+            function checkReady() {
+                loadedCount++;
+                if (loadedCount >= totalDocs) {
+                    applySettings();
+                    applyColors(settings.colors);
+                    isReady = true;
+                    startSplash();
+                }
+            }
+
+            db.collection('settings').doc('general').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.unionName) settings.unionName = data.unionName;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                    if (data.heroSubtitle) settings.heroSubtitle = data.heroSubtitle;
+                    if (data.splashDuration) splashDuration = data.splashDuration || 3;
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                }
+                if (!isReady) {
+                    applySettings();
+                    applyColors(settings.colors);
+                    checkReady();
+                } else {
+                    applySettings();
+                    applyColors(settings.colors);
+                }
+                console.log('تحديث فوري: الإعدادات العامة');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للإعدادات العامة:', error);
+                if (!isReady) checkReady();
+            });
+
+            db.collection('settings').doc('design').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
+                    }
+                }
+                if (!isReady) {
+                    applyColors(settings.colors);
+                    checkReady();
+                } else {
+                    applyColors(settings.colors);
+                }
+                console.log('تحديث فوري: التصميم');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للتصميم:', error);
+                if (!isReady) checkReady();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('شاشة الترحيب - التحميل المسبق للإعدادات');
+            loadSettings();
         });
     </script>
 
