@@ -39,10 +39,6 @@
     </script>
 
     <style>
-        /* ============================================================
-           التصميم الخرافي للصفحة الرئيسية - النسخة النهائية
-           مع إزالة سجل الخريجين ودمج كل حاجة في بحث المتدرب
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -1174,9 +1170,8 @@
     <div class="glow-orb"></div>
     <div class="glow-orb"></div>
 
-    <div class="main-container">
+    <div class="main-container" id="mainContainer">
 
-        <!-- ===== الهيدر ===== -->
         <header class="header">
             <div class="header-left">
                 <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'"></div>
@@ -1197,25 +1192,21 @@
             </div>
         </header>
 
-        <!-- ===== البطل ===== -->
         <div class="hero-section">
             <h1 class="hero-title" id="heroTitle"></h1>
             <p class="hero-subtitle" id="heroSubtitle"></p>
         </div>
 
-        <!-- ===== بوكس النص ===== -->
         <div class="info-box" id="infoBox">
             <p id="infoBoxText"></p>
         </div>
 
-        <!-- ===== تبويبات ===== -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="tabCertificate" id="tabCertBtn">بحث عن شهادة</button>
             <button class="tab-btn" data-tab="tabStudent" id="tabStudentBtn">بحث عن متدرب</button>
             <button class="tab-btn" data-tab="tabAcademy" id="tabAcademyBtn">بحث عن أكاديمية</button>
         </div>
 
-        <!-- ===== تبويب الشهادة ===== -->
         <div class="tab-content active" id="tabCertificate">
             <div class="search-card">
                 <form id="certificateSearchForm" onsubmit="return searchCertificate(event)">
@@ -1240,7 +1231,6 @@
             </div>
         </div>
 
-        <!-- ===== تبويب المتدرب (الشامل) ===== -->
         <div class="tab-content" id="tabStudent">
             <div class="search-card">
                 <form id="studentSearchForm" onsubmit="return searchStudent(event)">
@@ -1265,7 +1255,6 @@
             </div>
         </div>
 
-        <!-- ===== تبويب الأكاديمية مع زر عرض جميع الأكاديميات ===== -->
         <div class="tab-content" id="tabAcademy">
             <div class="search-card">
                 <form id="academySearchForm" onsubmit="return searchAcademy(event)">
@@ -1278,7 +1267,6 @@
                     </div>
                 </form>
 
-                <!-- ===== زر عرض جميع الأكاديميات مع فلاتر ===== -->
                 <div style="text-align:center;margin-top:16px;">
                     <button class="btn btn-primary" onclick="openAcademiesModal()" id="showAllAcademiesBtn" style="padding:10px 30px;font-size:14px;">
                         عرض جميع الأكاديميات المعتمدة
@@ -1297,7 +1285,6 @@
             </div>
         </div>
 
-        <!-- ===== زر خدمات النقابة ===== -->
         <div class="services-btn-container">
             <a href="#" class="services-btn" id="servicesBtn">
                 <span id="servicesBtnText"></span>
@@ -1305,7 +1292,6 @@
             </a>
         </div>
 
-        <!-- ===== الفوتر ===== -->
         <footer class="footer">
             <span id="footerText"></span>
             <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
@@ -1318,7 +1304,6 @@
 
     <div id="print-container"></div>
 
-    <!-- ===== مودال الأكاديميات ===== -->
     <div class="academies-modal" id="academiesModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1326,7 +1311,6 @@
                 <button class="close-btn" onclick="closeAcademiesModal()">✕</button>
             </div>
 
-            <!-- فلاتر البحث داخل المودال -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
                 <input type="text" id="modalFilterName" placeholder="بحث باسم الأكاديمية..." oninput="applyModalFilters()" style="padding:10px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg-hover);color:var(--text-color);font-family:inherit;outline:none;" />
                 <input type="text" id="modalFilterLicense" placeholder="بحث بالرقم الاعتمادي..." oninput="applyModalFilters()" style="padding:10px;border-radius:var(--radius-sm);border:2px solid var(--border);background:var(--bg-hover);color:var(--text-color);font-family:inherit;outline:none;" />
@@ -1351,9 +1335,6 @@
     </div>
 
     <script>
-        // ============================================================
-        // 1. تهيئة Firebase
-        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
             authDomain: "itwsaccertification.firebaseapp.com",
@@ -1368,9 +1349,6 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // ============================================================
-        // 2. متغيرات عامة
-        // ============================================================
         let currentUser = null;
         let isAdmin = false;
         let allAcademies = [];
@@ -1378,7 +1356,6 @@
         let filteredAcademies = [];
         let modalPage = 1;
         const modalItemsPerPage = 8;
-        let isReady = false;
 
         let settings = {
             unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
@@ -1412,9 +1389,6 @@
             }
         };
 
-        // ============================================================
-        // 3. إعدادات الـ Listeners (التحديث الفوري)
-        // ============================================================
         let generalUnsubscribe = null;
         let textsUnsubscribe = null;
         let designUnsubscribe = null;
@@ -1428,14 +1402,11 @@
 
             function checkReady() {
                 loadedCount++;
-                if (loadedCount >= totalDocs && !isReady) {
-                    isReady = true;
-                    document.getElementById('main-container').style.display = 'block';
+                if (loadedCount >= totalDocs) {
                     console.log('تم تحميل كل البيانات بنجاح');
                 }
             }
 
-            // ===== استماع للإعدادات العامة =====
             if (generalUnsubscribe) generalUnsubscribe();
             generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1458,14 +1429,13 @@
                 }
                 applySettings();
                 applyColors(settings.colors);
-                if (!isReady) checkReady();
+                checkReady();
                 console.log('تحديث فوري: الإعدادات العامة');
             }, function(error) {
                 console.warn('خطأ في الاستماع للإعدادات العامة:', error);
-                if (!isReady) checkReady();
+                checkReady();
             });
 
-            // ===== استماع للنصوص =====
             if (textsUnsubscribe) textsUnsubscribe();
             textsUnsubscribe = db.collection('settings').doc('texts').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1488,14 +1458,13 @@
                     if (data.logoutBtnText) settings.logoutBtnText = data.logoutBtnText;
                 }
                 applyTexts();
-                if (!isReady) checkReady();
+                checkReady();
                 console.log('تحديث فوري: النصوص');
             }, function(error) {
                 console.warn('خطأ في الاستماع للنصوص:', error);
-                if (!isReady) checkReady();
+                checkReady();
             });
 
-            // ===== استماع للتصميم =====
             if (designUnsubscribe) designUnsubscribe();
             designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1505,14 +1474,13 @@
                     }
                 }
                 applyColors(settings.colors);
-                if (!isReady) checkReady();
+                checkReady();
                 console.log('تحديث فوري: التصميم');
             }, function(error) {
                 console.warn('خطأ في الاستماع للتصميم:', error);
-                if (!isReady) checkReady();
+                checkReady();
             });
 
-            // ===== استماع للأمان =====
             if (securityUnsubscribe) securityUnsubscribe();
             securityUnsubscribe = db.collection('settings').doc('security').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1521,13 +1489,12 @@
                         console.warn('المنصة في وضع الصيانة');
                     }
                 }
-                if (!isReady) checkReady();
+                checkReady();
             }, function(error) {
                 console.warn('خطأ في الاستماع للأمان:', error);
-                if (!isReady) checkReady();
+                checkReady();
             });
 
-            // ===== استماع للأكاديميات (مرتبة حسب الرقم الاعتمادي) =====
             if (academiesUnsubscribe) academiesUnsubscribe();
             academiesUnsubscribe = db.collection('academies')
                 .where('isDeleted', '==', false)
@@ -1542,14 +1509,13 @@
                     filteredAcademies = [...allAcademies];
                     populateModalGovernorates();
                     loadModalAcademies();
-                    if (!isReady) checkReady();
+                    checkReady();
                     console.log('تحديث فوري: الأكاديميات (' + allAcademies.length + ')');
                 }, function(error) {
                     console.warn('خطأ في الاستماع للأكاديميات:', error);
-                    if (!isReady) checkReady();
+                    checkReady();
                 });
 
-            // ===== استماع للشهادات =====
             if (certificatesUnsubscribe) certificatesUnsubscribe();
             certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
                 allCertificates = [];
@@ -1558,17 +1524,14 @@
                     data.id = doc.id;
                     allCertificates.push(data);
                 });
-                if (!isReady) checkReady();
+                checkReady();
                 console.log('تحديث فوري: الشهادات (' + allCertificates.length + ')');
             }, function(error) {
                 console.warn('خطأ في الاستماع للشهادات:', error);
-                if (!isReady) checkReady();
+                checkReady();
             });
         }
 
-        // ============================================================
-        // 4. تطبيق الإعدادات
-        // ============================================================
         function applySettings() {
             const unionNameEl = document.getElementById('unionName');
             const committeeNameEl = document.getElementById('committeeName');
@@ -1690,25 +1653,23 @@
             }
         }
 
-        // ============================================================
-        // 5. دوال مساعدة
-        // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
+
         function showMsg(id, msg, type) {
             const el = document.getElementById(id);
             if (!el) return;
             el.textContent = msg;
             el.className = 'msg show ' + type;
-            setTimeout(function() {
-                el.className = 'msg';
-            }, 4000);
+            setTimeout(function() { el.className = 'msg'; }, 4000);
         }
+
         function hideMsg(id) {
             const el = document.getElementById(id);
             if (!el) return;
             el.className = 'msg';
         }
+
         function showResult(id) { document.getElementById(id).classList.add('active'); }
         function hideResult(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -1728,9 +1689,6 @@
             return 'grade-f';
         }
 
-        // ============================================================
-        // 6. المصادقة
-        // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
                 currentUser = user;
@@ -1772,9 +1730,6 @@
             window.location.href = 'dashboard.html';
         });
 
-        // ============================================================
-        // 7. البحث عن شهادة
-        // ============================================================
         function searchCertificate(e) {
             e.preventDefault();
 
@@ -1853,9 +1808,6 @@
             `;
         }
 
-        // ============================================================
-        // 8. طباعة الشهادة
-        // ============================================================
         function printCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
@@ -1977,9 +1929,6 @@
             printWindow.document.close();
         }
 
-        // ============================================================
-        // 9. تحميل PDF
-        // ============================================================
         function downloadCertificatePDF(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
@@ -2080,9 +2029,6 @@
                 .catch(function(err) { alert('حدث خطأ في تحميل PDF: ' + err.message); });
         }
 
-        // ============================================================
-        // 10. مشاركة الشهادة
-        // ============================================================
         function shareCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
@@ -2114,9 +2060,6 @@
             }
         }
 
-        // ============================================================
-        // 11. البحث عن متدرب
-        // ============================================================
         function searchStudent(e) {
             e.preventDefault();
 
@@ -2256,9 +2199,6 @@
             alert('جاري تحميل ' + certs.length + ' شهادة للمتدرب ' + studentName);
         }
 
-        // ============================================================
-        // 12. البحث عن أكاديمية
-        // ============================================================
         function searchAcademy(e) {
             e.preventDefault();
 
@@ -2360,9 +2300,6 @@
             `;
         }
 
-        // ============================================================
-        // 13. مودال الأكاديميات
-        // ============================================================
         function openAcademiesModal() {
             document.getElementById('academiesModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2504,9 +2441,6 @@
             if (e.key === 'Escape') closeAcademiesModal();
         });
 
-        // ============================================================
-        // 14. علامات التبويب
-        // ============================================================
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -2520,17 +2454,14 @@
             });
         });
 
-        // ============================================================
-        // 15. بدء التشغيل
-        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // إخفاء المحتوى مؤقتاً
-            document.getElementById('main-container').style.display = 'none';
+            console.log('الصفحة الرئيسية - جاري التحميل');
 
-            // بدء المستمعين
+            // إظهار المحتوى فوراً
+            document.getElementById('mainContainer').style.display = 'block';
+
             startListeners();
 
-            // معالجة الكود من الرابط
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
             if (code) {
