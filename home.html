@@ -2005,9 +2005,7 @@
         // 7. دوال مساعدة
         // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
-
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
-
         function showMsg(id, msg, type) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -2015,15 +2013,12 @@
             el.className = 'msg show ' + type;
             setTimeout(function() { el.className = 'msg'; }, 4000);
         }
-
         function hideMsg(id) {
             const el = document.getElementById(id);
             if (!el) return;
             el.className = 'msg';
         }
-
         function showResult(id) { document.getElementById(id).classList.add('active'); }
-
         function hideResult(id) { document.getElementById(id).classList.remove('active'); }
 
         function formatDate(date) {
@@ -2838,7 +2833,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('الصفحة الرئيسية - جاري التحميل');
 
-            // تحميل الثيم المحلي
+            // تحميل الثيم المحلي أولاً
             loadTheme();
 
             // إظهار المحتوى
