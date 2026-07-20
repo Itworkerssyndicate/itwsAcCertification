@@ -463,7 +463,7 @@
                 }
                 applySettings();
                 applyColors(settings.colors);
-                console.log('✅ تحديث فوري: الإعدادات العامة (Splash)');
+                console.log('  تحديث فوري: الإعدادات العامة (Splash)');
             }, function(error) {
                 console.warn('⚠️ خطأ في الاستماع للإعدادات:', error);
                 applySettings();
@@ -478,7 +478,7 @@
                     }
                 }
                 applyColors(settings.colors);
-                console.log('✅ تحديث فوري: التصميم (Splash)');
+                console.log('  تحديث فوري: التصميم (Splash)');
             }, function(error) {
                 console.warn('⚠️ خطأ في الاستماع للتصميم:', error);
             });
@@ -576,7 +576,7 @@
         // ============================================================
         function redirectToHome() {
             const progressText = document.getElementById('progressText');
-            if (progressText) progressText.textContent = 'تم التحميل بنجاح ✅ جاري التوجيه...';
+            if (progressText) progressText.textContent = 'جاري التوجية';
 
             setTimeout(function() {
                 window.location.href = 'home.html';
@@ -597,7 +597,7 @@
         // 8. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ شاشة الترحيب (Splash Screen)');
+            console.log('شاشة الترحيب (Splash Screen)');
 
             loadSettings();
 
@@ -611,7 +611,7 @@
                 { percent: 40, text: 'جاري تهيئة المنصة...' },
                 { percent: 60, text: 'جاري تحميل البيانات...' },
                 { percent: 80, text: 'جاري التجهيز للدخول...' },
-                { percent: 100, text: 'تم التحميل بنجاح ✅' },
+                { percent: 100, text: 'تم التحميل بنجاح' },
             ];
 
             let currentStep = 0;
@@ -631,7 +631,7 @@
             setTimeout(function() {
                 if (currentStep < steps.length) {
                     if (progressBar) progressBar.style.width = '100%';
-                    if (progressText) progressText.textContent = 'تم التحميل ✅ جاري التوجيه...';
+                    if (progressText) progressText.textContent = ' جاري التوجيه';
                     clearInterval(interval);
                     setTimeout(redirectToHome, 300);
                 }
