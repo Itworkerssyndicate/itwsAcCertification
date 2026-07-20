@@ -1090,6 +1090,145 @@
             font-size: 14px;
         }
 
+        /* ===== زر الثيم ===== */
+        .theme-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border);
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 40px var(--primary-glow);
+        }
+
+        .theme-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .theme-modal.active {
+            display: flex;
+        }
+
+        .theme-modal .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            animation: modalIn 0.4s ease;
+        }
+
+        .theme-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .theme-modal .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .theme-modal .modal-header .close-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-modal .modal-header .close-btn:hover {
+            background: var(--error-bg);
+            color: var(--error);
+            border-color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            padding: 14px 12px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-hover);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-glow);
+        }
+
+        .theme-btn.reset {
+            border-color: rgba(239,68,68,0.2);
+            color: var(--error);
+            background: rgba(239,68,68,0.08);
+        }
+
+        .theme-btn.reset:hover {
+            border-color: var(--error);
+            background: rgba(239,68,68,0.15);
+        }
+
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 18px; border-radius: 20px; }
             .header-right { justify-content: center; flex-wrap: wrap; }
@@ -1122,6 +1261,10 @@
             .academies-modal .pagination button { padding: 6px 16px; font-size: 12px; }
             .header-president { padding: 3px 10px; }
             .header-president .president-name { font-size: 12px; }
+            .theme-toggle-btn { width: 40px; height: 40px; font-size: 16px; bottom: 16px; left: 16px; }
+            .theme-modal .modal-content { padding: 20px; margin: 10px; }
+            .theme-grid { grid-template-columns: 1fr 1fr; }
+            .theme-btn { padding: 10px 8px; font-size: 12px; }
         }
 
         @media (max-width: 480px) {
@@ -1141,6 +1284,10 @@
             .academies-modal .modal-content { padding: 16px; }
             .academies-modal .academy-item .name { font-size: 14px; }
             .header-president .president-name { font-size: 11px; }
+            .theme-toggle-btn { width: 36px; height: 36px; font-size: 14px; bottom: 12px; left: 12px; }
+            .theme-modal .modal-content { padding: 16px; }
+            .theme-grid { grid-template-columns: 1fr 1fr; }
+            .theme-btn { padding: 8px 6px; font-size: 11px; }
         }
     </style>
 </head>
@@ -1302,6 +1449,29 @@
 
     </div>
 
+    <!-- ===== زر تغيير الثيم ===== -->
+    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="openThemeModal()">
+        🎨
+    </button>
+
+    <!-- ===== مودال الثيمات ===== -->
+    <div class="theme-modal" id="themeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎨 تغيير الثيم</h3>
+                <button class="close-btn" onclick="closeThemeModal()">✕</button>
+            </div>
+            <div class="theme-grid">
+                <button class="theme-btn" onclick="applyTheme('dark')">داكن</button>
+                <button class="theme-btn" onclick="applyTheme('light')">فاتح</button>
+                <button class="theme-btn" onclick="applyTheme('gold')">ذهبي</button>
+                <button class="theme-btn" onclick="applyTheme('blue')">أزرق</button>
+                <button class="theme-btn" onclick="applyTheme('purple')">بنفسجي</button>
+                <button class="theme-btn reset" onclick="resetTheme()">استعادة الافتراضي</button>
+            </div>
+        </div>
+    </div>
+
     <div id="print-container"></div>
 
     <div class="academies-modal" id="academiesModal">
@@ -1335,6 +1505,17 @@
     </div>
 
     <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
             authDomain: "itwsaccertification.firebaseapp.com",
@@ -1349,6 +1530,195 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // ============================================================
+        // 2. الثيمات
+        // ============================================================
+        const THEMES = {
+            dark: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            },
+            light: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#F5F7FA',
+                text: '#1A1A2E',
+                textSecondary: 'rgba(26,26,46,0.7)',
+                textMuted: 'rgba(26,26,46,0.4)',
+                textDim: 'rgba(26,26,46,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(26,26,46,0.06)',
+                cardBg: 'rgba(255,255,255,0.6)'
+            },
+            gold: {
+                primary: '#C9A84C',
+                accent: '#E8D5A3',
+                background: '#1A120B',
+                text: '#E8D5A3',
+                textSecondary: 'rgba(232,213,163,0.7)',
+                textMuted: 'rgba(232,213,163,0.4)',
+                textDim: 'rgba(232,213,163,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(232,213,163,0.06)',
+                cardBg: 'rgba(201,168,76,0.08)'
+            },
+            blue: {
+                primary: '#3B82F6',
+                accent: '#60A5FA',
+                background: '#050A18',
+                text: '#E8F0FE',
+                textSecondary: 'rgba(232,240,254,0.7)',
+                textMuted: 'rgba(232,240,254,0.4)',
+                textDim: 'rgba(232,240,254,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(59,130,246,0.06)',
+                cardBg: 'rgba(59,130,246,0.06)'
+            },
+            purple: {
+                primary: '#8B5CF6',
+                accent: '#A78BFA',
+                background: '#0A0518',
+                text: '#EDE7FF',
+                textSecondary: 'rgba(237,231,255,0.7)',
+                textMuted: 'rgba(237,231,255,0.4)',
+                textDim: 'rgba(237,231,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(139,92,246,0.06)',
+                cardBg: 'rgba(139,92,246,0.06)'
+            }
+        };
+
+        let currentTheme = localStorage.getItem('homeTheme') || 'dark';
+
+        function applyTheme(themeName) {
+            const theme = THEMES[themeName];
+            if (!theme) return;
+
+            currentTheme = themeName;
+            localStorage.setItem('homeTheme', themeName);
+
+            const root = document.documentElement;
+            Object.keys(theme).forEach(function(key) {
+                root.style.setProperty('--' + key, theme[key]);
+            });
+
+            const primaryGlow = theme.primary ? theme.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = theme.accent ? theme.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            document.body.style.background = theme.background;
+
+            closeThemeModal();
+            showToast('تم تغيير الثيم إلى: ' + getThemeName(themeName));
+        }
+
+        function getThemeName(name) {
+            const names = {
+                dark: 'داكن',
+                light: 'فاتح',
+                gold: 'ذهبي',
+                blue: 'أزرق',
+                purple: 'بنفسجي'
+            };
+            return names[name] || name;
+        }
+
+        function resetTheme() {
+            localStorage.removeItem('homeTheme');
+            applyTheme('dark');
+            showToast('تم استعادة الثيم الافتراضي');
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem('homeTheme');
+            if (saved && THEMES[saved]) {
+                applyTheme(saved);
+            } else {
+                applyTheme('dark');
+            }
+        }
+
+        function openThemeModal() {
+            document.getElementById('themeModal').classList.add('active');
+        }
+
+        function closeThemeModal() {
+            document.getElementById('themeModal').classList.remove('active');
+        }
+
+        document.getElementById('themeModal').addEventListener('click', function(e) {
+            if (e.target === this) closeThemeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeThemeModal();
+        });
+
+        // ============================================================
+        // 3. Toast notification
+        // ============================================================
+        function showToast(msg) {
+            const existing = document.querySelector('.toast-notification');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = msg;
+            Object.assign(toast.style, {
+                position: 'fixed',
+                bottom: '80px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: 'rgba(0,0,0,0.8)',
+                backdropFilter: 'blur(10px)',
+                color: '#fff',
+                padding: '12px 24px',
+                borderRadius: '12px',
+                fontSize: '14px',
+                fontWeight: '600',
+                zIndex: '9999',
+                boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+                transition: 'all 0.3s ease',
+                opacity: '0',
+                pointerEvents: 'none',
+                fontFamily: "'Cairo', sans-serif"
+            });
+            document.body.appendChild(toast);
+
+            setTimeout(function() { toast.style.opacity = '1'; }, 10);
+            setTimeout(function() {
+                toast.style.opacity = '0';
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 2500);
+        }
+
+        // ============================================================
+        // 4. متغيرات عامة
+        // ============================================================
         let currentUser = null;
         let isAdmin = false;
         let allAcademies = [];
@@ -1389,6 +1759,9 @@
             }
         };
 
+        // ============================================================
+        // 5. إعدادات الـ Listeners
+        // ============================================================
         let generalUnsubscribe = null;
         let textsUnsubscribe = null;
         let designUnsubscribe = null;
@@ -1428,7 +1801,6 @@
                     if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
                 }
                 applySettings();
-                applyColors(settings.colors);
                 checkReady();
                 console.log('تحديث فوري: الإعدادات العامة');
             }, function(error) {
@@ -1473,7 +1845,6 @@
                         settings.colors = { ...settings.colors, ...data.colors };
                     }
                 }
-                applyColors(settings.colors);
                 checkReady();
                 console.log('تحديث فوري: التصميم');
             }, function(error) {
@@ -1532,6 +1903,9 @@
             });
         }
 
+        // ============================================================
+        // 6. تطبيق الإعدادات
+        // ============================================================
         function applySettings() {
             const unionNameEl = document.getElementById('unionName');
             const committeeNameEl = document.getElementById('committeeName');
@@ -1627,33 +2001,11 @@
             if (logoutBtn && settings.logoutBtnText) logoutBtn.textContent = settings.logoutBtnText;
         }
 
-        function applyColors(colors) {
-            const root = document.documentElement;
-            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
-            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
-            if (colors.background) root.style.setProperty('--bg-color', colors.background);
-            if (colors.text) root.style.setProperty('--text-color', colors.text);
-            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
-            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
-            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
-            if (colors.success) root.style.setProperty('--success', colors.success);
-            if (colors.error) root.style.setProperty('--error', colors.error);
-            if (colors.warning) root.style.setProperty('--warning', colors.warning);
-            if (colors.info) root.style.setProperty('--info', colors.info);
-            if (colors.border) root.style.setProperty('--border', colors.border);
-            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
-
-            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
-            root.style.setProperty('--primary-glow', primaryGlow);
-            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
-            root.style.setProperty('--accent-glow', accentGlow);
-
-            if (colors.background) {
-                document.body.style.background = colors.background;
-            }
-        }
-
+        // ============================================================
+        // 7. دوال مساعدة
+        // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
+
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
 
         function showMsg(id, msg, type) {
@@ -1671,6 +2023,7 @@
         }
 
         function showResult(id) { document.getElementById(id).classList.add('active'); }
+
         function hideResult(id) { document.getElementById(id).classList.remove('active'); }
 
         function formatDate(date) {
@@ -1689,6 +2042,9 @@
             return 'grade-f';
         }
 
+        // ============================================================
+        // 8. المصادقة
+        // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
                 currentUser = user;
@@ -1730,6 +2086,9 @@
             window.location.href = 'dashboard.html';
         });
 
+        // ============================================================
+        // 9. البحث عن شهادة
+        // ============================================================
         function searchCertificate(e) {
             e.preventDefault();
 
@@ -1777,37 +2136,40 @@
             const shareText = settings.shareBtnText || 'مشاركة';
 
             container.innerHTML = `
-                <div class="certificate-card">
-                    <div class="cert-header">
-                        <div class="cert-header-left">
-                            <div style="font-size:24px;">📜</div>
-                            <div>
-                                <div style="font-weight:700;font-size:18px;color:var(--text-color);">شهادة اجتياز دورة تدريبية</div>
-                                <div class="cert-code">${data.certificateCode}</div>
+                    <div class="certificate-card">
+                        <div class="cert-header">
+                            <div class="cert-header-left">
+                                <div style="font-size:24px;">📜</div>
+                                <div>
+                                    <div style="font-weight:700;font-size:18px;color:var(--text-color);">شهادة اجتياز دورة تدريبية</div>
+                                    <div class="cert-code">${data.certificateCode}</div>
+                                </div>
                             </div>
+                            ${statusHtml}
                         </div>
-                        ${statusHtml}
+                        <div class="cert-grid">
+                            <div class="cert-item"><div class="label">اسم المتدرب</div><div class="value">${data.studentName || '-'}</div></div>
+                            <div class="cert-item"><div class="label">الرقم القومي</div><div class="value" style="font-family:'Courier New',monospace;font-size:13px;color:var(--text-muted);">${data.studentNationalId || '-'}</div></div>
+                            <div class="cert-item"><div class="label">اسم الدورة</div><div class="value">${data.courseName || '-'}</div></div>
+                            <div class="cert-item"><div class="label">عدد الساعات</div><div class="value">${data.courseHours || 'غير محدد'}</div></div>
+                            <div class="cert-item"><div class="label">تقدير الاجتياز</div><div class="value ${gradeClass}">${data.grade || '-'}</div></div>
+                            <div class="cert-item"><div class="label">الأكاديمية</div><div class="value">${data.academyName || '-'}</div></div>
+                            <div class="cert-item"><div class="label">الفرع</div><div class="value">${data.branchName || data.branchId || '-'}</div></div>
+                            <div class="cert-item"><div class="label">رقم الاعتماد</div><div class="value">${data.academyLicenseNumber || '-'}</div></div>
+                            <div class="cert-item"><div class="label">تاريخ الحصول</div><div class="value">${formatDate(data.issuedAt)}</div></div>
+                        </div>
+                        <div class="cert-actions">
+                            <button class="btn btn-success btn-sm" onclick="printCertificate('${data.certificateCode}')">${printText}</button>
+                            <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${data.certificateCode}')">${pdfText}</button>
+                            <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${data.certificateCode}')">${shareText}</button>
+                        </div>
                     </div>
-                    <div class="cert-grid">
-                        <div class="cert-item"><div class="label">اسم المتدرب</div><div class="value">${data.studentName || '-'}</div></div>
-                        <div class="cert-item"><div class="label">الرقم القومي</div><div class="value" style="font-family:'Courier New',monospace;font-size:13px;color:var(--text-muted);">${data.studentNationalId || '-'}</div></div>
-                        <div class="cert-item"><div class="label">اسم الدورة</div><div class="value">${data.courseName || '-'}</div></div>
-                        <div class="cert-item"><div class="label">عدد الساعات</div><div class="value">${data.courseHours || 'غير محدد'}</div></div>
-                        <div class="cert-item"><div class="label">تقدير الاجتياز</div><div class="value ${gradeClass}">${data.grade || '-'}</div></div>
-                        <div class="cert-item"><div class="label">الأكاديمية</div><div class="value">${data.academyName || '-'}</div></div>
-                        <div class="cert-item"><div class="label">الفرع</div><div class="value">${data.branchName || data.branchId || '-'}</div></div>
-                        <div class="cert-item"><div class="label">رقم الاعتماد</div><div class="value">${data.academyLicenseNumber || '-'}</div></div>
-                        <div class="cert-item"><div class="label">تاريخ الحصول</div><div class="value">${formatDate(data.issuedAt)}</div></div>
-                    </div>
-                    <div class="cert-actions">
-                        <button class="btn btn-success btn-sm" onclick="printCertificate('${data.certificateCode}')">${printText}</button>
-                        <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${data.certificateCode}')">${pdfText}</button>
-                        <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${data.certificateCode}')">${shareText}</button>
-                    </div>
-                </div>
-            `;
+                `;
         }
 
+        // ============================================================
+        // 10. طباعة الشهادة
+        // ============================================================
         function printCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
@@ -1826,67 +2188,67 @@
             const gradeClass = getGradeClass(cert.grade);
 
             const html = `
-                <div style="width:780px;padding:30px 35px;background:#ffffff;color:#1a1a2e;font-family:'Cairo','Segoe UI','Tahoma',sans-serif;direction:rtl;border:4px solid var(--primary-color);border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,0.15);position:relative;margin:0 auto;">
-                    <div style="position:absolute;inset:8px;border:2px dashed rgba(201,168,76,0.12);border-radius:16px;pointer-events:none;"></div>
+                    <div style="width:780px;padding:30px 35px;background:#ffffff;color:#1a1a2e;font-family:'Cairo','Segoe UI','Tahoma',sans-serif;direction:rtl;border:4px solid var(--primary-color);border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,0.15);position:relative;margin:0 auto;">
+                        <div style="position:absolute;inset:8px;border:2px dashed rgba(201,168,76,0.12);border-radius:16px;pointer-events:none;"></div>
 
-                    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--primary-color);padding-bottom:14px;margin-bottom:14px;">
-                        <div style="display:flex;align-items:center;gap:14px;">
-                            ${logoHtml}
-                            <div>
-                                <h1 style="font-size:20px;font-weight:800;color:var(--primary-color);margin:0;">${settings.unionName}</h1>
-                                <p style="font-size:12px;color:#666;margin:2px 0 0;">${settings.committeeName}</p>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--primary-color);padding-bottom:14px;margin-bottom:14px;">
+                            <div style="display:flex;align-items:center;gap:14px;">
+                                ${logoHtml}
+                                <div>
+                                    <h1 style="font-size:20px;font-weight:800;color:var(--primary-color);margin:0;">${settings.unionName}</h1>
+                                    <p style="font-size:12px;color:#666;margin:2px 0 0;">${settings.committeeName}</p>
+                                </div>
+                            </div>
+                            <div style="text-align:center;">
+                                ${stampHtml}
+                                <span style="font-size:10px;color:#888;display:block;margin-top:2px;">ختم النقابة</span>
                             </div>
                         </div>
-                        <div style="text-align:center;">
-                            ${stampHtml}
-                            <span style="font-size:10px;color:#888;display:block;margin-top:2px;">ختم النقابة</span>
+
+                        <div style="text-align:center;font-size:24px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;text-decoration:underline;text-underline-offset:6px;">شهادة اجتياز دورة تدريبية</div>
+                        <div style="text-align:center;font-size:12px;color:#666;margin-bottom:12px;">
+                            كود الشهادة: ${cert.certificateCode}
+                            <span style="margin:0 10px;">|</span>
+                            <span style="display:inline-block;padding:2px 14px;border-radius:30px;font-size:11px;font-weight:700;background:#10b981;color:#fff;">صالحة</span>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;background:#f8faff;border-radius:14px;padding:14px 18px;margin-bottom:14px;border:1px solid rgba(201,168,76,0.06);">
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم المتدرب</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.studentName || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الرقم القومي</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;font-family:'Courier New',monospace;">${cert.studentNationalId || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم الدورة</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseName || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">عدد الساعات</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseHours || 'غير محدد'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تقدير الاجتياز</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;" class="${gradeClass}">${cert.grade || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الأكاديمية</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyName || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الفرع</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.branchName || cert.branchId || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">رقم الاعتماد</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyLicenseNumber || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تاريخ الحصول</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${formatDate(cert.issuedAt)}</div></div>
+                        </div>
+
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-top:2px solid #eee;padding-top:12px;margin-top:4px;">
+                            <div style="text-align:center;">
+                                <div style="font-size:10px;color:#888;">توقيع رئيس اللجنة</div>
+                                <div style="width:120px;border-bottom:2px solid #1a1a2e;margin:4px auto 2px;"></div>
+                                <div style="font-size:13px;font-weight:700;color:var(--primary-color);">د. أحمد محمد</div>
+                            </div>
+                            <div style="text-align:center;">
+                                ${stampHtml ? `<img src="${settings.stampUrl}" style="width:50px;height:50px;object-fit:contain;opacity:0.7;" />` : ''}
+                                <span style="font-size:10px;color:#888;display:block;">ختم النقابة</span>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:24px;color:var(--primary-color);">🏛️</div>
+                                <span style="font-size:10px;color:#888;display:block;">ختم الأكاديمية</span>
+                            </div>
+                        </div>
+
+                        <div style="text-align:center;margin-top:10px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px;">
+                            <span>النقيب العام: ${settings.presidentName}</span>
+                            <span style="margin:0 8px;">|</span>
+                            <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
+                            <br/>
+                            <span style="font-size:9px;color:#aaa;">${new Date().toLocaleDateString('ar-EG')}</span>
                         </div>
                     </div>
-
-                    <div style="text-align:center;font-size:24px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;text-decoration:underline;text-underline-offset:6px;">شهادة اجتياز دورة تدريبية</div>
-                    <div style="text-align:center;font-size:12px;color:#666;margin-bottom:12px;">
-                        كود الشهادة: ${cert.certificateCode}
-                        <span style="margin:0 10px;">|</span>
-                        <span style="display:inline-block;padding:2px 14px;border-radius:30px;font-size:11px;font-weight:700;background:#10b981;color:#fff;">صالحة</span>
-                    </div>
-
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;background:#f8faff;border-radius:14px;padding:14px 18px;margin-bottom:14px;border:1px solid rgba(201,168,76,0.06);">
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم المتدرب</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.studentName || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الرقم القومي</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;font-family:'Courier New',monospace;">${cert.studentNationalId || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم الدورة</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseName || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">عدد الساعات</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseHours || 'غير محدد'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تقدير الاجتياز</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;" class="${gradeClass}">${cert.grade || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الأكاديمية</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyName || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الفرع</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.branchName || cert.branchId || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">رقم الاعتماد</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyLicenseNumber || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تاريخ الحصول</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${formatDate(cert.issuedAt)}</div></div>
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;align-items:center;border-top:2px solid #eee;padding-top:12px;margin-top:4px;">
-                        <div style="text-align:center;">
-                            <div style="font-size:10px;color:#888;">توقيع رئيس اللجنة</div>
-                            <div style="width:120px;border-bottom:2px solid #1a1a2e;margin:4px auto 2px;"></div>
-                            <div style="font-size:13px;font-weight:700;color:var(--primary-color);">د. أحمد محمد</div>
-                        </div>
-                        <div style="text-align:center;">
-                            ${stampHtml ? `<img src="${settings.stampUrl}" style="width:50px;height:50px;object-fit:contain;opacity:0.7;" />` : ''}
-                            <span style="font-size:10px;color:#888;display:block;">ختم النقابة</span>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="font-size:24px;color:var(--primary-color);">🏛️</div>
-                            <span style="font-size:10px;color:#888;display:block;">ختم الأكاديمية</span>
-                        </div>
-                    </div>
-
-                    <div style="text-align:center;margin-top:10px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px;">
-                        <span>النقيب العام: ${settings.presidentName}</span>
-                        <span style="margin:0 8px;">|</span>
-                        <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
-                        <br/>
-                        <span style="font-size:9px;color:#aaa;">${new Date().toLocaleDateString('ar-EG')}</span>
-                    </div>
-                </div>
-            `;
+                `;
 
             const container = document.getElementById('print-container');
             if (!container) return;
@@ -1897,38 +2259,41 @@
             const content = container.innerHTML;
 
             printWindow.document.write(`
-                <!DOCTYPE html>
-                <html dir="rtl">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>شهادة معتمدة - ${cert.certificateCode}</title>
-                    <style>
-                        * { margin:0; padding:0; box-sizing:border-box; }
-                        body { background:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; direction:rtl; }
-                        .grade-a { color:#10b981; }
-                        .grade-b { color:#3b82f6; }
-                        .grade-c { color:#eab308; }
-                        .grade-d { color:#f97316; }
-                        .grade-f { color:#ef4444; }
-                        :root { --primary-color: ${settings.colors.primary || '#C9A84C'}; }
-                        @media print { body { padding:0; } }
-                        @media (max-width:600px) { body { padding:10px; } }
-                    </style>
-                </head>
-                <body>
-                    ${content}
-                    <script>
-                        window.onload = function() {
-                            setTimeout(function() { window.print(); }, 500);
-                            setTimeout(function() { window.close(); }, 3000);
-                        };
-                    <\/script>
-                </body>
-                </html>
-            `);
+                    <!DOCTYPE html>
+                    <html dir="rtl">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>شهادة معتمدة - ${cert.certificateCode}</title>
+                        <style>
+                            * { margin:0; padding:0; box-sizing:border-box; }
+                            body { background:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; direction:rtl; }
+                            .grade-a { color:#10b981; }
+                            .grade-b { color:#3b82f6; }
+                            .grade-c { color:#eab308; }
+                            .grade-d { color:#f97316; }
+                            .grade-f { color:#ef4444; }
+                            :root { --primary-color: ${settings.colors.primary || '#C9A84C'}; }
+                            @media print { body { padding:0; } }
+                            @media (max-width:600px) { body { padding:10px; } }
+                        </style>
+                    </head>
+                    <body>
+                        ${content}
+                        <script>
+                            window.onload = function() {
+                                setTimeout(function() { window.print(); }, 500);
+                                setTimeout(function() { window.close(); }, 3000);
+                            };
+                        <\/script>
+                    </body>
+                    </html>
+                `);
             printWindow.document.close();
         }
 
+        // ============================================================
+        // 11. تحميل PDF
+        // ============================================================
         function downloadCertificatePDF(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
@@ -1947,67 +2312,67 @@
             const gradeClass = getGradeClass(cert.grade);
 
             const html = `
-                <div style="width:780px;padding:30px 35px;background:#ffffff;color:#1a1a2e;font-family:'Cairo','Segoe UI','Tahoma',sans-serif;direction:rtl;border:4px solid var(--primary-color);border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,0.15);position:relative;margin:0 auto;">
-                    <div style="position:absolute;inset:8px;border:2px dashed rgba(201,168,76,0.12);border-radius:16px;pointer-events:none;"></div>
+                    <div style="width:780px;padding:30px 35px;background:#ffffff;color:#1a1a2e;font-family:'Cairo','Segoe UI','Tahoma',sans-serif;direction:rtl;border:4px solid var(--primary-color);border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,0.15);position:relative;margin:0 auto;">
+                        <div style="position:absolute;inset:8px;border:2px dashed rgba(201,168,76,0.12);border-radius:16px;pointer-events:none;"></div>
 
-                    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--primary-color);padding-bottom:14px;margin-bottom:14px;">
-                        <div style="display:flex;align-items:center;gap:14px;">
-                            ${logoHtml}
-                            <div>
-                                <h1 style="font-size:20px;font-weight:800;color:var(--primary-color);margin:0;">${settings.unionName}</h1>
-                                <p style="font-size:12px;color:#666;margin:2px 0 0;">${settings.committeeName}</p>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--primary-color);padding-bottom:14px;margin-bottom:14px;">
+                            <div style="display:flex;align-items:center;gap:14px;">
+                                ${logoHtml}
+                                <div>
+                                    <h1 style="font-size:20px;font-weight:800;color:var(--primary-color);margin:0;">${settings.unionName}</h1>
+                                    <p style="font-size:12px;color:#666;margin:2px 0 0;">${settings.committeeName}</p>
+                                </div>
+                            </div>
+                            <div style="text-align:center;">
+                                ${stampHtml}
+                                <span style="font-size:10px;color:#888;display:block;margin-top:2px;">ختم النقابة</span>
                             </div>
                         </div>
-                        <div style="text-align:center;">
-                            ${stampHtml}
-                            <span style="font-size:10px;color:#888;display:block;margin-top:2px;">ختم النقابة</span>
+
+                        <div style="text-align:center;font-size:24px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;text-decoration:underline;text-underline-offset:6px;">شهادة اجتياز دورة تدريبية</div>
+                        <div style="text-align:center;font-size:12px;color:#666;margin-bottom:12px;">
+                            كود الشهادة: ${cert.certificateCode}
+                            <span style="margin:0 10px;">|</span>
+                            <span style="display:inline-block;padding:2px 14px;border-radius:30px;font-size:11px;font-weight:700;background:#10b981;color:#fff;">صالحة</span>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;background:#f8faff;border-radius:14px;padding:14px 18px;margin-bottom:14px;border:1px solid rgba(201,168,76,0.06);">
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم المتدرب</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.studentName || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الرقم القومي</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;font-family:'Courier New',monospace;">${cert.studentNationalId || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم الدورة</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseName || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">عدد الساعات</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseHours || 'غير محدد'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تقدير الاجتياز</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;" class="${gradeClass}">${cert.grade || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الأكاديمية</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyName || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الفرع</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.branchName || cert.branchId || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">رقم الاعتماد</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyLicenseNumber || '-'}</div></div>
+                            <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تاريخ الحصول</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${formatDate(cert.issuedAt)}</div></div>
+                        </div>
+
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-top:2px solid #eee;padding-top:12px;margin-top:4px;">
+                            <div style="text-align:center;">
+                                <div style="font-size:10px;color:#888;">توقيع رئيس اللجنة</div>
+                                <div style="width:120px;border-bottom:2px solid #1a1a2e;margin:4px auto 2px;"></div>
+                                <div style="font-size:13px;font-weight:700;color:var(--primary-color);">د. أحمد محمد</div>
+                            </div>
+                            <div style="text-align:center;">
+                                ${stampHtml ? `<img src="${settings.stampUrl}" style="width:50px;height:50px;object-fit:contain;opacity:0.7;" />` : ''}
+                                <span style="font-size:10px;color:#888;display:block;">ختم النقابة</span>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:24px;color:var(--primary-color);">🏛️</div>
+                                <span style="font-size:10px;color:#888;display:block;">ختم الأكاديمية</span>
+                            </div>
+                        </div>
+
+                        <div style="text-align:center;margin-top:10px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px;">
+                            <span>النقيب العام: ${settings.presidentName}</span>
+                            <span style="margin:0 8px;">|</span>
+                            <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
+                            <br/>
+                            <span style="font-size:9px;color:#aaa;">${new Date().toLocaleDateString('ar-EG')}</span>
                         </div>
                     </div>
-
-                    <div style="text-align:center;font-size:24px;font-weight:800;color:var(--primary-color);margin:6px 0 2px;text-decoration:underline;text-underline-offset:6px;">شهادة اجتياز دورة تدريبية</div>
-                    <div style="text-align:center;font-size:12px;color:#666;margin-bottom:12px;">
-                        كود الشهادة: ${cert.certificateCode}
-                        <span style="margin:0 10px;">|</span>
-                        <span style="display:inline-block;padding:2px 14px;border-radius:30px;font-size:11px;font-weight:700;background:#10b981;color:#fff;">صالحة</span>
-                    </div>
-
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;background:#f8faff;border-radius:14px;padding:14px 18px;margin-bottom:14px;border:1px solid rgba(201,168,76,0.06);">
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم المتدرب</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.studentName || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الرقم القومي</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;font-family:'Courier New',monospace;">${cert.studentNationalId || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">اسم الدورة</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseName || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">عدد الساعات</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.courseHours || 'غير محدد'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تقدير الاجتياز</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;" class="${gradeClass}">${cert.grade || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الأكاديمية</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyName || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">الفرع</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.branchName || cert.branchId || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">رقم الاعتماد</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${cert.academyLicenseNumber || '-'}</div></div>
-                        <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">تاريخ الحصول</div><div style="font-size:14px;font-weight:600;color:#1a1a2e;">${formatDate(cert.issuedAt)}</div></div>
-                    </div>
-
-                    <div style="display:flex;justify-content:space-between;align-items:center;border-top:2px solid #eee;padding-top:12px;margin-top:4px;">
-                        <div style="text-align:center;">
-                            <div style="font-size:10px;color:#888;">توقيع رئيس اللجنة</div>
-                            <div style="width:120px;border-bottom:2px solid #1a1a2e;margin:4px auto 2px;"></div>
-                            <div style="font-size:13px;font-weight:700;color:var(--primary-color);">د. أحمد محمد</div>
-                        </div>
-                        <div style="text-align:center;">
-                            ${stampHtml ? `<img src="${settings.stampUrl}" style="width:50px;height:50px;object-fit:contain;opacity:0.7;" />` : ''}
-                            <span style="font-size:10px;color:#888;display:block;">ختم النقابة</span>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="font-size:24px;color:var(--primary-color);">🏛️</div>
-                            <span style="font-size:10px;color:#888;display:block;">ختم الأكاديمية</span>
-                        </div>
-                    </div>
-
-                    <div style="text-align:center;margin-top:10px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px;">
-                        <span>النقيب العام: ${settings.presidentName}</span>
-                        <span style="margin:0 8px;">|</span>
-                        <span>تم التحقق بواسطة نقابة تكنولوجيا المعلومات</span>
-                        <br/>
-                        <span style="font-size:9px;color:#aaa;">${new Date().toLocaleDateString('ar-EG')}</span>
-                    </div>
-                </div>
-            `;
+                `;
 
             const container = document.getElementById('print-container');
             if (!container) return;
@@ -2029,6 +2394,9 @@
                 .catch(function(err) { alert('حدث خطأ في تحميل PDF: ' + err.message); });
         }
 
+        // ============================================================
+        // 12. مشاركة الشهادة
+        // ============================================================
         function shareCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
             if (!cert) {
@@ -2060,6 +2428,9 @@
             }
         }
 
+        // ============================================================
+        // 13. البحث عن متدرب
+        // ============================================================
         function searchStudent(e) {
             e.preventDefault();
 
@@ -2095,13 +2466,13 @@
                     grades: results.filter(c => c.grade).map(c => c.grade),
                     firstDate: results.reduce((min, c) => {
                         const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) :
-                        null;
+                            null;
                         if (!d) return min;
                         return !min || d < min ? d : min;
                     }, null),
                     lastDate: results.reduce((max, c) => {
                         const d = c.issuedAt ? (c.issuedAt.toDate ? c.issuedAt.toDate() : new Date(c.issuedAt)) :
-                        null;
+                            null;
                         if (!d) return max;
                         return !max || d > max ? d : max;
                     }, null)
@@ -2129,48 +2500,48 @@
             let certsHtml = data.certificates.map(function(cert) {
                 const gradeClass = getGradeClass(cert.grade);
                 return `
-                    <div class="student-cert-item">
-                        <div>
-                            <span style="font-weight:600;color:var(--text-color);">${cert.courseName}</span>
-                            <span style="font-family:'Courier New',monospace;font-size:12px;color:var(--text-muted);margin-right:8px;">${cert.certificateCode}</span>
-                            <span class="value ${gradeClass}" style="margin-right:8px;font-weight:700;">${cert.grade}</span>
+                        <div class="student-cert-item">
+                            <div>
+                                <span style="font-weight:600;color:var(--text-color);">${cert.courseName}</span>
+                                <span style="font-family:'Courier New',monospace;font-size:12px;color:var(--text-muted);margin-right:8px;">${cert.certificateCode}</span>
+                                <span class="value ${gradeClass}" style="margin-right:8px;font-weight:700;">${cert.grade}</span>
+                            </div>
+                            <div style="font-size:12px;color:var(--text-muted);">${formatDate(cert.issuedAt)}</div>
+                            <div class="cert-actions-sm">
+                                <button class="btn btn-success btn-sm" onclick="printCertificate('${cert.certificateCode}')">${printText}</button>
+                                <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${cert.certificateCode}')">${pdfText}</button>
+                                <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${cert.certificateCode}')">${shareText}</button>
+                            </div>
                         </div>
-                        <div style="font-size:12px;color:var(--text-muted);">${formatDate(cert.issuedAt)}</div>
-                        <div class="cert-actions-sm">
-                            <button class="btn btn-success btn-sm" onclick="printCertificate('${cert.certificateCode}')">${printText}</button>
-                            <button class="btn btn-primary btn-sm" onclick="downloadCertificatePDF('${cert.certificateCode}')">${pdfText}</button>
-                            <button class="btn btn-ghost btn-sm" onclick="shareCertificate('${cert.certificateCode}')">${shareText}</button>
-                        </div>
-                    </div>
-                `;
+                    `;
             }).join('');
 
             container.innerHTML = `
-                <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
-                        <div>
-                            <h3 style="font-size:20px;font-weight:700;color:var(--text-color);">${data.name}</h3>
-                            <p style="font-size:13px;color:var(--text-muted);">الرقم القومي: ${data.nationalId}</p>
+                    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;">
+                            <div>
+                                <h3 style="font-size:20px;font-weight:700;color:var(--text-color);">${data.name}</h3>
+                                <p style="font-size:13px;color:var(--text-muted);">الرقم القومي: ${data.nationalId}</p>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <span style="font-size:14px;color:var(--primary-color);font-weight:600;">${data.total} شهادة</span>
+                                <span style="font-size:11px;background:var(--success-bg);color:var(--success);padding:2px 12px;border-radius:20px;border:1px solid rgba(16,185,129,0.2);">🏅 وسام النقابة</span>
+                            </div>
                         </div>
-                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                            <span style="font-size:14px;color:var(--primary-color);font-weight:600;">${data.total} شهادة</span>
-                            <span style="font-size:11px;background:var(--success-bg);color:var(--success);padding:2px 12px;border-radius:20px;border:1px solid rgba(16,185,129,0.2);">🏅 وسام النقابة</span>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;background:var(--bg-hover);padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-light);">
+                            <div><span style="font-size:10px;color:var(--text-muted);">أول شهادة</span><br><span style="font-weight:600;">${firstDate}</span></div>
+                            <div><span style="font-size:10px;color:var(--text-muted);">آخر شهادة</span><br><span style="font-weight:600;">${lastDate}</span></div>
+                            <div><span style="font-size:10px;color:var(--text-muted);">التقديرات</span><br><span style="font-weight:600;">${avgGrade}</span></div>
+                        </div>
+                        <div class="student-certificates-list">
+                            ${certsHtml}
+                        </div>
+                        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;">
+                            <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${data.name}')">${printText} الكل</button>
+                            <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${data.name}')">${pdfText} الكل</button>
                         </div>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;background:var(--bg-hover);padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-light);">
-                        <div><span style="font-size:10px;color:var(--text-muted);">أول شهادة</span><br><span style="font-weight:600;">${firstDate}</span></div>
-                        <div><span style="font-size:10px;color:var(--text-muted);">آخر شهادة</span><br><span style="font-weight:600;">${lastDate}</span></div>
-                        <div><span style="font-size:10px;color:var(--text-muted);">التقديرات</span><br><span style="font-weight:600;">${avgGrade}</span></div>
-                    </div>
-                    <div class="student-certificates-list">
-                        ${certsHtml}
-                    </div>
-                    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;">
-                        <button class="btn btn-success btn-sm" onclick="printAllStudentCertificates('${data.name}')">${printText} الكل</button>
-                        <button class="btn btn-primary btn-sm" onclick="downloadAllStudentCertificates('${data.name}')">${pdfText} الكل</button>
-                    </div>
-                </div>
-            `;
+                `;
         }
 
         function printAllStudentCertificates(studentName) {
@@ -2199,6 +2570,9 @@
             alert('جاري تحميل ' + certs.length + ' شهادة للمتدرب ' + studentName);
         }
 
+        // ============================================================
+        // 14. البحث عن أكاديمية
+        // ============================================================
         function searchAcademy(e) {
             e.preventDefault();
 
@@ -2250,13 +2624,13 @@
             if (data.branches && data.branches.length > 0) {
                 branchesHtml = data.branches.map(function(b) {
                     return `
-                        <div class="branch-item">
-                            <div class="gov">${b.governorate || '-'}</div>
-                            <div class="addr">${b.address || '-'}</div>
-                            <div class="phone">${b.phone || '-'}</div>
-                            ${b.isMainBranch ? '<div class="main-badge">الرئيسي</div>' : ''}
-                        </div>
-                    `;
+                            <div class="branch-item">
+                                <div class="gov">${b.governorate || '-'}</div>
+                                <div class="addr">${b.address || '-'}</div>
+                                <div class="phone">${b.phone || '-'}</div>
+                                ${b.isMainBranch ? '<div class="main-badge">الرئيسي</div>' : ''}
+                            </div>
+                        `;
                 }).join('');
             } else {
                 branchesHtml = '<div style="color:var(--text-muted);font-size:14px;">لا توجد فروع مسجلة</div>';
@@ -2267,39 +2641,42 @@
             }).length;
 
             container.innerHTML = `
-                <div class="academy-card">
-                    <div class="academy-header">
-                        <div>
-                            <div class="academy-name">${data.name || '-'}</div>
-                            <div style="font-size:13px;color:var(--text-muted);">
-                                الرقم الاعتمادي: ${data.licenseNumber || '-'}
+                    <div class="academy-card">
+                        <div class="academy-header">
+                            <div>
+                                <div class="academy-name">${data.name || '-'}</div>
+                                <div style="font-size:13px;color:var(--text-muted);">
+                                    الرقم الاعتمادي: ${data.licenseNumber || '-'}
+                                </div>
+                                <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">
+                                    عدد الشهادات الصادرة: ${certCount}
+                                </div>
                             </div>
-                            <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">
-                                عدد الشهادات الصادرة: ${certCount}
+                            <div>
+                                <span class="academy-badge">معتمدة</span>
+                                <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">
+                                    البطاقة الضريبية: ${data.taxNumber || '-'}
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <span class="academy-badge">معتمدة</span>
-                            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">
-                                البطاقة الضريبية: ${data.taxNumber || '-'}
-                            </div>
+
+                        <div style="font-weight:700;color:var(--text-color);font-size:15px;margin-bottom:8px;">
+                            الفروع (${data.branches ? data.branches.length : 0})
+                        </div>
+                        <div class="branch-grid">
+                            ${branchesHtml}
+                        </div>
+
+                        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-dim);">
+                            تم التسجيل: ${formatDate(data.createdAt)}
                         </div>
                     </div>
-
-                    <div style="font-weight:700;color:var(--text-color);font-size:15px;margin-bottom:8px;">
-                        الفروع (${data.branches ? data.branches.length : 0})
-                    </div>
-                    <div class="branch-grid">
-                        ${branchesHtml}
-                    </div>
-
-                    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-dim);">
-                        تم التسجيل: ${formatDate(data.createdAt)}
-                    </div>
-                </div>
-            `;
+                `;
         }
 
+        // ============================================================
+        // 15. مودال الأكاديميات
+        // ============================================================
         function openAcademiesModal() {
             document.getElementById('academiesModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2382,7 +2759,8 @@
             const container = document.getElementById('modalAcademiesContent');
 
             if (filteredAcademies.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:30px;">لا توجد أكاديميات تطابق معايير البحث</div>';
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-muted);padding:30px;">لا توجد أكاديميات تطابق معايير البحث</div>';
             } else {
                 container.innerHTML = pageItems.map(function(item) {
                     const certCount = allCertificates.filter(function(c) {
@@ -2390,17 +2768,17 @@
                     }).length;
 
                     return `
-                        <div class="academy-item" onclick="showAcademyDetails('${item.id}')">
-                            <div>
-                                <div class="name">${item.name || '-'}</div>
-                                <div class="license">${item.licenseNumber || '-'}</div>
+                            <div class="academy-item" onclick="showAcademyDetails('${item.id}')">
+                                <div>
+                                    <div class="name">${item.name || '-'}</div>
+                                    <div class="license">${item.licenseNumber || '-'}</div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                                    <span class="badge">${certCount} شهادة</span>
+                                    <span style="font-size:11px;color:var(--text-muted);">${item.branches ? item.branches.length : 0} فرع</span>
+                                </div>
                             </div>
-                            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                                <span class="badge">${certCount} شهادة</span>
-                                <span style="font-size:11px;color:var(--text-muted);">${item.branches ? item.branches.length : 0} فرع</span>
-                            </div>
-                        </div>
-                    `;
+                        `;
                 }).join('');
             }
 
@@ -2454,10 +2832,16 @@
             });
         });
 
+        // ============================================================
+        // 16. بدء التشغيل
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('الصفحة الرئيسية - جاري التحميل');
 
-            // إظهار المحتوى فوراً
+            // تحميل الثيم المحلي
+            loadTheme();
+
+            // إظهار المحتوى
             document.getElementById('mainContainer').style.display = 'block';
 
             startListeners();
@@ -2474,6 +2858,8 @@
             console.log('الصفحة الرئيسية - التحميل المسبق للإعدادات');
             console.log('أي تغيير في الإعدادات يظهر فوراً');
             console.log('الأكاديميات مرتبة حسب الرقم الاعتمادي');
+            console.log('🎨 الثيمات محلية لكل مستخدم');
+            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
         });
     </script>
 
