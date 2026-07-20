@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="keywords" id="metaKeywords" content="" />
+    <title id="pageTitle">نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم</title>
+    <meta name="description" id="metaDescription" content="لوحة التحكم - نظام توثيق الشهادات - نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="keywords" id="metaKeywords" content="لوحة تحكم, شهادات, أكاديميات, تقارير, نقابة" />
 
     <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="" />
-    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:title" id="ogTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم" />
+    <meta property="og:description" id="ogDescription" content="لوحة التحكم - نظام توثيق الشهادات - نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:image" id="ogImage" content="" />
     <meta property="og:url" id="ogUrl" content="" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:locale" content="ar_EG" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="" />
-    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:title" id="twitterTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم" />
+    <meta name="twitter:description" id="twitterDescription" content="لوحة التحكم - نظام توثيق الشهادات - نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta name="twitter:image" id="twitterImage" content="" />
 
     <!-- Icons -->
@@ -39,10 +39,6 @@
     </script>
 
     <style>
-        /* ============================================================
-           التصميم الخرافي للوحة التحكم
-           كل حرف ولون من الإعدادات
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -230,7 +226,6 @@
             padding: 16px;
         }
 
-        /* ===== الهيدر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -408,7 +403,6 @@
             font-weight: 600;
         }
 
-        /* ===== البطاقات الإحصائية ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -457,7 +451,6 @@
         }
         .stat-card .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 300; }
 
-        /* ===== الشبكة الداخلية ===== */
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -501,17 +494,22 @@
             font-weight: 600;
         }
 
-        /* ===== قائمة النشاطات ===== */
-        .activity-list {
+        .chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+
+        .ranking-list {
             max-height: 350px;
             overflow-y: auto;
         }
 
-        .activity-list::-webkit-scrollbar { width: 4px; }
-        .activity-list::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
-        .activity-list::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+        .ranking-list::-webkit-scrollbar { width: 4px; }
+        .ranking-list::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
+        .ranking-list::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
 
-        .activity-item {
+        .ranking-item {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -520,57 +518,54 @@
             transition: all 0.3s ease;
         }
 
-        .activity-item:hover {
+        .ranking-item:hover {
             background: var(--bg-hover);
             padding-right: 8px;
             border-radius: 8px;
         }
 
-        .activity-item .avatar {
-            width: 36px;
-            height: 36px;
+        .ranking-item .rank {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-glow), var(--accent-glow));
+            background: var(--bg-hover);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .ranking-item .rank.gold { background: rgba(201,168,76,0.2); color: #C9A84C; }
+        .ranking-item .rank.silver { background: rgba(192,192,192,0.15); color: #C0C0C0; }
+        .ranking-item .rank.bronze { background: rgba(205,127,50,0.15); color: #CD7F32; }
+
+        .ranking-item .info { flex: 1; min-width: 0; }
+        .ranking-item .info .name { font-size: 14px; font-weight: 600; color: var(--text-color); }
+        .ranking-item .info .detail { font-size: 11px; color: var(--text-muted); }
+
+        .ranking-item .count {
             font-size: 14px;
             font-weight: 700;
-            color: var(--text-color);
-            flex-shrink: 0;
-        }
-
-        .activity-item .info { flex: 1; min-width: 0; }
-        .activity-item .info .text { font-size: 13px; color: var(--text-secondary); }
-        .activity-item .info .time { font-size: 10px; color: var(--text-muted); }
-
-        .activity-item .type-badge {
-            font-size: 9px;
-            padding: 2px 10px;
+            color: var(--primary-color);
+            background: var(--primary-glow);
+            padding: 2px 12px;
             border-radius: 20px;
-            font-weight: 600;
-            flex-shrink: 0;
         }
-        .type-badge.login { background: var(--info-bg); color: var(--info); }
-        .type-badge.logout { background: var(--error-bg); color: var(--error); }
-        .type-badge.create { background: var(--success-bg); color: var(--success); }
-        .type-badge.update { background: var(--warning-bg); color: var(--warning); }
-        .type-badge.delete { background: var(--error-bg); color: var(--error); }
-        .type-badge.search { background: var(--accent-glow); color: var(--accent-light); }
-        .type-badge.export { background: rgba(236,72,153,0.15); color: #ec4899; }
 
-        /* ===== الروابط السريعة ===== */
         .quick-actions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
         }
 
         .quick-action {
             background: var(--bg-hover);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-sm);
-            padding: 16px 12px;
+            padding: 14px 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -585,17 +580,18 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .quick-action .icon { font-size: 28px; margin-bottom: 4px; }
+        .quick-action .icon { font-size: 24px; margin-bottom: 4px; }
         .quick-action .label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
-        /* ===== الرسم البياني ===== */
-        .chart-container {
-            position: relative;
-            height: 200px;
-            width: 100%;
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+            color: var(--text-dim);
+            font-size: 11px;
         }
 
-        /* ===== رسائل ===== */
         .msg {
             display: none;
             border-radius: var(--radius-sm);
@@ -604,6 +600,7 @@
             text-align: center;
             font-size: 14px;
         }
+
         .msg.show { display: block; animation: fadeIn 0.3s ease; }
         .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
         .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
@@ -627,15 +624,6 @@
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        .footer {
-            text-align: center;
-            padding: 20px 0 10px;
-            border-top: 1px solid var(--border);
-            margin-top: 24px;
-            color: var(--text-dim);
-            font-size: 11px;
-        }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
@@ -663,7 +651,6 @@
             .btn { padding: 6px 14px; font-size: 11px; }
             .logo-box { width: 36px; height: 36px; font-size: 14px; }
             .card-title { font-size: 14px; }
-            .activity-item .info .text { font-size: 12px; }
             .stat-card .stat-icon { font-size: 20px; }
             .header-president .president-name { font-size: 11px; }
         }
@@ -699,23 +686,22 @@
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'"></div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1 id="dashboardTitle"></h1>
+                    <h1 id="dashboardTitle">لوحة التحكم</h1>
                     <p id="committeeName"></p>
                 </div>
                 <div class="header-president">
                     <span class="president-icon">👤</span>
-                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-label" id="presidentLabel">النقيب العام:</span>
                     <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
                 <span class="role-badge" id="roleBadge"></span>
-                <a href="home.html" class="btn btn-outline btn-sm" id="searchBtn"></a>
-                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;"></a>
-                <a href="users.html" class="btn btn-outline btn-sm" id="usersBtn" style="display:none;"></a>
-                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn"></a>
+                <a href="home.html" class="btn btn-outline btn-sm" id="searchBtn">بحث</a>
+                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">الإعدادات</a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
             </div>
         </header>
 
@@ -723,7 +709,7 @@
 
         <div class="loader" id="dashboardLoader">
             <div class="spinner"></div>
-            <div style="color:var(--text-muted);" id="loaderText"></div>
+            <div style="color:var(--text-muted);" id="loaderText">جاري تحميل البيانات...</div>
         </div>
 
         <div id="dashboardContent" style="display:none;">
@@ -732,89 +718,102 @@
                 <div class="stat-card">
                     <div class="stat-icon">📜</div>
                     <div class="stat-number" id="statCertificates">0</div>
-                    <div class="stat-label" id="statCertificatesLabel"></div>
+                    <div class="stat-label">إجمالي الشهادات</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🏛️</div>
                     <div class="stat-number" id="statAcademies">0</div>
-                    <div class="stat-label" id="statAcademiesLabel"></div>
+                    <div class="stat-label">الأكاديميات المعتمدة</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">👤</div>
-                    <div class="stat-number" id="statUsers">0</div>
-                    <div class="stat-label" id="statUsersLabel"></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🔍</div>
-                    <div class="stat-number" id="statSearches">0</div>
-                    <div class="stat-label" id="statSearchesLabel"></div>
+                    <div class="stat-number" id="statStudents">0</div>
+                    <div class="stat-label">المتدربين المسجلين</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">📊</div>
                     <div class="stat-number" id="statActivities">0</div>
-                    <div class="stat-label" id="statActivitiesLabel"></div>
+                    <div class="stat-label">إجمالي النشاطات</div>
                 </div>
             </div>
 
             <div class="content-grid">
 
-                <div class="card">
-                    <div class="card-title">
-                        <span id="activityTitle"></span>
-                        <span class="badge" id="activityBadge"></span>
+                <div style="display:flex;flex-direction:column;gap:20px;">
+
+                    <div class="card">
+                        <div class="card-title">
+                            <span>توزيع الشهادات حسب التقدير</span>
+                            <span class="badge">تحديث فوري</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartCanvas"></canvas>
+                        </div>
                     </div>
-                    <div class="activity-list" id="activityList">
-                        <div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;" id="activityEmpty"></div>
+
+                    <div class="card">
+                        <div class="card-title">
+                            <span>ترتيب الأكاديميات حسب عدد الشهادات</span>
+                            <span class="badge">أفضل 10</span>
+                        </div>
+                        <div class="ranking-list" id="topAcademies">
+                            <div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">جاري تحميل البيانات...</div>
+                        </div>
                     </div>
-                    <div style="margin-top:12px;text-align:left;">
-                        <a href="activities.html" class="btn btn-outline btn-sm" id="viewAllBtn"></a>
+
+                    <div class="card">
+                        <div class="card-title">
+                            <span>ترتيب المتدربين الأكثر شهادات</span>
+                            <span class="badge">أفضل 10</span>
+                        </div>
+                        <div class="ranking-list" id="topStudents">
+                            <div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">جاري تحميل البيانات...</div>
+                        </div>
                     </div>
+
                 </div>
 
                 <div style="display:flex;flex-direction:column;gap:20px;">
 
                     <div class="card">
                         <div class="card-title">
-                            <span id="quickActionsTitle"></span>
+                            <span>روابط سريعة</span>
                         </div>
                         <div class="quick-actions">
-                            <a href="academies.html" class="quick-action" id="quickAcademies">
+                            <a href="academies.html" class="quick-action">
                                 <div class="icon">🏛️</div>
-                                <div class="label" id="quickAcademiesLabel"></div>
+                                <div class="label">الأكاديميات</div>
                             </a>
-                            <a href="certificates.html" class="quick-action" id="quickCertificates">
+                            <a href="certificates.html" class="quick-action">
                                 <div class="icon">📜</div>
-                                <div class="label" id="quickCertificatesLabel"></div>
+                                <div class="label">الشهادات</div>
                             </a>
-                            <a href="activities.html" class="quick-action" id="quickActivities">
+                            <a href="activities.html" class="quick-action">
                                 <div class="icon">📋</div>
-                                <div class="label" id="quickActivitiesLabel"></div>
+                                <div class="label">النشاطات</div>
                             </a>
-                            <a href="reports.html" class="quick-action" id="quickReports">
+                            <a href="reports.html" class="quick-action">
                                 <div class="icon">📊</div>
-                                <div class="label" id="quickReportsLabel">التقارير</div>
+                                <div class="label">التقارير</div>
                             </a>
                             <a href="settings.html" class="quick-action" id="quickSettings" style="display:none;">
                                 <div class="icon">⚙️</div>
-                                <div class="label" id="quickSettingsLabel"></div>
+                                <div class="label">الإعدادات</div>
                             </a>
-                            <a href="users.html" class="quick-action" id="quickUsers" style="display:none;">
-                                <div class="icon">👥</div>
-                                <div class="label" id="quickUsersLabel"></div>
-                            </a>
-                            <a href="home.html" class="quick-action" id="quickSearch">
+                            <a href="home.html" class="quick-action">
                                 <div class="icon">🔍</div>
-                                <div class="label" id="quickSearchLabel"></div>
+                                <div class="label">البحث</div>
                             </a>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card-title">
-                            <span id="chartTitle"></span>
+                            <span>آخر النشاطات</span>
+                            <span class="badge">مباشر</span>
                         </div>
-                        <div class="chart-container">
-                            <canvas id="chartCanvas"></canvas>
+                        <div class="ranking-list" id="recentActivities">
+                            <div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">جاري تحميل النشاطات...</div>
                         </div>
                     </div>
 
@@ -835,6 +834,14 @@
     </div>
 
     <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
         // ============================================================
         // 1. تهيئة Firebase
         // ============================================================
@@ -870,24 +877,10 @@
             logoutBtn: 'تسجيل الخروج',
             settingsBtn: 'الإعدادات',
             usersBtn: 'المستخدمين',
-            statCertificatesLabel: 'الشهادات الموثقة',
+            statCertificatesLabel: 'إجمالي الشهادات',
             statAcademiesLabel: 'الأكاديميات المعتمدة',
-            statUsersLabel: 'المستخدمين النشطين',
-            statSearchesLabel: 'عمليات البحث',
+            statStudentsLabel: 'المتدربين المسجلين',
             statActivitiesLabel: 'إجمالي النشاطات',
-            activityTitle: 'آخر النشاطات',
-            activityBadge: 'مباشر',
-            activityEmpty: 'لا توجد نشاطات حديثة',
-            viewAllBtn: 'عرض الكل',
-            quickActionsTitle: 'روابط سريعة',
-            quickAcademiesLabel: 'الأكاديميات',
-            quickCertificatesLabel: 'الشهادات',
-            quickActivitiesLabel: 'النشاطات',
-            quickReportsLabel: 'التقارير',
-            quickSettingsLabel: 'الإعدادات',
-            quickUsersLabel: 'المستخدمين',
-            quickSearchLabel: 'البحث',
-            chartTitle: 'توزيع الشهادات حسب التقدير',
             loaderText: 'جاري تحميل البيانات...',
             presidentFooter: 'النقيب العام:',
             colors: {
@@ -907,74 +900,151 @@
             }
         };
 
+        let allCertificates = [];
+        let allAcademies = [];
+        let allStudents = [];
+        let allActivities = [];
+        let isReady = false;
+
         // ============================================================
-        // 3. جلب الإعدادات
+        // 3. إعدادات الـ Listeners (التحديث الفوري)
         // ============================================================
-        function loadSettings() {
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
+        let generalUnsubscribe = null;
+        let designUnsubscribe = null;
+        let certificatesUnsubscribe = null;
+        let academiesUnsubscribe = null;
+        let activitiesUnsubscribe = null;
 
-                        if (data.dashboardTitle) settings.dashboardTitle = data.dashboardTitle;
-                        if (data.committeeName) settings.committeeName = data.committeeName;
-                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
-                        if (data.footerText) settings.footerText = data.footerText;
-                        if (data.presidentName) settings.presidentName = data.presidentName;
-                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
-                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+        function startListeners() {
+            let loadedCount = 0;
+            const totalDocs = 5;
 
-                        // نصوص إضافية
-                        db.collection('settings').doc('texts').get()
-                            .then(function(textsDoc) {
-                                if (textsDoc.exists) {
-                                    const texts = textsDoc.data();
-                                    if (texts.searchBtn) settings.searchBtn = texts.searchBtn;
-                                    if (texts.logoutBtn) settings.logoutBtn = texts.logoutBtn;
-                                    if (texts.settingsBtn) settings.settingsBtn = texts.settingsBtn;
-                                    if (texts.usersBtn) settings.usersBtn = texts.usersBtn;
-                                    if (texts.statCertificatesLabel) settings.statCertificatesLabel = texts.statCertificatesLabel;
-                                    if (texts.statAcademiesLabel) settings.statAcademiesLabel = texts.statAcademiesLabel;
-                                    if (texts.statUsersLabel) settings.statUsersLabel = texts.statUsersLabel;
-                                    if (texts.statSearchesLabel) settings.statSearchesLabel = texts.statSearchesLabel;
-                                    if (texts.statActivitiesLabel) settings.statActivitiesLabel = texts.statActivitiesLabel;
-                                    if (texts.activityTitle) settings.activityTitle = texts.activityTitle;
-                                    if (texts.activityBadge) settings.activityBadge = texts.activityBadge;
-                                    if (texts.activityEmpty) settings.activityEmpty = texts.activityEmpty;
-                                    if (texts.viewAllBtn) settings.viewAllBtn = texts.viewAllBtn;
-                                    if (texts.quickActionsTitle) settings.quickActionsTitle = texts.quickActionsTitle;
-                                    if (texts.quickAcademiesLabel) settings.quickAcademiesLabel = texts.quickAcademiesLabel;
-                                    if (texts.quickCertificatesLabel) settings.quickCertificatesLabel = texts.quickCertificatesLabel;
-                                    if (texts.quickActivitiesLabel) settings.quickActivitiesLabel = texts.quickActivitiesLabel;
-                                    if (texts.quickReportsLabel) settings.quickReportsLabel = texts.quickReportsLabel;
-                                    if (texts.quickSettingsLabel) settings.quickSettingsLabel = texts.quickSettingsLabel;
-                                    if (texts.quickUsersLabel) settings.quickUsersLabel = texts.quickUsersLabel;
-                                    if (texts.quickSearchLabel) settings.quickSearchLabel = texts.quickSearchLabel;
-                                    if (texts.chartTitle) settings.chartTitle = texts.chartTitle;
-                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
-                                    if (texts.presidentFooter) settings.presidentFooter = texts.presidentFooter;
-                                }
-                                applySettings();
-                                applyColors(settings.colors);
-                            })
-                            .catch(function() {
-                                applySettings();
-                                applyColors(settings.colors);
-                            });
+            function checkReady() {
+                loadedCount++;
+                if (loadedCount >= totalDocs && !isReady) {
+                    isReady = true;
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    document.getElementById('dashboardLoader').classList.remove('show');
+                    console.log('تم تحميل كل البيانات بنجاح');
+                }
+            }
 
-                    } else {
-                        applySettings();
-                        applyColors(settings.colors);
+            // إخفاء المحتوى مؤقتاً
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('dashboardLoader').classList.add('show');
+
+            // ===== الإعدادات العامة =====
+            if (generalUnsubscribe) generalUnsubscribe();
+            generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.dashboardTitle) settings.dashboardTitle = data.dashboardTitle;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                }
+                applySettings();
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الإعدادات العامة');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للإعدادات العامة:', error);
+                if (!isReady) checkReady();
+            });
+
+            // ===== التصميم =====
+            if (designUnsubscribe) designUnsubscribe();
+            designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
                     }
-                })
-                .catch(function() {
-                    applySettings();
-                    applyColors(settings.colors);
-                });
+                }
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: التصميم');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للتصميم:', error);
+                if (!isReady) checkReady();
+            });
 
-            loadLocalSettings();
+            // ===== الشهادات =====
+            if (certificatesUnsubscribe) certificatesUnsubscribe();
+            certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
+                allCertificates = [];
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allCertificates.push(data);
+                });
+                updateStats();
+                updateChart();
+                updateTopAcademies();
+                updateTopStudents();
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الشهادات (' + allCertificates.length + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للشهادات:', error);
+                if (!isReady) checkReady();
+            });
+
+            // ===== الأكاديميات =====
+            if (academiesUnsubscribe) academiesUnsubscribe();
+            academiesUnsubscribe = db.collection('academies').where('isDeleted', '==', false).onSnapshot(function(snapshot) {
+                allAcademies = [];
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allAcademies.push(data);
+                });
+                updateStats();
+                updateTopAcademies();
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الأكاديميات (' + allAcademies.length + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للأكاديميات:', error);
+                if (!isReady) checkReady();
+            });
+
+            // ===== النشاطات =====
+            if (activitiesUnsubscribe) activitiesUnsubscribe();
+            activitiesUnsubscribe = db.collection('activities').orderBy('timestamp', 'desc').limit(20).onSnapshot(function(snapshot) {
+                allActivities = [];
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allActivities.push(data);
+                });
+                updateStats();
+                updateRecentActivities();
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: النشاطات (' + allActivities.length + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للنشاطات:', error);
+                if (!isReady) checkReady();
+            });
+
+            // جلب عدد المتدربين (مرة واحدة مع تحديث عند التغيير)
+            db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
+                const studentsSet = new Set();
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    if (data.studentNationalId) {
+                        studentsSet.add(data.studentNationalId);
+                    }
+                });
+                allStudents = Array.from(studentsSet);
+                updateStats();
+            });
         }
 
+        // ============================================================
+        // 4. تطبيق الإعدادات
+        // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('dashboardTitle');
             const committeeEl = document.getElementById('committeeName');
@@ -986,7 +1056,6 @@
             const searchBtn = document.getElementById('searchBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const settingsBtn = document.getElementById('settingsBtn');
-            const usersBtn = document.getElementById('usersBtn');
             const roleBadge = document.getElementById('roleBadge');
 
             if (titleEl) titleEl.textContent = settings.dashboardTitle;
@@ -1000,50 +1069,6 @@
             if (searchBtn) searchBtn.textContent = settings.searchBtn;
             if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
             if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
-            if (usersBtn) usersBtn.textContent = settings.usersBtn;
-
-            const statCertLabel = document.getElementById('statCertificatesLabel');
-            const statAcadLabel = document.getElementById('statAcademiesLabel');
-            const statUsersLabel = document.getElementById('statUsersLabel');
-            const statSearchesLabel = document.getElementById('statSearchesLabel');
-            const statActivitiesLabel = document.getElementById('statActivitiesLabel');
-
-            if (statCertLabel) statCertLabel.textContent = settings.statCertificatesLabel;
-            if (statAcadLabel) statAcadLabel.textContent = settings.statAcademiesLabel;
-            if (statUsersLabel) statUsersLabel.textContent = settings.statUsersLabel;
-            if (statSearchesLabel) statSearchesLabel.textContent = settings.statSearchesLabel;
-            if (statActivitiesLabel) statActivitiesLabel.textContent = settings.statActivitiesLabel;
-
-            const activityTitle = document.getElementById('activityTitle');
-            const activityBadge = document.getElementById('activityBadge');
-            const activityEmpty = document.getElementById('activityEmpty');
-            const viewAllBtn = document.getElementById('viewAllBtn');
-
-            if (activityTitle) activityTitle.textContent = settings.activityTitle;
-            if (activityBadge) activityBadge.textContent = settings.activityBadge;
-            if (activityEmpty) activityEmpty.textContent = settings.activityEmpty;
-            if (viewAllBtn) viewAllBtn.textContent = settings.viewAllBtn;
-
-            const quickTitle = document.getElementById('quickActionsTitle');
-            const quickAcademies = document.getElementById('quickAcademiesLabel');
-            const quickCertificates = document.getElementById('quickCertificatesLabel');
-            const quickActivities = document.getElementById('quickActivitiesLabel');
-            const quickReports = document.getElementById('quickReportsLabel');
-            const quickSettings = document.getElementById('quickSettingsLabel');
-            const quickUsers = document.getElementById('quickUsersLabel');
-            const quickSearch = document.getElementById('quickSearchLabel');
-
-            if (quickTitle) quickTitle.textContent = settings.quickActionsTitle;
-            if (quickAcademies) quickAcademies.textContent = settings.quickAcademiesLabel;
-            if (quickCertificates) quickCertificates.textContent = settings.quickCertificatesLabel;
-            if (quickActivities) quickActivities.textContent = settings.quickActivitiesLabel;
-            if (quickReports) quickReports.textContent = settings.quickReportsLabel;
-            if (quickSettings) quickSettings.textContent = settings.quickSettingsLabel;
-            if (quickUsers) quickUsers.textContent = settings.quickUsersLabel;
-            if (quickSearch) quickSearch.textContent = settings.quickSearchLabel;
-
-            const chartTitle = document.getElementById('chartTitle');
-            if (chartTitle) chartTitle.textContent = settings.chartTitle;
 
             const loaderText = document.getElementById('loaderText');
             if (loaderText) loaderText.textContent = settings.loaderText;
@@ -1070,9 +1095,13 @@
                 }
             }
 
-            // OG Tags
+            // ===== عنوان الصفحة =====
             const pageTitle = document.getElementById('pageTitle');
-            const metaDescription = document.getElementById('metaDescription');
+            if (pageTitle) {
+                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم';
+            }
+
+            // ===== OG Tags =====
             const ogTitle = document.getElementById('ogTitle');
             const ogDescription = document.getElementById('ogDescription');
             const ogImage = document.getElementById('ogImage');
@@ -1084,13 +1113,11 @@
             const favicon = document.getElementById('favicon');
             const appleIcon = document.getElementById('appleIcon');
 
-            if (pageTitle) pageTitle.textContent = settings.dashboardTitle + ' - ' + settings.unionName;
-            if (metaDescription) metaDescription.content = 'لوحة التحكم - ' + settings.unionName;
-            if (ogTitle) ogTitle.content = settings.dashboardTitle;
+            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم';
             if (ogDescription) ogDescription.content = 'لوحة التحكم - نظام توثيق الشهادات';
             if (ogUrl) ogUrl.content = window.location.href;
-            if (ogSiteName) ogSiteName.content = settings.dashboardTitle;
-            if (twitterTitle) twitterTitle.content = settings.dashboardTitle;
+            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم';
             if (twitterDescription) twitterDescription.content = 'لوحة التحكم - نظام توثيق الشهادات';
 
             if (settings.logoUrl) {
@@ -1128,221 +1155,34 @@
         }
 
         // ============================================================
-        // 4. الإعدادات المحلية (LocalStorage)
+        // 5. تحديث الإحصائيات
         // ============================================================
-        function loadLocalSettings() {
-            try {
-                const localSettings = localStorage.getItem('userSettings');
-                if (localSettings) {
-                    const parsed = JSON.parse(localSettings);
-                    if (parsed.theme && parsed.theme.colors) {
-                        const root = document.documentElement;
-                        const colors = parsed.theme.colors;
-                        if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
-                        if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
-                        if (colors.background) root.style.setProperty('--bg-color', colors.background);
-                        if (colors.text) root.style.setProperty('--text-color', colors.text);
-                        if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
-                        if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
-                        if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
-                        if (colors.success) root.style.setProperty('--success', colors.success);
-                        if (colors.error) root.style.setProperty('--error', colors.error);
-                        if (colors.warning) root.style.setProperty('--warning', colors.warning);
-                        if (colors.info) root.style.setProperty('--info', colors.info);
-                        if (colors.border) root.style.setProperty('--border', colors.border);
-                        if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+        function updateStats() {
+            const statCert = document.getElementById('statCertificates');
+            const statAcad = document.getElementById('statAcademies');
+            const statStudents = document.getElementById('statStudents');
+            const statActivities = document.getElementById('statActivities');
 
-                        const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
-                        root.style.setProperty('--primary-glow', primaryGlow);
-                        const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
-                        root.style.setProperty('--accent-glow', accentGlow);
-
-                        if (colors.background) {
-                            document.body.style.background = colors.background;
-                        }
-                        console.log('✅ تم تطبيق الإعدادات المحلية');
-                    }
-                }
-            } catch (e) {
-                console.log('ℹ️ لا توجد إعدادات محلية');
-            }
+            if (statCert) statCert.textContent = allCertificates.length || 0;
+            if (statAcad) statAcad.textContent = allAcademies.length || 0;
+            if (statStudents) statStudents.textContent = allStudents.length || 0;
+            if (statActivities) statActivities.textContent = allActivities.length || 0;
         }
 
         // ============================================================
-        // 5. المصادقة
+        // 6. الرسم البياني
         // ============================================================
-        auth.onAuthStateChanged(function(user) {
-            if (user) {
-                currentUser = user;
-                db.collection('users').doc(user.uid).get()
-                    .then(function(doc) {
-                        if (doc.exists) {
-                            const data = doc.data();
-                            if (data.role === 'super_admin' || data.role === 'admin' || data.role === 'committee_manager') {
-                                userRole = data.role;
-
-                                const settingsBtn = document.getElementById('settingsBtn');
-                                const settingsQuick = document.getElementById('quickSettings');
-                                const usersBtn = document.getElementById('usersBtn');
-                                const usersQuick = document.getElementById('quickUsers');
-
-                                if (data.role === 'super_admin') {
-                                    if (settingsBtn) settingsBtn.style.display = 'inline-flex';
-                                    if (settingsQuick) settingsQuick.style.display = 'flex';
-                                    if (usersBtn) usersBtn.style.display = 'inline-flex';
-                                    if (usersQuick) usersQuick.style.display = 'flex';
-                                }
-
-                                loadDashboard();
-                            } else {
-                                showMsg('غير مصرح بالوصول إلى لوحة التحكم', 'error');
-                                setTimeout(function() { window.location.href = 'home.html'; }, 2000);
-                            }
-                        } else {
-                            showMsg('المستخدم غير موجود', 'error');
-                            setTimeout(function() { window.location.href = 'login.html'; }, 2000);
-                        }
-                    })
-                    .catch(function(err) {
-                        showMsg('حدث خطأ: ' + err.message, 'error');
-                    });
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.signOut().then(function() {
-                window.location.href = 'login.html';
-            });
-        });
-
-        // ============================================================
-        // 6. تحميل لوحة التحكم
-        // ============================================================
-        function loadDashboard() {
-            const loader = document.getElementById('dashboardLoader');
-            if (loader) loader.classList.add('show');
-
-            Promise.all([
-                db.collection('certificates').where('isActive', '==', true).get(),
-                db.collection('academies').where('isDeleted', '==', false).get(),
-                db.collection('users').where('isActive', '==', true).get(),
-                db.collection('searchLogs').get(),
-                db.collection('activities').orderBy('timestamp', 'desc').limit(15).get(),
-                db.collection('certificates').get(),
-            ]).then(function(results) {
-                const certActiveSnap = results[0];
-                const acadSnap = results[1];
-                const userSnap = results[2];
-                const searchSnap = results[3];
-                const activitySnap = results[4];
-                const allCertSnap = results[5];
-
-                const statCert = document.getElementById('statCertificates');
-                const statAcad = document.getElementById('statAcademies');
-                const statUsers = document.getElementById('statUsers');
-                const statSearches = document.getElementById('statSearches');
-                const statActivities = document.getElementById('statActivities');
-
-                if (statCert) statCert.textContent = certActiveSnap.size || 0;
-                if (statAcad) statAcad.textContent = acadSnap.size || 0;
-                if (statUsers) statUsers.textContent = userSnap.size || 0;
-                if (statSearches) statSearches.textContent = searchSnap.size || 0;
-                if (statActivities) statActivities.textContent = activitySnap.size || 0;
-
-                renderActivities(activitySnap);
-                renderChart(allCertSnap);
-
-                if (loader) loader.classList.remove('show');
-                const content = document.getElementById('dashboardContent');
-                if (content) content.style.display = 'block';
-
-            }).catch(function(err) {
-                console.error(err);
-                if (loader) loader.classList.remove('show');
-                const content = document.getElementById('dashboardContent');
-                if (content) content.style.display = 'block';
-                showMsg('حدث خطأ في تحميل البيانات', 'error');
-            });
-        }
-
-        // ============================================================
-        // 7. عرض النشاطات
-        // ============================================================
-        function renderActivities(snapshot) {
-            const container = document.getElementById('activityList');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            if (snapshot.empty) {
-                const empty = document.getElementById('activityEmpty');
-                if (empty) container.innerHTML = `<div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">${empty.textContent || 'لا توجد نشاطات حديثة'}</div>`;
-                return;
-            }
-
-            const typeMap = {
-                'login': { label: 'تسجيل دخول', cls: 'login' },
-                'logout': { label: 'تسجيل خروج', cls: 'logout' },
-                'create_academy': { label: 'إضافة أكاديمية', cls: 'create' },
-                'update_academy': { label: 'تعديل أكاديمية', cls: 'update' },
-                'delete_academy': { label: 'حذف أكاديمية', cls: 'delete' },
-                'create_certificate': { label: 'إضافة شهادة', cls: 'create' },
-                'update_certificate': { label: 'تعديل شهادة', cls: 'update' },
-                'delete_certificate': { label: 'حذف شهادة', cls: 'delete' },
-                'search_certificate': { label: 'بحث شهادة', cls: 'search' },
-                'search_academy': { label: 'بحث أكاديمية', cls: 'search' },
-                'export_pdf': { label: 'تصدير PDF', cls: 'export' },
-                'export_excel': { label: 'تصدير Excel', cls: 'export' },
-            };
-
-            let count = 0;
-            snapshot.forEach(function(doc) {
-                if (count >= 10) return;
-                const data = doc.data();
-                const typeInfo = typeMap[data.type] || { label: data.type || 'نشاط', cls: 'info' };
-
-                const item = document.createElement('div');
-                item.className = 'activity-item';
-
-                const avatar = document.createElement('div');
-                avatar.className = 'avatar';
-                avatar.textContent = (data.userName || 'م').charAt(0);
-
-                const info = document.createElement('div');
-                info.className = 'info';
-                const timeStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString('ar-EG') : 'الآن';
-                info.innerHTML =
-                    `<div class="text">${data.description || typeInfo.label}</div><div class="time">${data.userName || 'مستخدم'} • ${timeStr}</div>`;
-
-                const badge = document.createElement('span');
-                badge.className = 'type-badge ' + typeInfo.cls;
-                badge.textContent = typeInfo.label;
-
-                item.appendChild(avatar);
-                item.appendChild(info);
-                item.appendChild(badge);
-                container.appendChild(item);
-                count++;
-            });
-        }
-
-        // ============================================================
-        // 8. الرسم البياني
-        // ============================================================
-        function renderChart(snapshot) {
+        function updateChart() {
             const canvas = document.getElementById('chartCanvas');
             if (!canvas) return;
 
             const ctx = canvas.getContext('2d');
 
             const grades = {};
-            snapshot.forEach(function(doc) {
-                const data = doc.data();
-                if (data.grade) {
-                    grades[data.grade] = (grades[data.grade] || 0) + 1;
+            allCertificates.forEach(function(cert) {
+                if (cert.grade) {
+                    const grade = cert.grade.toUpperCase();
+                    grades[grade] = (grades[grade] || 0) + 1;
                 }
             });
 
@@ -1389,7 +1229,185 @@
         }
 
         // ============================================================
-        // 9. عرض الرسائل
+        // 7. ترتيب الأكاديميات
+        // ============================================================
+        function updateTopAcademies() {
+            const container = document.getElementById('topAcademies');
+            if (!container) return;
+
+            const academyCounts = {};
+            allCertificates.forEach(function(cert) {
+                const key = cert.academyId || cert.academyName || 'غير محدد';
+                academyCounts[key] = (academyCounts[key] || 0) + 1;
+            });
+
+            const sorted = Object.keys(academyCounts).map(function(key) {
+                return { name: key, count: academyCounts[key] };
+            }).sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
+
+            if (sorted.length === 0) {
+                container.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">لا توجد شهادات مسجلة</div>';
+                return;
+            }
+
+            let html = '';
+            sorted.forEach(function(item, index) {
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const academyName = item.name.length > 25 ? item.name.substring(0, 25) + '...' : item.name;
+                html += `
+                    <div class="ranking-item">
+                        <div class="rank ${rankClass}">${index + 1}</div>
+                        <div class="info">
+                            <div class="name">${academyName}</div>
+                        </div>
+                        <div class="count">${item.count}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        // 8. ترتيب المتدربين
+        // ============================================================
+        function updateTopStudents() {
+            const container = document.getElementById('topStudents');
+            if (!container) return;
+
+            const studentCounts = {};
+            allCertificates.forEach(function(cert) {
+                const key = cert.studentNationalId || cert.studentName || 'غير محدد';
+                if (!studentCounts[key]) {
+                    studentCounts[key] = { name: cert.studentName || 'متدرب', count: 0, nationalId: cert.studentNationalId ||
+                            '' };
+                }
+                studentCounts[key].count++;
+            });
+
+            const sorted = Object.keys(studentCounts).map(function(key) {
+                return studentCounts[key];
+            }).sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
+
+            if (sorted.length === 0) {
+                container.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">لا توجد شهادات مسجلة</div>';
+                return;
+            }
+
+            let html = '';
+            sorted.forEach(function(item, index) {
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const studentName = item.name.length > 20 ? item.name.substring(0, 20) + '...' : item.name;
+                html += `
+                    <div class="ranking-item">
+                        <div class="rank ${rankClass}">${index + 1}</div>
+                        <div class="info">
+                            <div class="name">${studentName}</div>
+                            <div class="detail">${item.nationalId || ''}</div>
+                        </div>
+                        <div class="count">${item.count}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        // 9. آخر النشاطات
+        // ============================================================
+        function updateRecentActivities() {
+            const container = document.getElementById('recentActivities');
+            if (!container) return;
+
+            const typeMap = {
+                'login': 'تسجيل دخول',
+                'logout': 'تسجيل خروج',
+                'create_academy': 'إضافة أكاديمية',
+                'update_academy': 'تعديل أكاديمية',
+                'delete_academy': 'حذف أكاديمية',
+                'create_certificate': 'إضافة شهادة',
+                'update_certificate': 'تعديل شهادة',
+                'delete_certificate': 'حذف شهادة',
+                'search_certificate': 'بحث شهادة',
+                'search_academy': 'بحث أكاديمية',
+                'export_pdf': 'تصدير PDF',
+                'export_excel': 'تصدير Excel',
+            };
+
+            const activities = allActivities.slice(0, 10);
+
+            if (activities.length === 0) {
+                container.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:20px 0;font-size:13px;">لا توجد نشاطات حديثة</div>';
+                return;
+            }
+
+            let html = '';
+            activities.forEach(function(activity) {
+                const typeLabel = typeMap[activity.type] || activity.type || 'نشاط';
+                const timeStr = activity.timestamp ? new Date(activity.timestamp.toDate()).toLocaleString('ar-EG') : 'الآن';
+                const userName = activity.userName || 'مستخدم';
+                html += `
+                    <div class="ranking-item">
+                        <div class="info">
+                            <div class="name">${typeLabel}</div>
+                            <div class="detail">${userName} • ${timeStr}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        // 10. المصادقة
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            if (data.role === 'super_admin' || data.role === 'admin' || data.role === 'committee_manager') {
+                                userRole = data.role;
+
+                                const settingsBtn = document.getElementById('settingsBtn');
+                                const settingsQuick = document.getElementById('quickSettings');
+
+                                if (data.role === 'super_admin') {
+                                    if (settingsBtn) settingsBtn.style.display = 'inline-flex';
+                                    if (settingsQuick) settingsQuick.style.display = 'flex';
+                                }
+
+                                startListeners();
+                            } else {
+                                showMsg('غير مصرح بالوصول إلى لوحة التحكم', 'error');
+                                setTimeout(function() { window.location.href = 'home.html'; }, 2000);
+                            }
+                        } else {
+                            showMsg('المستخدم غير موجود', 'error');
+                            setTimeout(function() { window.location.href = 'login.html'; }, 2000);
+                        }
+                    })
+                    .catch(function(err) {
+                        showMsg('حدث خطأ: ' + err.message, 'error');
+                    });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(function() {
+                window.location.href = 'login.html';
+            });
+        });
+
+        // ============================================================
+        // 11. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('dashboardMsg');
@@ -1400,16 +1418,14 @@
         }
 
         // ============================================================
-        // 10. تحميل الصفحة
+        // 12. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            loadSettings();
-            console.log('✅ لوحة التحكم - كل حرف من الإعدادات');
-            console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
-            console.log('📊 لوحة تحكم متطورة');
-            console.log('📊 تم إضافة زر التقارير');
-            console.log('🔗 زر البحث يودي إلى شاشة البحث (home.html)');
+            console.log('لوحة التحكم - جاري التحميل');
+            console.log('تحديث فوري لكل البيانات');
+            console.log('ترتيب الأكاديميات والمتدربين تلقائياً');
+            console.log('ممنوع الإيموجي والعلامات');
+            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
         });
     </script>
 
