@@ -1633,7 +1633,7 @@
             document.body.style.background = theme.background;
 
             closeThemeModal();
-            showToast('تم تغيير الثيم إلى: ' + getThemeName(themeName));
+            // تم حذف رسالة toast
         }
 
         function getThemeName(name) {
@@ -1650,7 +1650,6 @@
         function resetTheme() {
             localStorage.removeItem('homeTheme');
             applyTheme('dark');
-            showToast('تم استعادة الثيم الافتراضي');
         }
 
         function loadTheme() {
@@ -1679,45 +1678,7 @@
         });
 
         // ============================================================
-        // 3. Toast notification
-        // ============================================================
-        function showToast(msg) {
-            const existing = document.querySelector('.toast-notification');
-            if (existing) existing.remove();
-
-            const toast = document.createElement('div');
-            toast.className = 'toast-notification';
-            toast.textContent = msg;
-            Object.assign(toast.style, {
-                position: 'fixed',
-                bottom: '80px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                background: 'rgba(0,0,0,0.8)',
-                backdropFilter: 'blur(10px)',
-                color: '#fff',
-                padding: '12px 24px',
-                borderRadius: '12px',
-                fontSize: '14px',
-                fontWeight: '600',
-                zIndex: '9999',
-                boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
-                transition: 'all 0.3s ease',
-                opacity: '0',
-                pointerEvents: 'none',
-                fontFamily: "'Cairo', sans-serif"
-            });
-            document.body.appendChild(toast);
-
-            setTimeout(function() { toast.style.opacity = '1'; }, 10);
-            setTimeout(function() {
-                toast.style.opacity = '0';
-                setTimeout(function() { toast.remove(); }, 300);
-            }, 2500);
-        }
-
-        // ============================================================
-        // 4. متغيرات عامة
+        // 3. متغيرات عامة
         // ============================================================
         let currentUser = null;
         let isAdmin = false;
@@ -1760,7 +1721,7 @@
         };
 
         // ============================================================
-        // 5. إعدادات الـ Listeners
+        // 4. إعدادات الـ Listeners
         // ============================================================
         let generalUnsubscribe = null;
         let textsUnsubscribe = null;
@@ -1904,7 +1865,7 @@
         }
 
         // ============================================================
-        // 6. تطبيق الإعدادات
+        // 5. تطبيق الإعدادات
         // ============================================================
         function applySettings() {
             const unionNameEl = document.getElementById('unionName');
@@ -2002,7 +1963,7 @@
         }
 
         // ============================================================
-        // 7. دوال مساعدة
+        // 6. دوال مساعدة
         // ============================================================
         function showLoader(id) { document.getElementById(id).classList.add('show'); }
         function hideLoader(id) { document.getElementById(id).classList.remove('show'); }
@@ -2038,7 +1999,7 @@
         }
 
         // ============================================================
-        // 8. المصادقة
+        // 7. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -2082,7 +2043,7 @@
         });
 
         // ============================================================
-        // 9. البحث عن شهادة
+        // 8. البحث عن شهادة
         // ============================================================
         function searchCertificate(e) {
             e.preventDefault();
@@ -2163,7 +2124,7 @@
         }
 
         // ============================================================
-        // 10. طباعة الشهادة
+        // 9. طباعة الشهادة
         // ============================================================
         function printCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2287,7 +2248,7 @@
         }
 
         // ============================================================
-        // 11. تحميل PDF
+        // 10. تحميل PDF
         // ============================================================
         function downloadCertificatePDF(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2390,7 +2351,7 @@
         }
 
         // ============================================================
-        // 12. مشاركة الشهادة
+        // 11. مشاركة الشهادة
         // ============================================================
         function shareCertificate(certCode) {
             const cert = allCertificates.find(function(c) { return c.certificateCode === certCode; });
@@ -2424,7 +2385,7 @@
         }
 
         // ============================================================
-        // 13. البحث عن متدرب
+        // 12. البحث عن متدرب
         // ============================================================
         function searchStudent(e) {
             e.preventDefault();
@@ -2566,7 +2527,7 @@
         }
 
         // ============================================================
-        // 14. البحث عن أكاديمية
+        // 13. البحث عن أكاديمية
         // ============================================================
         function searchAcademy(e) {
             e.preventDefault();
@@ -2670,7 +2631,7 @@
         }
 
         // ============================================================
-        // 15. مودال الأكاديميات
+        // 14. مودال الأكاديميات
         // ============================================================
         function openAcademiesModal() {
             document.getElementById('academiesModal').classList.add('active');
@@ -2828,7 +2789,7 @@
         });
 
         // ============================================================
-        // 16. بدء التشغيل
+        // 15. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('الصفحة الرئيسية - جاري التحميل');
