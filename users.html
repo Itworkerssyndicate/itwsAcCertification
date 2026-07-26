@@ -789,7 +789,6 @@
             font-size: 13px;
         }
 
-        /* ===== مودال الإضافة والتعديل ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1023,9 +1022,8 @@
             <div style="color:var(--text-muted);" id="loaderText">جاري تحميل المستخدمين...</div>
         </div>
 
-        <div id="pageContent" style="display:none;">
+        <div id="pageContent">
 
-            <!-- ===== إحصائيات ===== -->
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card">
                     <div class="stat-number" id="statTotal">0</div>
@@ -1047,7 +1045,6 @@
                 </div>
             </div>
 
-            <!-- ===== البحث ===== -->
             <div class="search-section">
                 <form id="searchForm" onsubmit="return applyFilters(event)">
                     <div class="search-grid">
@@ -1076,7 +1073,6 @@
                 </form>
             </div>
 
-            <!-- ===== المستخدمين ===== -->
             <div class="users-grid" id="usersGrid">
                 <div style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:14px;grid-column:1/-1;">جاري تحميل المستخدمين...</div>
             </div>
@@ -1099,7 +1095,6 @@
 
     </div>
 
-    <!-- ===== مودال إضافة/تعديل مستخدم ===== -->
     <div class="modal-overlay" id="userModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1181,8 +1176,6 @@
         let filteredUsers = [];
         let currentPage = 1;
         const itemsPerPage = 9;
-
-        // لتتبع المستخدمين المتصلين
         let onlineUsers = {};
 
         let settings = {
@@ -1234,14 +1227,10 @@
                 loadedCount++;
                 if (loadedCount >= totalDocs && !isReady) {
                     isReady = true;
-                    document.getElementById('pageContent').style.display = 'block';
                     document.getElementById('pageLoader').classList.remove('show');
                     console.log('تم تحميل كل البيانات بنجاح');
                 }
             }
-
-            document.getElementById('pageContent').style.display = 'none';
-            document.getElementById('pageLoader').classList.add('show');
 
             if (generalUnsubscribe) generalUnsubscribe();
             generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
@@ -1297,7 +1286,6 @@
                 if (!isReady) checkReady();
             });
 
-            // استماع للجلسات النشطة (لتحديد المتصلين)
             if (sessionsUnsubscribe) sessionsUnsubscribe();
             sessionsUnsubscribe = db.collection('sessions').where('isActive', '==', true).onSnapshot(function(snapshot) {
                 onlineUsers = {};
@@ -1484,11 +1472,9 @@
             const online = Object.keys(onlineUsers).length;
             const admins = allUsers.filter(function(u) { return u.role === 'super_admin' || u.role === 'admin'; }).length;
 
-            // نشط اليوم (آخر 24 ساعة من الجلسات)
             const today = new Date();
             today.setHours(today.getHours() - 24);
             let activeToday = 0;
-            // يتم حسابها من الجلسات النشطة
             Object.keys(onlineUsers).forEach(function(key) {
                 const session = onlineUsers[key];
                 if (session.lastActivity) {
@@ -1538,7 +1524,6 @@
                     'user': 'مستخدم'
                 };
 
-                // حساب وقت الجلسة
                 let sessionTime = 'غير متصل';
                 if (isOnline) {
                     const session = onlineUsers[item.id];
@@ -1546,7 +1531,7 @@
                         const startTime = session.startedAt.toDate ? session.startedAt.toDate() : new Date(session
                             .startedAt);
                         const now = new Date();
-                        const diff = Math.floor((now - startTime) / 1000 / 60); // دقائق
+                        const diff = Math.floor((now - startTime) / 1000 / 60);
                         if (diff < 60) {
                             sessionTime = diff + ' دقيقة';
                         } else if (diff < 1440) {
@@ -1632,7 +1617,7 @@
         }
 
         // ============================================================
-        // 7. إدارة المستخدمين (إضافة، تعديل، حذف)
+        // 7. إدارة المستخدمين
         // ============================================================
         function openAddModal() {
             if (userRole !== 'super_admin') {
@@ -1718,10 +1703,8 @@
             };
 
             if (id) {
-                // تعديل
                 db.collection('users').doc(id).update(userData)
                     .then(function() {
-                        // إذا تم تغيير كلمة المرور
                         if (password && password.length >= 8) {
                             return auth.currentUser ? auth.currentUser.updatePassword(password) : Promise.resolve();
                         }
@@ -1742,7 +1725,6 @@
                         showMsg('حدث خطأ: ' + err.message, 'error');
                     });
             } else {
-                // إضافة
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(function(cred) {
                         const uid = cred.user.uid;
