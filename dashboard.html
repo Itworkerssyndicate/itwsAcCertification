@@ -701,6 +701,7 @@
                 <span class="role-badge" id="roleBadge"></span>
                 <a href="home.html" class="btn btn-outline btn-sm" id="searchBtn">بحث</a>
                 <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">الإعدادات</a>
+                <a href="users.html" class="btn btn-outline btn-sm" id="usersBtn" style="display:none;">المستخدمين</a>
                 <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
             </div>
         </header>
@@ -795,6 +796,10 @@
                             <a href="reports.html" class="quick-action">
                                 <div class="icon">📊</div>
                                 <div class="label">التقارير</div>
+                            </a>
+                            <a href="users.html" class="quick-action" id="quickUsers" style="display:none;">
+                                <div class="icon">👥</div>
+                                <div class="label">المستخدمين</div>
                             </a>
                             <a href="settings.html" class="quick-action" id="quickSettings" style="display:none;">
                                 <div class="icon">⚙️</div>
@@ -929,11 +934,9 @@
                 }
             }
 
-            // إخفاء المحتوى مؤقتاً
             document.getElementById('dashboardContent').style.display = 'none';
             document.getElementById('dashboardLoader').classList.add('show');
 
-            // ===== الإعدادات العامة =====
             if (generalUnsubscribe) generalUnsubscribe();
             generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -955,7 +958,6 @@
                 if (!isReady) checkReady();
             });
 
-            // ===== التصميم =====
             if (designUnsubscribe) designUnsubscribe();
             designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -972,7 +974,6 @@
                 if (!isReady) checkReady();
             });
 
-            // ===== الشهادات =====
             if (certificatesUnsubscribe) certificatesUnsubscribe();
             certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
                 allCertificates = [];
@@ -992,7 +993,6 @@
                 if (!isReady) checkReady();
             });
 
-            // ===== الأكاديميات =====
             if (academiesUnsubscribe) academiesUnsubscribe();
             academiesUnsubscribe = db.collection('academies').where('isDeleted', '==', false).onSnapshot(function(snapshot) {
                 allAcademies = [];
@@ -1010,7 +1010,6 @@
                 if (!isReady) checkReady();
             });
 
-            // ===== النشاطات =====
             if (activitiesUnsubscribe) activitiesUnsubscribe();
             activitiesUnsubscribe = db.collection('activities').orderBy('timestamp', 'desc').limit(20).onSnapshot(function(snapshot) {
                 allActivities = [];
@@ -1028,7 +1027,6 @@
                 if (!isReady) checkReady();
             });
 
-            // جلب عدد المتدربين (مرة واحدة مع تحديث عند التغيير)
             db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
                 const studentsSet = new Set();
                 snapshot.forEach(function(doc) {
@@ -1056,6 +1054,7 @@
             const searchBtn = document.getElementById('searchBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const settingsBtn = document.getElementById('settingsBtn');
+            const usersBtn = document.getElementById('usersBtn');
             const roleBadge = document.getElementById('roleBadge');
 
             if (titleEl) titleEl.textContent = settings.dashboardTitle;
@@ -1069,6 +1068,7 @@
             if (searchBtn) searchBtn.textContent = settings.searchBtn;
             if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
             if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
+            if (usersBtn) usersBtn.textContent = settings.usersBtn;
 
             const loaderText = document.getElementById('loaderText');
             if (loaderText) loaderText.textContent = settings.loaderText;
@@ -1095,13 +1095,11 @@
                 }
             }
 
-            // ===== عنوان الصفحة =====
             const pageTitle = document.getElementById('pageTitle');
             if (pageTitle) {
                 pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم';
             }
 
-            // ===== OG Tags =====
             const ogTitle = document.getElementById('ogTitle');
             const ogDescription = document.getElementById('ogDescription');
             const ogImage = document.getElementById('ogImage');
@@ -1375,10 +1373,14 @@
 
                                 const settingsBtn = document.getElementById('settingsBtn');
                                 const settingsQuick = document.getElementById('quickSettings');
+                                const usersBtn = document.getElementById('usersBtn');
+                                const usersQuick = document.getElementById('quickUsers');
 
                                 if (data.role === 'super_admin') {
                                     if (settingsBtn) settingsBtn.style.display = 'inline-flex';
                                     if (settingsQuick) settingsQuick.style.display = 'flex';
+                                    if (usersBtn) usersBtn.style.display = 'inline-flex';
+                                    if (usersQuick) usersQuick.style.display = 'flex';
                                 }
 
                                 startListeners();
