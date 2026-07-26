@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="keywords" id="metaKeywords" content="" />
+    <title id="pageTitle">نقابة تكنولوجيا المعلومات والبرمجيات - المستخدمين</title>
+    <meta name="description" id="metaDescription" content="إدارة المستخدمين - نظام توثيق الشهادات - نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="keywords" id="metaKeywords" content="مستخدمين, صلاحيات, إدارة, نقابة, تكنولوجيا المعلومات" />
 
     <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="" />
-    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:title" id="ogTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات - المستخدمين" />
+    <meta property="og:description" id="ogDescription" content="إدارة المستخدمين - نظام توثيق الشهادات" />
     <meta property="og:image" id="ogImage" content="" />
     <meta property="og:url" id="ogUrl" content="" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:locale" content="ar_EG" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="" />
-    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:title" id="twitterTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات - المستخدمين" />
+    <meta name="twitter:description" id="twitterDescription" content="إدارة المستخدمين - نظام توثيق الشهادات" />
     <meta name="twitter:image" id="twitterImage" content="" />
 
     <!-- Icons -->
@@ -35,10 +35,6 @@
     </script>
 
     <style>
-        /* ============================================================
-           التصميم الخرافي لإدارة المستخدمين
-           كل حرف من الإعدادات
-           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -417,84 +413,59 @@
             font-weight: 600;
         }
 
-        .card {
+        .page-title-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title-section h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-color) 0%, var(--primary-color) 40%, var(--accent-light) 70%, var(--text-color) 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: titleFlow 5s ease-in-out infinite;
+        }
+
+        @keyframes titleFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-title-section p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .search-section {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 20px 24px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
         }
 
-        .card:hover { border-color: var(--primary-color); }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .card-title .badge {
-            font-size: 10px;
-            background: var(--primary-glow);
-            color: var(--primary-color);
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .stats-row .stat-mini {
-            text-align: center;
-            padding: 10px 12px;
-            background: var(--bg-hover);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-        }
-
-        .stats-row .stat-mini:hover {
-            background: var(--bg-hover);
+        .search-section:hover {
             border-color: var(--primary-color);
         }
 
-        .stats-row .stat-mini .num {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--primary-color);
-            line-height: 1.2;
+        .search-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
         }
 
-        .stats-row .stat-mini .label {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .filter-bar input,
-        .filter-bar select {
-            padding: 10px 16px;
+        .search-grid input,
+        .search-grid select {
+            width: 100%;
+            padding: 8px 12px;
             border-radius: var(--radius-sm);
             border: 2px solid var(--border);
             background: var(--bg-hover);
@@ -502,128 +473,323 @@
             font-size: 13px;
             outline: none;
             transition: all 0.3s ease;
-            flex: 1;
-            min-width: 150px;
             font-family: inherit;
         }
 
-        .filter-bar input::placeholder {
+        .search-grid input::placeholder {
             color: var(--text-muted);
         }
 
-        .filter-bar input:focus,
-        .filter-bar select:focus {
+        .search-grid input:focus,
+        .search-grid select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 20px var(--primary-glow);
+            background: rgba(255,255,255,0.06);
         }
 
-        .filter-bar select option {
+        .search-grid select option {
             background: var(--bg-color);
             color: var(--text-color);
         }
 
-        .filter-bar .btn { flex-shrink: 0; }
-
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .search-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
-        .table thead {
-            border-bottom: 1px solid var(--border);
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            transition: all 0.4s ease;
+            text-align: center;
         }
 
-        .table thead th {
-            text-align: right;
-            padding: 10px 12px;
-            color: var(--text-muted);
-            font-weight: 600;
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .stat-card .stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-label {
             font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .stat-card .stat-online {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 1.5s ease-in-out infinite;
+            margin-right: 4px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .user-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
+            pointer-events: none;
+        }
+
+        .user-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .user-card .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-card .user-header .user-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .user-card .user-header .user-role {
+            font-size: 10px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .user-role.super_admin { background: rgba(139,92,246,0.2); color: #8b5cf6; }
+        .user-role.admin { background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .user-role.committee_manager { background: rgba(16,185,129,0.2); color: #10b981; }
+        .user-role.user { background: var(--bg-hover); color: var(--text-muted); }
+
+        .user-card .user-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 12px;
+            margin-bottom: 10px;
+        }
+
+        .user-card .user-body .info-item {
+            padding: 4px 0;
+        }
+
+        .user-card .user-body .info-item .label {
+            font-size: 9px;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            white-space: nowrap;
         }
 
-        .table tbody td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-light);
-            vertical-align: middle;
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background: var(--bg-hover);
-        }
-
-        .table .user-name {
+        .user-card .user-body .info-item .value {
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-color);
         }
 
-        .table .user-email {
-            font-size: 12px;
+        .user-card .user-body .info-item .value .online-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 4px;
+        }
+
+        .user-card .user-body .info-item .value .online-dot.online {
+            background: var(--success);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .user-card .user-body .info-item .value .online-dot.offline {
+            background: var(--text-dim);
+        }
+
+        .user-card .user-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .user-card .user-footer .session-time {
+            font-size: 11px;
             color: var(--text-muted);
         }
 
-        .table .role-badge-table {
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .role-badge-table.super_admin {
-            background: rgba(139,92,246,0.15);
-            color: #8b5cf6;
-            border: 1px solid rgba(139,92,246,0.1);
-        }
-
-        .role-badge-table.admin {
-            background: var(--info-bg);
-            color: var(--info);
-            border: 1px solid rgba(59,130,246,0.1);
-        }
-
-        .table .status-badge {
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .status-badge.active {
-            background: var(--success-bg);
-            color: var(--success);
-            border: 1px solid rgba(16,185,129,0.1);
-        }
-
-        .status-badge.inactive {
-            background: var(--error-bg);
-            color: var(--error);
-            border: 1px solid rgba(239,68,68,0.1);
-        }
-
-        .table .actions {
+        .user-card .user-footer .actions {
             display: flex;
             gap: 4px;
-            flex-wrap: nowrap;
         }
 
-        .table .actions .btn {
-            padding: 4px 10px;
+        .user-card .user-footer .actions .btn {
+            padding: 3px 10px;
             font-size: 11px;
             border-radius: 20px;
         }
 
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .pagination button {
+            padding: 6px 18px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--primary-glow);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .pagination span {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .msg {
+            display: none;
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .msg.show { display: block; animation: fadeIn 0.3s ease; }
+        .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
+        .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
+        .msg.info { background: var(--info-bg); border: 1px solid var(--info); color: var(--info); }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader { display: none; text-align: center; padding: 30px 0; }
+        .loader.show { display: block; }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+            color: var(--text-dim);
+            font-size: 11px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state .icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        /* ===== مودال الإضافة والتعديل ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -634,60 +800,51 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            animation: fadeIn 0.3s ease;
         }
 
-        .modal-overlay.show { display: flex; }
+        .modal-overlay.active {
+            display: flex;
+        }
 
-        .modal {
+        .modal-content {
             background: var(--card-bg);
             backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
-            padding: 32px;
-            max-width: 550px;
+            padding: 28px 32px;
+            max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow);
-            animation: slideUp 0.3s ease;
+            animation: modalIn 0.4s ease;
         }
 
-        .modal::-webkit-scrollbar { width: 4px; }
-        .modal::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 4px; }
-        .modal::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
-            padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .modal-header h2 {
-            font-size: 20px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--text-color);
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
 
-        .modal-close {
+        .modal-header .close-btn {
             background: var(--bg-hover);
             border: 1px solid var(--border);
             color: var(--text-muted);
@@ -702,14 +859,11 @@
             justify-content: center;
         }
 
-        .modal-close:hover {
+        .modal-header .close-btn:hover {
             background: var(--error-bg);
             color: var(--error);
             border-color: var(--error);
-        }
-
-        .modal-body {
-            margin-bottom: 18px;
+            transform: rotate(90deg);
         }
 
         .form-group {
@@ -738,14 +892,11 @@
             font-family: inherit;
         }
 
-        .form-group input::placeholder {
-            color: var(--text-muted);
-        }
-
         .form-group input:focus,
         .form-group select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 20px var(--primary-glow);
+            background: rgba(255,255,255,0.06);
         }
 
         .form-group select option {
@@ -753,130 +904,61 @@
             color: var(--text-color);
         }
 
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .modal-footer {
+        .form-actions {
             display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
             padding-top: 16px;
             border-top: 1px solid var(--border);
         }
 
-        .modal-footer .btn {
-            padding: 10px 24px;
-            border-radius: 30px;
-        }
-
-        .msg {
-            display: none;
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .msg.show { display: block; animation: fadeIn 0.3s ease; }
-        .msg.error { background: var(--error-bg); border: 1px solid var(--error); color: var(--error); }
-        .msg.success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
-        .msg.info { background: var(--info-bg); border: 1px solid var(--info); color: var(--info); }
-
-        .loader { display: none; text-align: center; padding: 30px 0; }
-        .loader.show { display: block; }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 12px;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
-
-        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-        .empty-state .title { font-size: 18px; font-weight: 700; color: var(--text-secondary); }
-        .empty-state .desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-
-        .footer {
-            text-align: center;
-            padding: 20px 0 10px;
-            border-top: 1px solid var(--border);
-            margin-top: 24px;
-            color: var(--text-dim);
-            font-size: 11px;
-        }
-
-        .delete-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 1001;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(20px);
+        .form-actions .btn {
+            flex: 1;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .delete-modal.show { display: flex; }
-
-        .delete-modal .modal-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            max-width: 450px;
-            width: 100%;
-            box-shadow: var(--shadow);
-            animation: slideUp 0.3s ease;
         }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
             .header-right { justify-content: center; flex-wrap: wrap; }
             .header-left { justify-content: center; flex-wrap: wrap; }
-            .form-row { grid-template-columns: 1fr; }
-            .container { padding: 10px; }
-            .card { padding: 14px 16px; }
-            .modal { padding: 20px; margin: 10px; border-radius: 20px; }
-            .table thead th, .table tbody td { padding: 8px 10px; font-size: 12px; }
+            .search-grid { grid-template-columns: 1fr 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .users-grid { grid-template-columns: 1fr; }
             .glow-orb { display: none; }
             .ring { display: none; }
             .header-title { text-align: center; }
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
             .header-president { padding: 3px 10px; }
             .header-president .president-name { font-size: 12px; }
-            .filter-bar { flex-direction: column; }
-            .filter-bar input, .filter-bar select { min-width: unset; }
+            .page-title-section h1 { font-size: 24px; }
+            .search-actions { flex-direction: column; }
+            .search-actions .btn { width: 100%; justify-content: center; }
+            .container { padding: 10px; }
+            .modal-content { padding: 20px; margin: 10px; }
+            .form-row { grid-template-columns: 1fr; }
+            .user-card .user-body { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
-            .table thead { display: none; }
-            .table tbody td { display: block; padding: 6px 10px; border-bottom: none; }
-            .table tbody td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); display: inline-block; width: 80px; }
-            .table tbody tr { border-bottom: 1px solid var(--border); padding: 8px 0; display: block; }
-            .table .actions { justify-content: center; margin-top: 4px; }
             .header-title h1 { font-size: 15px; }
-            .modal { padding: 16px; }
-            .stats-row { grid-template-columns: 1fr 1fr; }
+            .btn { padding: 6px 14px; font-size: 11px; }
+            .logo-box { width: 36px; height: 36px; font-size: 14px; }
+            .page-title-section h1 { font-size: 20px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .search-grid { grid-template-columns: 1fr; }
             .header-president .president-name { font-size: 11px; }
-            .filter-bar { flex-direction: column; }
+            .stat-card .stat-number { font-size: 20px; }
+            .user-card { padding: 14px 16px; }
+            .modal-content { padding: 16px; }
         }
     </style>
 </head>
@@ -912,99 +994,97 @@
             <div class="header-left">
                 <div class="logo-box" id="logoBox" onclick="window.location.href='dashboard.html'"></div>
                 <div class="header-title">
-                    <h1 id="pageTitleHeader"></h1>
+                    <h1 id="headerTitle">إدارة المستخدمين</h1>
                     <p id="committeeName"></p>
                 </div>
                 <div class="header-president">
                     <span class="president-icon">👤</span>
-                    <span class="president-label" id="presidentLabel"></span>
+                    <span class="president-label" id="presidentLabel">النقيب العام:</span>
                     <span class="president-name" id="headerPresidentName"></span>
                 </div>
             </div>
             <div class="header-right">
                 <span class="role-badge" id="roleBadge"></span>
-                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn"></a>
-                <a href="#" class="btn btn-primary btn-sm" onclick="openAddModal()" id="addUserBtn"></a>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn">لوحة التحكم</a>
+                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">الإعدادات</a>
                 <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
             </div>
         </header>
+
+        <div class="page-title-section">
+            <h1 id="pageTitleMain">إدارة المستخدمين</h1>
+            <p id="pageSubtitle">مراقبة المستخدمين، حالتهم، أوقات الجلسات، والتحكم في صلاحياتهم</p>
+        </div>
 
         <div class="msg" id="pageMsg"></div>
 
         <div class="loader" id="pageLoader">
             <div class="spinner"></div>
-            <div style="color:var(--text-muted);" id="loaderText"></div>
+            <div style="color:var(--text-muted);" id="loaderText">جاري تحميل المستخدمين...</div>
         </div>
 
         <div id="pageContent" style="display:none;">
 
-            <div class="card">
-                <div class="stats-row" id="statsRow">
-                    <div class="stat-mini">
-                        <div class="num" id="statTotal">0</div>
-                        <div class="label" id="statTotalLabel"></div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="num" id="statActive">0</div>
-                        <div class="label" id="statActiveLabel"></div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="num" id="statAdmins">0</div>
-                        <div class="label" id="statAdminsLabel"></div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="num" id="statSuperAdmins">0</div>
-                        <div class="label" id="statSuperAdminsLabel"></div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="num" id="statOnline">0</div>
-                        <div class="label" id="statOnlineLabel"></div>
-                    </div>
+            <!-- ===== إحصائيات ===== -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">إجمالي المستخدمين</div>
                 </div>
-
-                <div class="filter-bar">
-                    <input type="text" id="searchInput" placeholder="بحث عن مستخدم (الاسم، البريد، الدور)..." oninput="filterUsers()" />
-                    <select id="roleFilter" onchange="filterUsers()">
-                        <option value="">جميع الأدوار</option>
-                        <option value="super_admin">سوبر أدمن</option>
-                        <option value="admin">أدمن</option>
-                    </select>
-                    <select id="statusFilter" onchange="filterUsers()">
-                        <option value="">جميع الحالات</option>
-                        <option value="active">نشط</option>
-                        <option value="inactive">محذوف</option>
-                    </select>
-                    <button class="btn btn-outline btn-sm" onclick="resetFilters()" id="resetBtn"></button>
+                <div class="stat-card">
+                    <div class="stat-number" id="statOnline">
+                        <span class="stat-online"></span> 0
+                    </div>
+                    <div class="stat-label">متصل الآن</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statAdmins">0</div>
+                    <div class="stat-label">المشرفين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statActive">0</div>
+                    <div class="stat-label">نشط اليوم</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-title">
-                    <span id="usersListTitle"></span>
-                    <span class="badge" id="userCount">0</span>
-                </div>
+            <!-- ===== البحث ===== -->
+            <div class="search-section">
+                <form id="searchForm" onsubmit="return applyFilters(event)">
+                    <div class="search-grid">
+                        <input type="text" id="searchName" placeholder="بحث باسم المستخدم..." />
+                        <input type="text" id="searchEmail" placeholder="البريد الإلكتروني..." />
+                        <select id="searchRole">
+                            <option value="">جميع الصلاحيات</option>
+                            <option value="super_admin">سوبر أدمن</option>
+                            <option value="admin">أدمن</option>
+                            <option value="committee_manager">إدارة اللجنة</option>
+                            <option value="user">مستخدم</option>
+                        </select>
+                        <select id="searchStatus">
+                            <option value="all">جميع الحالات</option>
+                            <option value="online">متصل</option>
+                            <option value="offline">غير متصل</option>
+                            <option value="active">نشط</option>
+                            <option value="inactive">غير نشط</option>
+                        </select>
+                    </div>
+                    <div class="search-actions">
+                        <button type="submit" class="btn btn-primary">بحث</button>
+                        <button type="button" class="btn btn-outline" onclick="resetFilters()">إعادة تعيين</button>
+                        <button type="button" class="btn btn-success" onclick="openAddModal()">إضافة مستخدم</button>
+                    </div>
+                </form>
+            </div>
 
-                <div class="table-responsive">
-                    <table class="table" id="usersTable">
-                        <thead>
-                            <tr>
-                                <th id="thNum">#</th>
-                                <th id="thUser">المستخدم</th>
-                                <th id="thRole">الدور</th>
-                                <th id="thStatus">الحالة</th>
-                                <th id="thLastLogin">آخر ظهور</th>
-                                <th id="thActions">الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersBody"></tbody>
-                    </table>
-                </div>
+            <!-- ===== المستخدمين ===== -->
+            <div class="users-grid" id="usersGrid">
+                <div style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:14px;grid-column:1/-1;">جاري تحميل المستخدمين...</div>
+            </div>
 
-                <div class="empty-state" id="emptyState" style="display:none;">
-                    <div class="icon">👥</div>
-                    <div class="title" id="emptyTitle"></div>
-                    <div class="desc" id="emptyDesc"></div>
-                </div>
+            <div class="pagination" id="pagination">
+                <button id="prevPage" onclick="changePage(-1)">السابق</button>
+                <span id="pageInfo">صفحة 1 من 1</span>
+                <button id="nextPage" onclick="changePage(1)">التالي</button>
             </div>
 
         </div>
@@ -1019,84 +1099,62 @@
 
     </div>
 
-    <!-- ===== مودال الإضافة والتعديل ===== -->
+    <!-- ===== مودال إضافة/تعديل مستخدم ===== -->
     <div class="modal-overlay" id="userModal">
-        <div class="modal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle"></h2>
-                <button class="modal-close" onclick="closeModal()">✕</button>
+                <h2 id="modalTitle">إضافة مستخدم جديد</h2>
+                <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
-            <div class="modal-body">
-                <form id="userForm" onsubmit="return saveUser(event)">
-
-                    <input type="hidden" id="editUid" value="" />
-
+            <form id="userForm" onsubmit="return saveUser(event)">
+                <input type="hidden" id="editUserId" value="" />
+                <div class="form-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" id="userName" required placeholder="أدخل الاسم الكامل" />
+                </div>
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="userEmail" required placeholder="example@domain.com" />
+                </div>
+                <div class="form-group" id="passwordGroup">
+                    <label>كلمة المرور</label>
+                    <input type="text" id="userPassword" placeholder="أدخل كلمة المرور (8 أحرف على الأقل)" />
+                </div>
+                <div class="form-row">
                     <div class="form-group">
-                        <label id="emailLabel"></label>
-                        <input type="email" id="userEmail" placeholder="" required />
-                    </div>
-
-                    <div class="form-group" id="passwordGroup">
-                        <label id="passwordLabel"></label>
-                        <input type="password" id="userPassword" placeholder="" minlength="6" />
-                        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="passwordHint"></div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label id="nameLabel"></label>
-                            <input type="text" id="userName" placeholder="" required />
-                        </div>
-                        <div class="form-group">
-                            <label id="phoneLabel"></label>
-                            <input type="text" id="userPhone" placeholder="" required />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label id="roleLabel"></label>
-                        <select id="userRole" required>
+                        <label>الصلاحية</label>
+                        <select id="userRole">
+                            <option value="user">مستخدم</option>
+                            <option value="committee_manager">إدارة اللجنة</option>
                             <option value="admin">أدمن</option>
                             <option value="super_admin">سوبر أدمن</option>
                         </select>
                     </div>
-
-                    <div style="color:var(--text-muted);font-size:11px;margin-top:8px;" id="requiredFields"></div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal()" id="cancelBtn"></button>
-                <button class="btn btn-primary" onclick="document.getElementById('userForm').dispatchEvent(new Event('submit'))" id="saveBtn"></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== مودال الحذف ===== -->
-    <div class="delete-modal" id="deleteModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 style="color:var(--error);" id="deleteTitle"></h2>
-                <button class="modal-close" onclick="closeDeleteModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="color:var(--text-secondary);margin-bottom:12px;" id="deleteConfirmText"></p>
-                <div style="background:var(--bg-hover);border-radius:var(--radius-sm);padding:14px;">
-                    <p style="font-weight:700;color:var(--text-color);" id="deleteUserName">-</p>
-                    <p style="font-size:12px;color:var(--text-muted);" id="deleteUserEmail">-</p>
+                    <div class="form-group">
+                        <label>الحالة</label>
+                        <select id="userStatus">
+                            <option value="true">نشط</option>
+                            <option value="false">غير نشط</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group" style="margin-top:12px;">
-                    <label id="deleteReasonLabel"></label>
-                    <input type="text" id="deleteReason" placeholder="" required />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="saveBtn">حفظ</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">إلغاء</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeDeleteModal()" id="deleteCancelBtn"></button>
-                <button class="btn btn-danger" onclick="confirmDelete()" id="deleteConfirmBtn"></button>
-            </div>
+            </form>
         </div>
     </div>
 
     <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
         // ============================================================
         // 1. تهيئة Firebase
         // ============================================================
@@ -1117,55 +1175,30 @@
         // ============================================================
         // 2. متغيرات
         // ============================================================
-        let users = [];
         let currentUser = null;
-        let currentUserRole = null;
-        let deleteTargetUid = null;
-        let editingUid = null;
-        let onlineUsers = new Set();
+        let userRole = null;
+        let allUsers = [];
+        let filteredUsers = [];
+        let currentPage = 1;
+        const itemsPerPage = 9;
+
+        // لتتبع المستخدمين المتصلين
+        let onlineUsers = {};
 
         let settings = {
-            pageTitleHeader: 'إدارة المستخدمين',
+            headerTitle: 'إدارة المستخدمين',
             committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
             footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
             presidentName: 'المهندس / محمود جميل',
             presidentLabel: 'النقيب العام:',
-            presidentFooter: 'النقيب العام:',
             dashboardBtn: 'لوحة التحكم',
-            addUserBtn: 'إضافة مستخدم',
             logoutBtn: 'تسجيل الخروج',
+            settingsBtn: 'الإعدادات',
+            pageTitleMain: 'إدارة المستخدمين',
+            pageSubtitle: 'مراقبة المستخدمين، حالتهم، أوقات الجلسات، والتحكم في صلاحياتهم',
             loaderText: 'جاري تحميل المستخدمين...',
-            statTotalLabel: 'إجمالي المستخدمين',
-            statActiveLabel: 'نشط',
-            statAdminsLabel: 'أدمن',
-            statSuperAdminsLabel: 'سوبر أدمن',
-            statOnlineLabel: 'متصلون الآن',
-            resetBtn: 'إعادة ضبط',
-            usersListTitle: 'قائمة المستخدمين',
-            thNum: '#',
-            thUser: 'المستخدم',
-            thRole: 'الدور',
-            thStatus: 'الحالة',
-            thLastLogin: 'آخر ظهور',
-            thActions: 'الإجراءات',
-            emptyTitle: 'لا توجد مستخدمين',
-            emptyDesc: 'قم بإضافة مستخدم جديد بالضغط على زر "إضافة مستخدم"',
-            modalTitle: 'إضافة مستخدم جديد',
-            emailLabel: 'البريد الإلكتروني',
-            passwordLabel: 'كلمة المرور',
-            passwordHint: '6 أحرف على الأقل',
-            nameLabel: 'الاسم الكامل',
-            phoneLabel: 'رقم الهاتف',
-            roleLabel: 'الدور',
-            requiredFields: '* الحقول المطلوبة',
-            cancelBtn: 'إلغاء',
-            saveBtn: 'حفظ',
-            deleteTitle: 'تأكيد الحذف',
-            deleteConfirmText: 'هل أنت متأكد من حذف المستخدم التالي؟',
-            deleteReasonLabel: 'سبب الحذف',
-            deleteCancelBtn: 'إلغاء',
-            deleteConfirmBtn: 'تأكيد الحذف',
+            presidentFooter: 'النقيب العام:',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1183,94 +1216,129 @@
             }
         };
 
+        let isReady = false;
+
         // ============================================================
-        // 3. جلب الإعدادات
+        // 3. إعدادات الـ Listeners
         // ============================================================
-        function loadSettings() {
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
+        let generalUnsubscribe = null;
+        let designUnsubscribe = null;
+        let usersUnsubscribe = null;
+        let sessionsUnsubscribe = null;
 
-                        if (data.pageTitleHeader) settings.pageTitleHeader = data.pageTitleHeader;
-                        if (data.committeeName) settings.committeeName = data.committeeName;
-                        if (data.logoUrl) settings.logoUrl = data.logoUrl;
-                        if (data.footerText) settings.footerText = data.footerText;
-                        if (data.presidentName) settings.presidentName = data.presidentName;
-                        if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
-                        if (data.presidentFooter) settings.presidentFooter = data.presidentFooter;
-                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+        function startListeners() {
+            let loadedCount = 0;
+            const totalDocs = 4;
 
-                        db.collection('settings').doc('texts').get()
-                            .then(function(textsDoc) {
-                                if (textsDoc.exists) {
-                                    const texts = textsDoc.data();
-                                    if (texts.dashboardBtn) settings.dashboardBtn = texts.dashboardBtn;
-                                    if (texts.addUserBtn) settings.addUserBtn = texts.addUserBtn;
-                                    if (texts.logoutBtn) settings.logoutBtn = texts.logoutBtn;
-                                    if (texts.loaderText) settings.loaderText = texts.loaderText;
-                                    if (texts.statTotalLabel) settings.statTotalLabel = texts.statTotalLabel;
-                                    if (texts.statActiveLabel) settings.statActiveLabel = texts.statActiveLabel;
-                                    if (texts.statAdminsLabel) settings.statAdminsLabel = texts.statAdminsLabel;
-                                    if (texts.statSuperAdminsLabel) settings.statSuperAdminsLabel = texts.statSuperAdminsLabel;
-                                    if (texts.statOnlineLabel) settings.statOnlineLabel = texts.statOnlineLabel;
-                                    if (texts.resetBtn) settings.resetBtn = texts.resetBtn;
-                                    if (texts.usersListTitle) settings.usersListTitle = texts.usersListTitle;
-                                    if (texts.thNum) settings.thNum = texts.thNum;
-                                    if (texts.thUser) settings.thUser = texts.thUser;
-                                    if (texts.thRole) settings.thRole = texts.thRole;
-                                    if (texts.thStatus) settings.thStatus = texts.thStatus;
-                                    if (texts.thLastLogin) settings.thLastLogin = texts.thLastLogin;
-                                    if (texts.thActions) settings.thActions = texts.thActions;
-                                    if (texts.emptyTitle) settings.emptyTitle = texts.emptyTitle;
-                                    if (texts.emptyDesc) settings.emptyDesc = texts.emptyDesc;
-                                    if (texts.modalTitle) settings.modalTitle = texts.modalTitle;
-                                    if (texts.emailLabel) settings.emailLabel = texts.emailLabel;
-                                    if (texts.passwordLabel) settings.passwordLabel = texts.passwordLabel;
-                                    if (texts.passwordHint) settings.passwordHint = texts.passwordHint;
-                                    if (texts.nameLabel) settings.nameLabel = texts.nameLabel;
-                                    if (texts.phoneLabel) settings.phoneLabel = texts.phoneLabel;
-                                    if (texts.roleLabel) settings.roleLabel = texts.roleLabel;
-                                    if (texts.requiredFields) settings.requiredFields = texts.requiredFields;
-                                    if (texts.cancelBtn) settings.cancelBtn = texts.cancelBtn;
-                                    if (texts.saveBtn) settings.saveBtn = texts.saveBtn;
-                                    if (texts.deleteTitle) settings.deleteTitle = texts.deleteTitle;
-                                    if (texts.deleteConfirmText) settings.deleteConfirmText = texts.deleteConfirmText;
-                                    if (texts.deleteReasonLabel) settings.deleteReasonLabel = texts.deleteReasonLabel;
-                                    if (texts.deleteCancelBtn) settings.deleteCancelBtn = texts.deleteCancelBtn;
-                                    if (texts.deleteConfirmBtn) settings.deleteConfirmBtn = texts.deleteConfirmBtn;
-                                }
-                                applySettings();
-                                applyColors(settings.colors);
-                            })
-                            .catch(function() {
-                                applySettings();
-                                applyColors(settings.colors);
-                            });
+            function checkReady() {
+                loadedCount++;
+                if (loadedCount >= totalDocs && !isReady) {
+                    isReady = true;
+                    document.getElementById('pageContent').style.display = 'block';
+                    document.getElementById('pageLoader').classList.remove('show');
+                    console.log('تم تحميل كل البيانات بنجاح');
+                }
+            }
 
-                    } else {
-                        applySettings();
-                        applyColors(settings.colors);
+            document.getElementById('pageContent').style.display = 'none';
+            document.getElementById('pageLoader').classList.add('show');
+
+            if (generalUnsubscribe) generalUnsubscribe();
+            generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.headerTitle) settings.headerTitle = data.headerTitle;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                }
+                applySettings();
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الإعدادات العامة');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للإعدادات العامة:', error);
+                if (!isReady) checkReady();
+            });
+
+            if (designUnsubscribe) designUnsubscribe();
+            designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
                     }
-                })
-                .catch(function() {
-                    applySettings();
-                    applyColors(settings.colors);
-                });
+                }
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: التصميم');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للتصميم:', error);
+                if (!isReady) checkReady();
+            });
 
-            loadLocalSettings();
+            if (usersUnsubscribe) usersUnsubscribe();
+            usersUnsubscribe = db.collection('users').where('isActive', '!=', false).onSnapshot(function(snapshot) {
+                allUsers = [];
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allUsers.push(data);
+                });
+                applyFilters();
+                updateStats();
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: المستخدمين (' + allUsers.length + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للمستخدمين:', error);
+                if (!isReady) checkReady();
+            });
+
+            // استماع للجلسات النشطة (لتحديد المتصلين)
+            if (sessionsUnsubscribe) sessionsUnsubscribe();
+            sessionsUnsubscribe = db.collection('sessions').where('isActive', '==', true).onSnapshot(function(snapshot) {
+                onlineUsers = {};
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    if (data.userId) {
+                        onlineUsers[data.userId] = {
+                            sessionId: doc.id,
+                            startedAt: data.startedAt,
+                            lastActivity: data.lastActivity || data.startedAt
+                        };
+                    }
+                });
+                applyFilters();
+                updateStats();
+                console.log('تحديث فوري: الجلسات النشطة (' + Object.keys(onlineUsers).length + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للجلسات:', error);
+            });
         }
 
+        // ============================================================
+        // 4. تطبيق الإعدادات
+        // ============================================================
         function applySettings() {
-            const titleEl = document.getElementById('pageTitleHeader');
+            const titleEl = document.getElementById('headerTitle');
             const committeeEl = document.getElementById('committeeName');
             const presidentLabelEl = document.getElementById('presidentLabel');
             const presidentNameEl = document.getElementById('headerPresidentName');
             const footerTextEl = document.getElementById('footerText');
             const presidentFooterEl = document.getElementById('presidentFooter');
             const presidentNameFooterEl = document.getElementById('presidentName');
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const roleBadge = document.getElementById('roleBadge');
+            const pageTitleMain = document.getElementById('pageTitleMain');
+            const pageSubtitle = document.getElementById('pageSubtitle');
+            const loaderText = document.getElementById('loaderText');
 
-            if (titleEl) titleEl.textContent = settings.pageTitleHeader;
+            if (titleEl) titleEl.textContent = settings.headerTitle;
             if (committeeEl) committeeEl.textContent = settings.committeeName;
             if (presidentLabelEl) presidentLabelEl.textContent = settings.presidentLabel;
             if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
@@ -1278,94 +1346,24 @@
             if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
 
-            const dashboardBtn = document.getElementById('dashboardBtn');
-            const addUserBtn = document.getElementById('addUserBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
             if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
-            if (addUserBtn) addUserBtn.textContent = settings.addUserBtn;
             if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
-
-            const loaderText = document.getElementById('loaderText');
+            if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
+            if (pageTitleMain) pageTitleMain.textContent = settings.pageTitleMain;
+            if (pageSubtitle) pageSubtitle.textContent = settings.pageSubtitle;
             if (loaderText) loaderText.textContent = settings.loaderText;
 
-            const statTotalLabel = document.getElementById('statTotalLabel');
-            const statActiveLabel = document.getElementById('statActiveLabel');
-            const statAdminsLabel = document.getElementById('statAdminsLabel');
-            const statSuperAdminsLabel = document.getElementById('statSuperAdminsLabel');
-            const statOnlineLabel = document.getElementById('statOnlineLabel');
-            if (statTotalLabel) statTotalLabel.textContent = settings.statTotalLabel;
-            if (statActiveLabel) statActiveLabel.textContent = settings.statActiveLabel;
-            if (statAdminsLabel) statAdminsLabel.textContent = settings.statAdminsLabel;
-            if (statSuperAdminsLabel) statSuperAdminsLabel.textContent = settings.statSuperAdminsLabel;
-            if (statOnlineLabel) statOnlineLabel.textContent = settings.statOnlineLabel;
-
-            const resetBtn = document.getElementById('resetBtn');
-            if (resetBtn) resetBtn.textContent = settings.resetBtn;
-
-            const usersListTitle = document.getElementById('usersListTitle');
-            if (usersListTitle) usersListTitle.textContent = settings.usersListTitle;
-
-            const thNum = document.getElementById('thNum');
-            const thUser = document.getElementById('thUser');
-            const thRole = document.getElementById('thRole');
-            const thStatus = document.getElementById('thStatus');
-            const thLastLogin = document.getElementById('thLastLogin');
-            const thActions = document.getElementById('thActions');
-            if (thNum) thNum.textContent = settings.thNum;
-            if (thUser) thUser.textContent = settings.thUser;
-            if (thRole) thRole.textContent = settings.thRole;
-            if (thStatus) thStatus.textContent = settings.thStatus;
-            if (thLastLogin) thLastLogin.textContent = settings.thLastLogin;
-            if (thActions) thActions.textContent = settings.thActions;
-
-            const emptyTitle = document.getElementById('emptyTitle');
-            const emptyDesc = document.getElementById('emptyDesc');
-            if (emptyTitle) emptyTitle.textContent = settings.emptyTitle;
-            if (emptyDesc) emptyDesc.textContent = settings.emptyDesc;
-
-            const modalTitle = document.getElementById('modalTitle');
-            const emailLabel = document.getElementById('emailLabel');
-            const passwordLabel = document.getElementById('passwordLabel');
-            const passwordHint = document.getElementById('passwordHint');
-            const nameLabel = document.getElementById('nameLabel');
-            const phoneLabel = document.getElementById('phoneLabel');
-            const roleLabel = document.getElementById('roleLabel');
-            const requiredFields = document.getElementById('requiredFields');
-            const cancelBtn = document.getElementById('cancelBtn');
-            const saveBtn = document.getElementById('saveBtn');
-            const userEmail = document.getElementById('userEmail');
-            const userPassword = document.getElementById('userPassword');
-            const userName = document.getElementById('userName');
-            const userPhone = document.getElementById('userPhone');
-
-            if (modalTitle) modalTitle.textContent = settings.modalTitle;
-            if (emailLabel) emailLabel.textContent = settings.emailLabel;
-            if (passwordLabel) passwordLabel.textContent = settings.passwordLabel;
-            if (passwordHint) passwordHint.textContent = settings.passwordHint;
-            if (nameLabel) nameLabel.textContent = settings.nameLabel;
-            if (phoneLabel) phoneLabel.textContent = settings.phoneLabel;
-            if (roleLabel) roleLabel.textContent = settings.roleLabel;
-            if (requiredFields) requiredFields.textContent = settings.requiredFields;
-            if (cancelBtn) cancelBtn.textContent = settings.cancelBtn;
-            if (saveBtn) saveBtn.textContent = settings.saveBtn;
-            if (userEmail) userEmail.placeholder = settings.emailLabel;
-            if (userPassword) userPassword.placeholder = settings.passwordLabel;
-            if (userName) userName.placeholder = settings.nameLabel;
-            if (userPhone) userPhone.placeholder = settings.phoneLabel;
-
-            const deleteTitle = document.getElementById('deleteTitle');
-            const deleteConfirmText = document.getElementById('deleteConfirmText');
-            const deleteReasonLabel = document.getElementById('deleteReasonLabel');
-            const deleteCancelBtn = document.getElementById('deleteCancelBtn');
-            const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
-            const deleteReason = document.getElementById('deleteReason');
-
-            if (deleteTitle) deleteTitle.textContent = settings.deleteTitle;
-            if (deleteConfirmText) deleteConfirmText.textContent = settings.deleteConfirmText;
-            if (deleteReasonLabel) deleteReasonLabel.textContent = settings.deleteReasonLabel;
-            if (deleteCancelBtn) deleteCancelBtn.textContent = settings.deleteCancelBtn;
-            if (deleteConfirmBtn) deleteConfirmBtn.textContent = settings.deleteConfirmBtn;
-            if (deleteReason) deleteReason.placeholder = settings.deleteReasonLabel;
+            if (roleBadge) {
+                if (userRole === 'super_admin') {
+                    roleBadge.textContent = 'سوبر أدمن';
+                    roleBadge.style.background = 'rgba(139,92,246,0.15)';
+                    roleBadge.style.color = '#8b5cf6';
+                } else if (userRole === 'admin') {
+                    roleBadge.textContent = 'أدمن';
+                } else {
+                    roleBadge.textContent = 'إدارة اللجنة';
+                }
+            }
 
             if (settings.logoUrl) {
                 const logo = document.getElementById('logoBox');
@@ -1377,9 +1375,11 @@
                 }
             }
 
-            // OG Tags
             const pageTitle = document.getElementById('pageTitle');
-            const metaDescription = document.getElementById('metaDescription');
+            if (pageTitle) {
+                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات - المستخدمين';
+            }
+
             const ogTitle = document.getElementById('ogTitle');
             const ogDescription = document.getElementById('ogDescription');
             const ogImage = document.getElementById('ogImage');
@@ -1391,13 +1391,11 @@
             const favicon = document.getElementById('favicon');
             const appleIcon = document.getElementById('appleIcon');
 
-            if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
-            if (metaDescription) metaDescription.content = 'إدارة المستخدمين - ' + settings.pageTitleHeader;
-            if (ogTitle) ogTitle.content = settings.pageTitleHeader;
+            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - المستخدمين';
             if (ogDescription) ogDescription.content = 'إدارة المستخدمين - نظام توثيق الشهادات';
             if (ogUrl) ogUrl.content = window.location.href;
-            if (ogSiteName) ogSiteName.content = settings.pageTitleHeader;
-            if (twitterTitle) twitterTitle.content = settings.pageTitleHeader;
+            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - المستخدمين';
             if (twitterDescription) twitterDescription.content = 'إدارة المستخدمين - نظام توثيق الشهادات';
 
             if (settings.logoUrl) {
@@ -1434,20 +1432,396 @@
             }
         }
 
-        function loadLocalSettings() {
-            try {
-                const localSettings = localStorage.getItem('userSettings');
-                if (localSettings) {
-                    const parsed = JSON.parse(localSettings);
-                    if (parsed.theme && parsed.theme.colors) {
-                        applyColors(parsed.theme.colors);
-                    }
+        // ============================================================
+        // 5. دوال البحث والفلترة
+        // ============================================================
+        function applyFilters(e) {
+            if (e) e.preventDefault();
+
+            const nameFilter = document.getElementById('searchName').value.trim().toLowerCase();
+            const emailFilter = document.getElementById('searchEmail').value.trim().toLowerCase();
+            const roleFilter = document.getElementById('searchRole').value;
+            const statusFilter = document.getElementById('searchStatus').value;
+
+            filteredUsers = allUsers.filter(function(item) {
+                let match = true;
+                if (nameFilter) {
+                    match = match && (item.name || item.fullName || '').toLowerCase().includes(nameFilter);
                 }
-            } catch (e) {}
+                if (emailFilter) {
+                    match = match && (item.email || '').toLowerCase().includes(emailFilter);
+                }
+                if (roleFilter) {
+                    match = match && (item.role || '') === roleFilter;
+                }
+                if (statusFilter === 'online') {
+                    match = match && onlineUsers[item.id] !== undefined;
+                } else if (statusFilter === 'offline') {
+                    match = match && onlineUsers[item.id] === undefined;
+                } else if (statusFilter === 'active') {
+                    match = match && item.isActive !== false;
+                } else if (statusFilter === 'inactive') {
+                    match = match && item.isActive === false;
+                }
+                return match;
+            });
+
+            currentPage = 1;
+            renderUsers();
+            updateStats();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchEmail').value = '';
+            document.getElementById('searchRole').value = '';
+            document.getElementById('searchStatus').value = 'all';
+            applyFilters();
+        }
+
+        function updateStats() {
+            const total = allUsers.length;
+            const online = Object.keys(onlineUsers).length;
+            const admins = allUsers.filter(function(u) { return u.role === 'super_admin' || u.role === 'admin'; }).length;
+
+            // نشط اليوم (آخر 24 ساعة من الجلسات)
+            const today = new Date();
+            today.setHours(today.getHours() - 24);
+            let activeToday = 0;
+            // يتم حسابها من الجلسات النشطة
+            Object.keys(onlineUsers).forEach(function(key) {
+                const session = onlineUsers[key];
+                if (session.lastActivity) {
+                    const lastAct = session.lastActivity.toDate ? session.lastActivity.toDate() : new Date(session
+                        .lastActivity);
+                    if (lastAct >= today) activeToday++;
+                }
+            });
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statOnline').innerHTML = '<span class="stat-online"></span> ' + online;
+            document.getElementById('statAdmins').textContent = admins;
+            document.getElementById('statActive').textContent = activeToday || online;
         }
 
         // ============================================================
-        // 4. المصادقة والصلاحيات
+        // 6. عرض المستخدمين
+        // ============================================================
+        function renderUsers() {
+            const container = document.getElementById('usersGrid');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredUsers.slice(start, end);
+            const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+            if (filteredUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">👤</div>
+                        <h3>لا يوجد مستخدمين</h3>
+                        <p>لم يتم العثور على مستخدمين تطابق معايير البحث</p>
+                    </div>
+                `;
+                document.getElementById('pagination').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('pagination').style.display = 'flex';
+
+            container.innerHTML = pageItems.map(function(item) {
+                const isOnline = onlineUsers[item.id] !== undefined;
+                const roleClass = item.role || 'user';
+                const roleLabels = {
+                    'super_admin': 'سوبر أدمن',
+                    'admin': 'أدمن',
+                    'committee_manager': 'إدارة اللجنة',
+                    'user': 'مستخدم'
+                };
+
+                // حساب وقت الجلسة
+                let sessionTime = 'غير متصل';
+                if (isOnline) {
+                    const session = onlineUsers[item.id];
+                    if (session.startedAt) {
+                        const startTime = session.startedAt.toDate ? session.startedAt.toDate() : new Date(session
+                            .startedAt);
+                        const now = new Date();
+                        const diff = Math.floor((now - startTime) / 1000 / 60); // دقائق
+                        if (diff < 60) {
+                            sessionTime = diff + ' دقيقة';
+                        } else if (diff < 1440) {
+                            sessionTime = Math.floor(diff / 60) + ' ساعة';
+                        } else {
+                            sessionTime = Math.floor(diff / 1440) + ' يوم';
+                        }
+                    } else {
+                        sessionTime = 'متصل';
+                    }
+                }
+
+                const lastSeen = item.lastLoginAt ? formatDateTime(item.lastLoginAt) : 'لم يسجل بعد';
+
+                return `
+                    <div class="user-card">
+                        <div class="user-header">
+                            <div>
+                                <div class="user-name">${item.name || item.fullName || 'مستخدم'}</div>
+                                <span class="user-role ${roleClass}">${roleLabels[roleClass] || roleClass}</span>
+                            </div>
+                            <div>
+                                <span class="user-role" style="background:${isOnline ? 'var(--success-bg)' : 'var(--bg-hover)'};color:${isOnline ? 'var(--success)' : 'var(--text-muted)'}">
+                                    ${isOnline ? '🟢 متصل' : '🔴 غير متصل'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="user-body">
+                            <div class="info-item">
+                                <div class="label">البريد الإلكتروني</div>
+                                <div class="value" style="font-size:12px;color:var(--text-muted);">${item.email || '-'}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">آخر ظهور</div>
+                                <div class="value" style="font-size:12px;color:var(--text-muted);">${lastSeen}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">مدة الجلسة الحالية</div>
+                                <div class="value" style="font-size:12px;color:var(--text-muted);">${sessionTime}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">الحالة</div>
+                                <div class="value" style="font-size:12px;">
+                                    ${item.isActive !== false ? 
+                                        '<span style="color:var(--success);">نشط</span>' : 
+                                        '<span style="color:var(--error);">غير نشط</span>'}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-footer">
+                            <div class="session-time">
+                                ${isOnline ? '🟢 متصل الآن' : 'آخر نشاط: ' + lastSeen}
+                            </div>
+                            <div class="actions">
+                                ${userRole === 'super_admin' ? `
+                                <button class="btn btn-primary btn-sm" onclick="editUser('${item.id}')">تعديل</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser('${item.id}')">حذف</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('pageInfo').textContent = 'صفحة ' + currentPage + ' من ' + Math.max(totalPages, 1);
+            document.getElementById('prevPage').disabled = currentPage <= 1;
+            document.getElementById('nextPage').disabled = currentPage >= totalPages;
+        }
+
+        function changePage(delta) {
+            const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+            const newPage = currentPage + delta;
+            if (newPage < 1 || newPage > totalPages) return;
+            currentPage = newPage;
+            renderUsers();
+        }
+
+        function formatDateTime(date) {
+            if (!date) return '-';
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        // ============================================================
+        // 7. إدارة المستخدمين (إضافة، تعديل، حذف)
+        // ============================================================
+        function openAddModal() {
+            if (userRole !== 'super_admin') {
+                showMsg('غير مصرح لك بإضافة مستخدمين', 'error');
+                return;
+            }
+            document.getElementById('modalTitle').textContent = 'إضافة مستخدم جديد';
+            document.getElementById('editUserId').value = '';
+            document.getElementById('userName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userPassword').placeholder = 'أدخل كلمة المرور (8 أحرف على الأقل)';
+            document.getElementById('passwordGroup').style.display = 'block';
+            document.getElementById('userRole').value = 'user';
+            document.getElementById('userStatus').value = 'true';
+            document.getElementById('saveBtn').textContent = 'إضافة';
+            document.getElementById('userModal').classList.add('active');
+        }
+
+        function editUser(id) {
+            if (userRole !== 'super_admin') {
+                showMsg('غير مصرح لك بتعديل المستخدمين', 'error');
+                return;
+            }
+            const user = allUsers.find(function(u) { return u.id === id; });
+            if (!user) {
+                showMsg('المستخدم غير موجود', 'error');
+                return;
+            }
+
+            document.getElementById('modalTitle').textContent = 'تعديل مستخدم';
+            document.getElementById('editUserId').value = id;
+            document.getElementById('userName').value = user.name || user.fullName || '';
+            document.getElementById('userEmail').value = user.email || '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userPassword').placeholder = 'اتركها فارغة لتغييرها';
+            document.getElementById('passwordGroup').style.display = 'block';
+            document.getElementById('userRole').value = user.role || 'user';
+            document.getElementById('userStatus').value = user.isActive !== false ? 'true' : 'false';
+            document.getElementById('saveBtn').textContent = 'تحديث';
+            document.getElementById('userModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+
+        document.getElementById('userModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        function saveUser(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editUserId').value;
+            const name = document.getElementById('userName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+            const role = document.getElementById('userRole').value;
+            const isActive = document.getElementById('userStatus').value === 'true';
+
+            if (!name || !email) {
+                showMsg('الرجاء ملء جميع الحقول المطلوبة', 'error');
+                return false;
+            }
+
+            if (!id && (!password || password.length < 8)) {
+                showMsg('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+                return false;
+            }
+
+            const userData = {
+                name: name,
+                fullName: name,
+                email: email,
+                role: role,
+                isActive: isActive,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (id) {
+                // تعديل
+                db.collection('users').doc(id).update(userData)
+                    .then(function() {
+                        // إذا تم تغيير كلمة المرور
+                        if (password && password.length >= 8) {
+                            return auth.currentUser ? auth.currentUser.updatePassword(password) : Promise.resolve();
+                        }
+                        return Promise.resolve();
+                    })
+                    .then(function() {
+                        showMsg('تم تحديث المستخدم بنجاح', 'success');
+                        closeModal();
+                        db.collection('activities').add({
+                            type: 'update_user',
+                            userName: currentUser ? currentUser.displayName || 'مستخدم' : 'مستخدم',
+                            userId: currentUser ? currentUser.uid : '',
+                            description: 'تعديل مستخدم: ' + name,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        }).catch(function() {});
+                    })
+                    .catch(function(err) {
+                        showMsg('حدث خطأ: ' + err.message, 'error');
+                    });
+            } else {
+                // إضافة
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(function(cred) {
+                        const uid = cred.user.uid;
+                        userData.uid = uid;
+                        userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                        return db.collection('users').doc(uid).set(userData);
+                    })
+                    .then(function() {
+                        showMsg('تم إضافة المستخدم بنجاح', 'success');
+                        closeModal();
+                        db.collection('activities').add({
+                            type: 'create_user',
+                            userName: currentUser ? currentUser.displayName || 'مستخدم' : 'مستخدم',
+                            userId: currentUser ? currentUser.uid : '',
+                            description: 'إضافة مستخدم جديد: ' + name,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        }).catch(function() {});
+                    })
+                    .catch(function(err) {
+                        let msg = 'حدث خطأ: ' + err.message;
+                        if (err.code === 'auth/email-already-in-use') {
+                            msg = 'البريد الإلكتروني مستخدم بالفعل';
+                        }
+                        showMsg(msg, 'error');
+                    });
+            }
+
+            return false;
+        }
+
+        function deleteUser(id) {
+            if (userRole !== 'super_admin') {
+                showMsg('غير مصرح لك بحذف المستخدمين', 'error');
+                return;
+            }
+
+            if (id === currentUser.uid) {
+                showMsg('لا يمكنك حذف حسابك بنفسك', 'error');
+                return;
+            }
+
+            const user = allUsers.find(function(u) { return u.id === id; });
+            if (!user) {
+                showMsg('المستخدم غير موجود', 'error');
+                return;
+            }
+
+            if (!confirm('هل أنت متأكد من حذف المستخدم "' + (user.name || user.fullName || '') + '"؟')) return;
+
+            db.collection('users').doc(id).update({
+                isActive: false,
+                deletedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                showMsg('تم حذف المستخدم بنجاح', 'success');
+                db.collection('activities').add({
+                    type: 'delete_user',
+                    userName: currentUser ? currentUser.displayName || 'مستخدم' : 'مستخدم',
+                    userId: currentUser ? currentUser.uid : '',
+                    description: 'حذف مستخدم: ' + (user.name || user.fullName || ''),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(function() {});
+            }).catch(function(err) {
+                showMsg('حدث خطأ: ' + err.message, 'error');
+            });
+        }
+
+        // ============================================================
+        // 8. عرض الرسائل
+        // ============================================================
+        function showMsg(msg, type) {
+            const el = document.getElementById('pageMsg');
+            if (!el) return;
+            el.textContent = msg;
+            el.className = 'msg show ' + type;
+            setTimeout(function() { el.className = 'msg'; }, 5000);
+        }
+
+        // ============================================================
+        // 9. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1457,25 +1831,21 @@
                         if (doc.exists) {
                             const data = doc.data();
                             if (data.role === 'super_admin') {
-                                currentUserRole = 'super_admin';
-                                const roleBadge = document.getElementById('roleBadge');
-                                if (roleBadge) {
-                                    roleBadge.textContent = 'سوبر أدمن';
-                                    roleBadge.style.background = 'rgba(139,92,246,0.15)';
-                                    roleBadge.style.color = '#8b5cf6';
-                                }
-                                loadUsers();
-                                startOnlineTracking();
+                                userRole = data.role;
+                                const settingsBtn = document.getElementById('settingsBtn');
+                                if (settingsBtn) settingsBtn.style.display = 'inline-flex';
+                                startListeners();
                             } else {
-                                showMsg('غير مصرح بالوصول إلى إدارة المستخدمين', 'error');
-                                setTimeout(function() { window.location.href = 'dashboard.html'; }, 2000);
+                                showMsg('غير مصرح بالوصول إلى هذه الصفحة', 'error');
+                                setTimeout(function() { window.location.href = 'home.html'; }, 2000);
                             }
                         } else {
-                            window.location.href = 'login.html';
+                            showMsg('المستخدم غير موجود', 'error');
+                            setTimeout(function() { window.location.href = 'login.html'; }, 2000);
                         }
                     })
-                    .catch(function() {
-                        window.location.href = 'login.html';
+                    .catch(function(err) {
+                        showMsg('حدث خطأ: ' + err.message, 'error');
                     });
             } else {
                 window.location.href = 'login.html';
@@ -1490,486 +1860,14 @@
         });
 
         // ============================================================
-        // 5. تتبع المستخدمين النشطين
-        // ============================================================
-        function startOnlineTracking() {
-            // تحديث حالة المستخدم الحالي
-            if (currentUser) {
-                updateUserOnlineStatus(currentUser.uid, true);
-            }
-
-            // تحديث كل دقيقة
-            setInterval(function() {
-                if (currentUser) {
-                    updateUserOnlineStatus(currentUser.uid, true);
-                }
-                updateOnlineStatuses();
-            }, 60000);
-
-            // عند إغلاق الصفحة
-            window.addEventListener('beforeunload', function() {
-                if (currentUser) {
-                    updateUserOnlineStatus(currentUser.uid, false);
-                }
-            });
-
-            updateOnlineStatuses();
-        }
-
-        function updateUserOnlineStatus(uid, isOnline) {
-            db.collection('users').doc(uid).update({
-                isOnline: isOnline,
-                lastSeen: isOnline ? null : new Date(),
-                lastActive: new Date()
-            }).catch(function() {});
-        }
-
-        function updateOnlineStatuses() {
-            // تحديث حالة المستخدمين في الواجهة
-            const now = new Date();
-            const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
-
-            users.forEach(function(user) {
-                if (user.uid === currentUser?.uid) {
-                    // المستخدم الحالي دائماً نشط
-                    user.isOnline = true;
-                } else if (user.lastActive) {
-                    const lastActive = user.lastActive.toDate ? user.lastActive.toDate() : new Date(user.lastActive);
-                    user.isOnline = lastActive >= fiveMinutesAgo;
-                } else {
-                    user.isOnline = false;
-                }
-            });
-
-            // تحديث الإحصائيات
-            const onlineCount = users.filter(function(u) { return u.isOnline === true; }).length;
-            document.getElementById('statOnline').textContent = onlineCount;
-
-            // إعادة عرض المستخدمين إذا كان الفلتر الحالي هو "نشط"
-            const currentFilter = document.getElementById('statusFilter').value;
-            if (currentFilter === 'active') {
-                renderUsers(getFilteredUsers());
-            }
-        }
-
-        // ============================================================
-        // 6. تحميل المستخدمين
-        // ============================================================
-        function loadUsers() {
-            const loader = document.getElementById('pageLoader');
-            const content = document.getElementById('pageContent');
-            if (loader) loader.classList.add('show');
-            if (content) content.style.display = 'none';
-
-            db.collection('users')
-                .get()
-                .then(function(snapshot) {
-                    users = [];
-                    snapshot.forEach(function(doc) {
-                        const data = doc.data();
-                        data.uid = doc.id;
-                        users.push(data);
-                    });
-
-                    // ترتيب حسب تاريخ الإنشاء
-                    users.sort(function(a, b) {
-                        const dateA = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt)) :
-                            new Date(0);
-                        const dateB = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt)) :
-                            new Date(0);
-                        return dateB - dateA;
-                    });
-
-                    if (loader) loader.classList.remove('show');
-                    if (content) content.style.display = 'block';
-                    updateStats();
-                    renderUsers();
-                    updateOnlineStatuses();
-                })
-                .catch(function(err) {
-                    if (loader) loader.classList.remove('show');
-                    if (content) content.style.display = 'block';
-                    showMsg('حدث خطأ في تحميل المستخدمين: ' + err.message, 'error');
-                });
-        }
-
-        // ============================================================
-        // 7. تحديث الإحصائيات
-        // ============================================================
-        function updateStats() {
-            const total = users.length;
-            const active = users.filter(function(u) { return u.isActive !== false; }).length;
-            const admins = users.filter(function(u) { return u.role === 'admin'; }).length;
-            const superAdmins = users.filter(function(u) { return u.role === 'super_admin'; }).length;
-            const online = users.filter(function(u) { return u.isOnline === true; }).length;
-
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statActive').textContent = active;
-            document.getElementById('statAdmins').textContent = admins;
-            document.getElementById('statSuperAdmins').textContent = superAdmins;
-            document.getElementById('statOnline').textContent = online;
-        }
-
-        // ============================================================
-        // 8. عرض المستخدمين
-        // ============================================================
-        function renderUsers(filteredData) {
-            const data = filteredData || users;
-            const tbody = document.getElementById('usersBody');
-            const emptyState = document.getElementById('emptyState');
-
-            document.getElementById('userCount').textContent = data.length;
-
-            if (data.length === 0) {
-                tbody.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-
-            tbody.innerHTML = data.map(function(user, index) {
-                const isCurrentUser = user.uid === currentUser?.uid;
-                const roleLabel = user.role === 'super_admin' ? 'سوبر أدمن' : 'أدمن';
-                const roleClass = user.role === 'super_admin' ? 'super_admin' : 'admin';
-
-                const isOnline = user.isOnline === true;
-                const statusClass = user.isActive !== false ? (isOnline ? 'active' : 'inactive') : 'inactive';
-                const statusLabel = user.isActive !== false ? (isOnline ? '🟢 نشط' : '⚪ غير نشط') : '🔴 محذوف';
-
-                const lastSeen = user.lastSeen ? (user.lastSeen.toDate ? user.lastSeen.toDate() : new Date(user.lastSeen)) :
-                    null;
-                const lastActive = user.lastActive ? (user.lastActive.toDate ? user.lastActive.toDate() : new Date(user
-                    .lastActive)) : null;
-
-                let lastDisplay = 'لم يسجل بعد';
-                if (isOnline) {
-                    lastDisplay = '🟢 متصل الآن';
-                } else if (lastSeen) {
-                    lastDisplay = lastSeen.toLocaleString('ar-EG');
-                } else if (lastActive) {
-                    lastDisplay = lastActive.toLocaleString('ar-EG');
-                }
-
-                return `
-                    <tr>
-                        <td data-label="${settings.thNum}"><span style="color:var(--text-muted);font-weight:600;">${index + 1}</span></td>
-                        <td data-label="${settings.thUser}">
-                            <div class="user-name">${user.displayName || '-'}</div>
-                            <div class="user-email">${user.email || '-'}</div>
-                        </td>
-                        <td data-label="${settings.thRole}">
-                            <span class="role-badge-table ${roleClass}">${roleLabel}</span>
-                        </td>
-                        <td data-label="${settings.thStatus}">
-                            <span class="status-badge ${statusClass}">${statusLabel}</span>
-                        </td>
-                        <td data-label="${settings.thLastLogin}" style="font-size:11px;color:var(--text-muted);">
-                            ${lastDisplay}
-                        </td>
-                        <td data-label="${settings.thActions}">
-                            <div class="actions">
-                                ${!isCurrentUser ? `
-                                    <button class="btn btn-success btn-sm" onclick="editUser('${user.uid}')">تعديل</button>
-                                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${user.uid}')">حذف</button>
-                                ` : `
-                                    <span style="font-size:10px;color:var(--text-muted);">أنت</span>
-                                `}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // ============================================================
-        // 9. الفلترة
-        // ============================================================
-        function getFilteredUsers() {
-            const search = document.getElementById('searchInput').value.trim().toLowerCase();
-            const roleFilter = document.getElementById('roleFilter').value;
-            const statusFilter = document.getElementById('statusFilter').value;
-
-            return users.filter(function(user) {
-                let match = true;
-
-                if (search) {
-                    match = match && (
-                        (user.displayName || '').toLowerCase().includes(search) ||
-                        (user.email || '').toLowerCase().includes(search) ||
-                        (user.role || '').toLowerCase().includes(search) ||
-                        (user.phone || '').includes(search)
-                    );
-                }
-
-                if (roleFilter) {
-                    match = match && user.role === roleFilter;
-                }
-
-                if (statusFilter === 'active') {
-                    match = match && user.isActive !== false;
-                } else if (statusFilter === 'inactive') {
-                    match = match && user.isActive === false;
-                }
-
-                return match;
-            });
-        }
-
-        function filterUsers() {
-            renderUsers(getFilteredUsers());
-        }
-
-        function resetFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('roleFilter').value = '';
-            document.getElementById('statusFilter').value = '';
-            renderUsers(users);
-        }
-
-        // ============================================================
-        // 10. فتح مودال الإضافة
-        // ============================================================
-        function openAddModal() {
-            document.getElementById('modalTitle').textContent = settings.modalTitle;
-            document.getElementById('editUid').value = '';
-            document.getElementById('userForm').reset();
-            document.getElementById('passwordGroup').style.display = 'block';
-            document.getElementById('userPassword').required = true;
-            document.getElementById('userEmail').disabled = false;
-            document.getElementById('userModal').classList.add('show');
-            editingUid = null;
-        }
-
-        // ============================================================
-        // 11. تعديل مستخدم
-        // ============================================================
-        function editUser(uid) {
-            const user = users.find(function(u) { return u.uid === uid; });
-            if (!user) {
-                showMsg('المستخدم غير موجود', 'error');
-                return;
-            }
-
-            document.getElementById('modalTitle').textContent = 'تعديل مستخدم';
-            document.getElementById('editUid').value = uid;
-            document.getElementById('userEmail').value = user.email || '';
-            document.getElementById('userEmail').disabled = true;
-            document.getElementById('userName').value = user.displayName || '';
-            document.getElementById('userPhone').value = user.phone || '';
-            document.getElementById('userRole').value = user.role || 'admin';
-            document.getElementById('passwordGroup').style.display = 'none';
-            document.getElementById('userPassword').required = false;
-
-            document.getElementById('userModal').classList.add('show');
-            editingUid = uid;
-        }
-
-        // ============================================================
-        // 12. حفظ المستخدم
-        // ============================================================
-        function saveUser(e) {
-            e.preventDefault();
-
-            const editUid = document.getElementById('editUid').value;
-            const email = document.getElementById('userEmail').value.trim();
-            const password = document.getElementById('userPassword').value;
-            const name = document.getElementById('userName').value.trim();
-            const phone = document.getElementById('userPhone').value.trim();
-            const role = document.getElementById('userRole').value;
-
-            if (!email || !name || !phone) {
-                showMsg('الرجاء ملء جميع الحقول المطلوبة', 'info');
-                return false;
-            }
-
-            if (!editUid && !password) {
-                showMsg('الرجاء إدخال كلمة المرور للمستخدم الجديد', 'info');
-                return false;
-            }
-
-            if (!editUid && password.length < 6) {
-                showMsg('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'info');
-                return false;
-            }
-
-            const userData = {
-                displayName: name,
-                phone: phone,
-                role: role,
-                updatedAt: new Date(),
-                updatedBy: currentUser?.uid || 'system'
-            };
-
-            let savePromise;
-
-            if (editUid) {
-                savePromise = db.collection('users').doc(editUid).update(userData);
-            } else {
-                userData.createdAt = new Date();
-                userData.createdBy = currentUser?.uid || 'system';
-                userData.isActive = true;
-                userData.email = email;
-                userData.lastLogin = null;
-                userData.isOnline = false;
-
-                savePromise = auth.createUserWithEmailAndPassword(email, password)
-                    .then(function(cred) {
-                        const uid = cred.user.uid;
-                        return db.collection('users').doc(uid).set({
-                            uid: uid,
-                            ...userData
-                        });
-                    });
-            }
-
-            savePromise.then(function() {
-                closeModal();
-                showMsg('تم ' + (editUid ? 'تحديث' : 'إضافة') + ' المستخدم بنجاح', 'success');
-
-                db.collection('activities').add({
-                    userId: currentUser?.uid || 'system',
-                    userEmail: currentUser?.email || 'system',
-                    userName: 'سوبر أدمن',
-                    userRole: 'super_admin',
-                    type: editUid ? 'user_update' : 'user_create',
-                    description: (editUid ? 'تحديث' : 'إضافة') + ' مستخدم: ' + email,
-                    details: {
-                        email: email,
-                        role: role,
-                        name: name,
-                        action: editUid ? 'update' : 'create'
-                    },
-                    timestamp: new Date(),
-                    ipAddress: 'auto',
-                    userAgent: navigator.userAgent
-                }).catch(function() {});
-
-                loadUsers();
-            }).catch(function(err) {
-                let msg = 'حدث خطأ: ' + err.message;
-                if (err.code === 'auth/email-already-in-use') {
-                    msg = 'البريد الإلكتروني مستخدم بالفعل';
-                }
-                showMsg(msg, 'error');
-            });
-
-            return false;
-        }
-
-        // ============================================================
-        // 13. مودال الحذف
-        // ============================================================
-        function openDeleteModal(uid) {
-            const user = users.find(function(u) { return u.uid === uid; });
-            if (!user) {
-                showMsg('المستخدم غير موجود', 'error');
-                return;
-            }
-
-            deleteTargetUid = uid;
-            document.getElementById('deleteUserName').textContent = user.displayName || '-';
-            document.getElementById('deleteUserEmail').textContent = user.email || '-';
-            document.getElementById('deleteReason').value = '';
-            document.getElementById('deleteModal').classList.add('show');
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.remove('show');
-            deleteTargetUid = null;
-        }
-
-        function confirmDelete() {
-            const reason = document.getElementById('deleteReason').value.trim();
-            if (!reason) {
-                showMsg('الرجاء إدخال سبب الحذف', 'info');
-                return;
-            }
-
-            if (!deleteTargetUid) {
-                showMsg('لم يتم تحديد المستخدم', 'error');
-                return;
-            }
-
-            const user = users.find(function(u) { return u.uid === deleteTargetUid; });
-            if (!user) {
-                showMsg('المستخدم غير موجود', 'error');
-                return;
-            }
-
-            db.collection('users').doc(deleteTargetUid).update({
-                isActive: false,
-                isOnline: false,
-                deletedAt: new Date(),
-                deletedBy: currentUser?.uid || 'system',
-                deletionReason: reason
-            }).then(function() {
-                closeDeleteModal();
-                showMsg('تم حذف المستخدم بنجاح', 'success');
-
-                db.collection('activities').add({
-                    userId: currentUser?.uid || 'system',
-                    userEmail: currentUser?.email || 'system',
-                    userName: 'سوبر أدمن',
-                    userRole: 'super_admin',
-                    type: 'user_delete',
-                    description: 'حذف مستخدم: ' + (user.email || ''),
-                    details: {
-                        email: user.email,
-                        reason: reason,
-                        deletedBy: currentUser?.email || 'system'
-                    },
-                    timestamp: new Date(),
-                    ipAddress: 'auto',
-                    userAgent: navigator.userAgent
-                }).catch(function() {});
-
-                loadUsers();
-            }).catch(function(err) {
-                showMsg('حدث خطأ: ' + err.message, 'error');
-            });
-        }
-
-        // ============================================================
-        // 14. إغلاق المودالات
-        // ============================================================
-        function closeModal() {
-            document.getElementById('userModal').classList.remove('show');
-            document.getElementById('userEmail').disabled = false;
-            document.getElementById('passwordGroup').style.display = 'block';
-            editingUid = null;
-        }
-
-        document.getElementById('userModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        document.getElementById('deleteModal').addEventListener('click', function(e) {
-            if (e.target === this) closeDeleteModal();
-        });
-
-        // ============================================================
-        // 15. عرض الرسائل
-        // ============================================================
-        function showMsg(msg, type) {
-            const el = document.getElementById('pageMsg');
-            if (!el) return;
-            el.textContent = msg;
-            el.className = 'msg show ' + type;
-            setTimeout(function() { el.className = 'msg'; }, 4000);
-        }
-
-        // ============================================================
-        // 16. تحميل الصفحة
+        // 10. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            loadSettings();
-            console.log('✅ إدارة المستخدمين - كل حرف من الإعدادات');
-            console.log('👤 النقيب العام: ' + settings.presidentName);
-            console.log('🎨 الألوان من الإعدادات مع دعم المظهر المحلي');
-            console.log('🔒 صلاحية السوبر أدمن فقط');
-            console.log('🟢 تتبع المستخدمين النشطين في الوقت الفعلي');
-            console.log('📊 إحصائيات دقيقة عن المستخدمين');
+            console.log('صفحة المستخدمين - جاري التحميل');
+            console.log('تحديث فوري للبيانات');
+            console.log('مراقبة المتصلين لحظياً');
+            console.log('إحصائيات المستخدمين');
+            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
         });
     </script>
 
