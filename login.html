@@ -35,6 +35,7 @@
     </script>
 
     <style>
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -70,8 +71,48 @@
             --radius: 20px;
             --radius-sm: 12px;
             --border: rgba(255,255,255,0.06);
+            --bg-hover: rgba(255,255,255,0.06);
         }
 
+        /* ===== PAGE LOADER ===== */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            transition: opacity 0.5s ease;
+        }
+
+        #pageLoader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #pageLoader .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #pageLoader p {
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== باقي الـ CSS ===== */
         .login-bg {
             position: fixed;
             inset: 0;
@@ -131,14 +172,14 @@
             position: absolute;
             border-radius: 50%;
             border: 1px solid rgba(201,168,76,0.04);
-            animation: spin 35s linear infinite;
+            animation: spinRing 35s linear infinite;
         }
 
         .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201,168,76,0.06); }
         .ring:nth-child(2) { width: 500px; height: 500px; border-color: rgba(124,58,237,0.04); animation-duration: 45s; animation-direction: reverse; }
         .ring:nth-child(3) { width: 650px; height: 650px; border-color: rgba(59,130,246,0.03); animation-duration: 55s; }
 
-        @keyframes spin {
+        @keyframes spinRing {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
@@ -337,7 +378,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .spinner {
+        .spinner-small {
             display: inline-block;
             width: 18px;
             height: 18px;
@@ -346,8 +387,6 @@
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
         }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         .login-divider {
             display: flex;
@@ -387,6 +426,12 @@
     </style>
 </head>
 <body>
+
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="pageLoader">
+        <div class="spinner"></div>
+        <p>جاري تحميل الإعدادات...</p>
+    </div>
 
     <div class="login-bg"></div>
 
@@ -485,11 +530,39 @@
         };
 
         let isReady = false;
-        let loadedCount = 0;
-        const totalDocs = 2;
+        let loaderHidden = false;
 
         // ============================================================
-        // 3. تطبيق الإعدادات
+        // 3. إخفاء وإظهار المحتوى
+        // ============================================================
+        function hidePageLoader() {
+            if (loaderHidden) return;
+            loaderHidden = true;
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+            document.getElementById('loginCard').style.display = 'block';
+        }
+
+        // ============================================================
+        // 4. مهلة زمنية احتياطية 3 ثواني
+        // ============================================================
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                applyColors(settings.colors);
+                applySettings();
+                hidePageLoader();
+                isReady = true;
+            }
+        }, 3000);
+
+        // ============================================================
+        // 5. تطبيق الإعدادات
         // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('loginTitle');
@@ -543,7 +616,7 @@
         }
 
         // ============================================================
-        // 4. تطبيق الألوان
+        // 6. تطبيق الألوان
         // ============================================================
         function applyColors(colors) {
             const root = document.documentElement;
@@ -566,24 +639,28 @@
         }
 
         // ============================================================
-        // 5. التحقق من الجاهزية
+        // 7. التحقق من الجاهزية
         // ============================================================
         function checkReady() {
-            loadedCount++;
-            if (loadedCount >= totalDocs && !isReady) {
+            if (!isReady) {
                 isReady = true;
-                document.getElementById('loginCard').style.display = 'block';
+                hidePageLoader();
                 console.log('✅ login.html جاهزة');
             }
         }
 
         // ============================================================
-        // 6. استماع للإعدادات
+        // 8. استماع للإعدادات (مع تحديث فوري)
         // ============================================================
+        let generalUnsubscribe = null;
+        let designUnsubscribe = null;
+
         function loadSettings() {
             document.getElementById('loginCard').style.display = 'none';
+            document.getElementById('pageLoader').classList.remove('hidden');
 
-            db.collection('settings').doc('general').onSnapshot(function(doc) {
+            if (generalUnsubscribe) generalUnsubscribe();
+            generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.unionName) settings.unionName = data.unionName;
@@ -599,7 +676,8 @@
                 if (!isReady) checkReady();
             });
 
-            db.collection('settings').doc('design').onSnapshot(function(doc) {
+            if (designUnsubscribe) designUnsubscribe();
+            designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.colors) {
@@ -616,7 +694,7 @@
         }
 
         // ============================================================
-        // 7. عرض الرسائل
+        // 9. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('loginMsg');
@@ -632,7 +710,36 @@
         }
 
         // ============================================================
-        // 8. معالجة تسجيل الدخول
+        // 10. تسجيل النشاطات في Firebase
+        // ============================================================
+        function trackLoginActivity(email, success, errorMsg = '') {
+            const data = {
+                type: success ? 'login_success' : 'login_failed',
+                email: email,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                success: success,
+                error: errorMsg,
+                userAgent: navigator.userAgent,
+                ip: 'fetching...'
+            };
+
+            // محاولة الحصول على IP
+            fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => { data.ip = data.ip; })
+                .catch(() => {});
+
+            db.collection('loginLogs').add(data)
+                .then(() => {
+                    console.log('✅ تم تسجيل محاولة الدخول:', success ? 'ناجحة' : 'فاشلة');
+                })
+                .catch((error) => {
+                    console.warn('❌ خطأ في تسجيل محاولة الدخول:', error);
+                });
+        }
+
+        // ============================================================
+        // 11. معالجة تسجيل الدخول
         // ============================================================
         function handleLogin(e) {
             e.preventDefault();
@@ -650,7 +757,7 @@
             hideMsg();
 
             loginBtn.disabled = true;
-            loginBtnText.innerHTML = '<span class="spinner"></span> جاري تسجيل الدخول...';
+            loginBtnText.innerHTML = '<span class="spinner-small"></span> جاري تسجيل الدخول...';
 
             auth.signInWithEmailAndPassword(email, password)
                 .then(function(userCredential) {
@@ -659,21 +766,28 @@
                         if (doc.exists) {
                             const data = doc.data();
                             if (data.isActive !== false) {
-                                // تسجيل نشاط الدخول
+                                // تسجيل دخول ناجح
+                                trackLoginActivity(email, true);
+
+                                // تسجيل نشاط الدخول في activities
                                 db.collection('activities').add({
                                     type: 'login',
                                     userName: data.name || data.fullName || 'مستخدم',
                                     userId: user.uid,
-                                    description: 'تسجيل دخول',
+                                    userEmail: email,
+                                    description: 'تسجيل دخول ناجح',
                                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                                 }).catch(function() {});
+
                                 return { user: user, data: data };
                             } else {
                                 auth.signOut();
+                                trackLoginActivity(email, false, 'الحساب غير نشط');
                                 throw new Error('الحساب غير نشط، يرجى التواصل مع الدعم الفني');
                             }
                         } else {
                             auth.signOut();
+                            trackLoginActivity(email, false, 'المستخدم غير موجود');
                             throw new Error('المستخدم غير موجود في النظام');
                         }
                     });
@@ -688,14 +802,21 @@
                     let msg = 'فشل تسجيل الدخول';
                     if (error.code === 'auth/user-not-found') {
                         msg = 'البريد الإلكتروني غير مسجل';
+                        trackLoginActivity(email, false, 'مستخدم غير موجود');
                     } else if (error.code === 'auth/wrong-password') {
                         msg = 'كلمة المرور غير صحيحة';
+                        trackLoginActivity(email, false, 'كلمة مرور خاطئة');
                     } else if (error.code === 'auth/invalid-email') {
                         msg = 'البريد الإلكتروني غير صحيح';
+                        trackLoginActivity(email, false, 'بريد إلكتروني غير صحيح');
                     } else if (error.code === 'auth/too-many-requests') {
                         msg = 'تم حظر الحساب مؤقتاً، حاول لاحقاً';
+                        trackLoginActivity(email, false, 'حظر مؤقت');
                     } else if (error.message) {
                         msg = error.message;
+                        trackLoginActivity(email, false, error.message);
+                    } else {
+                        trackLoginActivity(email, false, 'خطأ غير معروف');
                     }
                     showMsg(msg, 'error');
                     loginBtn.disabled = false;
@@ -706,7 +827,7 @@
         }
 
         // ============================================================
-        // 9. التحقق من حالة المستخدم
+        // 12. التحقق من حالة المستخدم
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -715,10 +836,12 @@
         });
 
         // ============================================================
-        // 10. بدء التشغيل
+        // 13. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('شاشة تسجيل الدخول - التحميل المسبق للإعدادات');
+            console.log('✅ تحديث فوري للإعدادات والألوان');
+            console.log('✅ تسجيل جميع محاولات الدخول (ناجحة وفاشلة)');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
             loadSettings();
         });
