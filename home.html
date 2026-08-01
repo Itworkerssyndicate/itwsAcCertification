@@ -3,28 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle">نقابة تكنولوجيا المعلومات والبرمجيات</title>
-    <meta name="description" id="metaDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
-    <meta name="keywords" id="metaKeywords" content="شهادات, تدريب, نقابة, تكنولوجيا المعلومات, تحقق, توثيق" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
-    <meta property="og:description" id="ogDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
-    <meta property="og:image" id="ogImage" content="" />
-    <meta property="og:url" id="ogUrl" content="" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
-    <meta property="og:locale" content="ar_EG" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
-    <meta name="twitter:description" id="twitterDescription" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
-    <meta name="twitter:image" id="twitterImage" content="" />
-
-    <!-- Icons -->
-    <link rel="icon" id="favicon" href="" />
-    <link rel="apple-touch-icon" id="appleIcon" href="" />
+    <title>نقابة تكنولوجيا المعلومات والبرمجيات</title>
+    <meta name="description" content="النظام الرسمي للتحقق من صحة الشهادات التدريبية - نقابة تكنولوجيا المعلومات والبرمجيات" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -39,7 +19,7 @@
     </script>
 
     <style>
-        /* ===== كل الـ CSS زي ما هو ===== */
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -51,189 +31,95 @@
             min-height: 100vh;
             direction: rtl;
             overflow-x: hidden;
-            background: var(--bg-color);
-            color: var(--text-color);
-            transition: all 0.3s ease;
+            background: #0A0E1A;
+            color: #FFFFFF;
         }
 
         :root {
             --primary-color: #C9A84C;
             --primary-dark: #A8893A;
             --primary-light: #E8D5A3;
-            --primary-glow: rgba(201,168,76,0.3);
-            --secondary-color: #0A1628;
+            --primary-glow: rgba(201, 168, 76, 0.3);
             --accent-color: #7C3AED;
             --accent-light: #A78BFA;
-            --accent-glow: rgba(124,58,237,0.2);
+            --accent-glow: rgba(124, 58, 237, 0.2);
             --bg-color: #0A0E1A;
-            --bg-card: rgba(255,255,255,0.04);
-            --bg-hover: rgba(255,255,255,0.06);
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-hover: rgba(255, 255, 255, 0.06);
             --text-color: #FFFFFF;
-            --text-secondary: rgba(255,255,255,0.7);
-            --text-muted: rgba(255,255,255,0.4);
-            --text-dim: rgba(255,255,255,0.15);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --text-dim: rgba(255, 255, 255, 0.15);
             --success: #10B981;
-            --success-bg: rgba(16,185,129,0.12);
+            --success-bg: rgba(16, 185, 129, 0.12);
             --error: #EF4444;
-            --error-bg: rgba(239,68,68,0.12);
+            --error-bg: rgba(239, 68, 68, 0.12);
             --warning: #F59E0B;
-            --warning-bg: rgba(245,158,11,0.12);
+            --warning-bg: rgba(245, 158, 11, 0.12);
             --info: #3B82F6;
-            --info-bg: rgba(59,130,246,0.12);
-            --border: rgba(255,255,255,0.06);
-            --border-light: rgba(255,255,255,0.03);
-            --card-bg: rgba(255,255,255,0.04);
-            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+            --info-bg: rgba(59, 130, 246, 0.12);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-light: rgba(255, 255, 255, 0.03);
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             --radius: 20px;
             --radius-sm: 12px;
             --radius-lg: 28px;
         }
 
-        /* ===== باقي الـ CSS ===== */
-        .page-bg {
+        /* ===== PAGE LOADER ===== */
+        #pageLoader {
             position: fixed;
             inset: 0;
-            z-index: 0;
-            background:
-                radial-gradient(ellipse at 20% 30%, var(--primary-glow) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, var(--accent-glow) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.04) 0%, transparent 60%);
-            animation: bgPulse 12s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgPulse {
-            0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-            100% { transform: scale(1.04) rotate(1.5deg); opacity: 0.9; }
-        }
-
-        .page-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-
-        .particles-container {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: particleFloat 22s infinite ease-in-out;
-        }
-
-        .particle:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 5%; animation-delay: 0s; background: var(--primary-color); opacity: 0.3; }
-        .particle:nth-child(2) { width: 8px; height: 8px; top: 15%; left: 30%; animation-delay: 2s; background: var(--accent-color); opacity: 0.3; }
-        .particle:nth-child(3) { width: 4px; height: 4px; top: 25%; left: 70%; animation-delay: 4s; background: var(--primary-color); opacity: 0.4; }
-        .particle:nth-child(4) { width: 7px; height: 7px; top: 40%; left: 10%; animation-delay: 1s; background: var(--accent-color); opacity: 0.25; }
-        .particle:nth-child(5) { width: 5px; height: 5px; top: 50%; left: 85%; animation-delay: 3s; background: var(--primary-color); opacity: 0.3; }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 65%; left: 20%; animation-delay: 5s; background: var(--accent-color); opacity: 0.25; }
-        .particle:nth-child(7) { width: 4px; height: 4px; top: 75%; left: 60%; animation-delay: 2.5s; background: var(--primary-color); opacity: 0.4; }
-        .particle:nth-child(8) { width: 6px; height: 6px; top: 88%; left: 40%; animation-delay: 4.5s; background: var(--accent-color); opacity: 0.3; }
-
-        @keyframes particleFloat {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
-            20% { transform: translate(40px, -30px) scale(1.3); opacity: 0.6; }
-            40% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.3; }
-            60% { transform: translate(50px, -20px) scale(1.4); opacity: 0.7; }
-            80% { transform: translate(-30px, -80px) scale(0.8); opacity: 0.4; }
-            100% { transform: translate(10px, 0) scale(1); opacity: 0.1; }
-        }
-
-        .grid-lines {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            background-image:
-                linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            animation: gridMove 25s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(30px) translateX(30px); }
-        }
-
-        .orbital-ring {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
+            z-index: 9999;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            background: #0A0E1A;
+            transition: opacity 0.5s ease;
         }
 
-        .ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(201,168,76,0.04);
-            animation: ringSpin 40s linear infinite;
-        }
-
-        .ring:nth-child(1) { width: 350px; height: 350px; border-color: rgba(201,168,76,0.06); }
-        .ring:nth-child(2) { width: 550px; height: 550px; border-color: rgba(124,58,237,0.04); animation-duration: 50s; animation-direction: reverse; }
-        .ring:nth-child(3) { width: 750px; height: 750px; border-color: rgba(59,130,246,0.03); animation-duration: 60s; }
-
-        @keyframes ringSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .glow-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(100px);
+        #pageLoader.hidden {
+            opacity: 0;
             pointer-events: none;
-            z-index: 0;
-            animation: orbFloat 18s ease-in-out infinite alternate;
         }
 
-        .glow-orb:nth-child(1) {
-            width: 450px;
-            height: 450px;
-            top: -150px;
-            right: -150px;
-            background: var(--primary-glow);
+        #pageLoader .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
 
-        .glow-orb:nth-child(2) {
-            width: 550px;
-            height: 550px;
-            bottom: -200px;
-            left: -200px;
-            background: var(--accent-glow);
-            animation-delay: 6s;
+        #pageLoader p {
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 16px;
+            letter-spacing: 1px;
         }
 
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-            100% { transform: translate(60px, 40px) scale(1.15); opacity: 0.8; }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
+        /* ===== باقي الـ CSS ===== */
         .main-container {
             position: relative;
             z-index: 10;
             max-width: 1300px;
             margin: 0 auto;
             padding: 20px;
-            display: none;
+            display: block;
         }
 
-        /* ===== باقي الـ CSS للعناصر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 16px 28px;
@@ -242,25 +128,8 @@
             align-items: center;
             margin-bottom: 30px;
             box-shadow: var(--shadow);
-            animation: headerFloat 6s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
-            pointer-events: none;
-        }
-
-        @keyframes headerFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .header-left {
@@ -268,8 +137,6 @@
             align-items: center;
             gap: 16px;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 2;
         }
 
         .logo-box {
@@ -285,21 +152,9 @@
             color: #fff;
             cursor: pointer;
             transition: all 0.4s ease;
-            animation: logoSpin 20s linear infinite;
             box-shadow: 0 0 35px var(--primary-glow);
-            position: relative;
             background-size: cover;
             background-position: center;
-        }
-
-        @keyframes logoSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .logo-box:hover {
-            animation-duration: 3s;
-            transform: scale(1.08);
         }
 
         .header-title h1 {
@@ -321,23 +176,18 @@
             background: var(--bg-hover);
             border-radius: 30px;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
         }
 
-        .header-president:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-glow);
+        .header-president .president-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 300;
         }
 
-        .header-president .president-icon { font-size: 16px; }
-        .header-president .president-label { font-size: 11px; color: var(--text-muted); font-weight: 300; }
         .header-president .president-name {
             font-size: 13px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary-color);
         }
 
         .header-right {
@@ -345,8 +195,6 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 2;
         }
 
         .btn {
@@ -356,57 +204,55 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
-            position: relative;
-            overflow: hidden;
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:hover::before { width: 300px; height: 300px; }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: #fff;
             box-shadow: 0 4px 25px var(--primary-glow);
         }
-        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px var(--primary-glow); }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
 
         .btn-outline {
             background: transparent;
             border: 2px solid var(--border);
             color: var(--text-secondary);
         }
-        .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
-        .btn-sm { padding: 5px 14px; font-size: 12px; }
+        .btn-outline:hover {
+            background: var(--bg-hover);
+            border-color: var(--primary-color);
+        }
+
+        .btn-sm {
+            padding: 5px 14px;
+            font-size: 12px;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-ghost {
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
 
         .hero-section {
             text-align: center;
             margin-bottom: 25px;
-            animation: heroAppear 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes heroAppear {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .hero-title {
@@ -419,19 +265,22 @@
             background-clip: text;
             color: transparent;
             animation: titleFlow 7s ease-in-out infinite;
-            letter-spacing: 1px;
         }
 
         @keyframes titleFlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         .hero-subtitle {
             font-size: 18px;
             color: var(--text-muted);
             font-weight: 300;
-            letter-spacing: 2px;
         }
 
         .info-box {
@@ -442,20 +291,6 @@
             margin: 0 auto 25px;
             max-width: 880px;
             text-align: center;
-            backdrop-filter: blur(12px);
-            transition: all 0.4s ease;
-            animation: infoSlide 1s ease-out;
-        }
-
-        @keyframes infoSlide {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .info-box:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 40px var(--primary-glow);
-            transform: translateY(-2px);
         }
 
         .info-box p {
@@ -474,9 +309,7 @@
             max-width: 700px;
             margin-right: auto;
             margin-left: auto;
-            backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            position: relative;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -492,21 +325,14 @@
             font-weight: 700;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s ease;
             font-family: inherit;
-            position: relative;
-            z-index: 2;
         }
 
         .tab-btn.active {
             color: var(--text-color);
-            background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(124,58,237,0.15));
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(124, 58, 237, 0.15));
             box-shadow: 0 0 40px var(--primary-glow);
-        }
-
-        .tab-btn:hover:not(.active) {
-            color: var(--text-secondary);
-            transform: translateY(-2px);
         }
 
         .tab-content {
@@ -519,27 +345,25 @@
         }
 
         @keyframes tabFade {
-            0% { opacity: 0; transform: translateY(20px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .search-card {
             background: var(--card-bg);
             backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 30px 34px;
             box-shadow: var(--shadow);
             max-width: 850px;
             margin: 0 auto;
-            transition: all 0.4s ease;
-        }
-
-        .search-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 25px 70px rgba(0,0,0,0.2);
-            transform: translateY(-3px);
         }
 
         .search-row {
@@ -554,7 +378,7 @@
             padding: 14px 20px;
             border-radius: var(--radius-sm);
             border: 2px solid var(--border);
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-color);
             font-size: 15px;
             outline: none;
@@ -569,31 +393,22 @@
         .search-row input:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 40px var(--primary-glow);
-            background: rgba(255,255,255,0.06);
-            transform: translateY(-2px);
         }
 
         .search-hint {
             font-size: 12px;
             color: var(--text-dim);
             text-align: center;
-            letter-spacing: 1px;
             margin-top: 10px;
         }
 
         .result-box {
             display: none;
             margin-top: 24px;
-            animation: resultAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .result-box.active {
             display: block;
-        }
-
-        @keyframes resultAppear {
-            0% { opacity: 0; transform: translateY(30px) scale(0.96); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .certificate-card {
@@ -603,24 +418,6 @@
             padding: 26px;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .certificate-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary-color);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-        }
-
-        .certificate-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
-            pointer-events: none;
         }
 
         .cert-header {
@@ -647,13 +444,13 @@
         .cert-status.valid {
             background: var(--success-bg);
             color: var(--success);
-            border: 1px solid rgba(16,185,129,0.2);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .cert-status.invalid {
             background: var(--error-bg);
             color: var(--error);
-            border: 1px solid rgba(239,68,68,0.2);
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
         .cert-code {
@@ -676,12 +473,6 @@
             background: var(--bg-hover);
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-        }
-
-        .cert-item:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: var(--primary-color);
         }
 
         .cert-item .label {
@@ -698,11 +489,21 @@
             color: var(--text-color);
         }
 
-        .cert-item .value.grade-a { color: var(--success); }
-        .cert-item .value.grade-b { color: var(--info); }
-        .cert-item .value.grade-c { color: var(--warning); }
-        .cert-item .value.grade-d { color: #f97316; }
-        .cert-item .value.grade-f { color: var(--error); }
+        .cert-item .value.grade-a {
+            color: var(--success);
+        }
+        .cert-item .value.grade-b {
+            color: var(--info);
+        }
+        .cert-item .value.grade-c {
+            color: var(--warning);
+        }
+        .cert-item .value.grade-d {
+            color: #f97316;
+        }
+        .cert-item .value.grade-f {
+            color: var(--error);
+        }
 
         .cert-actions {
             display: flex;
@@ -724,13 +525,6 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 26px;
-            transition: all 0.4s ease;
-        }
-
-        .academy-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary-color);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         }
 
         .academy-header {
@@ -757,7 +551,7 @@
             font-weight: 700;
             background: var(--success-bg);
             color: var(--success);
-            border: 1px solid rgba(16,185,129,0.2);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .branch-grid {
@@ -772,13 +566,6 @@
             border-radius: var(--radius-sm);
             padding: 14px 18px;
             border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-        }
-
-        .branch-item:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
         }
 
         .branch-item .gov {
@@ -823,13 +610,6 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .student-cert-item:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: var(--primary-color);
-            transform: translateX(-4px);
         }
 
         .student-cert-item .cert-actions-sm {
@@ -852,14 +632,23 @@
             font-size: 14px;
         }
 
-        .msg.show { display: block; animation: msgIn 0.4s ease; }
-        .msg.success { background: var(--success-bg); border: 1px solid rgba(16,185,129,0.2); color: var(--success); }
-        .msg.error { background: var(--error-bg); border: 1px solid rgba(239,68,68,0.2); color: var(--error); }
-        .msg.info { background: var(--info-bg); border: 1px solid rgba(59,130,246,0.2); color: var(--info); }
-
-        @keyframes msgIn {
-            0% { opacity: 0; transform: translateY(-10px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+        .msg.show {
+            display: block;
+        }
+        .msg.success {
+            background: var(--success-bg);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        .msg.error {
+            background: var(--error-bg);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--error);
+        }
+        .msg.info {
+            background: var(--info-bg);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--info);
         }
 
         .loader {
@@ -882,12 +671,6 @@
             margin: 0 auto 12px;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         .services-btn-container {
             text-align: center;
             margin-top: 28px;
@@ -908,13 +691,11 @@
             transition: all 0.4s ease;
             text-decoration: none;
             font-family: inherit;
-            backdrop-filter: blur(8px);
         }
 
         .services-btn:hover {
             background: var(--bg-hover);
             transform: translateY(-4px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
             border-color: var(--primary-color);
         }
 
@@ -934,7 +715,6 @@
             margin-top: 35px;
             color: var(--text-dim);
             font-size: 12px;
-            letter-spacing: 1px;
         }
 
         #print-container {
@@ -950,27 +730,20 @@
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(25px);
             justify-content: center;
             align-items: center;
             padding: 30px;
-            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .academies-modal.active {
             display: flex;
         }
 
-        @keyframes modalIn {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
         .academies-modal .modal-content {
             background: var(--card-bg);
             backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 32px 36px;
@@ -980,19 +753,6 @@
             overflow-y: auto;
             position: relative;
             box-shadow: var(--shadow);
-            animation: modalContent 0.5s ease;
-        }
-
-        .academies-modal .modal-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        .academies-modal .modal-content::-webkit-scrollbar-track {
-            background: var(--bg-hover);
-            border-radius: 10px;
-        }
-        .academies-modal .modal-content::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            border-radius: 10px;
         }
 
         .academies-modal .modal-header {
@@ -1008,10 +768,6 @@
             font-size: 22px;
             font-weight: 800;
             color: var(--text-color);
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
 
         .academies-modal .modal-header .close-btn {
@@ -1047,14 +803,12 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
-            transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .academies-modal .academy-item:hover {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             border-color: var(--primary-color);
-            transform: translateX(-4px);
         }
 
         .academies-modal .academy-item .name {
@@ -1075,7 +829,7 @@
             border-radius: 20px;
             background: var(--success-bg);
             color: var(--success);
-            border: 1px solid rgba(16,185,129,0.1);
+            border: 1px solid rgba(16, 185, 129, 0.1);
         }
 
         .academies-modal .pagination {
@@ -1095,25 +849,13 @@
             background: var(--bg-hover);
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: inherit;
             font-weight: 600;
-        }
-
-        .academies-modal .pagination button:hover:not(:disabled) {
-            background: var(--primary-glow);
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
         }
 
         .academies-modal .pagination button:disabled {
             opacity: 0.3;
             cursor: not-allowed;
-        }
-
-        .academies-modal .pagination span {
-            color: var(--text-muted);
-            font-size: 14px;
         }
 
         .theme-toggle-btn {
@@ -1137,18 +879,12 @@
             justify-content: center;
         }
 
-        .theme-toggle-btn:hover {
-            transform: scale(1.1);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 40px var(--primary-glow);
-        }
-
         .theme-modal {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(20px);
             justify-content: center;
             align-items: center;
@@ -1168,7 +904,6 @@
             max-width: 420px;
             width: 100%;
             box-shadow: var(--shadow);
-            animation: modalIn 0.4s ease;
         }
 
         .theme-modal .modal-header {
@@ -1201,13 +936,6 @@
             justify-content: center;
         }
 
-        .theme-modal .modal-header .close-btn:hover {
-            background: var(--error-bg);
-            color: var(--error);
-            border-color: var(--error);
-            transform: rotate(90deg);
-        }
-
         .theme-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1229,41 +957,30 @@
 
         .theme-btn:hover {
             border-color: var(--primary-color);
-            background: var(--bg-hover);
-            transform: translateY(-2px);
-        }
-
-        .theme-btn.active {
-            border-color: var(--primary-color);
-            background: var(--primary-glow);
         }
 
         .theme-btn.reset {
-            border-color: rgba(239,68,68,0.2);
+            border-color: rgba(239, 68, 68, 0.2);
             color: var(--error);
-            background: rgba(239,68,68,0.08);
+            background: rgba(239, 68, 68, 0.08);
         }
 
         .theme-btn.reset:hover {
             border-color: var(--error);
-            background: rgba(239,68,68,0.15);
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 12px;
                 padding: 14px 18px;
-                border-radius: 20px;
             }
             .header-right {
                 justify-content: center;
-                flex-wrap: wrap;
             }
             .header-left {
                 justify-content: center;
-                flex-wrap: wrap;
             }
             .hero-title {
                 font-size: 28px;
@@ -1283,15 +1000,9 @@
             .tabs {
                 flex-direction: column;
                 max-width: 100%;
-                border-radius: var(--radius-sm);
             }
             .tab-btn {
-                border-radius: 10px;
                 min-width: unset;
-            }
-            .services-btn {
-                width: 100%;
-                justify-content: center;
             }
             .search-card {
                 padding: 20px;
@@ -1302,32 +1013,20 @@
             .academy-card {
                 padding: 20px;
             }
-            .info-box {
-                padding: 14px 18px;
-            }
-            .info-box p {
-                font-size: 14px;
-            }
-            .glow-orb {
-                display: none;
-            }
-            .ring {
-                display: none;
-            }
             .cert-actions {
                 flex-direction: column;
             }
             .cert-actions .btn {
                 width: 100%;
             }
-            .cert-header {
-                flex-direction: column;
-            }
             .branch-grid {
                 grid-template-columns: 1fr;
             }
-            .main-container {
-                padding: 12px;
+            .academies-modal .modal-content {
+                padding: 20px;
+                margin: 10px;
+                border-radius: 20px;
+                max-height: 90vh;
             }
             .student-cert-item {
                 flex-direction: column;
@@ -1336,47 +1035,6 @@
             .student-cert-item .cert-actions-sm {
                 width: 100%;
                 justify-content: flex-start;
-            }
-            .academies-modal .modal-content {
-                padding: 20px;
-                margin: 10px;
-                border-radius: 20px;
-                max-height: 90vh;
-            }
-            .academies-modal .academy-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .academies-modal .modal-header h2 {
-                font-size: 18px;
-            }
-            .academies-modal .pagination button {
-                padding: 6px 16px;
-                font-size: 12px;
-            }
-            .header-president {
-                padding: 3px 10px;
-            }
-            .header-president .president-name {
-                font-size: 12px;
-            }
-            .theme-toggle-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-                bottom: 16px;
-                left: 16px;
-            }
-            .theme-modal .modal-content {
-                padding: 20px;
-                margin: 10px;
-            }
-            .theme-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .theme-btn {
-                padding: 10px 8px;
-                font-size: 12px;
             }
         }
 
@@ -1399,27 +1057,12 @@
             }
             .search-card {
                 padding: 16px;
-                border-radius: var(--radius-sm);
             }
             .certificate-card {
                 padding: 16px;
             }
             .academy-card {
                 padding: 16px;
-            }
-            .info-box {
-                padding: 12px 14px;
-            }
-            .info-box p {
-                font-size: 13px;
-            }
-            .cert-actions .btn {
-                min-width: 60px;
-                font-size: 11px;
-                padding: 6px 12px;
-            }
-            .cert-item .value {
-                font-size: 14px;
             }
             .logo-box {
                 width: 40px;
@@ -1429,71 +1072,36 @@
             .academies-modal .modal-content {
                 padding: 16px;
             }
-            .academies-modal .academy-item .name {
-                font-size: 14px;
-            }
-            .header-president .president-name {
-                font-size: 11px;
-            }
-            .theme-toggle-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
-                bottom: 12px;
-                left: 12px;
-            }
-            .theme-modal .modal-content {
-                padding: 16px;
-            }
             .theme-grid {
                 grid-template-columns: 1fr 1fr;
-            }
-            .theme-btn {
-                padding: 8px 6px;
-                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="page-bg"></div>
-
-    <div class="particles-container">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="pageLoader">
+        <div class="spinner"></div>
+        <p>جاري تحميل البيانات...</p>
     </div>
 
-    <div class="grid-lines"></div>
+    <!-- ===== BACKGROUND EFFECTS ===== -->
+    <div style="position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 30%,rgba(201,168,76,0.15),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(124,58,237,0.1),transparent 50%);"></div>
 
-    <div class="orbital-ring">
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-    </div>
-
-    <div class="glow-orb"></div>
-    <div class="glow-orb"></div>
-
+    <!-- ===== MAIN CONTAINER ===== -->
     <div class="main-container" id="mainContainer">
 
         <header class="header">
             <div class="header-left">
-                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'"></div>
+                <div class="logo-box" id="logoBox" onclick="window.location.href='home.html'">ن.ت</div>
                 <div class="header-title">
-                    <h1 id="unionName"></h1>
-                    <p id="committeeName"></p>
+                    <h1 id="unionName">نقابة تكنولوجيا المعلومات والبرمجيات</h1>
+                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
                 </div>
                 <div class="header-president">
-                    <span class="president-icon">👤</span>
                     <span class="president-label">النقيب العام:</span>
-                    <span class="president-name" id="headerPresidentName"></span>
+                    <span class="president-name" id="headerPresidentName">د. أحمد محمد</span>
                 </div>
             </div>
             <div class="header-right">
@@ -1504,35 +1112,33 @@
         </header>
 
         <div class="hero-section">
-            <h1 class="hero-title" id="heroTitle"></h1>
-            <p class="hero-subtitle" id="heroSubtitle"></p>
+            <h1 class="hero-title" id="heroTitle">نظام التحقق من الشهادات</h1>
+            <p class="hero-subtitle" id="heroSubtitle">النظام الرسمي للتحقق من صحة الشهادات التدريبية</p>
         </div>
 
         <div class="info-box" id="infoBox">
-            <p id="infoBoxText"></p>
+            <p id="infoBoxText">مرحباً بك في النظام الرسمي للتحقق من صحة الشهادات الصادرة عن نقابة تكنولوجيا المعلومات والبرمجيات</p>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" data-tab="tabCertificate" id="tabCertBtn">بحث عن شهادة</button>
-            <button class="tab-btn" data-tab="tabStudent" id="tabStudentBtn">بحث عن متدرب</button>
-            <button class="tab-btn" data-tab="tabAcademy" id="tabAcademyBtn">بحث عن أكاديمية</button>
+            <button class="tab-btn active" data-tab="tabCertificate">بحث عن شهادة</button>
+            <button class="tab-btn" data-tab="tabStudent">بحث عن متدرب</button>
+            <button class="tab-btn" data-tab="tabAcademy">بحث عن أكاديمية</button>
         </div>
 
         <div class="tab-content active" id="tabCertificate">
             <div class="search-card">
                 <form id="certificateSearchForm" onsubmit="return searchCertificate(event)">
-                    <div class="search-box">
-                        <div class="search-row">
-                            <input type="text" id="certCode" placeholder="أدخل كود الشهادة" required />
-                            <button type="submit" class="btn btn-primary" id="searchCertBtn">بحث</button>
-                        </div>
-                        <div class="search-hint" id="certHint"></div>
+                    <div class="search-row">
+                        <input type="text" id="certCode" placeholder="أدخل كود الشهادة" required />
+                        <button type="submit" class="btn btn-primary" id="searchCertBtn">بحث</button>
                     </div>
+                    <div class="search-hint" id="certHint">أدخل كود الشهادة الموجود على الشهادة المطبوعة</div>
                 </form>
 
                 <div class="loader" id="certLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="certLoaderText">جاري البحث...</div>
+                    <div style="color:var(--text-muted);">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="certError"></div>
@@ -1545,18 +1151,16 @@
         <div class="tab-content" id="tabStudent">
             <div class="search-card">
                 <form id="studentSearchForm" onsubmit="return searchStudent(event)">
-                    <div class="search-box">
-                        <div class="search-row">
-                            <input type="text" id="studentNationalId" placeholder="الرقم القومي (14 رقم)" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
-                            <button type="submit" class="btn btn-primary" id="searchStudentBtn">بحث</button>
-                        </div>
-                        <div class="search-hint" id="studentHint">ابحث بالرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل</div>
+                    <div class="search-row">
+                        <input type="text" id="studentNationalId" placeholder="الرقم القومي (14 رقم)" maxlength="14" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
+                        <button type="submit" class="btn btn-primary" id="searchStudentBtn">بحث</button>
                     </div>
+                    <div class="search-hint" id="studentHint">ابحث بالرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل</div>
                 </form>
 
                 <div class="loader" id="studentLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="studentLoaderText">جاري البحث...</div>
+                    <div style="color:var(--text-muted);">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="studentError"></div>
@@ -1569,24 +1173,22 @@
         <div class="tab-content" id="tabAcademy">
             <div class="search-card">
                 <form id="academySearchForm" onsubmit="return searchAcademy(event)">
-                    <div class="search-box">
-                        <div class="search-row">
-                            <input type="text" id="academySearchInput" placeholder="اسم الأكاديمية أو الرقم الاعتمادي" required />
-                            <button type="submit" class="btn btn-primary" id="searchAcademyBtn">بحث</button>
-                        </div>
-                        <div class="search-hint" id="academyHint"></div>
+                    <div class="search-row">
+                        <input type="text" id="academySearchInput" placeholder="اسم الأكاديمية أو الرقم الاعتمادي" required />
+                        <button type="submit" class="btn btn-primary" id="searchAcademyBtn">بحث</button>
                     </div>
+                    <div class="search-hint" id="academyHint">أدخل اسم الأكاديمية أو الرقم الاعتمادي</div>
                 </form>
 
                 <div style="text-align:center;margin-top:16px;">
-                    <button class="btn btn-primary" onclick="openAcademiesModal()" id="showAllAcademiesBtn" style="padding:10px 30px;font-size:14px;">
+                    <button class="btn btn-primary" onclick="openAcademiesModal()" style="padding:10px 30px;font-size:14px;">
                         عرض جميع الأكاديميات المعتمدة
                     </button>
                 </div>
 
                 <div class="loader" id="academyLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="academyLoaderText">جاري البحث...</div>
+                    <div style="color:var(--text-muted);">جاري البحث...</div>
                 </div>
 
                 <div class="msg" id="academyError"></div>
@@ -1598,29 +1200,28 @@
 
         <div class="services-btn-container">
             <a href="#" class="services-btn" id="servicesBtn">
-                <span id="servicesBtnText"></span>
+                <span id="servicesBtnText">موقع خدمات النقابة الإلكترونية</span>
                 <span class="arrow">←</span>
             </a>
         </div>
 
         <footer class="footer">
-            <span id="footerText"></span>
+            <span id="footerText">جميع الحقوق محفوظة © نقابة تكنولوجيا المعلومات والبرمجيات</span>
             <div style="margin-top:4px;font-size:11px;color:var(--text-dim);">
-                <span id="presidentFooter"></span>
-                <span id="presidentName"></span>
+                <span id="presidentFooter">النقيب العام: </span>
+                <span id="presidentName">د. أحمد محمد</span>
             </div>
         </footer>
 
     </div>
 
-    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="openThemeModal()">
-        🎨
-    </button>
+    <!-- ===== THEME TOGGLE ===== -->
+    <button class="theme-toggle-btn" onclick="openThemeModal()">🎨</button>
 
     <div class="theme-modal" id="themeModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>🎨 تغيير الثيم</h3>
+                <h3>تغيير الثيم</h3>
                 <button class="close-btn" onclick="closeThemeModal()">✕</button>
             </div>
             <div class="theme-grid">
@@ -1634,12 +1235,14 @@
         </div>
     </div>
 
+    <!-- ===== PRINT CONTAINER ===== -->
     <div id="print-container"></div>
 
+    <!-- ===== ACADEMIES MODAL ===== -->
     <div class="academies-modal" id="academiesModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalAcademiesTitle">جميع الأكاديميات المعتمدة</h2>
+                <h2>جميع الأكاديميات المعتمدة</h2>
                 <button class="close-btn" onclick="closeAcademiesModal()">✕</button>
             </div>
 
@@ -1654,7 +1257,7 @@
             <div id="modalAcademiesContainer">
                 <div class="loader show" id="modalAcademiesLoader">
                     <div class="spinner"></div>
-                    <div style="color:var(--text-muted);" id="modalAcademiesLoaderText">جاري تحميل الأكاديميات...</div>
+                    <div style="color:var(--text-muted);">جاري تحميل الأكاديميات...</div>
                 </div>
                 <div id="modalAcademiesContent" style="display:none;"></div>
                 <div class="pagination" id="modalPagination">
@@ -1795,7 +1398,6 @@
             root.style.setProperty('--accent-glow', accentGlow);
 
             document.body.style.background = theme.background;
-
             closeThemeModal();
         }
 
@@ -1890,16 +1492,27 @@
             committeeName: 'لجنة التحول الرقمي والتدريب',
             logoUrl: '',
             stampUrl: '',
-            infoBoxText: '',
+            infoBoxText: 'مرحباً بك في النظام الرسمي للتحقق من صحة الشهادات الصادرة عن نقابة تكنولوجيا المعلومات والبرمجيات',
             servicesText: 'موقع خدمات النقابة الإلكترونية',
             servicesLink: 'https://linktr.ee/itws.eg',
-            footerText: '',
-            presidentName: '',
-            heroTitle: '',
-            heroSubtitle: '',
-            certHint: '',
+            footerText: 'جميع الحقوق محفوظة © نقابة تكنولوجيا المعلومات والبرمجيات',
+            presidentName: 'د. أحمد محمد',
+            heroTitle: 'نظام التحقق من الشهادات',
+            heroSubtitle: 'النظام الرسمي للتحقق من صحة الشهادات التدريبية',
+            certHint: 'أدخل كود الشهادة الموجود على الشهادة المطبوعة',
             studentHint: 'ابحث بالرقم القومي لعرض جميع شهاداته وسجل التدريب الكامل',
             academyHint: 'أدخل اسم الأكاديمية أو الرقم الاعتمادي',
+            searchCertBtnText: 'بحث',
+            searchStudentBtnText: 'بحث',
+            searchAcademyBtnText: 'بحث',
+            tabCertText: 'بحث عن شهادة',
+            tabStudentText: 'بحث عن متدرب',
+            tabAcademyText: 'بحث عن أكاديمية',
+            printBtnText: 'طباعة',
+            pdfBtnText: 'تحميل PDF',
+            shareBtnText: 'مشاركة',
+            loginBtnText: 'تسجيل الدخول',
+            logoutBtnText: 'تسجيل الخروج',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1927,6 +1540,30 @@
         let academiesUnsubscribe = null;
         let certificatesUnsubscribe = null;
 
+        let loaderHidden = false;
+
+        function hidePageLoader() {
+            if (loaderHidden) return;
+            loaderHidden = true;
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+            document.getElementById('mainContainer').style.display = 'block';
+        }
+
+        // ===== TIMEOUT احتياطي لإظهار الصفحة بعد 4 ثواني حتى لو تأخر Firebase =====
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                hidePageLoader();
+                isReady = true;
+            }
+        }, 4000);
+
         function startListeners() {
             let loadedCount = 0;
             const totalDocs = 6;
@@ -1935,14 +1572,10 @@
                 loadedCount++;
                 if (loadedCount >= totalDocs && !isReady) {
                     isReady = true;
-                    document.getElementById('mainContainer').style.display = 'block';
-                    document.getElementById('pageLoader').classList.remove('show');
+                    hidePageLoader();
                     console.log('✅ home.html جاهزة');
                 }
             }
-
-            document.getElementById('mainContainer').style.display = 'none';
-            document.getElementById('pageLoader').classList.add('show');
 
             // General settings
             if (generalUnsubscribe) generalUnsubscribe();
@@ -2125,45 +1758,15 @@
                     logoBox.textContent = '';
                 }
             }
-
-            const pageTitle = document.getElementById('pageTitle');
-            if (pageTitle) {
-                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات';
-            }
-
-            const ogTitle = document.getElementById('ogTitle');
-            const ogDescription = document.getElementById('ogDescription');
-            const ogImage = document.getElementById('ogImage');
-            const ogUrl = document.getElementById('ogUrl');
-            const ogSiteName = document.getElementById('ogSiteName');
-            const twitterTitle = document.getElementById('twitterTitle');
-            const twitterDescription = document.getElementById('twitterDescription');
-            const twitterImage = document.getElementById('twitterImage');
-            const favicon = document.getElementById('favicon');
-            const appleIcon = document.getElementById('appleIcon');
-
-            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
-            if (ogDescription) ogDescription.content = settings.heroSubtitle || 'النظام الرسمي للتحقق من صحة الشهادات التدريبية';
-            if (ogUrl) ogUrl.content = window.location.href;
-            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
-            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
-            if (twitterDescription) twitterDescription.content = settings.heroSubtitle || 'النظام الرسمي للتحقق من صحة الشهادات التدريبية';
-
-            if (settings.logoUrl) {
-                if (ogImage) ogImage.content = settings.logoUrl;
-                if (twitterImage) twitterImage.content = settings.logoUrl;
-                if (favicon) favicon.href = settings.logoUrl;
-                if (appleIcon) appleIcon.href = settings.logoUrl;
-            }
         }
 
         function applyTexts() {
             const searchCertBtn = document.getElementById('searchCertBtn');
             const searchStudentBtn = document.getElementById('searchStudentBtn');
             const searchAcademyBtn = document.getElementById('searchAcademyBtn');
-            const tabCertBtn = document.getElementById('tabCertBtn');
-            const tabStudentBtn = document.getElementById('tabStudentBtn');
-            const tabAcademyBtn = document.getElementById('tabAcademyBtn');
+            const tabCertBtn = document.querySelector('[data-tab="tabCertificate"]');
+            const tabStudentBtn = document.querySelector('[data-tab="tabStudent"]');
+            const tabAcademyBtn = document.querySelector('[data-tab="tabAcademy"]');
             const loginBtn = document.getElementById('loginBtn');
             const logoutBtn = document.getElementById('logoutBtn');
 
@@ -2728,7 +2331,7 @@
                             </div>
                             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                                 <span style="font-size:14px;color:var(--primary-color);font-weight:600;">${data.total} شهادة</span>
-                                <span style="font-size:11px;background:var(--success-bg);color:var(--success);padding:2px 12px;border-radius:20px;border:1px solid rgba(16,185,129,0.2);">🏅 وسام النقابة</span>
+                                <span style="font-size:11px;background:var(--success-bg);color:var(--success);padding:2px 12px;border-radius:20px;border:1px solid rgba(16,185,129,0.2);">وسام النقابة</span>
                             </div>
                         </div>
                         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;background:var(--bg-hover);padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-light);">
@@ -2894,6 +2497,10 @@
         function populateModalGovernorates() {
             const select = document.getElementById('modalFilterGovernorate');
             if (!select) return;
+            // مسح الخيارات القديمة مع الاحتفاظ بالخيار الافتراضي
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
             const govs = new Set();
             allAcademies.forEach(function(a) {
                 if (a.branches) {
@@ -3062,9 +2669,7 @@
             console.log('الصفحة الرئيسية - التحميل المسبق للإعدادات');
             console.log('أي تغيير في الإعدادات يظهر فوراً');
             console.log('الأكاديميات مرتبة حسب الرقم الاعتمادي');
-            console.log('🎨 الثيم الافتراضي من إعدادات السوبر أدمن');
-            console.log('🎨 التغيير المحلي يبقى عند المستخدم');
-            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
+            console.log('تم إضافة مؤشر تحميل مرئي للمستخدم');
         });
     </script>
 
