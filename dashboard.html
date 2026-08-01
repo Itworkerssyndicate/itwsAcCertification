@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>لوحة التحكم - نقابة تكنولوجيا المعلومات</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js">
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -17,12 +27,51 @@
             background: #0a0e1a;
             color: #ffffff;
             min-height: 100vh;
-            padding: 30px;
+            padding: 20px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* ===== PAGE LOADER ===== */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #0a0e1a;
+            transition: opacity 0.5s ease;
+        }
+
+        #pageLoader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #pageLoader .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #C9A84C;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #pageLoader p {
+            margin-top: 16px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* ===== HEADER ===== */
@@ -31,19 +80,20 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 16px 24px;
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
             gap: 14px;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -57,6 +107,8 @@
             font-weight: 900;
             font-size: 18px;
             color: #fff;
+            background-size: cover;
+            background-position: center;
         }
 
         .header-title h1 {
@@ -69,10 +121,32 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        .header-president {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .header-president span {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .header-president strong {
+            font-size: 13px;
+            font-weight: 700;
+            color: #C9A84C;
+        }
+
         .header-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .badge-role {
@@ -85,7 +159,7 @@
         }
 
         .btn {
-            padding: 6px 16px;
+            padding: 6px 14px;
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
@@ -95,6 +169,9 @@
             font-family: inherit;
             text-decoration: none;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn:hover {
@@ -102,12 +179,16 @@
             border-color: rgba(201, 168, 76, 0.3);
         }
 
+        .btn i {
+            font-size: 14px;
+        }
+
         /* ===== STATS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .stat-card {
@@ -115,7 +196,7 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 18px 20px;
+            padding: 16px 18px;
             text-align: center;
             transition: all 0.3s ease;
         }
@@ -126,7 +207,7 @@
         }
 
         .stat-number {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: #ffffff;
             line-height: 1.2;
@@ -138,13 +219,18 @@
             height: 10px;
             border-radius: 50%;
             background: #10b981;
-            margin-left: 8px;
+            margin-left: 6px;
             animation: pulse 1.5s ease-in-out infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
         }
 
         .stat-label {
@@ -159,7 +245,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 14px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .quick-card {
@@ -167,7 +253,7 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 16px 20px;
+            padding: 14px 18px;
             text-decoration: none;
             color: #ffffff;
             transition: all 0.3s ease;
@@ -182,8 +268,10 @@
         }
 
         .quick-card .icon {
-            font-size: 24px;
+            font-size: 22px;
             opacity: 0.6;
+            width: 36px;
+            text-align: center;
         }
 
         .quick-card .info .title {
@@ -202,13 +290,13 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 18px 22px;
+            padding: 16px 20px;
         }
 
         .card-title {
             font-size: 16px;
             font-weight: 700;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -227,7 +315,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
@@ -268,28 +356,90 @@
             padding: 2px 12px;
             border-radius: 20px;
             font-weight: 600;
+            flex-shrink: 0;
         }
 
-        .activity-badge.login { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
-        .activity-badge.create { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .activity-badge.update { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-        .activity-badge.delete { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .activity-badge.search { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .activity-badge.login {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+        .activity-badge.create {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+        .activity-badge.update {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+        .activity-badge.delete {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+        .activity-badge.search {
+            background: rgba(139, 92, 246, 0.15);
+            color: #8b5cf6;
+        }
 
         .empty-state {
             text-align: center;
-            padding: 20px 0;
+            padding: 16px 0;
             color: rgba(255, 255, 255, 0.3);
             font-size: 13px;
         }
 
         .footer {
             text-align: center;
-            padding: 20px 0 10px;
+            padding: 16px 0 8px;
             border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: 24px;
+            margin-top: 20px;
             color: rgba(255, 255, 255, 0.2);
             font-size: 11px;
+        }
+
+        .footer .president {
+            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.12);
+            font-size: 11px;
+        }
+
+        .msg {
+            display: none;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .msg.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .msg.error {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        .msg.success {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        .msg.info {
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -299,15 +449,6 @@
             }
             .quick-grid {
                 grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .quick-grid {
-                grid-template-columns: 1fr;
             }
             .header {
                 flex-direction: column;
@@ -320,156 +461,683 @@
             .header-right {
                 justify-content: center;
             }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
             .stat-number {
                 font-size: 24px;
+            }
+            .header-title h1 {
+                font-size: 16px;
+            }
+            .container {
+                padding: 0 4px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="pageLoader">
+        <div class="spinner"></div>
+        <p>جاري تحميل لوحة التحكم...</p>
+    </div>
+
     <div class="container">
 
         <!-- ===== HEADER ===== -->
         <header class="header">
             <div class="header-left">
-                <div class="logo">ن.ت</div>
+                <div class="logo" id="logoBox">ن.ت</div>
                 <div class="header-title">
-                    <h1>لوحة التحكم</h1>
-                    <p>لجنة التحول الرقمي والتدريب</p>
+                    <h1 id="headerTitle">لوحة التحكم</h1>
+                    <p id="committeeName">لجنة التحول الرقمي والتدريب</p>
                 </div>
-                <div style="display:flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(255,255,255,0.04);border-radius:30px;border:1px solid rgba(255,255,255,0.06);">
-                    <span style="font-size:12px;color:rgba(255,255,255,0.4);">النقيب العام:</span>
-                    <span style="font-size:13px;font-weight:700;color:#C9A84C;">المهندس / محمود جميل</span>
+                <div class="header-president">
+                    <span>النقيب العام:</span>
+                    <strong id="headerPresidentName">المهندس / محمود جميل</strong>
                 </div>
             </div>
             <div class="header-right">
-                <span class="badge-role">سوبر أدمن</span>
-                <a href="#" class="btn">⚙️</a>
-                <a href="#" class="btn">🚪 تسجيل الخروج</a>
+                <span class="badge-role" id="roleBadge">سوبر أدمن</span>
+                <a href="settings.html" class="btn"><i class="fas fa-cog"></i></a>
+                <a href="#" class="btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
             </div>
         </header>
 
-        <!-- ===== STATS ===== -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">الأكاديميات</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">الشهادات</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">1</div>
-                <div class="stat-label">المستخدمين</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number"><span class="online-dot"></span>1</div>
-                <div class="stat-label">متصل الآن</div>
-            </div>
-        </div>
+        <!-- ===== MSG ===== -->
+        <div class="msg" id="pageMsg"></div>
 
-        <!-- ===== QUICK ACTIONS ===== -->
-        <div class="quick-grid">
-            <a href="#" class="quick-card">
-                <span class="icon">🏛️</span>
-                <div class="info">
-                    <div class="title">الأكاديميات</div>
-                    <div class="desc">إدارة الأكاديميات المعتمدة</div>
-                </div>
-            </a>
-            <a href="#" class="quick-card">
-                <span class="icon">📜</span>
-                <div class="info">
-                    <div class="title">الشهادات</div>
-                    <div class="desc">إدارة الشهادات الموثقة</div>
-                </div>
-            </a>
-            <a href="#" class="quick-card">
-                <span class="icon">👤</span>
-                <div class="info">
-                    <div class="title">المستخدمين</div>
-                    <div class="desc">مراقبة المستخدمين والصلاحيات</div>
-                </div>
-            </a>
-            <a href="#" class="quick-card">
-                <span class="icon">📊</span>
-                <div class="info">
-                    <div class="title">النشاطات</div>
-                    <div class="desc">سجل جميع نشاطات النظام</div>
-                </div>
-            </a>
-            <a href="#" class="quick-card">
-                <span class="icon">📈</span>
-                <div class="info">
-                    <div class="title">التقارير</div>
-                    <div class="desc">تحليلات وإحصائيات متقدمة</div>
-                </div>
-            </a>
-            <a href="#" class="quick-card">
-                <span class="icon">⚙️</span>
-                <div class="info">
-                    <div class="title">الإعدادات</div>
-                    <div class="desc">تخصيص النظام والإعدادات</div>
-                </div>
-            </a>
-        </div>
+        <!-- ===== DASHBOARD CONTENT ===== -->
+        <div id="dashboardContent" style="display:none;">
 
-        <!-- ===== ACTIVITIES ===== -->
-        <div class="card">
-            <div class="card-title">
-                <span>آخر النشاطات</span>
-                <span class="badge">تحديث فوري</span>
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="statAcademies">0</div>
+                    <div class="stat-label">الأكاديميات</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statCertificates">0</div>
+                    <div class="stat-label">الشهادات</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statUsers">0</div>
+                    <div class="stat-label">المستخدمين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><span class="online-dot"></span><span id="statOnline">0</span></div>
+                    <div class="stat-label">متصل الآن</div>
+                </div>
             </div>
 
-            <div class="activity-item">
-                <div class="activity-avatar">م</div>
-                <div class="activity-info">
-                    <div class="text">تسجيل دخول</div>
-                    <div class="time">محمود • 12:30</div>
-                </div>
-                <span class="activity-badge login">تسجيل دخول</span>
+            <!-- QUICK ACTIONS -->
+            <div class="quick-grid">
+                <a href="academies.html" class="quick-card">
+                    <span class="icon"><i class="fas fa-university"></i></span>
+                    <div class="info">
+                        <div class="title">الأكاديميات</div>
+                        <div class="desc">إدارة الأكاديميات المعتمدة</div>
+                    </div>
+                </a>
+                <a href="certificates.html" class="quick-card">
+                    <span class="icon"><i class="fas fa-certificate"></i></span>
+                    <div class="info">
+                        <div class="title">الشهادات</div>
+                        <div class="desc">إدارة الشهادات الموثقة</div>
+                    </div>
+                </a>
+                <a href="users.html" class="quick-card">
+                    <span class="icon"><i class="fas fa-users"></i></span>
+                    <div class="info">
+                        <div class="title">المستخدمين</div>
+                        <div class="desc">مراقبة المستخدمين والصلاحيات</div>
+                    </div>
+                </a>
+                <a href="activities.html" class="quick-card">
+                    <span class="icon"><i class="fas fa-clock-rotate-left"></i></span>
+                    <div class="info">
+                        <div class="title">النشاطات</div>
+                        <div class="desc">سجل جميع نشاطات النظام</div>
+                    </div>
+                </a>
+                <a href="reports.html" class="quick-card">
+                    <span class="icon"><i class="fas fa-chart-pie"></i></span>
+                    <div class="info">
+                        <div class="title">التقارير</div>
+                        <div class="desc">تحليلات وإحصائيات متقدمة</div>
+                    </div>
+                </a>
+                <a href="settings.html" class="quick-card">
+                    <span class="icon"><i class="fas fa-sliders-h"></i></span>
+                    <div class="info">
+                        <div class="title">الإعدادات</div>
+                        <div class="desc">تخصيص النظام والإعدادات</div>
+                    </div>
+                </a>
             </div>
 
-            <div class="activity-item">
-                <div class="activity-avatar">أ</div>
-                <div class="activity-info">
-                    <div class="text">إضافة مستخدم جديد</div>
-                    <div class="time">أحمد • 11:45</div>
+            <!-- ACTIVITIES -->
+            <div class="card">
+                <div class="card-title">
+                    <span>آخر النشاطات</span>
+                    <span class="badge">تحديث فوري</span>
                 </div>
-                <span class="activity-badge create">إضافة</span>
+                <div id="activitiesList">
+                    <div class="empty-state">جاري تحميل النشاطات...</div>
+                </div>
             </div>
 
-            <div class="activity-item">
-                <div class="activity-avatar">ن</div>
-                <div class="activity-info">
-                    <div class="text">تعديل أكاديمية</div>
-                    <div class="time">نور • 10:20</div>
-                </div>
-                <span class="activity-badge update">تعديل</span>
-            </div>
-
-            <div class="activity-item">
-                <div class="activity-avatar">س</div>
-                <div class="activity-info">
-                    <div class="text">بحث عن شهادة</div>
-                    <div class="time">سامي • 09:15</div>
-                </div>
-                <span class="activity-badge search">بحث</span>
-            </div>
-
-            <div class="empty-state">لا توجد نشاطات جديدة</div>
         </div>
 
         <div class="footer">
-            © 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة
-            <div style="margin-top:4px;color:rgba(255,255,255,0.15);font-size:11px;">
-                النقيب العام: المهندس / محمود جميل
+            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة</span>
+            <div class="president">
+                <span id="presidentFooter">النقيب العام:</span>
+                <span id="presidentName">المهندس / محمود جميل</span>
             </div>
         </div>
 
     </div>
+
+    <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
+            authDomain: "itwsaccertification.firebaseapp.com",
+            projectId: "itwsaccertification",
+            storageBucket: "itwsaccertification.firebasestorage.app",
+            messagingSenderId: "521196512526",
+            appId: "1:521196512526:web:b78b06dd87cf4f5ca1e35f",
+            measurementId: "G-JBMGW74DV4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
+        let currentUser = null;
+        let userRole = null;
+        let sessionId = null;
+        let isReady = false;
+        let loaderHidden = false;
+
+        let settings = {
+            headerTitle: 'لوحة التحكم',
+            committeeName: 'لجنة التحول الرقمي والتدريب',
+            logoUrl: '',
+            footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
+            presidentName: 'المهندس / محمود جميل',
+            presidentLabel: 'النقيب العام:',
+            presidentFooter: 'النقيب العام:',
+            colors: {
+                primary: '#C9A84C',
+                accent: '#7C3AED',
+                background: '#0A0E1A',
+                text: '#FFFFFF',
+                textSecondary: 'rgba(255,255,255,0.7)',
+                textMuted: 'rgba(255,255,255,0.4)',
+                textDim: 'rgba(255,255,255,0.15)',
+                success: '#10B981',
+                error: '#EF4444',
+                warning: '#F59E0B',
+                info: '#3B82F6',
+                border: 'rgba(255,255,255,0.06)',
+                cardBg: 'rgba(255,255,255,0.04)'
+            }
+        };
+
+        // ============================================================
+        // 3. إخفاء وإظهار المحتوى
+        // ============================================================
+        function hidePageLoader() {
+            if (loaderHidden) return;
+            loaderHidden = true;
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+            document.getElementById('dashboardContent').style.display = 'block';
+        }
+
+        // ============================================================
+        // 4. مهلة زمنية احتياطية 3 ثواني
+        // ============================================================
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                applyColors(settings.colors);
+                applySettings();
+                hidePageLoader();
+                isReady = true;
+            }
+        }, 3000);
+
+        // ============================================================
+        // 5. تسجيل جلسة المستخدم (🔥 الأهم)
+        // ============================================================
+        function registerUserSession(userId, userName, userEmail) {
+            const sessionData = {
+                userId: userId,
+                userName: userName || 'مستخدم',
+                userEmail: userEmail || 'unknown',
+                userRole: userRole || 'user',
+                loginTime: firebase.firestore.FieldValue.serverTimestamp(),
+                lastActivity: firebase.firestore.FieldValue.serverTimestamp(),
+                isOnline: true,
+                userAgent: navigator.userAgent,
+                device: getDeviceType()
+            };
+
+            // حذف الجلسات القديمة لنفس المستخدم
+            db.collection('sessions')
+                .where('userId', '==', userId)
+                .where('isOnline', '==', true)
+                .get()
+                .then(function(snapshot) {
+                    const batch = db.batch();
+                    snapshot.forEach(function(doc) {
+                        batch.update(doc.ref, {
+                            isOnline: false,
+                            logoutTime: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    });
+                    return batch.commit();
+                })
+                .then(function() {
+                    return db.collection('sessions').add(sessionData);
+                })
+                .then(function(docRef) {
+                    sessionId = docRef.id;
+                    localStorage.setItem('sessionId', sessionId);
+                    console.log('✅ تم تسجيل جلسة المستخدم:', sessionId);
+                })
+                .catch(function(err) {
+                    console.warn('❌ خطأ في تسجيل الجلسة:', err);
+                });
+        }
+
+        function getDeviceType() {
+            const ua = navigator.userAgent;
+            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return 'tablet';
+            if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+                    ua))
+                return 'mobile';
+            return 'desktop';
+        }
+
+        function updateLastActivity() {
+            if (sessionId) {
+                db.collection('sessions').doc(sessionId).update({
+                    lastActivity: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(function() {});
+            }
+        }
+
+        function endUserSession() {
+            if (sessionId) {
+                db.collection('sessions').doc(sessionId).update({
+                    isOnline: false,
+                    logoutTime: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(function() {});
+                localStorage.removeItem('sessionId');
+            }
+        }
+
+        // ============================================================
+        // 6. إعدادات الـ Listeners
+        // ============================================================
+        let generalUnsubscribe = null;
+        let designUnsubscribe = null;
+        let academiesUnsubscribe = null;
+        let certificatesUnsubscribe = null;
+        let usersUnsubscribe = null;
+        let sessionsUnsubscribe = null;
+        let activitiesUnsubscribe = null;
+
+        function startListeners() {
+            let loadedCount = 0;
+            const totalDocs = 7;
+
+            function checkReady() {
+                loadedCount++;
+                if (loadedCount >= totalDocs && !isReady) {
+                    isReady = true;
+                    hidePageLoader();
+                    console.log('✅ dashboard.html جاهزة');
+                }
+            }
+
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('pageLoader').classList.remove('hidden');
+
+            // General settings
+            if (generalUnsubscribe) generalUnsubscribe();
+            generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.headerTitle) settings.headerTitle = data.headerTitle;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.logoUrl) settings.logoUrl = data.logoUrl;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                    if (data.presidentLabel) settings.presidentLabel = data.presidentLabel;
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                }
+                applySettings();
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الإعدادات العامة');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للإعدادات العامة:', error);
+                if (!isReady) checkReady();
+            });
+
+            // Design settings
+            if (designUnsubscribe) designUnsubscribe();
+            designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
+                    }
+                }
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: التصميم');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للتصميم:', error);
+                if (!isReady) checkReady();
+            });
+
+            // Academies
+            if (academiesUnsubscribe) academiesUnsubscribe();
+            academiesUnsubscribe = db.collection('academies').where('isDeleted', '==', false).onSnapshot(function(snapshot) {
+                document.getElementById('statAcademies').textContent = snapshot.size;
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الأكاديميات (' + snapshot.size + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للأكاديميات:', error);
+                if (!isReady) checkReady();
+            });
+
+            // Certificates
+            if (certificatesUnsubscribe) certificatesUnsubscribe();
+            certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(
+                snapshot) {
+                document.getElementById('statCertificates').textContent = snapshot.size;
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الشهادات (' + snapshot.size + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للشهادات:', error);
+                if (!isReady) checkReady();
+            });
+
+            // Users
+            if (usersUnsubscribe) usersUnsubscribe();
+            usersUnsubscribe = db.collection('users').where('isActive', '!=', false).onSnapshot(function(snapshot) {
+                document.getElementById('statUsers').textContent = snapshot.size;
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: المستخدمين (' + snapshot.size + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للمستخدمين:', error);
+                if (!isReady) checkReady();
+            });
+
+            // Sessions - Online users (🔥 عشان يظهر المتصلين)
+            if (sessionsUnsubscribe) sessionsUnsubscribe();
+            sessionsUnsubscribe = db.collection('sessions').where('isOnline', '==', true).onSnapshot(function(snapshot) {
+                document.getElementById('statOnline').textContent = snapshot.size;
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: المتصلين (' + snapshot.size + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للجلسات:', error);
+                if (!isReady) checkReady();
+            });
+
+            // Activities
+            if (activitiesUnsubscribe) activitiesUnsubscribe();
+            activitiesUnsubscribe = db.collection('activities')
+                .orderBy('timestamp', 'desc')
+                .limit(8)
+                .onSnapshot(function(snapshot) {
+                    renderActivities(snapshot);
+                    if (!isReady) checkReady();
+                    console.log('تحديث فوري: النشاطات (' + snapshot.size + ')');
+                }, function(error) {
+                    console.warn('خطأ في الاستماع للنشاطات:', error);
+                    if (!isReady) checkReady();
+                });
+        }
+
+        // ============================================================
+        // 7. تطبيق الإعدادات
+        // ============================================================
+        function applySettings() {
+            const titleEl = document.getElementById('headerTitle');
+            const committeeEl = document.getElementById('committeeName');
+            const presidentNameEl = document.getElementById('headerPresidentName');
+            const footerTextEl = document.getElementById('footerText');
+            const presidentFooterEl = document.getElementById('presidentFooter');
+            const presidentNameFooterEl = document.getElementById('presidentName');
+            const roleBadge = document.getElementById('roleBadge');
+
+            if (titleEl) titleEl.textContent = settings.headerTitle;
+            if (committeeEl) committeeEl.textContent = settings.committeeName;
+            if (presidentNameEl) presidentNameEl.textContent = settings.presidentName;
+            if (footerTextEl) footerTextEl.textContent = settings.footerText;
+            if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
+            if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
+
+            if (roleBadge) {
+                if (userRole === 'super_admin') {
+                    roleBadge.textContent = 'سوبر أدمن';
+                    roleBadge.style.background = 'rgba(139,92,246,0.15)';
+                    roleBadge.style.color = '#8b5cf6';
+                } else if (userRole === 'admin') {
+                    roleBadge.textContent = 'أدمن';
+                } else {
+                    roleBadge.textContent = 'إدارة اللجنة';
+                }
+            }
+
+            if (settings.logoUrl) {
+                const logo = document.getElementById('logoBox');
+                if (logo) {
+                    logo.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logo.style.backgroundSize = 'cover';
+                    logo.style.backgroundPosition = 'center';
+                    logo.textContent = '';
+                }
+            }
+
+            const pageTitle = document.getElementById('pageTitle');
+            if (pageTitle) {
+                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات - لوحة التحكم';
+            }
+        }
+
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textDim) root.style.setProperty('--text-dim', colors.textDim);
+            if (colors.success) root.style.setProperty('--success', colors.success);
+            if (colors.error) root.style.setProperty('--error', colors.error);
+            if (colors.warning) root.style.setProperty('--warning', colors.warning);
+            if (colors.info) root.style.setProperty('--info', colors.info);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+            if (colors.cardBg) root.style.setProperty('--card-bg', colors.cardBg);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        // ============================================================
+        // 8. عرض النشاطات
+        // ============================================================
+        function renderActivities(snapshot) {
+            const container = document.getElementById('activitiesList');
+
+            if (snapshot.empty) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox" style="font-size:24px;display:block;margin-bottom:8px;opacity:0.3;"></i>
+                        لا توجد نشاطات
+                    </div>
+                `;
+                return;
+            }
+
+            const typeLabels = {
+                'login': { label: 'تسجيل دخول', cls: 'login' },
+                'logout': { label: 'تسجيل خروج', cls: 'logout' },
+                'create_academy': { label: 'إضافة أكاديمية', cls: 'create' },
+                'update_academy': { label: 'تعديل أكاديمية', cls: 'update' },
+                'delete_academy': { label: 'حذف أكاديمية', cls: 'delete' },
+                'create_certificate': { label: 'إضافة شهادة', cls: 'create' },
+                'update_certificate': { label: 'تعديل شهادة', cls: 'update' },
+                'delete_certificate': { label: 'حذف شهادة', cls: 'delete' },
+                'search_certificate': { label: 'بحث شهادة', cls: 'search' },
+                'search_academy': { label: 'بحث أكاديمية', cls: 'search' },
+                'create_user': { label: 'إضافة مستخدم', cls: 'create' },
+                'update_user': { label: 'تعديل مستخدم', cls: 'update' },
+                'delete_user': { label: 'حذف مستخدم', cls: 'delete' },
+            };
+
+            let html = '';
+            snapshot.forEach(function(doc) {
+                const data = doc.data();
+                const typeInfo = typeLabels[data.type] || { label: data.type || 'نشاط', cls: 'default' };
+                const timeStr = data.timestamp ? formatDateTime(data.timestamp) : 'الآن';
+                const userName = data.userName || 'مستخدم';
+
+                html += `
+                    <div class="activity-item">
+                        <div class="activity-avatar">${userName.charAt(0)}</div>
+                        <div class="activity-info">
+                            <div class="text">${typeInfo.label}</div>
+                            <div class="time">${userName} • ${timeStr}</div>
+                            ${data.description ? `<div style="font-size:11px;color:rgba(255,255,255,0.25);">${data.description}</div>` : ''}
+                        </div>
+                        <span class="activity-badge ${typeInfo.cls}">${typeInfo.label}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function formatDateTime(date) {
+            if (!date) return '-';
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        // ============================================================
+        // 9. عرض الرسائل
+        // ============================================================
+        function showMsg(msg, type) {
+            const el = document.getElementById('pageMsg');
+            if (!el) return;
+            el.textContent = msg;
+            el.className = 'msg show ' + type;
+            setTimeout(function() { el.className = 'msg'; }, 5000);
+        }
+
+        // ============================================================
+        // 10. المصادقة وتسجيل الجلسة
+        // ============================================================
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                db.collection('users').doc(user.uid).get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            if (data.role === 'super_admin' || data.role === 'admin' || data.role === 'committee_manager') {
+                                userRole = data.role;
+                                
+                                // ✅🔥 تسجيل جلسة المستخدم (المفتاح)
+                                registerUserSession(
+                                    user.uid,
+                                    data.name || data.fullName || 'مستخدم',
+                                    user.email
+                                );
+
+                                startListeners();
+
+                                // تحديث آخر نشاط كل 30 ثانية
+                                setInterval(updateLastActivity, 30000);
+
+                                // تسجيل نشاط دخول
+                                db.collection('activities').add({
+                                    type: 'login',
+                                    userName: data.name || data.fullName || 'مستخدم',
+                                    userId: user.uid,
+                                    description: 'دخول إلى لوحة التحكم',
+                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                                }).catch(function() {});
+
+                            } else {
+                                showMsg('غير مصرح بالوصول إلى لوحة التحكم', 'error');
+                                setTimeout(function() { window.location.href = 'home.html'; }, 2000);
+                            }
+                        } else {
+                            showMsg('المستخدم غير موجود', 'error');
+                            setTimeout(function() { window.location.href = 'login.html'; }, 2000);
+                        }
+                    })
+                    .catch(function(err) {
+                        showMsg('حدث خطأ: ' + err.message, 'error');
+                    });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // ============================================================
+        // 11. تسجيل الخروج وإنهاء الجلسة
+        // ============================================================
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            db.collection('activities').add({
+                type: 'logout',
+                userName: currentUser ? currentUser.displayName || 'مستخدم' : 'مستخدم',
+                userId: currentUser ? currentUser.uid : '',
+                description: 'تسجيل خروج من لوحة التحكم',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(function() {});
+
+            endUserSession();
+            auth.signOut().then(function() {
+                window.location.href = 'login.html';
+            });
+        });
+
+        // ============================================================
+        // 12. مراقبة حالة الاتصال
+        // ============================================================
+        window.addEventListener('online', function() {
+            console.log('🟢 المستخدم عاد متصلاً');
+        });
+
+        window.addEventListener('offline', function() {
+            console.log('🔴 المستخدم غير متصل');
+        });
+
+        // ============================================================
+        // 13. إنهاء الجلسة عند إغلاق الصفحة
+        // ============================================================
+        window.addEventListener('beforeunload', function() {
+            endUserSession();
+        });
+
+        // ============================================================
+        // 14. بدء التشغيل
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📊 لوحة التحكم - جاري التحميل');
+            console.log('✅ تحديث فوري للإحصائيات');
+            console.log('✅ تتبع الجلسات والمتصلين');
+            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
+        });
+    </script>
 
 </body>
 </html>
