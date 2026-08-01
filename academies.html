@@ -857,7 +857,6 @@
 
         <div id="pageContent" style="display:none;">
 
-            <!-- ===== قسم البحث ===== -->
             <div class="search-section">
                 <form id="searchForm" onsubmit="return applyFilters(event)">
                     <div class="search-grid">
@@ -883,7 +882,6 @@
                 </form>
             </div>
 
-            <!-- ===== عدد النتائج ===== -->
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
                 <span style="color:var(--text-muted);font-size:14px;" id="resultCount">عرض 0 أكاديمية</span>
                 <div style="display:flex;gap:8px;align-items:center;">
@@ -897,12 +895,10 @@
                 </div>
             </div>
 
-            <!-- ===== قائمة الأكاديميات ===== -->
             <div class="academies-grid" id="academiesGrid">
                 <div style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:14px;grid-column:1/-1;">جاري تحميل الأكاديميات...</div>
             </div>
 
-            <!-- ===== الترقيم ===== -->
             <div class="pagination" id="pagination">
                 <button id="prevPage" onclick="changePage(-1)">السابق</button>
                 <span id="pageInfo">صفحة 1 من 1</span>
@@ -989,6 +985,8 @@
         };
 
         let isReady = false;
+        let loadedCount = 0;
+        const totalDocs = 3;
 
         // ============================================================
         // 3. إعدادات الـ Listeners
@@ -997,20 +995,17 @@
         let designUnsubscribe = null;
         let academiesUnsubscribe = null;
 
-        function startListeners() {
-            let loadedCount = 0;
-            const totalDocs = 3;
-
-            function checkReady() {
-                loadedCount++;
-                if (loadedCount >= totalDocs && !isReady) {
-                    isReady = true;
-                    document.getElementById('pageContent').style.display = 'block';
-                    document.getElementById('pageLoader').classList.remove('show');
-                    console.log('تم تحميل كل البيانات بنجاح');
-                }
+        function checkReady() {
+            loadedCount++;
+            if (loadedCount >= totalDocs && !isReady) {
+                isReady = true;
+                document.getElementById('pageContent').style.display = 'block';
+                document.getElementById('pageLoader').classList.remove('show');
+                console.log('✅ academies.html جاهزة');
             }
+        }
 
+        function startListeners() {
             document.getElementById('pageContent').style.display = 'none';
             document.getElementById('pageLoader').classList.add('show');
 
@@ -1196,7 +1191,6 @@
                     });
                 }
             });
-            // الاحتفاظ بالخيار الأول
             const firstOption = select.options[0];
             select.innerHTML = '';
             select.appendChild(firstOption);
@@ -1206,11 +1200,6 @@
                 opt.textContent = g;
                 select.appendChild(opt);
             });
-        }
-
-        function getCertCount(academyId) {
-            // سيتم جلبها من بيانات الشهادات لاحقاً
-            return 0;
         }
 
         function applyFilters(e) {
@@ -1223,6 +1212,10 @@
             const taxFilter = document.getElementById('searchTax').value.trim().toLowerCase();
             const phoneFilter = document.getElementById('searchPhone').value.trim().toLowerCase();
             const sortBy = document.getElementById('sortBy').value;
+
+            // حساب عدد الشهادات لكل أكاديمية
+            const certCounts = {};
+            // سيتم تحديثها من الشهادات لاحقاً
 
             filteredAcademies = allAcademies.filter(function(item) {
                 let match = true;
@@ -1267,7 +1260,7 @@
                 return match;
             });
 
-            // ترتيب النتائج
+            // ترتيب
             filteredAcademies.sort(function(a, b) {
                 if (sortBy === 'name') {
                     return (a.name || '').localeCompare(b.name || '');
@@ -1337,8 +1330,6 @@
                         return b.governorate || 'فرع';
                     }).join(', ');
 
-                    const certCount = 0; // سيتم تحديثها من الشهادات
-
                     return `
                         <div class="academy-card">
                             <div class="card-header">
@@ -1367,7 +1358,7 @@
                                 ${branches.length > 3 ? `<span class="branch-tag">+${branches.length - 3}</span>` : ''}
                             </div>
                             <div class="card-footer">
-                                <span class="cert-count">${certCount} شهادة</span>
+                                <span class="cert-count">0 شهادة</span>
                                 <div class="actions">
                                     <button class="btn btn-outline btn-sm" onclick="viewAcademy('${item.id}')">عرض</button>
                                     ${userRole === 'super_admin' ? `
@@ -1381,7 +1372,6 @@
                 }).join('');
             }
 
-            // تحديث الترقيم
             document.getElementById('pageInfo').textContent = 'صفحة ' + currentPage + ' من ' + Math.max(totalPages, 1);
             document.getElementById('prevPage').disabled = currentPage <= 1;
             document.getElementById('nextPage').disabled = currentPage >= totalPages;
@@ -1407,16 +1397,15 @@
         }
 
         function deleteAcademy(id) {
-            if (confirm('هل أنت متأكد من حذف هذه الأكاديمية؟')) {
-                db.collection('academies').doc(id).update({
-                    isDeleted: true,
-                    deletedAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(function() {
-                    showMsg('تم حذف الأكاديمية بنجاح', 'success');
-                }).catch(function(err) {
-                    showMsg('حدث خطأ: ' + err.message, 'error');
-                });
-            }
+            if (!confirm('هل أنت متأكد من حذف هذه الأكاديمية؟')) return;
+            db.collection('academies').doc(id).update({
+                isDeleted: true,
+                deletedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                showMsg('تم حذف الأكاديمية بنجاح', 'success');
+            }).catch(function(err) {
+                showMsg('حدث خطأ: ' + err.message, 'error');
+            });
         }
 
         // ============================================================
@@ -1431,7 +1420,7 @@
         }
 
         // ============================================================
-        // 9. المصادقة
+        // 9. المصادقة والصلاحيات
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1445,6 +1434,8 @@
                                 const settingsBtn = document.getElementById('settingsBtn');
                                 if (data.role === 'super_admin') {
                                     if (settingsBtn) settingsBtn.style.display = 'inline-flex';
+                                } else {
+                                    if (settingsBtn) settingsBtn.style.display = 'none';
                                 }
                                 startListeners();
                             } else {
@@ -1480,6 +1471,7 @@
             console.log('فلاتر بحث متقدمة');
             console.log('ترتيب حسب عدة معايير');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
+            console.log('🔒 صلاحيات: السوبر أدمن فقط يرى أزرار التعديل والحذف');
         });
     </script>
 
