@@ -39,6 +39,7 @@
     </script>
 
     <style>
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -88,6 +89,45 @@
             --radius-lg: 28px;
         }
 
+        /* ===== PAGE LOADER ===== */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            transition: opacity 0.5s ease;
+        }
+
+        #pageLoader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #pageLoader .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #pageLoader p {
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== باقي الـ CSS ===== */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -392,6 +432,13 @@
         }
         .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
 
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: #fff;
+            box-shadow: 0 4px 25px rgba(16,185,129,0.25);
+        }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
+
         .btn-sm { padding: 5px 14px; font-size: 12px; }
 
         .role-badge {
@@ -570,12 +617,6 @@
             color: var(--primary-color);
         }
 
-        .report-table thead th .sort-icon {
-            font-size: 10px;
-            margin-right: 4px;
-            opacity: 0.4;
-        }
-
         .report-table tbody tr {
             border-bottom: 1px solid var(--border-light);
             transition: all 0.3s ease;
@@ -638,6 +679,11 @@
             color: var(--accent-light);
         }
 
+        .badge-status.logout {
+            background: var(--error-bg);
+            color: var(--error);
+        }
+
         .pagination {
             display: flex;
             justify-content: center;
@@ -696,20 +742,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .loader { display: none; text-align: center; padding: 30px 0; }
-        .loader.show { display: block; }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 12px;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         .footer {
             text-align: center;
             padding: 20px 0 10px;
@@ -750,8 +782,31 @@
 
         .chart-container {
             position: relative;
-            height: 200px;
+            height: 250px;
             width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
         }
 
         .stats-mini {
@@ -781,10 +836,6 @@
         .stats-mini .stat-item .label {
             font-size: 11px;
             color: var(--text-muted);
-        }
-
-        .print-btn {
-            margin-right: 8px;
         }
 
         @media (max-width: 768px) {
@@ -818,14 +869,18 @@
             .filter-grid { grid-template-columns: 1fr; }
             .header-president .president-name { font-size: 11px; }
             .report-table { font-size: 11px; min-width: 300px; }
-            .report-table thead th { font-size: 10px; padding: 4px 6px; }
-            .report-table tbody td { padding: 4px 6px; }
             .stats-mini { grid-template-columns: 1fr 1fr; }
             .stats-mini .stat-item .number { font-size: 18px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="pageLoader">
+        <div class="spinner"></div>
+        <p>جاري تحميل التقارير...</p>
+    </div>
 
     <div class="page-bg"></div>
 
@@ -881,11 +936,6 @@
 
         <div class="msg" id="pageMsg"></div>
 
-        <div class="loader" id="pageLoader">
-            <div class="spinner"></div>
-            <div style="color:var(--text-muted);" id="loaderText">جاري تحميل البيانات...</div>
-        </div>
-
         <div id="pageContent" style="display:none;">
 
             <!-- ===== تبويبات التقارير ===== -->
@@ -916,7 +966,7 @@
                         <div class="filter-actions">
                             <button type="submit" class="btn btn-primary">تطبيق</button>
                             <button type="button" class="btn btn-outline" onclick="resetAcademiesFilter()">إعادة تعيين</button>
-                            <button type="button" class="btn btn-success print-btn" onclick="printReport('academies')">طباعة التقرير</button>
+                            <button type="button" class="btn btn-success" onclick="printReport('academies')">طباعة التقرير</button>
                         </div>
                     </form>
                 </div>
@@ -940,14 +990,14 @@
                     </div>
                 </div>
 
-                <div class="report-table-container" id="acadTableContainer">
+                <div class="report-table-container">
                     <table class="report-table" id="acadTable">
                         <thead>
                             <tr>
-                                <th onclick="sortAcademies('name')">اسم الأكاديمية <span class="sort-icon">↕</span></th>
-                                <th onclick="sortAcademies('license')">الرقم الاعتمادي <span class="sort-icon">↕</span></th>
+                                <th onclick="sortAcademies('name')">اسم الأكاديمية</th>
+                                <th onclick="sortAcademies('license')">الرقم الاعتمادي</th>
                                 <th>الفروع</th>
-                                <th onclick="sortAcademies('certCount')">عدد الشهادات <span class="sort-icon">↕</span></th>
+                                <th onclick="sortAcademies('certCount')">عدد الشهادات</th>
                                 <th>تفاصيل الفروع</th>
                             </tr>
                         </thead>
@@ -993,7 +1043,7 @@
                         <div class="filter-actions">
                             <button type="submit" class="btn btn-primary">تطبيق</button>
                             <button type="button" class="btn btn-outline" onclick="resetCertsFilter()">إعادة تعيين</button>
-                            <button type="button" class="btn btn-success print-btn" onclick="printReport('certificates')">طباعة التقرير</button>
+                            <button type="button" class="btn btn-success" onclick="printReport('certificates')">طباعة التقرير</button>
                         </div>
                     </form>
                 </div>
@@ -1021,13 +1071,13 @@
                     <table class="report-table" id="certTable">
                         <thead>
                             <tr>
-                                <th onclick="sortCertificates('code')">الكود <span class="sort-icon">↕</span></th>
-                                <th onclick="sortCertificates('studentName')">المتدرب <span class="sort-icon">↕</span></th>
-                                <th onclick="sortCertificates('courseName')">الدورة <span class="sort-icon">↕</span></th>
-                                <th onclick="sortCertificates('grade')">التقدير <span class="sort-icon">↕</span></th>
+                                <th onclick="sortCertificates('code')">الكود</th>
+                                <th onclick="sortCertificates('studentName')">المتدرب</th>
+                                <th onclick="sortCertificates('courseName')">الدورة</th>
+                                <th onclick="sortCertificates('grade')">التقدير</th>
                                 <th>الأكاديمية</th>
                                 <th>الفرع</th>
-                                <th onclick="sortCertificates('issuedAt')">التاريخ <span class="sort-icon">↕</span></th>
+                                <th onclick="sortCertificates('issuedAt')">التاريخ</th>
                                 <th>الحالة</th>
                             </tr>
                         </thead>
@@ -1061,6 +1111,10 @@
                                 <option value="delete_certificate">حذف شهادة</option>
                                 <option value="search_certificate">بحث شهادة</option>
                                 <option value="search_academy">بحث أكاديمية</option>
+                                <option value="page_enter">دخول صفحة</option>
+                                <option value="page_change">تغيير صفحة</option>
+                                <option value="reconnect">إعادة اتصال</option>
+                                <option value="disconnect">انقطاع اتصال</option>
                             </select>
                             <input type="date" id="actDateFrom" />
                             <input type="date" id="actDateTo" />
@@ -1068,7 +1122,7 @@
                         <div class="filter-actions">
                             <button type="submit" class="btn btn-primary">تطبيق</button>
                             <button type="button" class="btn btn-outline" onclick="resetActivitiesFilter()">إعادة تعيين</button>
-                            <button type="button" class="btn btn-success print-btn" onclick="printReport('activities')">طباعة التقرير</button>
+                            <button type="button" class="btn btn-success" onclick="printReport('activities')">طباعة التقرير</button>
                         </div>
                     </form>
                 </div>
@@ -1132,7 +1186,7 @@
                         <div class="filter-actions">
                             <button type="submit" class="btn btn-primary">تطبيق</button>
                             <button type="button" class="btn btn-outline" onclick="resetSearchFilter()">إعادة تعيين</button>
-                            <button type="button" class="btn btn-success print-btn" onclick="printReport('search')">طباعة التقرير</button>
+                            <button type="button" class="btn btn-success" onclick="printReport('search')">طباعة التقرير</button>
                         </div>
                     </form>
                 </div>
@@ -1196,19 +1250,15 @@
                     </div>
                 </div>
                 <div class="chart-grid">
-                    <div class="card" style="padding:16px 20px;">
-                        <div class="card-title" style="font-size:14px;margin-bottom:12px;">
-                            <span id="chart1Title">توزيع الشهادات حسب الأكاديمية</span>
-                        </div>
-                        <div class="chart-container" style="height:280px;">
+                    <div class="card">
+                        <div class="card-title" id="chart1Title">توزيع الشهادات حسب الأكاديمية</div>
+                        <div class="chart-container">
                             <canvas id="chartMain"></canvas>
                         </div>
                     </div>
-                    <div class="card" style="padding:16px 20px;">
-                        <div class="card-title" style="font-size:14px;margin-bottom:12px;">
-                            <span id="chart2Title">توزيع النشاطات</span>
-                        </div>
-                        <div class="chart-container" style="height:280px;">
+                    <div class="card">
+                        <div class="card-title" id="chart2Title">النشاطات اليومية (آخر 7 أيام)</div>
+                        <div class="chart-container">
                             <canvas id="chartSecondary"></canvas>
                         </div>
                     </div>
@@ -1277,6 +1327,8 @@
 
         let chartMain = null;
         let chartSecondary = null;
+        let isReady = false;
+        let loaderHidden = false;
 
         let settings = {
             headerTitle: 'التقارير والإحصائيات',
@@ -1290,7 +1342,6 @@
             settingsBtn: 'الإعدادات',
             pageTitleMain: 'التقارير والإحصائيات',
             pageSubtitle: 'تحليل شامل لكل بيانات المنصة مع تقارير دقيقة ومفصلة',
-            loaderText: 'جاري تحميل البيانات...',
             presidentFooter: 'النقيب العام:',
             colors: {
                 primary: '#C9A84C',
@@ -1309,10 +1360,26 @@
             }
         };
 
-        let isReady = false;
+        // ============================================================
+        // 3. إخفاء وإظهار المحتوى
+        // ============================================================
+        function hidePageLoader() {
+            if (loaderHidden) return;
+            loaderHidden = true;
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+            document.getElementById('pageContent').style.display = 'block';
+            // تحديث الرسوم البيانية بعد ظهور المحتوى
+            setTimeout(updateAllCharts, 500);
+        }
 
         // ============================================================
-        // 3. إعدادات الـ Listeners
+        // 4. إعدادات الـ Listeners (مع تحديث فوري)
         // ============================================================
         let generalUnsubscribe = null;
         let designUnsubscribe = null;
@@ -1320,6 +1387,17 @@
         let certificatesUnsubscribe = null;
         let activitiesUnsubscribe = null;
         let searchLogsUnsubscribe = null;
+
+        // مهلة زمنية احتياطية 3 ثواني
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                applyColors(settings.colors);
+                applySettings();
+                hidePageLoader();
+                isReady = true;
+            }
+        }, 3000);
 
         function startListeners() {
             let loadedCount = 0;
@@ -1329,15 +1407,17 @@
                 loadedCount++;
                 if (loadedCount >= totalDocs && !isReady) {
                     isReady = true;
-                    document.getElementById('pageContent').style.display = 'block';
-                    document.getElementById('pageLoader').classList.remove('show');
-                    console.log('تم تحميل كل البيانات بنجاح');
+                    hidePageLoader();
+                    console.log('✅ تم تحميل كل البيانات بنجاح');
+                    // تحديث الرسوم البيانية
+                    setTimeout(updateAllCharts, 300);
                 }
             }
 
             document.getElementById('pageContent').style.display = 'none';
-            document.getElementById('pageLoader').classList.add('show');
+            document.getElementById('pageLoader').classList.remove('hidden');
 
+            // General settings
             if (generalUnsubscribe) generalUnsubscribe();
             generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1359,6 +1439,7 @@
                 if (!isReady) checkReady();
             });
 
+            // Design settings
             if (designUnsubscribe) designUnsubscribe();
             designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1375,6 +1456,7 @@
                 if (!isReady) checkReady();
             });
 
+            // Academies (Realtime)
             if (academiesUnsubscribe) academiesUnsubscribe();
             academiesUnsubscribe = db.collection('academies').where('isDeleted', '==', false).onSnapshot(function(snapshot) {
                 allAcademies = [];
@@ -1392,6 +1474,7 @@
                 if (!isReady) checkReady();
             });
 
+            // Certificates (Realtime)
             if (certificatesUnsubscribe) certificatesUnsubscribe();
             certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
                 allCertificates = [];
@@ -1408,43 +1491,53 @@
                 if (!isReady) checkReady();
             });
 
+            // Activities (Realtime)
             if (activitiesUnsubscribe) activitiesUnsubscribe();
-            activitiesUnsubscribe = db.collection('activities').orderBy('timestamp', 'desc').limit(300).onSnapshot(function(
-            snapshot) {
-                allActivities = [];
-                snapshot.forEach(function(doc) {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    allActivities.push(data);
+            activitiesUnsubscribe = db.collection('activities')
+                .orderBy('timestamp', 'desc')
+                .limit(500)
+                .onSnapshot(function(snapshot) {
+                    allActivities = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        allActivities.push(data);
+                    });
+                    filterActivities();
+                    // تحديث الرسوم البيانية إذا كانت التبويب نشطة
+                    if (document.getElementById('tabCharts').classList.contains('active')) {
+                        setTimeout(updateAllCharts, 300);
+                    }
+                    if (!isReady) checkReady();
+                    console.log('تحديث فوري: النشاطات (' + allActivities.length + ')');
+                }, function(error) {
+                    console.warn('خطأ في الاستماع للنشاطات:', error);
+                    if (!isReady) checkReady();
                 });
-                filterActivities();
-                if (!isReady) checkReady();
-                console.log('تحديث فوري: النشاطات (' + allActivities.length + ')');
-            }, function(error) {
-                console.warn('خطأ في الاستماع للنشاطات:', error);
-                if (!isReady) checkReady();
-            });
 
+            // Search Logs (Realtime)
             if (searchLogsUnsubscribe) searchLogsUnsubscribe();
-            searchLogsUnsubscribe = db.collection('searchLogs').orderBy('timestamp', 'desc').limit(200).onSnapshot(function(
-                snapshot) {
-                allSearchLogs = [];
-                snapshot.forEach(function(doc) {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    allSearchLogs.push(data);
+            searchLogsUnsubscribe = db.collection('searchLogs')
+                .orderBy('timestamp', 'desc')
+                .limit(200)
+                .onSnapshot(function(snapshot) {
+                    allSearchLogs = [];
+                    snapshot.forEach(function(doc) {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        allSearchLogs.push(data);
+                    });
+                    filterSearchReports();
+                    if (!isReady) checkReady();
+                    console.log('تحديث فوري: سجل البحث (' + allSearchLogs.length + ')');
+                }, function(error) {
+                    console.warn('خطأ في الاستماع لسجل البحث:', error);
+                    if (!isReady) checkReady();
                 });
-                filterSearchReports();
-                if (!isReady) checkReady();
-                console.log('تحديث فوري: سجل البحث (' + allSearchLogs.length + ')');
-            }, function(error) {
-                console.warn('خطأ في الاستماع لسجل البحث:', error);
-                if (!isReady) checkReady();
-            });
         }
 
         // ============================================================
-        // 4. تطبيق الإعدادات
+        // 5. تطبيق الإعدادات والألوان
         // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('headerTitle');
@@ -1460,7 +1553,6 @@
             const roleBadge = document.getElementById('roleBadge');
             const pageTitleMain = document.getElementById('pageTitleMain');
             const pageSubtitle = document.getElementById('pageSubtitle');
-            const loaderText = document.getElementById('loaderText');
 
             if (titleEl) titleEl.textContent = settings.headerTitle;
             if (committeeEl) committeeEl.textContent = settings.committeeName;
@@ -1475,7 +1567,6 @@
             if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
             if (pageTitleMain) pageTitleMain.textContent = settings.pageTitleMain;
             if (pageSubtitle) pageSubtitle.textContent = settings.pageSubtitle;
-            if (loaderText) loaderText.textContent = settings.loaderText;
 
             if (roleBadge) {
                 if (userRole === 'super_admin') {
@@ -1557,23 +1648,65 @@
         }
 
         // ============================================================
-        // 5. علامات التبويب
+        // 6. تتبع النشاطات (Activity Tracker)
+        // ============================================================
+        function trackActivity(actionType, details = {}) {
+            if (!currentUser) return;
+
+            const activityData = {
+                userId: currentUser.uid,
+                userEmail: currentUser.email || 'unknown',
+                userName: currentUser.displayName || 'مستخدم',
+                userRole: userRole || 'user',
+                type: actionType,
+                page: 'reports',
+                description: details.description || actionType,
+                details: details,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('activities').add(activityData)
+                .then(() => {
+                    console.log('✅ نشاط مسجل:', actionType);
+                })
+                .catch((error) => {
+                    console.warn('❌ خطأ في تسجيل النشاط:', error);
+                });
+        }
+
+        // ============================================================
+        // 7. علامات التبويب (مع تتبع)
         // ============================================================
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
                 this.classList.add('active');
                 document.querySelectorAll('.tab-content').forEach(function(tab) { tab.classList.remove('active'); });
-                document.getElementById(this.dataset.tab).classList.add('active');
+                const tabId = this.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+
+                // تتبع فتح التبويب
+                const tabNames = {
+                    'tabAcademies': 'academies',
+                    'tabCertificates': 'certificates',
+                    'tabActivities': 'activities',
+                    'tabSearch': 'search',
+                    'tabCharts': 'charts'
+                };
+                trackActivity('tab_change', {
+                    tab: tabNames[tabId] || tabId,
+                    description: 'فتح تبويب ' + (tabNames[tabId] || tabId)
+                });
+
                 // تحديث الرسوم البيانية عند التبديل لتبويب الرسوم
-                if (this.dataset.tab === 'tabCharts') {
+                if (tabId === 'tabCharts') {
                     setTimeout(updateAllCharts, 300);
                 }
             });
         });
 
         // ============================================================
-        // 6. دوال المساعدة
+        // 8. دوال المساعدة
         // ============================================================
         function formatDate(date) {
             if (!date) return '-';
@@ -1586,16 +1719,6 @@
             const d = date.toDate ? date.toDate() : new Date(date);
             return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit',
                 minute: '2-digit' });
-        }
-
-        function getGradeClass(grade) {
-            if (!grade) return '';
-            const g = grade.toUpperCase();
-            if (g.startsWith('A')) return 'grade-a';
-            if (g.startsWith('B')) return 'grade-b';
-            if (g.startsWith('C')) return 'grade-c';
-            if (g.startsWith('D')) return 'grade-d';
-            return 'grade-f';
         }
 
         function getStatusBadge(isActive) {
@@ -1616,6 +1739,12 @@
                 'delete_certificate': 'delete',
                 'search_certificate': 'search',
                 'search_academy': 'search',
+                'page_enter': 'login',
+                'page_change': 'update',
+                'reconnect': 'login',
+                'disconnect': 'logout',
+                'tab_change': 'update',
+                'print_report': 'create'
             };
             const cls = map[type] || '';
             const labels = {
@@ -1629,12 +1758,18 @@
                 'delete_certificate': 'حذف شهادة',
                 'search_certificate': 'بحث شهادة',
                 'search_academy': 'بحث أكاديمية',
+                'page_enter': 'دخول صفحة',
+                'page_change': 'تغيير صفحة',
+                'reconnect': 'إعادة اتصال',
+                'disconnect': 'انقطاع اتصال',
+                'tab_change': 'تغيير تبويب',
+                'print_report': 'طباعة تقرير'
             };
             return `<span class="badge-status ${cls}">${labels[type] || type || 'نشاط'}</span>`;
         }
 
         // ============================================================
-        // 7. تقارير الأكاديميات
+        // 9. تقارير الأكاديميات
         // ============================================================
         function populateGovernorates() {
             const select = document.getElementById('acadGovernorate');
@@ -1666,7 +1801,6 @@
             const governorate = document.getElementById('acadGovernorate').value;
             const sortBy = document.getElementById('acadSort').value;
 
-            // حساب عدد الشهادات لكل أكاديمية
             const certCounts = {};
             allCertificates.forEach(function(c) {
                 const key = c.academyId || c.academyName || 'غير محدد';
@@ -1696,13 +1830,11 @@
                 return match;
             });
 
-            // إضافة عدد الشهادات لكل أكاديمية
             filteredAcademies.forEach(function(item) {
                 item._certCount = certCounts[item.id] || certCounts[item.name] || 0;
                 item._branches = item.branches || [];
             });
 
-            // ترتيب
             filteredAcademies.sort(function(a, b) {
                 if (sortBy === 'name') {
                     return (a.name || '').localeCompare(b.name || '');
@@ -1717,6 +1849,15 @@
             acadPage = 1;
             renderAcademies();
             updateAcadStats();
+
+            // تتبع الفلترة
+            trackActivity('filter_academies', {
+                search: search,
+                license: license,
+                governorate: governorate,
+                sortBy: sortBy,
+                results: filteredAcademies.length
+            });
         }
 
         function resetAcademiesFilter() {
@@ -1730,8 +1871,8 @@
         function updateAcadStats() {
             const total = filteredAcademies.length;
             const active = filteredAcademies.filter(function(a) { return a.isActive !== false; }).length;
-            let branches = 0;
-            let certs = 0;
+            let branches = 0,
+                certs = 0;
             filteredAcademies.forEach(function(a) {
                 branches += (a._branches || []).length;
                 certs += a._certCount || 0;
@@ -1759,10 +1900,6 @@
 
             tbody.innerHTML = pageItems.map(function(item) {
                 const branches = item._branches || [];
-                const branchNames = branches.map(function(b) {
-                    return b.governorate || 'فرع';
-                }).join('، ') || 'لا توجد فروع';
-
                 const branchDetails = branches.map(function(b) {
                     return (b.governorate || 'فرع') + ' (' + (b.address || 'لا يوجد عنوان') + ')';
                 }).join('<br>') || 'لا توجد فروع';
@@ -1789,6 +1926,10 @@
             if (newPage < 1 || newPage > totalPages) return;
             acadPage = newPage;
             renderAcademies();
+            trackActivity('page_change_academies', {
+                page: acadPage,
+                total: totalPages
+            });
         }
 
         function sortAcademies(field) {
@@ -1797,7 +1938,7 @@
         }
 
         // ============================================================
-        // 8. تقارير الشهادات
+        // 10. تقارير الشهادات
         // ============================================================
         function filterCertificates(e) {
             if (e) e.preventDefault();
@@ -1845,6 +1986,13 @@
             certPage = 1;
             renderCertificates();
             updateCertStats();
+
+            trackActivity('filter_certificates', {
+                code: code,
+                student: student,
+                grade: grade,
+                results: filteredCertificates.length
+            });
         }
 
         function resetCertsFilter() {
@@ -1886,13 +2034,12 @@
             document.getElementById('certPagination').style.display = 'flex';
 
             tbody.innerHTML = pageItems.map(function(item) {
-                const gradeClass = getGradeClass(item.grade);
                 return `
                     <tr>
                         <td style="font-family:'Courier New',monospace;font-size:12px;color:var(--primary-color);">${item.certificateCode || '-'}</td>
                         <td><span class="highlight">${item.studentName || '-'}</span></td>
                         <td>${item.courseName || '-'}</td>
-                        <td style="font-weight:700;class="${gradeClass}">${item.grade || '-'}</td>
+                        <td>${item.grade || '-'}</td>
                         <td style="font-size:12px;">${item.academyName || '-'}</td>
                         <td style="font-size:12px;">${item.branchName || item.branchId || '-'}</td>
                         <td style="font-size:12px;color:var(--text-muted);">${formatDate(item.issuedAt)}</td>
@@ -1912,6 +2059,10 @@
             if (newPage < 1 || newPage > totalPages) return;
             certPage = newPage;
             renderCertificates();
+            trackActivity('page_change_certificates', {
+                page: certPage,
+                total: totalPages
+            });
         }
 
         function sortCertificates(field) {
@@ -1920,7 +2071,7 @@
         }
 
         // ============================================================
-        // 9. تقارير النشاطات
+        // 11. تقارير النشاطات
         // ============================================================
         function filterActivities(e) {
             if (e) e.preventDefault();
@@ -1934,7 +2085,6 @@
                 let match = true;
                 if (user) match = match && (item.userName || '').toLowerCase().includes(user);
                 if (type) match = match && (item.type || '') === type;
-
                 if (dateFrom) {
                     const from = new Date(dateFrom);
                     from.setHours(0, 0, 0, 0);
@@ -1947,7 +2097,6 @@
                         match = false;
                     }
                 }
-
                 if (dateTo) {
                     const to = new Date(dateTo);
                     to.setHours(23, 59, 59, 999);
@@ -1959,13 +2108,18 @@
                         match = false;
                     }
                 }
-
                 return match;
             });
 
             actPage = 1;
             renderActivities();
             updateActStats();
+
+            trackActivity('filter_activities', {
+                user: user,
+                type: type,
+                results: filteredActivities.length
+            });
         }
 
         function resetActivitiesFilter() {
@@ -1980,9 +2134,9 @@
             const total = filteredActivities.length;
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            let todayCount = 0;
-            let loginCount = 0;
-            let changesCount = 0;
+            let todayCount = 0,
+                loginCount = 0,
+                changesCount = 0;
 
             filteredActivities.forEach(function(item) {
                 if (item.timestamp) {
@@ -2036,10 +2190,14 @@
             if (newPage < 1 || newPage > totalPages) return;
             actPage = newPage;
             renderActivities();
+            trackActivity('page_change_activities', {
+                page: actPage,
+                total: totalPages
+            });
         }
 
         // ============================================================
-        // 10. تقارير البحث
+        // 12. تقارير البحث
         // ============================================================
         function filterSearchReports(e) {
             if (e) e.preventDefault();
@@ -2086,6 +2244,12 @@
             searchPage = 1;
             renderSearchReports();
             updateSearchStats();
+
+            trackActivity('filter_search_reports', {
+                type: type,
+                query: query,
+                results: filteredSearchLogs.length
+            });
         }
 
         function resetSearchFilter() {
@@ -2155,10 +2319,14 @@
             if (newPage < 1 || newPage > totalPages) return;
             searchPage = newPage;
             renderSearchReports();
+            trackActivity('page_change_search', {
+                page: searchPage,
+                total: totalPages
+            });
         }
 
         // ============================================================
-        // 11. الرسوم البيانية
+        // 13. الرسوم البيانية
         // ============================================================
         function updateAllCharts() {
             const type = document.getElementById('chartTypeSelect').value;
@@ -2171,6 +2339,7 @@
             } else if (type === 'branches') {
                 updateChartBranches();
             }
+            updateChartSecondary();
         }
 
         function getChartColors(count) {
@@ -2220,9 +2389,7 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -2236,9 +2403,6 @@
                     }
                 }
             });
-
-            // الرسم البياني الثانوي
-            updateChartSecondary('activities');
         }
 
         function updateChartGrades() {
@@ -2296,8 +2460,6 @@
                     }
                 }
             });
-
-            updateChartSecondary('activities');
         }
 
         function updateChartActivities() {
@@ -2367,8 +2529,6 @@
                     }
                 }
             });
-
-            updateChartSecondary('branches');
         }
 
         function updateChartBranches() {
@@ -2429,18 +2589,15 @@
                     }
                 }
             });
-
-            updateChartSecondary('activities');
         }
 
-        function updateChartSecondary(type) {
+        function updateChartSecondary() {
             const canvas = document.getElementById('chartSecondary');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
 
             if (chartSecondary) chartSecondary.destroy();
 
-            // رسم بياني ثانوي: النشاطات اليومية (آخر 7 أيام)
             const days = 7;
             const daily = {};
             const today = new Date();
@@ -2507,7 +2664,7 @@
         }
 
         // ============================================================
-        // 12. طباعة التقارير
+        // 14. طباعة التقارير (مع تتبع)
         // ============================================================
         function printReport(type) {
             let title = '';
@@ -2526,6 +2683,12 @@
                 title = 'تقرير البحث';
                 content = document.getElementById('searchTable').outerHTML;
             }
+
+            // تتبع الطباعة
+            trackActivity('print_report', {
+                reportType: type,
+                title: title
+            });
 
             const printWindow = window.open('', '_blank', 'width=1000,height=800');
             printWindow.document.write(`
@@ -2552,8 +2715,9 @@
                         .badge-status.delete { background: #fee2e2; color: #991b1b; }
                         .badge-status.login { background: #dbeafe; color: #1e40af; }
                         .badge-status.search { background: #ede9fe; color: #5b21b6; }
+                        .badge-status.logout { background: #fee2e2; color: #991b1b; }
                         .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 10px; }
-                        @media print { body { padding: 20px; } .no-print { display: none; } }
+                        @media print { body { padding: 20px; } }
                     </style>
                 </head>
                 <body>
@@ -2574,7 +2738,7 @@
         }
 
         // ============================================================
-        // 13. عرض الرسائل
+        // 15. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
@@ -2585,7 +2749,7 @@
         }
 
         // ============================================================
-        // 14. المصادقة
+        // 16. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -2601,6 +2765,11 @@
                                     if (settingsBtn) settingsBtn.style.display = 'inline-flex';
                                 }
                                 startListeners();
+
+                                // تسجيل دخول الصفحة
+                                trackActivity('page_enter', {
+                                    description: 'دخول صفحة التقارير'
+                                });
                             } else {
                                 showMsg('غير مصرح بالوصول إلى هذه الصفحة', 'error');
                                 setTimeout(function() { window.location.href = 'home.html'; }, 2000);
@@ -2620,20 +2789,43 @@
 
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
+
+            trackActivity('logout', {
+                description: 'تسجيل خروج من صفحة التقارير'
+            });
+
             auth.signOut().then(function() {
                 window.location.href = 'login.html';
             });
         });
 
         // ============================================================
-        // 15. بدء التشغيل
+        // 17. مراقبة حالة الاتصال (Online/Offline)
+        // ============================================================
+        window.addEventListener('online', function() {
+            trackActivity('reconnect', {
+                description: 'المستخدم عاد متصلاً'
+            });
+            console.log('🟢 المستخدم عاد متصلاً');
+        });
+
+        window.addEventListener('offline', function() {
+            trackActivity('disconnect', {
+                description: 'المستخدم غير متصل'
+            });
+            console.log('🔴 المستخدم غير متصل');
+        });
+
+        // ============================================================
+        // 18. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('صفحة التقارير - جاري التحميل');
-            console.log('تحديث فوري لكل البيانات');
-            console.log('تقارير شاملة للأكاديميات والشهادات والنشاطات والبحث');
-            console.log('رسوم بيانية متعددة');
-            console.log('إمكانية الطباعة');
+            console.log('✅ تحديث فوري لكل البيانات');
+            console.log('✅ تقارير شاملة للأكاديميات والشهادات والنشاطات والبحث');
+            console.log('✅ رسوم بيانية متعددة');
+            console.log('✅ إمكانية الطباعة مع تتبع النشاط');
+            console.log('✅ تتبع جميع حركات المستخدم');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
         });
     </script>
