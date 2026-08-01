@@ -865,7 +865,6 @@
 
         <div id="pageContent" style="display:none;">
 
-            <!-- ===== الإحصائيات ===== -->
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card">
                     <div class="stat-number" id="statTotal">0</div>
@@ -893,7 +892,6 @@
                 </div>
             </div>
 
-            <!-- ===== قسم البحث ===== -->
             <div class="search-section">
                 <form id="searchForm" onsubmit="return applyFilters(event)">
                     <div class="search-grid">
@@ -923,10 +921,8 @@
                 </form>
             </div>
 
-            <!-- ===== المحتوى الرئيسي ===== -->
             <div class="content-grid">
 
-                <!-- ===== قائمة النشاطات ===== -->
                 <div class="card">
                     <div class="card-title">
                         <span>قائمة النشاطات</span>
@@ -942,7 +938,6 @@
                     </div>
                 </div>
 
-                <!-- ===== الجانب الأيمن: الرسوم البيانية ===== -->
                 <div style="display:flex;flex-direction:column;gap:20px;">
 
                     <div class="card">
@@ -1062,6 +1057,8 @@
         };
 
         let isReady = false;
+        let loadedCount = 0;
+        const totalDocs = 3;
 
         // ============================================================
         // 3. إعدادات الـ Listeners
@@ -1070,20 +1067,17 @@
         let designUnsubscribe = null;
         let activitiesUnsubscribe = null;
 
-        function startListeners() {
-            let loadedCount = 0;
-            const totalDocs = 3;
-
-            function checkReady() {
-                loadedCount++;
-                if (loadedCount >= totalDocs && !isReady) {
-                    isReady = true;
-                    document.getElementById('pageContent').style.display = 'block';
-                    document.getElementById('pageLoader').classList.remove('show');
-                    console.log('تم تحميل كل البيانات بنجاح');
-                }
+        function checkReady() {
+            loadedCount++;
+            if (loadedCount >= totalDocs && !isReady) {
+                isReady = true;
+                document.getElementById('pageContent').style.display = 'block';
+                document.getElementById('pageLoader').classList.remove('show');
+                console.log('✅ activities.html جاهزة');
             }
+        }
 
+        function startListeners() {
             document.getElementById('pageContent').style.display = 'none';
             document.getElementById('pageLoader').classList.add('show');
 
@@ -1148,7 +1142,7 @@
         }
 
         // ============================================================
-        // 4. تطبيق الإعدادات
+        // 4. تطبيق الإعدادات والصلاحيات
         // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('headerTitle');
@@ -1591,7 +1585,7 @@
 
             container.innerHTML = pageItems.map(function(item) {
                 const typeInfo = typeLabels[item.type] || { label: item.type || 'نشاط', cls: 'default' };
-                const timeStr = item.timestamp ? formatDate(item.timestamp) : 'الآن';
+                const timeStr = item.timestamp ? formatDateTime(item.timestamp) : 'الآن';
                 const userName = item.userName || 'مستخدم';
 
                 return `
@@ -1620,7 +1614,7 @@
             renderActivities();
         }
 
-        function formatDate(date) {
+        function formatDateTime(date) {
             if (!date) return '-';
             const d = date.toDate ? date.toDate() : new Date(date);
             return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit',
@@ -1639,7 +1633,7 @@
         }
 
         // ============================================================
-        // 10. المصادقة
+        // 10. المصادقة والصلاحيات
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1653,6 +1647,8 @@
                                 const settingsBtn = document.getElementById('settingsBtn');
                                 if (data.role === 'super_admin') {
                                     if (settingsBtn) settingsBtn.style.display = 'inline-flex';
+                                } else {
+                                    if (settingsBtn) settingsBtn.style.display = 'none';
                                 }
                                 startListeners();
                             } else {
@@ -1689,6 +1685,7 @@
             console.log('فلاتر بحث متقدمة');
             console.log('إحصائيات لحظية');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
+            console.log('🔒 صلاحيات: السوبر أدمن فقط يرى زر الإعدادات');
         });
     </script>
 
