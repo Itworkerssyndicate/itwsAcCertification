@@ -35,6 +35,7 @@
     </script>
 
     <style>
+        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -84,6 +85,45 @@
             --radius-lg: 28px;
         }
 
+        /* ===== PAGE LOADER ===== */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            transition: opacity 0.5s ease;
+        }
+
+        #pageLoader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #pageLoader .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #pageLoader p {
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== باقي الـ CSS ===== */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -599,6 +639,11 @@
             font-weight: 400;
         }
 
+        .academy-card .card-body .branch-tags {
+            grid-column: 1 / -1;
+            padding: 4px 0;
+        }
+
         .academy-card .card-footer {
             display: flex;
             justify-content: space-between;
@@ -653,7 +698,7 @@
             font-size: 10px;
             background: var(--bg-hover);
             color: var(--text-muted);
-            padding: 1px 10px;
+            padding: 2px 10px;
             border-radius: 12px;
             display: inline-block;
             margin: 2px 4px 2px 0;
@@ -718,20 +763,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .loader { display: none; text-align: center; padding: 30px 0; }
-        .loader.show { display: block; }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary-color);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 12px;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         .footer {
             text-align: center;
             padding: 20px 0 10px;
@@ -745,6 +776,7 @@
             text-align: center;
             padding: 40px 20px;
             color: var(--text-muted);
+            grid-column: 1 / -1;
         }
 
         .empty-state .icon {
@@ -795,6 +827,12 @@
     </style>
 </head>
 <body>
+
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="pageLoader">
+        <div class="spinner"></div>
+        <p>جاري تحميل الأكاديميات...</p>
+    </div>
 
     <div class="page-bg"></div>
 
@@ -850,11 +888,6 @@
 
         <div class="msg" id="pageMsg"></div>
 
-        <div class="loader" id="pageLoader">
-            <div class="spinner"></div>
-            <div style="color:var(--text-muted);" id="loaderText">جاري تحميل الأكاديميات...</div>
-        </div>
-
         <div id="pageContent" style="display:none;">
 
             <div class="search-section">
@@ -878,6 +911,7 @@
                     <div class="search-actions">
                         <button type="submit" class="btn btn-primary">بحث</button>
                         <button type="button" class="btn btn-outline" onclick="resetFilters()">إعادة تعيين</button>
+                        <button type="button" class="btn btn-success" onclick="window.location.href='academy-add.html'">إضافة أكاديمية</button>
                     </div>
                 </form>
             </div>
@@ -949,9 +983,12 @@
         let currentUser = null;
         let userRole = null;
         let allAcademies = [];
+        let allCertificates = [];
         let filteredAcademies = [];
         let currentPage = 1;
         const itemsPerPage = 9;
+        let isReady = false;
+        let loaderHidden = false;
 
         let settings = {
             headerTitle: 'الأكاديميات المعتمدة',
@@ -965,7 +1002,6 @@
             settingsBtn: 'الإعدادات',
             pageTitleMain: 'الأكاديميات المعتمدة',
             pageSubtitle: 'إدارة وعرض جميع الأكاديميات المعتمدة في النظام',
-            loaderText: 'جاري تحميل الأكاديميات...',
             presidentFooter: 'النقيب العام:',
             colors: {
                 primary: '#C9A84C',
@@ -984,31 +1020,85 @@
             }
         };
 
-        let isReady = false;
-        let loadedCount = 0;
-        const totalDocs = 3;
+        // ============================================================
+        // 3. إخفاء وإظهار المحتوى
+        // ============================================================
+        function hidePageLoader() {
+            if (loaderHidden) return;
+            loaderHidden = true;
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+            document.getElementById('pageContent').style.display = 'block';
+        }
 
         // ============================================================
-        // 3. إعدادات الـ Listeners
+        // 4. تتبع النشاطات (Activity Tracker)
+        // ============================================================
+        function trackActivity(actionType, details = {}) {
+            if (!currentUser) return;
+
+            const activityData = {
+                userId: currentUser.uid,
+                userEmail: currentUser.email || 'unknown',
+                userName: currentUser.displayName || 'مستخدم',
+                userRole: userRole || 'user',
+                type: actionType,
+                page: 'academies',
+                description: details.description || actionType,
+                details: details,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('activities').add(activityData)
+                .then(() => {
+                    console.log('✅ نشاط مسجل:', actionType);
+                })
+                .catch((error) => {
+                    console.warn('❌ خطأ في تسجيل النشاط:', error);
+                });
+        }
+
+        // ============================================================
+        // 5. إعدادات الـ Listeners (مع تحديث فوري)
         // ============================================================
         let generalUnsubscribe = null;
         let designUnsubscribe = null;
         let academiesUnsubscribe = null;
+        let certificatesUnsubscribe = null;
 
-        function checkReady() {
-            loadedCount++;
-            if (loadedCount >= totalDocs && !isReady) {
+        // مهلة زمنية احتياطية 3 ثواني
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                applyColors(settings.colors);
+                applySettings();
+                hidePageLoader();
                 isReady = true;
-                document.getElementById('pageContent').style.display = 'block';
-                document.getElementById('pageLoader').classList.remove('show');
-                console.log('✅ academies.html جاهزة');
             }
-        }
+        }, 3000);
 
         function startListeners() {
-            document.getElementById('pageContent').style.display = 'none';
-            document.getElementById('pageLoader').classList.add('show');
+            let loadedCount = 0;
+            const totalDocs = 4;
 
+            function checkReady() {
+                loadedCount++;
+                if (loadedCount >= totalDocs && !isReady) {
+                    isReady = true;
+                    hidePageLoader();
+                    console.log('✅ academies.html جاهزة');
+                }
+            }
+
+            document.getElementById('pageContent').style.display = 'none';
+            document.getElementById('pageLoader').classList.remove('hidden');
+
+            // General settings
             if (generalUnsubscribe) generalUnsubscribe();
             generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1030,6 +1120,7 @@
                 if (!isReady) checkReady();
             });
 
+            // Design settings
             if (designUnsubscribe) designUnsubscribe();
             designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1046,6 +1137,7 @@
                 if (!isReady) checkReady();
             });
 
+            // Academies (Realtime)
             if (academiesUnsubscribe) academiesUnsubscribe();
             academiesUnsubscribe = db.collection('academies').where('isDeleted', '==', false).onSnapshot(function(snapshot) {
                 allAcademies = [];
@@ -1062,10 +1154,30 @@
                 console.warn('خطأ في الاستماع للأكاديميات:', error);
                 if (!isReady) checkReady();
             });
+
+            // Certificates (لتحديث عدد الشهادات لكل أكاديمية)
+            if (certificatesUnsubscribe) certificatesUnsubscribe();
+            certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
+                allCertificates = [];
+                snapshot.forEach(function(doc) {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allCertificates.push(data);
+                });
+                // إعادة عرض الأكاديميات مع التحديث
+                if (isReady) {
+                    applyFilters();
+                }
+                if (!isReady) checkReady();
+                console.log('تحديث فوري: الشهادات (' + allCertificates.length + ')');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للشهادات:', error);
+                if (!isReady) checkReady();
+            });
         }
 
         // ============================================================
-        // 4. تطبيق الإعدادات
+        // 6. تطبيق الإعدادات والألوان
         // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('headerTitle');
@@ -1081,7 +1193,6 @@
             const roleBadge = document.getElementById('roleBadge');
             const pageTitleMain = document.getElementById('pageTitleMain');
             const pageSubtitle = document.getElementById('pageSubtitle');
-            const loaderText = document.getElementById('loaderText');
 
             if (titleEl) titleEl.textContent = settings.headerTitle;
             if (committeeEl) committeeEl.textContent = settings.committeeName;
@@ -1096,7 +1207,6 @@
             if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
             if (pageTitleMain) pageTitleMain.textContent = settings.pageTitleMain;
             if (pageSubtitle) pageSubtitle.textContent = settings.pageSubtitle;
-            if (loaderText) loaderText.textContent = settings.loaderText;
 
             if (roleBadge) {
                 if (userRole === 'super_admin') {
@@ -1178,7 +1288,7 @@
         }
 
         // ============================================================
-        // 5. دوال البحث والفلترة
+        // 7. دوال البحث والفلترة
         // ============================================================
         function populateGovernorates() {
             const select = document.getElementById('searchGovernorate');
@@ -1215,7 +1325,10 @@
 
             // حساب عدد الشهادات لكل أكاديمية
             const certCounts = {};
-            // سيتم تحديثها من الشهادات لاحقاً
+            allCertificates.forEach(function(c) {
+                const key = c.academyId || c.academyName || 'غير محدد';
+                certCounts[key] = (certCounts[key] || 0) + 1;
+            });
 
             filteredAcademies = allAcademies.filter(function(item) {
                 let match = true;
@@ -1260,12 +1373,20 @@
                 return match;
             });
 
+            // إضافة عدد الشهادات لكل أكاديمية
+            filteredAcademies.forEach(function(item) {
+                item._certCount = certCounts[item.id] || certCounts[item.name] || 0;
+                item._branches = item.branches || [];
+            });
+
             // ترتيب
             filteredAcademies.sort(function(a, b) {
                 if (sortBy === 'name') {
                     return (a.name || '').localeCompare(b.name || '');
                 } else if (sortBy === 'license') {
                     return (a.licenseNumber || '').localeCompare(b.licenseNumber || '');
+                } else if (sortBy === 'certCount') {
+                    return (b._certCount || 0) - (a._certCount || 0);
                 } else if (sortBy === 'createdAt') {
                     const dateA = a.createdAt ? a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt) :
                         new Date(0);
@@ -1279,6 +1400,17 @@
             currentPage = 1;
             renderAcademies();
             updateResultCount();
+
+            // تتبع الفلترة
+            if (nameFilter || licenseFilter || govFilter || statusFilter !== 'all' || taxFilter || phoneFilter) {
+                trackActivity('filter_academies', {
+                    name: nameFilter,
+                    license: licenseFilter,
+                    governorate: govFilter,
+                    status: statusFilter,
+                    results: filteredAcademies.length
+                });
+            }
         }
 
         function resetFilters() {
@@ -1300,7 +1432,7 @@
         }
 
         // ============================================================
-        // 6. عرض الأكاديميات
+        // 8. عرض الأكاديميات
         // ============================================================
         function renderAcademies() {
             const container = document.getElementById('academiesGrid');
@@ -1313,7 +1445,7 @@
 
             if (filteredAcademies.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-state" style="grid-column:1/-1;">
+                    <div class="empty-state">
                         <div class="icon">🏛️</div>
                         <h3>لا توجد أكاديميات</h3>
                         <p>لم يتم العثور على أكاديميات تطابق معايير البحث</p>
@@ -1325,7 +1457,7 @@
                     const statusClass = isActive ? 'active' : 'inactive';
                     const statusText = isActive ? 'نشط' : 'غير نشط';
 
-                    const branches = item.branches || [];
+                    const branches = item._branches || [];
                     const branchNames = branches.map(function(b) {
                         return b.governorate || 'فرع';
                     }).join(', ');
@@ -1352,13 +1484,15 @@
                                     <div class="label">الفروع (${branches.length})</div>
                                     <div class="value small">${branchNames || 'لا توجد فروع'}</div>
                                 </div>
-                                ${branches.length > 0 ? branches.slice(0, 3).map(function(b) {
-                                    return `<span class="branch-tag">${b.governorate || 'فرع'}</span>`;
-                                }).join('') : ''}
-                                ${branches.length > 3 ? `<span class="branch-tag">+${branches.length - 3}</span>` : ''}
+                                <div class="branch-tags">
+                                    ${branches.slice(0, 4).map(function(b) {
+                                        return `<span class="branch-tag">${b.governorate || 'فرع'}</span>`;
+                                    }).join('')}
+                                    ${branches.length > 4 ? `<span class="branch-tag">+${branches.length - 4}</span>` : ''}
+                                </div>
                             </div>
                             <div class="card-footer">
-                                <span class="cert-count">0 شهادة</span>
+                                <span class="cert-count">${item._certCount || 0} شهادة</span>
                                 <div class="actions">
                                     <button class="btn btn-outline btn-sm" onclick="viewAcademy('${item.id}')">عرض</button>
                                     ${userRole === 'super_admin' ? `
@@ -1383,33 +1517,48 @@
             if (newPage < 1 || newPage > totalPages) return;
             currentPage = newPage;
             renderAcademies();
+            trackActivity('page_change_academies', {
+                page: currentPage,
+                total: totalPages
+            });
         }
 
         // ============================================================
-        // 7. دوال الإجراءات
+        // 9. دوال الإجراءات (مع تتبع)
         // ============================================================
         function viewAcademy(id) {
+            trackActivity('view_academy', { academyId: id });
             window.location.href = 'academy-details.html?id=' + id;
         }
 
         function editAcademy(id) {
+            trackActivity('edit_academy', { academyId: id });
             window.location.href = 'academy-edit.html?id=' + id;
         }
 
         function deleteAcademy(id) {
             if (!confirm('هل أنت متأكد من حذف هذه الأكاديمية؟')) return;
+
+            const academy = allAcademies.find(function(a) { return a.id === id; });
+
             db.collection('academies').doc(id).update({
                 isDeleted: true,
                 deletedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(function() {
                 showMsg('تم حذف الأكاديمية بنجاح', 'success');
+
+                trackActivity('delete_academy', {
+                    academyId: id,
+                    academyName: academy ? academy.name : '',
+                    licenseNumber: academy ? academy.licenseNumber : ''
+                });
             }).catch(function(err) {
                 showMsg('حدث خطأ: ' + err.message, 'error');
             });
         }
 
         // ============================================================
-        // 8. عرض الرسائل
+        // 10. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
@@ -1420,7 +1569,7 @@
         }
 
         // ============================================================
-        // 9. المصادقة والصلاحيات
+        // 11. المصادقة والصلاحيات
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1438,6 +1587,11 @@
                                     if (settingsBtn) settingsBtn.style.display = 'none';
                                 }
                                 startListeners();
+
+                                // تسجيل دخول الصفحة
+                                trackActivity('page_enter', {
+                                    description: 'دخول صفحة الأكاديميات'
+                                });
                             } else {
                                 showMsg('غير مصرح بالوصول إلى هذه الصفحة', 'error');
                                 setTimeout(function() { window.location.href = 'home.html'; }, 2000);
@@ -1457,19 +1611,43 @@
 
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
+
+            trackActivity('logout', {
+                description: 'تسجيل خروج من صفحة الأكاديميات'
+            });
+
             auth.signOut().then(function() {
                 window.location.href = 'login.html';
             });
         });
 
         // ============================================================
-        // 10. بدء التشغيل
+        // 12. مراقبة حالة الاتصال (Online/Offline)
+        // ============================================================
+        window.addEventListener('online', function() {
+            trackActivity('reconnect', {
+                description: 'المستخدم عاد متصلاً'
+            });
+            console.log('🟢 المستخدم عاد متصلاً');
+        });
+
+        window.addEventListener('offline', function() {
+            trackActivity('disconnect', {
+                description: 'المستخدم غير متصل'
+            });
+            console.log('🔴 المستخدم غير متصل');
+        });
+
+        // ============================================================
+        // 13. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('صفحة الأكاديميات - جاري التحميل');
-            console.log('تحديث فوري للبيانات');
-            console.log('فلاتر بحث متقدمة');
-            console.log('ترتيب حسب عدة معايير');
+            console.log('✅ تحديث فوري للبيانات');
+            console.log('✅ فلاتر بحث متقدمة');
+            console.log('✅ ترتيب حسب عدة معايير');
+            console.log('✅ حساب عدد الشهادات لكل أكاديمية بشكل حي');
+            console.log('✅ تتبع جميع نشاطات المستخدم');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
             console.log('🔒 صلاحيات: السوبر أدمن فقط يرى أزرار التعديل والحذف');
         });
