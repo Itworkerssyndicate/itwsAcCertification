@@ -164,6 +164,7 @@
             width: 100%;
             box-shadow: var(--shadow);
             animation: fadeUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;
         }
 
         @keyframes fadeUp {
@@ -407,7 +408,7 @@
     </div>
 
     <div class="login-container">
-        <div class="login-card">
+        <div class="login-card" id="loginCard">
             <div class="login-logo" id="loginLogo">ن.ت</div>
             <h1 class="login-title" id="loginTitle">نقابة تكنولوجيا المعلومات والبرمجيات</h1>
             <p class="login-subtitle" id="loginSubtitle">تسجيل الدخول إلى النظام الرسمي</p>
@@ -484,25 +485,103 @@
         };
 
         let isReady = false;
+        let loadedCount = 0;
+        const totalDocs = 2;
 
         // ============================================================
-        // 3. جلب الإعدادات (onSnapshot للتحديث الفوري)
+        // 3. تطبيق الإعدادات
         // ============================================================
-        function loadSettings() {
-            let loadedCount = 0;
-            const totalDocs = 2;
+        function applySettings() {
+            const titleEl = document.getElementById('loginTitle');
+            const logoEl = document.getElementById('loginLogo');
 
-            function checkReady() {
-                loadedCount++;
-                if (loadedCount >= totalDocs && !isReady) {
-                    isReady = true;
-                    document.querySelector('.login-card').style.display = 'block';
-                    console.log('تم تحميل إعدادات تسجيل الدخول');
+            if (titleEl) titleEl.textContent = settings.unionName;
+
+            if (settings.logoUrl) {
+                if (logoEl) {
+                    logoEl.style.backgroundImage = 'url(' + settings.logoUrl + ')';
+                    logoEl.style.backgroundSize = 'cover';
+                    logoEl.style.backgroundPosition = 'center';
+                    logoEl.textContent = '';
+                }
+            } else {
+                if (logoEl) {
+                    logoEl.style.backgroundImage = '';
+                    logoEl.textContent = 'ن.ت';
                 }
             }
 
-            // إخفاء البطاقة مؤقتاً
-            document.querySelector('.login-card').style.display = 'none';
+            const pageTitle = document.getElementById('pageTitle');
+            if (pageTitle) {
+                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات - تسجيل الدخول';
+            }
+
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogImage = document.getElementById('ogImage');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const twitterTitle = document.getElementById('twitterTitle');
+            const twitterDescription = document.getElementById('twitterDescription');
+            const twitterImage = document.getElementById('twitterImage');
+            const favicon = document.getElementById('favicon');
+            const appleIcon = document.getElementById('appleIcon');
+
+            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - تسجيل الدخول';
+            if (ogDescription) ogDescription.content = 'تسجيل الدخول إلى النظام الرسمي للتحقق من صحة الشهادات التدريبية';
+            if (ogUrl) ogUrl.content = window.location.href;
+            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
+            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - تسجيل الدخول';
+            if (twitterDescription) twitterDescription.content = 'تسجيل الدخول إلى النظام الرسمي للتحقق من صحة الشهادات التدريبية';
+
+            if (settings.logoUrl) {
+                if (ogImage) ogImage.content = settings.logoUrl;
+                if (twitterImage) twitterImage.content = settings.logoUrl;
+                if (favicon) favicon.href = settings.logoUrl;
+                if (appleIcon) appleIcon.href = settings.logoUrl;
+            }
+        }
+
+        // ============================================================
+        // 4. تطبيق الألوان
+        // ============================================================
+        function applyColors(colors) {
+            const root = document.documentElement;
+            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
+            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
+            if (colors.background) root.style.setProperty('--bg-color', colors.background);
+            if (colors.text) root.style.setProperty('--text-color', colors.text);
+            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
+            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
+            if (colors.border) root.style.setProperty('--border', colors.border);
+
+            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
+            root.style.setProperty('--primary-glow', primaryGlow);
+            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
+            root.style.setProperty('--accent-glow', accentGlow);
+
+            if (colors.background) {
+                document.body.style.background = colors.background;
+            }
+        }
+
+        // ============================================================
+        // 5. التحقق من الجاهزية
+        // ============================================================
+        function checkReady() {
+            loadedCount++;
+            if (loadedCount >= totalDocs && !isReady) {
+                isReady = true;
+                document.getElementById('loginCard').style.display = 'block';
+                console.log('✅ login.html جاهزة');
+            }
+        }
+
+        // ============================================================
+        // 6. استماع للإعدادات
+        // ============================================================
+        function loadSettings() {
+            document.getElementById('loginCard').style.display = 'none';
 
             db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -537,86 +616,7 @@
         }
 
         // ============================================================
-        // 4. تطبيق الإعدادات
-        // ============================================================
-        function applySettings() {
-            const titleEl = document.getElementById('loginTitle');
-            const logoEl = document.getElementById('loginLogo');
-
-            if (titleEl) titleEl.textContent = settings.unionName;
-
-            if (settings.logoUrl) {
-                if (logoEl) {
-                    logoEl.style.backgroundImage = 'url(' + settings.logoUrl + ')';
-                    logoEl.style.backgroundSize = 'cover';
-                    logoEl.style.backgroundPosition = 'center';
-                    logoEl.textContent = '';
-                }
-            } else {
-                if (logoEl) {
-                    logoEl.style.backgroundImage = '';
-                    logoEl.textContent = 'ن.ت';
-                }
-            }
-
-            // ===== عنوان الصفحة =====
-            const pageTitle = document.getElementById('pageTitle');
-            if (pageTitle) {
-                pageTitle.textContent = 'نقابة تكنولوجيا المعلومات والبرمجيات - تسجيل الدخول';
-            }
-
-            // ===== OG Tags =====
-            const ogTitle = document.getElementById('ogTitle');
-            const ogDescription = document.getElementById('ogDescription');
-            const ogImage = document.getElementById('ogImage');
-            const ogUrl = document.getElementById('ogUrl');
-            const ogSiteName = document.getElementById('ogSiteName');
-            const twitterTitle = document.getElementById('twitterTitle');
-            const twitterDescription = document.getElementById('twitterDescription');
-            const twitterImage = document.getElementById('twitterImage');
-            const favicon = document.getElementById('favicon');
-            const appleIcon = document.getElementById('appleIcon');
-
-            if (ogTitle) ogTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - تسجيل الدخول';
-            if (ogDescription) ogDescription.content = 'تسجيل الدخول إلى النظام الرسمي للتحقق من صحة الشهادات التدريبية';
-            if (ogUrl) ogUrl.content = window.location.href;
-            if (ogSiteName) ogSiteName.content = 'نقابة تكنولوجيا المعلومات والبرمجيات';
-            if (twitterTitle) twitterTitle.content = 'نقابة تكنولوجيا المعلومات والبرمجيات - تسجيل الدخول';
-            if (twitterDescription) twitterDescription.content = 'تسجيل الدخول إلى النظام الرسمي للتحقق من صحة الشهادات التدريبية';
-
-            if (settings.logoUrl) {
-                if (ogImage) ogImage.content = settings.logoUrl;
-                if (twitterImage) twitterImage.content = settings.logoUrl;
-                if (favicon) favicon.href = settings.logoUrl;
-                if (appleIcon) appleIcon.href = settings.logoUrl;
-            }
-        }
-
-        // ============================================================
-        // 5. تطبيق الألوان
-        // ============================================================
-        function applyColors(colors) {
-            const root = document.documentElement;
-            if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
-            if (colors.accent) root.style.setProperty('--accent-color', colors.accent);
-            if (colors.background) root.style.setProperty('--bg-color', colors.background);
-            if (colors.text) root.style.setProperty('--text-color', colors.text);
-            if (colors.textMuted) root.style.setProperty('--text-muted', colors.textMuted);
-            if (colors.textSecondary) root.style.setProperty('--text-secondary', colors.textSecondary);
-            if (colors.border) root.style.setProperty('--border', colors.border);
-
-            const primaryGlow = colors.primary ? colors.primary + '30' : 'rgba(201,168,76,0.3)';
-            root.style.setProperty('--primary-glow', primaryGlow);
-            const accentGlow = colors.accent ? colors.accent + '20' : 'rgba(124,58,237,0.2)';
-            root.style.setProperty('--accent-glow', accentGlow);
-
-            if (colors.background) {
-                document.body.style.background = colors.background;
-            }
-        }
-
-        // ============================================================
-        // 6. عرض الرسائل
+        // 7. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('loginMsg');
@@ -632,7 +632,7 @@
         }
 
         // ============================================================
-        // 7. معالجة تسجيل الدخول
+        // 8. معالجة تسجيل الدخول
         // ============================================================
         function handleLogin(e) {
             e.preventDefault();
@@ -662,7 +662,7 @@
                                 // تسجيل نشاط الدخول
                                 db.collection('activities').add({
                                     type: 'login',
-                                    userName: data.fullName || data.name || 'مستخدم',
+                                    userName: data.name || data.fullName || 'مستخدم',
                                     userId: user.uid,
                                     description: 'تسجيل دخول',
                                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -706,17 +706,16 @@
         }
 
         // ============================================================
-        // 8. التحقق من حالة المستخدم
+        // 9. التحقق من حالة المستخدم
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
-                // مستخدم مسجل دخول بالفعل، توجيه للوحة التحكم
                 window.location.href = 'dashboard.html';
             }
         });
 
         // ============================================================
-        // 9. بدء التشغيل
+        // 10. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('شاشة تسجيل الدخول - التحميل المسبق للإعدادات');
