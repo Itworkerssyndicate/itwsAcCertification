@@ -25,6 +25,7 @@
     <!-- Icons -->
     <link rel="icon" id="favicon" href="" />
     <link rel="apple-touch-icon" id="appleIcon" href="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js">
@@ -35,7 +36,6 @@
     </script>
 
     <style>
-        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -123,7 +123,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ===== باقي الـ CSS ===== */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -383,7 +382,7 @@
 
         .btn {
             padding: 8px 20px;
-            border-radius: 30px;
+            border-radius: 12px;
             border: none;
             font-weight: 700;
             font-size: 13px;
@@ -391,12 +390,22 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             text-decoration: none;
             white-space: nowrap;
             font-family: inherit;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn i {
+            font-size: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover i {
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .btn::before {
@@ -422,27 +431,38 @@
         .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px var(--primary-glow); }
 
         .btn-outline {
-            background: transparent;
+            background: rgba(255,255,255,0.05);
             border: 2px solid var(--border);
             color: var(--text-secondary);
+            backdrop-filter: blur(10px);
         }
-        .btn-outline:hover { background: var(--bg-hover); border-color: var(--primary-color); transform: translateY(-3px); }
+        .btn-outline:hover { 
+            background: var(--bg-hover); 
+            border-color: var(--primary-color); 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--primary-glow);
+        }
 
         .btn-success {
             background: linear-gradient(135deg, var(--success), #059669);
             color: #fff;
             box-shadow: 0 4px 25px rgba(16,185,129,0.25);
         }
-        .btn-success:hover { transform: translateY(-3px) scale(1.02); }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px rgba(16,185,129,0.35); }
 
         .btn-danger {
             background: linear-gradient(135deg, var(--error), #dc2626);
             color: #fff;
             box-shadow: 0 4px 25px rgba(239,68,68,0.25);
         }
-        .btn-danger:hover { transform: translateY(-3px) scale(1.02); }
+        .btn-danger:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 40px rgba(239,68,68,0.35); }
 
-        .btn-sm { padding: 5px 14px; font-size: 12px; }
+        .btn-sm { 
+            padding: 5px 14px; 
+            font-size: 12px; 
+            border-radius: 10px;
+        }
+        .btn-sm i { font-size: 12px; }
 
         .role-badge {
             font-size: 11px;
@@ -556,12 +576,32 @@
             padding: 14px 16px;
             transition: all 0.4s ease;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, var(--primary-glow), transparent 50%);
+            pointer-events: none;
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
             border-color: var(--primary-color);
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+            opacity: 0.7;
         }
 
         .stat-card .stat-number {
@@ -582,17 +622,17 @@
 
         .stat-card .stat-online {
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: var(--success);
             animation: pulse 1.5s ease-in-out infinite;
-            margin-right: 4px;
+            margin-left: 4px;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
         }
 
         .users-grid {
@@ -644,6 +684,9 @@
             font-size: 16px;
             font-weight: 700;
             color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .user-card .user-header .user-role {
@@ -722,7 +765,7 @@
         .user-card .user-footer .actions .btn {
             padding: 3px 10px;
             font-size: 11px;
-            border-radius: 20px;
+            border-radius: 8px;
         }
 
         .pagination {
@@ -799,21 +842,9 @@
             grid-column: 1 / -1;
         }
 
-        .empty-state .icon {
-            font-size: 40px;
-            margin-bottom: 8px;
-            opacity: 0.3;
-        }
-
-        .empty-state h3 {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .empty-state p {
-            font-size: 13px;
-        }
+        .empty-state .icon { font-size: 40px; margin-bottom: 8px; opacity: 0.3; }
+        .empty-state h3 { font-size: 16px; color: var(--text-secondary); }
+        .empty-state p { font-size: 13px; }
 
         .modal-overlay {
             display: none;
@@ -827,9 +858,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal-content {
             background: var(--card-bg);
@@ -929,10 +958,6 @@
             color: var(--text-color);
         }
 
-        .form-group input::placeholder {
-            color: var(--text-muted);
-        }
-
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -947,10 +972,7 @@
             border-top: 1px solid var(--border);
         }
 
-        .form-actions .btn {
-            flex: 1;
-            justify-content: center;
-        }
+        .form-actions .btn { flex: 1; justify-content: center; }
 
         @media (max-width: 768px) {
             .header { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; border-radius: 20px; }
@@ -976,6 +998,7 @@
         @media (max-width: 480px) {
             .header-title h1 { font-size: 15px; }
             .btn { padding: 6px 14px; font-size: 11px; }
+            .btn i { font-size: 12px; }
             .logo-box { width: 36px; height: 36px; font-size: 14px; }
             .page-title-section h1 { font-size: 20px; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -1036,9 +1059,15 @@
             </div>
             <div class="header-right">
                 <span class="role-badge" id="roleBadge"></span>
-                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn">لوحة التحكم</a>
-                <a href="settings.html" class="btn btn-primary btn-sm" id="settingsBtn" style="display:none;">الإعدادات</a>
-                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">تسجيل الخروج</a>
+                <a href="dashboard.html" class="btn btn-outline btn-sm" id="dashboardBtn">
+                    <i class="fas fa-arrow-right"></i> لوحة التحكم
+                </a>
+                <a href="settings.html" class="btn btn-outline btn-sm" id="settingsBtn" style="display:none;">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <a href="#" class="btn btn-outline btn-sm" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </a>
             </div>
         </header>
 
@@ -1053,20 +1082,24 @@
 
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-users"></i></span>
                     <div class="stat-number" id="statTotal">0</div>
                     <div class="stat-label">إجمالي المستخدمين</div>
                 </div>
                 <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-circle" style="color:var(--success);font-size:14px;"></i></span>
                     <div class="stat-number" id="statOnline">
                         <span class="stat-online"></span> 0
                     </div>
                     <div class="stat-label">متصل الآن</div>
                 </div>
                 <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-shield-alt"></i></span>
                     <div class="stat-number" id="statAdmins">0</div>
                     <div class="stat-label">المشرفين</div>
                 </div>
                 <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-calendar-day"></i></span>
                     <div class="stat-number" id="statActive">0</div>
                     <div class="stat-label">نشط اليوم</div>
                 </div>
@@ -1093,15 +1126,18 @@
                         </select>
                     </div>
                     <div class="search-actions">
-                        <button type="submit" class="btn btn-primary">بحث</button>
-                        <button type="button" class="btn btn-outline" onclick="resetFilters()">إعادة تعيين</button>
-                        <button type="button" class="btn btn-success" onclick="openAddModal()">إضافة مستخدم</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> بحث</button>
+                        <button type="button" class="btn btn-outline" onclick="resetFilters()"><i class="fas fa-undo"></i> إعادة تعيين</button>
+                        <button type="button" class="btn btn-success" onclick="openAddModal()"><i class="fas fa-user-plus"></i> إضافة مستخدم</button>
                     </div>
                 </form>
             </div>
 
             <div class="users-grid" id="usersGrid">
-                <div style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:14px;grid-column:1/-1;">جاري تحميل المستخدمين...</div>
+                <div style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:14px;grid-column:1/-1;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:24px;display:block;margin-bottom:12px;"></i>
+                    جاري تحميل المستخدمين...
+                </div>
             </div>
 
             <div class="pagination" id="pagination">
@@ -1126,26 +1162,26 @@
     <div class="modal-overlay" id="userModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">إضافة مستخدم جديد</h2>
-                <button class="close-btn" onclick="closeModal()">✕</button>
+                <h2 id="modalTitle"><i class="fas fa-user-plus"></i> إضافة مستخدم جديد</h2>
+                <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
             </div>
             <form id="userForm" onsubmit="return saveUser(event)">
                 <input type="hidden" id="editUserId" value="" />
                 <div class="form-group">
-                    <label>الاسم الكامل</label>
+                    <label><i class="fas fa-user"></i> الاسم الكامل</label>
                     <input type="text" id="userName" required placeholder="أدخل الاسم الكامل" />
                 </div>
                 <div class="form-group">
-                    <label>البريد الإلكتروني</label>
+                    <label><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
                     <input type="email" id="userEmail" required placeholder="example@domain.com" />
                 </div>
                 <div class="form-group" id="passwordGroup">
-                    <label>كلمة المرور</label>
+                    <label><i class="fas fa-lock"></i> كلمة المرور</label>
                     <input type="text" id="userPassword" placeholder="أدخل كلمة المرور (8 أحرف على الأقل)" />
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>الصلاحية</label>
+                        <label><i class="fas fa-user-tag"></i> الصلاحية</label>
                         <select id="userRole">
                             <option value="user">مستخدم</option>
                             <option value="committee_manager">إدارة اللجنة</option>
@@ -1154,7 +1190,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>الحالة</label>
+                        <label><i class="fas fa-toggle-on"></i> الحالة</label>
                         <select id="userStatus">
                             <option value="true">نشط</option>
                             <option value="false">غير نشط</option>
@@ -1162,8 +1198,8 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" id="saveBtn">حفظ</button>
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn"><i class="fas fa-save"></i> حفظ</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal()"><i class="fas fa-times"></i> إلغاء</button>
                 </div>
             </form>
         </div>
@@ -1215,12 +1251,9 @@
             footerText: '© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة',
             presidentName: 'المهندس / محمود جميل',
             presidentLabel: 'النقيب العام:',
-            dashboardBtn: 'لوحة التحكم',
-            logoutBtn: 'تسجيل الخروج',
-            settingsBtn: 'الإعدادات',
+            presidentFooter: 'النقيب العام:',
             pageTitleMain: 'إدارة المستخدمين',
             pageSubtitle: 'مراقبة المستخدمين، حالتهم، أوقات الجلسات، والتحكم في صلاحياتهم',
-            presidentFooter: 'النقيب العام:',
             colors: {
                 primary: '#C9A84C',
                 accent: '#7C3AED',
@@ -1255,7 +1288,20 @@
         }
 
         // ============================================================
-        // 4. تتبع النشاطات (Activity Tracker)
+        // 4. مهلة زمنية احتياطية 3 ثواني
+        // ============================================================
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                applyColors(settings.colors);
+                applySettings();
+                hidePageLoader();
+                isReady = true;
+            }
+        }, 3000);
+
+        // ============================================================
+        // 5. تتبع النشاطات
         // ============================================================
         function trackActivity(actionType, details = {}) {
             if (!currentUser) return;
@@ -1273,32 +1319,17 @@
             };
 
             db.collection('activities').add(activityData)
-                .then(() => {
-                    console.log('✅ نشاط مسجل:', actionType);
-                })
-                .catch((error) => {
-                    console.warn('❌ خطأ في تسجيل النشاط:', error);
-                });
+                .then(() => console.log('✅ نشاط مسجل:', actionType))
+                .catch((error) => console.warn('❌ خطأ في تسجيل النشاط:', error));
         }
 
         // ============================================================
-        // 5. إعدادات الـ Listeners (مع تحديث فوري)
+        // 6. إعدادات الـ Listeners
         // ============================================================
         let generalUnsubscribe = null;
         let designUnsubscribe = null;
         let usersUnsubscribe = null;
         let sessionsUnsubscribe = null;
-
-        // مهلة زمنية احتياطية 3 ثواني
-        setTimeout(function() {
-            if (!isReady) {
-                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
-                applyColors(settings.colors);
-                applySettings();
-                hidePageLoader();
-                isReady = true;
-            }
-        }, 3000);
 
         function startListeners() {
             let loadedCount = 0;
@@ -1355,7 +1386,7 @@
                 if (!isReady) checkReady();
             });
 
-            // Users (Realtime)
+            // Users
             if (usersUnsubscribe) usersUnsubscribe();
             usersUnsubscribe = db.collection('users').where('isActive', '!=', false).onSnapshot(function(snapshot) {
                 allUsers = [];
@@ -1373,7 +1404,7 @@
                 if (!isReady) checkReady();
             });
 
-            // Sessions (Realtime)
+            // Sessions - Online users
             if (sessionsUnsubscribe) sessionsUnsubscribe();
             sessionsUnsubscribe = db.collection('sessions').where('isOnline', '==', true).onSnapshot(function(snapshot) {
                 onlineUsers = {};
@@ -1382,21 +1413,25 @@
                     if (data.userId) {
                         onlineUsers[data.userId] = {
                             sessionId: doc.id,
-                            startedAt: data.loginTime || data.startedAt,
-                            lastActivity: data.lastActivity || data.loginTime || data.startedAt
+                            loginTime: data.loginTime || data.startedAt,
+                            lastActivity: data.lastActivity || data.loginTime || data.startedAt,
+                            userName: data.userName || 'مستخدم',
+                            userEmail: data.userEmail || ''
                         };
                     }
                 });
                 applyFilters();
                 updateStats();
+                if (!isReady) checkReady();
                 console.log('تحديث فوري: الجلسات النشطة (' + Object.keys(onlineUsers).length + ')');
             }, function(error) {
                 console.warn('خطأ في الاستماع للجلسات:', error);
+                if (!isReady) checkReady();
             });
         }
 
         // ============================================================
-        // 6. تطبيق الإعدادات والألوان
+        // 7. تطبيق الإعدادات
         // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('headerTitle');
@@ -1421,9 +1456,10 @@
             if (presidentFooterEl) presidentFooterEl.textContent = settings.presidentFooter;
             if (presidentNameFooterEl) presidentNameFooterEl.textContent = settings.presidentName;
 
-            if (dashboardBtn) dashboardBtn.textContent = settings.dashboardBtn;
-            if (logoutBtn) logoutBtn.textContent = settings.logoutBtn;
-            if (settingsBtn) settingsBtn.textContent = settings.settingsBtn;
+            if (dashboardBtn) dashboardBtn.innerHTML = '<i class="fas fa-arrow-right"></i> لوحة التحكم';
+            if (logoutBtn) logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> تسجيل الخروج';
+            if (settingsBtn) settingsBtn.innerHTML = '<i class="fas fa-cog"></i>';
+
             if (pageTitleMain) pageTitleMain.textContent = settings.pageTitleMain;
             if (pageSubtitle) pageSubtitle.textContent = settings.pageSubtitle;
 
@@ -1507,7 +1543,7 @@
         }
 
         // ============================================================
-        // 7. دوال البحث والفلترة
+        // 8. دوال البحث والفلترة
         // ============================================================
         function applyFilters(e) {
             if (e) e.preventDefault();
@@ -1544,7 +1580,6 @@
             renderUsers();
             updateStats();
 
-            // تتبع الفلترة
             if (nameFilter || emailFilter || roleFilter || statusFilter !== 'all') {
                 trackActivity('filter_users', {
                     name: nameFilter,
@@ -1568,7 +1603,9 @@
         function updateStats() {
             const total = allUsers.length;
             const online = Object.keys(onlineUsers).length;
-            const admins = allUsers.filter(function(u) { return u.role === 'super_admin' || u.role === 'admin'; }).length;
+            const admins = allUsers.filter(function(u) {
+                return u.role === 'super_admin' || u.role === 'admin';
+            }).length;
 
             const today = new Date();
             today.setHours(today.getHours() - 24);
@@ -1589,7 +1626,7 @@
         }
 
         // ============================================================
-        // 8. عرض المستخدمين
+        // 9. عرض المستخدمين
         // ============================================================
         function renderUsers() {
             const container = document.getElementById('usersGrid');
@@ -1601,7 +1638,7 @@
             if (filteredUsers.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="icon">👤</div>
+                        <div class="icon"><i class="fas fa-users-slash"></i></div>
                         <h3>لا يوجد مستخدمين</h3>
                         <p>لم يتم العثور على مستخدمين تطابق معايير البحث</p>
                     </div>
@@ -1621,13 +1658,19 @@
                     'committee_manager': 'إدارة اللجنة',
                     'user': 'مستخدم'
                 };
+                const roleIcons = {
+                    'super_admin': 'fa-crown',
+                    'admin': 'fa-shield-alt',
+                    'committee_manager': 'fa-users-cog',
+                    'user': 'fa-user'
+                };
 
                 let sessionTime = 'غير متصل';
                 if (isOnline) {
                     const session = onlineUsers[item.id];
-                    if (session.startedAt) {
-                        const startTime = session.startedAt.toDate ? session.startedAt.toDate() : new Date(session
-                            .startedAt);
+                    if (session.loginTime) {
+                        const startTime = session.loginTime.toDate ? session.loginTime.toDate() : new Date(session
+                            .loginTime);
                         const now = new Date();
                         const diff = Math.floor((now - startTime) / 1000 / 60);
                         if (diff < 60) {
@@ -1647,46 +1690,47 @@
                 return `
                     <div class="user-card">
                         <div class="user-header">
-                            <div>
-                                <div class="user-name">${item.name || item.fullName || 'مستخدم'}</div>
-                                <span class="user-role ${roleClass}">${roleLabels[roleClass] || roleClass}</span>
+                            <div class="user-name">
+                                <i class="fas ${roleIcons[roleClass] || 'fa-user'}" style="color:var(--primary-color);font-size:14px;"></i>
+                                ${item.name || item.fullName || 'مستخدم'}
                             </div>
                             <div>
-                                <span class="user-role" style="background:${isOnline ? 'var(--success-bg)' : 'var(--bg-hover)'};color:${isOnline ? 'var(--success)' : 'var(--text-muted)'}">
-                                    ${isOnline ? '🟢 متصل' : '🔴 غير متصل'}
+                                <span class="user-role ${roleClass}">${roleLabels[roleClass] || roleClass}</span>
+                                <span class="user-role" style="background:${isOnline ? 'var(--success-bg)' : 'var(--bg-hover)'};color:${isOnline ? 'var(--success)' : 'var(--text-muted)'};margin-right:4px;">
+                                    ${isOnline ? '<i class="fas fa-circle" style="color:var(--success);font-size:10px;"></i> متصل' : '<i class="fas fa-circle" style="color:var(--text-dim);font-size:10px;"></i> غير متصل'}
                                 </span>
                             </div>
                         </div>
                         <div class="user-body">
                             <div class="info-item">
-                                <div class="label">البريد الإلكتروني</div>
+                                <div class="label"><i class="fas fa-envelope"></i> البريد الإلكتروني</div>
                                 <div class="value" style="font-size:12px;color:var(--text-muted);">${item.email || '-'}</div>
                             </div>
                             <div class="info-item">
-                                <div class="label">آخر ظهور</div>
+                                <div class="label"><i class="fas fa-clock"></i> آخر ظهور</div>
                                 <div class="value" style="font-size:12px;color:var(--text-muted);">${lastSeen}</div>
                             </div>
                             <div class="info-item">
-                                <div class="label">مدة الجلسة الحالية</div>
+                                <div class="label"><i class="fas fa-hourglass-half"></i> مدة الجلسة</div>
                                 <div class="value" style="font-size:12px;color:var(--text-muted);">${sessionTime}</div>
                             </div>
                             <div class="info-item">
-                                <div class="label">الحالة</div>
+                                <div class="label"><i class="fas fa-toggle-on"></i> الحالة</div>
                                 <div class="value" style="font-size:12px;">
                                     ${item.isActive !== false ? 
-                                        '<span style="color:var(--success);">نشط</span>' : 
-                                        '<span style="color:var(--error);">غير نشط</span>'}
+                                        '<span style="color:var(--success);"><i class="fas fa-check-circle"></i> نشط</span>' : 
+                                        '<span style="color:var(--error);"><i class="fas fa-times-circle"></i> غير نشط</span>'}
                                 </div>
                             </div>
                         </div>
                         <div class="user-footer">
                             <div class="session-time">
-                                ${isOnline ? '🟢 متصل الآن' : 'آخر نشاط: ' + lastSeen}
+                                ${isOnline ? '<i class="fas fa-circle" style="color:var(--success);font-size:10px;"></i> متصل الآن' : '<i class="fas fa-clock" style="color:var(--text-dim);font-size:10px;"></i> آخر نشاط: ' + lastSeen}
                             </div>
                             <div class="actions">
                                 ${userRole === 'super_admin' ? `
-                                <button class="btn btn-primary btn-sm" onclick="editUser('${item.id}')">تعديل</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteUser('${item.id}')">حذف</button>
+                                <button class="btn btn-primary btn-sm" onclick="editUser('${item.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser('${item.id}')"><i class="fas fa-trash"></i></button>
                                 ` : ''}
                             </div>
                         </div>
@@ -1719,14 +1763,14 @@
         }
 
         // ============================================================
-        // 9. إدارة المستخدمين
+        // 10. إدارة المستخدمين
         // ============================================================
         function openAddModal() {
             if (userRole !== 'super_admin') {
                 showMsg('غير مصرح لك بإضافة مستخدمين', 'error');
                 return;
             }
-            document.getElementById('modalTitle').textContent = 'إضافة مستخدم جديد';
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus"></i> إضافة مستخدم جديد';
             document.getElementById('editUserId').value = '';
             document.getElementById('userName').value = '';
             document.getElementById('userEmail').value = '';
@@ -1735,7 +1779,7 @@
             document.getElementById('passwordGroup').style.display = 'block';
             document.getElementById('userRole').value = 'user';
             document.getElementById('userStatus').value = 'true';
-            document.getElementById('saveBtn').textContent = 'إضافة';
+            document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> إضافة';
             document.getElementById('userModal').classList.add('active');
 
             trackActivity('open_add_user_modal', {});
@@ -1752,7 +1796,7 @@
                 return;
             }
 
-            document.getElementById('modalTitle').textContent = 'تعديل مستخدم';
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-edit"></i> تعديل مستخدم';
             document.getElementById('editUserId').value = id;
             document.getElementById('userName').value = user.name || user.fullName || '';
             document.getElementById('userEmail').value = user.email || '';
@@ -1761,7 +1805,7 @@
             document.getElementById('passwordGroup').style.display = 'block';
             document.getElementById('userRole').value = user.role || 'user';
             document.getElementById('userStatus').value = user.isActive !== false ? 'true' : 'false';
-            document.getElementById('saveBtn').textContent = 'تحديث';
+            document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> تحديث';
             document.getElementById('userModal').classList.add('active');
 
             trackActivity('open_edit_user_modal', { userId: id });
@@ -1892,7 +1936,7 @@
         }
 
         // ============================================================
-        // 10. عرض الرسائل
+        // 11. عرض الرسائل
         // ============================================================
         function showMsg(msg, type) {
             const el = document.getElementById('pageMsg');
@@ -1903,7 +1947,7 @@
         }
 
         // ============================================================
-        // 11. المصادقة
+        // 12. المصادقة
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1918,7 +1962,6 @@
                                 if (settingsBtn) settingsBtn.style.display = 'inline-flex';
                                 startListeners();
 
-                                // تسجيل دخول الصفحة
                                 trackActivity('page_enter', {
                                     description: 'دخول صفحة المستخدمين'
                                 });
@@ -1952,24 +1995,20 @@
         });
 
         // ============================================================
-        // 12. مراقبة حالة الاتصال (Online/Offline)
+        // 13. مراقبة حالة الاتصال
         // ============================================================
         window.addEventListener('online', function() {
-            trackActivity('reconnect', {
-                description: 'المستخدم عاد متصلاً'
-            });
+            trackActivity('reconnect', { description: 'المستخدم عاد متصلاً' });
             console.log('🟢 المستخدم عاد متصلاً');
         });
 
         window.addEventListener('offline', function() {
-            trackActivity('disconnect', {
-                description: 'المستخدم غير متصل'
-            });
+            trackActivity('disconnect', { description: 'المستخدم غير متصل' });
             console.log('🔴 المستخدم غير متصل');
         });
 
         // ============================================================
-        // 13. بدء التشغيل
+        // 14. بدء التشغيل
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('صفحة المستخدمين - جاري التحميل');
