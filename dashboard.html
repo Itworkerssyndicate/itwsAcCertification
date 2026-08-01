@@ -682,7 +682,7 @@
     <div class="glow-orb"></div>
     <div class="glow-orb"></div>
 
-    <div class="dashboard-container">
+    <div class="dashboard-container" id="dashboardContainer">
 
         <header class="header">
             <div class="header-left">
@@ -910,6 +910,8 @@
         let allStudents = [];
         let allActivities = [];
         let isReady = false;
+        let loadedCount = 0;
+        const totalDocs = 5;
 
         // ============================================================
         // 3. إعدادات الـ Listeners (التحديث الفوري)
@@ -920,20 +922,17 @@
         let academiesUnsubscribe = null;
         let activitiesUnsubscribe = null;
 
-        function startListeners() {
-            let loadedCount = 0;
-            const totalDocs = 5;
-
-            function checkReady() {
-                loadedCount++;
-                if (loadedCount >= totalDocs && !isReady) {
-                    isReady = true;
-                    document.getElementById('dashboardContent').style.display = 'block';
-                    document.getElementById('dashboardLoader').classList.remove('show');
-                    console.log('تم تحميل كل البيانات بنجاح');
-                }
+        function checkReady() {
+            loadedCount++;
+            if (loadedCount >= totalDocs && !isReady) {
+                isReady = true;
+                document.getElementById('dashboardContent').style.display = 'block';
+                document.getElementById('dashboardLoader').classList.remove('show');
+                console.log('✅ dashboard.html جاهزة');
             }
+        }
 
+        function startListeners() {
             document.getElementById('dashboardContent').style.display = 'none';
             document.getElementById('dashboardLoader').classList.add('show');
 
@@ -1359,7 +1358,7 @@
         }
 
         // ============================================================
-        // 10. المصادقة
+        // 10. المصادقة والصلاحيات
         // ============================================================
         auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -1376,11 +1375,18 @@
                                 const usersBtn = document.getElementById('usersBtn');
                                 const usersQuick = document.getElementById('quickUsers');
 
+                                // صلاحيات السوبر أدمن فقط
                                 if (data.role === 'super_admin') {
                                     if (settingsBtn) settingsBtn.style.display = 'inline-flex';
                                     if (settingsQuick) settingsQuick.style.display = 'flex';
                                     if (usersBtn) usersBtn.style.display = 'inline-flex';
                                     if (usersQuick) usersQuick.style.display = 'flex';
+                                } else {
+                                    // إخفاء الإعدادات والمستخدمين عن غير السوبر أدمن
+                                    if (settingsBtn) settingsBtn.style.display = 'none';
+                                    if (settingsQuick) settingsQuick.style.display = 'none';
+                                    if (usersBtn) usersBtn.style.display = 'none';
+                                    if (usersQuick) usersQuick.style.display = 'none';
                                 }
 
                                 startListeners();
@@ -1428,6 +1434,7 @@
             console.log('ترتيب الأكاديميات والمتدربين تلقائياً');
             console.log('ممنوع الإيموجي والعلامات');
             console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
+            console.log('🔒 صلاحيات: السوبر أدمن فقط يرى الإعدادات والمستخدمين');
         });
     </script>
 
