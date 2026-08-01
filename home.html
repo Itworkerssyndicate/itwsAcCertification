@@ -39,6 +39,7 @@
     </script>
 
     <style>
+        /* ===== كل الـ CSS زي ما هو ===== */
         * {
             margin: 0;
             padding: 0;
@@ -88,6 +89,7 @@
             --radius-lg: 28px;
         }
 
+        /* ===== باقي الـ CSS ===== */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -224,8 +226,10 @@
             max-width: 1300px;
             margin: 0 auto;
             padding: 20px;
+            display: none;
         }
 
+        /* ===== باقي الـ CSS للعناصر ===== */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -858,8 +862,16 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .loader { display: none; text-align: center; padding: 30px 0; }
-        .loader.show { display: block; }
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
         .spinner {
             width: 44px;
             height: 44px;
@@ -870,7 +882,11 @@
             margin: 0 auto 12px;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .services-btn-container {
             text-align: center;
@@ -942,7 +958,9 @@
             animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .academies-modal.active { display: flex; }
+        .academies-modal.active {
+            display: flex;
+        }
 
         @keyframes modalIn {
             0% { opacity: 0; transform: scale(0.95); }
@@ -965,9 +983,17 @@
             animation: modalContent 0.5s ease;
         }
 
-        .academies-modal .modal-content::-webkit-scrollbar { width: 6px; }
-        .academies-modal .modal-content::-webkit-scrollbar-track { background: var(--bg-hover); border-radius: 10px; }
-        .academies-modal .modal-content::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 10px; }
+        .academies-modal .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .academies-modal .modal-content::-webkit-scrollbar-track {
+            background: var(--bg-hover);
+            border-radius: 10px;
+        }
+        .academies-modal .modal-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 10px;
+        }
 
         .academies-modal .modal-header {
             display: flex;
@@ -1224,64 +1250,208 @@
         }
 
         @media (max-width: 768px) {
-            .header { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 18px; border-radius: 20px; }
-            .header-right { justify-content: center; flex-wrap: wrap; }
-            .header-left { justify-content: center; flex-wrap: wrap; }
-            .hero-title { font-size: 28px; }
-            .hero-subtitle { font-size: 15px; }
-            .search-row { flex-direction: column; }
-            .search-row input { min-width: unset; }
-            .cert-grid { grid-template-columns: 1fr; }
-            .tabs { flex-direction: column; max-width: 100%; border-radius: var(--radius-sm); }
-            .tab-btn { border-radius: 10px; min-width: unset; }
-            .services-btn { width: 100%; justify-content: center; }
-            .search-card { padding: 20px; }
-            .certificate-card { padding: 20px; }
-            .academy-card { padding: 20px; }
-            .info-box { padding: 14px 18px; }
-            .info-box p { font-size: 14px; }
-            .glow-orb { display: none; }
-            .ring { display: none; }
-            .cert-actions { flex-direction: column; }
-            .cert-actions .btn { width: 100%; }
-            .cert-header { flex-direction: column; }
-            .branch-grid { grid-template-columns: 1fr; }
-            .main-container { padding: 12px; }
-            .student-cert-item { flex-direction: column; align-items: flex-start; }
-            .student-cert-item .cert-actions-sm { width: 100%; justify-content: flex-start; }
-            .academies-modal .modal-content { padding: 20px; margin: 10px; border-radius: 20px; max-height: 90vh; }
-            .academies-modal .academy-item { flex-direction: column; align-items: flex-start; }
-            .academies-modal .modal-header h2 { font-size: 18px; }
-            .academies-modal .pagination button { padding: 6px 16px; font-size: 12px; }
-            .header-president { padding: 3px 10px; }
-            .header-president .president-name { font-size: 12px; }
-            .theme-toggle-btn { width: 40px; height: 40px; font-size: 16px; bottom: 16px; left: 16px; }
-            .theme-modal .modal-content { padding: 20px; margin: 10px; }
-            .theme-grid { grid-template-columns: 1fr 1fr; }
-            .theme-btn { padding: 10px 8px; font-size: 12px; }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 14px 18px;
+                border-radius: 20px;
+            }
+            .header-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .header-left {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .hero-title {
+                font-size: 28px;
+            }
+            .hero-subtitle {
+                font-size: 15px;
+            }
+            .search-row {
+                flex-direction: column;
+            }
+            .search-row input {
+                min-width: unset;
+            }
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+            .tabs {
+                flex-direction: column;
+                max-width: 100%;
+                border-radius: var(--radius-sm);
+            }
+            .tab-btn {
+                border-radius: 10px;
+                min-width: unset;
+            }
+            .services-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .search-card {
+                padding: 20px;
+            }
+            .certificate-card {
+                padding: 20px;
+            }
+            .academy-card {
+                padding: 20px;
+            }
+            .info-box {
+                padding: 14px 18px;
+            }
+            .info-box p {
+                font-size: 14px;
+            }
+            .glow-orb {
+                display: none;
+            }
+            .ring {
+                display: none;
+            }
+            .cert-actions {
+                flex-direction: column;
+            }
+            .cert-actions .btn {
+                width: 100%;
+            }
+            .cert-header {
+                flex-direction: column;
+            }
+            .branch-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-container {
+                padding: 12px;
+            }
+            .student-cert-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .student-cert-item .cert-actions-sm {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .academies-modal .modal-content {
+                padding: 20px;
+                margin: 10px;
+                border-radius: 20px;
+                max-height: 90vh;
+            }
+            .academies-modal .academy-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .academies-modal .modal-header h2 {
+                font-size: 18px;
+            }
+            .academies-modal .pagination button {
+                padding: 6px 16px;
+                font-size: 12px;
+            }
+            .header-president {
+                padding: 3px 10px;
+            }
+            .header-president .president-name {
+                font-size: 12px;
+            }
+            .theme-toggle-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                bottom: 16px;
+                left: 16px;
+            }
+            .theme-modal .modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+            .theme-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .theme-btn {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 480px) {
-            .hero-title { font-size: 24px; }
-            .hero-subtitle { font-size: 13px; }
-            .header-title h1 { font-size: 16px; }
-            .header-title p { font-size: 10px; }
-            .btn { padding: 8px 16px; font-size: 12px; }
-            .search-card { padding: 16px; border-radius: var(--radius-sm); }
-            .certificate-card { padding: 16px; }
-            .academy-card { padding: 16px; }
-            .info-box { padding: 12px 14px; }
-            .info-box p { font-size: 13px; }
-            .cert-actions .btn { min-width: 60px; font-size: 11px; padding: 6px 12px; }
-            .cert-item .value { font-size: 14px; }
-            .logo-box { width: 40px; height: 40px; font-size: 16px; }
-            .academies-modal .modal-content { padding: 16px; }
-            .academies-modal .academy-item .name { font-size: 14px; }
-            .header-president .president-name { font-size: 11px; }
-            .theme-toggle-btn { width: 36px; height: 36px; font-size: 14px; bottom: 12px; left: 12px; }
-            .theme-modal .modal-content { padding: 16px; }
-            .theme-grid { grid-template-columns: 1fr 1fr; }
-            .theme-btn { padding: 8px 6px; font-size: 11px; }
+            .hero-title {
+                font-size: 24px;
+            }
+            .hero-subtitle {
+                font-size: 13px;
+            }
+            .header-title h1 {
+                font-size: 16px;
+            }
+            .header-title p {
+                font-size: 10px;
+            }
+            .btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            .search-card {
+                padding: 16px;
+                border-radius: var(--radius-sm);
+            }
+            .certificate-card {
+                padding: 16px;
+            }
+            .academy-card {
+                padding: 16px;
+            }
+            .info-box {
+                padding: 12px 14px;
+            }
+            .info-box p {
+                font-size: 13px;
+            }
+            .cert-actions .btn {
+                min-width: 60px;
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+            .cert-item .value {
+                font-size: 14px;
+            }
+            .logo-box {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .academies-modal .modal-content {
+                padding: 16px;
+            }
+            .academies-modal .academy-item .name {
+                font-size: 14px;
+            }
+            .header-president .president-name {
+                font-size: 11px;
+            }
+            .theme-toggle-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+                bottom: 12px;
+                left: 12px;
+            }
+            .theme-modal .modal-content {
+                padding: 16px;
+            }
+            .theme-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .theme-btn {
+                padding: 8px 6px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -1713,6 +1883,7 @@
         let filteredAcademies = [];
         let modalPage = 1;
         const modalItemsPerPage = 8;
+        let isReady = false;
 
         let settings = {
             unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
@@ -1762,7 +1933,7 @@
 
             function checkReady() {
                 loadedCount++;
-                if (loadedCount >= totalDocs) {
+                if (loadedCount >= totalDocs && !isReady) {
                     isReady = true;
                     document.getElementById('mainContainer').style.display = 'block';
                     document.getElementById('pageLoader').classList.remove('show');
@@ -1773,6 +1944,7 @@
             document.getElementById('mainContainer').style.display = 'none';
             document.getElementById('pageLoader').classList.add('show');
 
+            // General settings
             if (generalUnsubscribe) generalUnsubscribe();
             generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1804,6 +1976,7 @@
                 checkReady();
             });
 
+            // Texts settings
             if (textsUnsubscribe) textsUnsubscribe();
             textsUnsubscribe = db.collection('settings').doc('texts').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1833,6 +2006,7 @@
                 checkReady();
             });
 
+            // Design settings
             if (designUnsubscribe) designUnsubscribe();
             designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1851,6 +2025,7 @@
                 checkReady();
             });
 
+            // Security settings
             if (securityUnsubscribe) securityUnsubscribe();
             securityUnsubscribe = db.collection('settings').doc('security').onSnapshot(function(doc) {
                 if (doc.exists) {
@@ -1865,6 +2040,7 @@
                 checkReady();
             });
 
+            // Academies
             if (academiesUnsubscribe) academiesUnsubscribe();
             academiesUnsubscribe = db.collection('academies')
                 .where('isDeleted', '==', false)
@@ -1886,6 +2062,7 @@
                     checkReady();
                 });
 
+            // Certificates
             if (certificatesUnsubscribe) certificatesUnsubscribe();
             certificatesUnsubscribe = db.collection('certificates').where('isActive', '==', true).onSnapshot(function(snapshot) {
                 allCertificates = [];
@@ -2870,6 +3047,7 @@
             // تحميل الثيم المحلي
             loadTheme();
 
+            // بدء المستمعين
             startListeners();
 
             const params = new URLSearchParams(window.location.search);
