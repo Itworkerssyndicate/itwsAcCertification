@@ -259,15 +259,6 @@
             width: 0%;
             background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
             border-radius: 4px;
-            animation: loading 2.5s ease-in-out forwards;
-        }
-
-        @keyframes loading {
-            0% { width: 0%; }
-            30% { width: 30%; }
-            60% { width: 65%; }
-            85% { width: 85%; }
-            100% { width: 100%; }
         }
 
         .progress-text {
@@ -372,6 +363,17 @@
     </div>
 
     <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // ============================================================
+        // 1. تهيئة Firebase
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBfrK1IBCk2mim6cVbbtSd1e4FOQcpYQeo",
             authDomain: "itwsaccertification.firebaseapp.com",
@@ -386,6 +388,9 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // ============================================================
+        // 2. متغيرات
+        // ============================================================
         let settings = {
             unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
             committeeName: 'لجنة التحول الرقمي والتدريب',
@@ -405,7 +410,12 @@
 
         let splashDuration = 3;
         let isReady = false;
+        let loadedCount = 0;
+        const totalDocs = 2;
 
+        // ============================================================
+        // 3. تطبيق الإعدادات
+        // ============================================================
         function applySettings() {
             const titleEl = document.getElementById('splashTitle');
             const subtitleEl = document.getElementById('splashSubtitle');
@@ -467,6 +477,9 @@
             }
         }
 
+        // ============================================================
+        // 4. تطبيق الألوان
+        // ============================================================
         function applyColors(colors) {
             const root = document.documentElement;
             if (colors.primary) root.style.setProperty('--primary-color', colors.primary);
@@ -485,14 +498,23 @@
             }
         }
 
-        function redirectToHome() {
-            const progressText = document.getElementById('progressText');
-            if (progressText) progressText.textContent = 'تم التحميل بنجاح جاري التوجيه...';
-            setTimeout(function() {
-                window.location.href = 'home.html';
-            }, 500);
+        // ============================================================
+        // 5. التحقق من الجاهزية
+        // ============================================================
+        function checkReady() {
+            loadedCount++;
+            if (loadedCount >= totalDocs && !isReady) {
+                isReady = true;
+                // إظهار البطاقة بعد تحميل الإعدادات
+                document.querySelector('.splash-card').style.display = 'block';
+                console.log('✅ index.html جاهزة');
+                startSplash();
+            }
         }
 
+        // ============================================================
+        // 6. بدء شريط التحميل والتوجيه
+        // ============================================================
         function startSplash() {
             const progressBar = document.getElementById('progressBar');
             const progressText = document.getElementById('progressText');
@@ -517,7 +539,9 @@
                     currentStep++;
                 } else {
                     clearInterval(interval);
-                    setTimeout(redirectToHome, 300);
+                    setTimeout(function() {
+                        window.location.href = 'home.html';
+                    }, 300);
                 }
             }, (duration * 1000) / steps.length);
 
@@ -526,25 +550,21 @@
                     if (progressBar) progressBar.style.width = '100%';
                     if (progressText) progressText.textContent = 'تم التحميل جاري التوجيه...';
                     clearInterval(interval);
-                    setTimeout(redirectToHome, 300);
+                    setTimeout(function() {
+                        window.location.href = 'home.html';
+                    }, 300);
                 }
             }, (duration * 1000) + 1000);
         }
 
+        // ============================================================
+        // 7. استماع للإعدادات
+        // ============================================================
         function loadSettings() {
-            let loadedCount = 0;
-            const totalDocs = 2;
+            // إخفاء البطاقة مؤقتاً
+            document.querySelector('.splash-card').style.display = 'none';
 
-            function checkReady() {
-                loadedCount++;
-                if (loadedCount >= totalDocs) {
-                    applySettings();
-                    applyColors(settings.colors);
-                    isReady = true;
-                    startSplash();
-                }
-            }
-
+            // استماع للإعدادات العامة
             db.collection('settings').doc('general').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
@@ -558,20 +578,16 @@
                     if (data.splashDuration) splashDuration = data.splashDuration || 3;
                     if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
                 }
-                if (!isReady) {
-                    applySettings();
-                    applyColors(settings.colors);
-                    checkReady();
-                } else {
-                    applySettings();
-                    applyColors(settings.colors);
-                }
+                applySettings();
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
                 console.log('تحديث فوري: الإعدادات العامة');
             }, function(error) {
                 console.warn('خطأ في الاستماع للإعدادات العامة:', error);
                 if (!isReady) checkReady();
             });
 
+            // استماع للتصميم
             db.collection('settings').doc('design').onSnapshot(function(doc) {
                 if (doc.exists) {
                     const data = doc.data();
@@ -579,12 +595,8 @@
                         settings.colors = { ...settings.colors, ...data.colors };
                     }
                 }
-                if (!isReady) {
-                    applyColors(settings.colors);
-                    checkReady();
-                } else {
-                    applyColors(settings.colors);
-                }
+                applyColors(settings.colors);
+                if (!isReady) checkReady();
                 console.log('تحديث فوري: التصميم');
             }, function(error) {
                 console.warn('خطأ في الاستماع للتصميم:', error);
@@ -592,8 +604,12 @@
             });
         }
 
+        // ============================================================
+        // 8. بدء التشغيل
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log('شاشة الترحيب - التحميل المسبق للإعدادات');
+            console.log('🚫 تم منع قائمة النقر بزر الماوس الأيمن');
             loadSettings();
         });
     </script>
