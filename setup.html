@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="pageTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="keywords" id="metaKeywords" content="" />
+    <title id="pageTitle">تهيئة النظام - نقابة تكنولوجيا المعلومات والبرمجيات</title>
+    <meta name="description" id="metaDescription" content="تهيئة النظام وإعداد قاعدة البيانات" />
+    <meta name="keywords" id="metaKeywords" content="تهيئة, إعداد, قاعدة بيانات, نقابة" />
 
     <!-- Open Graph -->
-    <meta property="og:title" id="ogTitle" content="" />
-    <meta property="og:description" id="ogDescription" content="" />
+    <meta property="og:title" id="ogTitle" content="تهيئة النظام - نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta property="og:description" id="ogDescription" content="تهيئة النظام وإعداد قاعدة البيانات" />
     <meta property="og:image" id="ogImage" content="" />
     <meta property="og:url" id="ogUrl" content="" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" id="ogSiteName" content="" />
+    <meta property="og:site_name" id="ogSiteName" content="نقابة تكنولوجيا المعلومات والبرمجيات" />
     <meta property="og:locale" content="ar_EG" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" id="twitterTitle" content="" />
-    <meta name="twitter:description" id="twitterDescription" content="" />
+    <meta name="twitter:title" id="twitterTitle" content="تهيئة النظام - نقابة تكنولوجيا المعلومات والبرمجيات" />
+    <meta name="twitter:description" id="twitterDescription" content="تهيئة النظام وإعداد قاعدة البيانات" />
     <meta name="twitter:image" id="twitterImage" content="" />
 
     <!-- Icons -->
@@ -91,6 +91,45 @@
             --radius-lg: 28px;
         }
 
+        /* ===== PAGE LOADER ===== */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            transition: opacity 0.5s ease;
+        }
+
+        #pageLoader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #pageLoader .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        #pageLoader p {
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== باقي الـ CSS ===== */
         .page-bg {
             position: fixed;
             inset: 0;
@@ -238,6 +277,7 @@
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            display: none;
         }
 
         .card::before {
@@ -504,8 +544,6 @@
             margin: 0 auto 12px;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         .log {
             background: rgba(0,0,0,0.4);
             border-radius: var(--radius-sm);
@@ -557,7 +595,7 @@
 
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 10px;
             margin: 16px 0;
             position: relative;
@@ -626,6 +664,12 @@
 </head>
 <body>
 
+    <!-- ===== PAGE LOADER ===== -->
+    <div id="pageLoader">
+        <div class="spinner"></div>
+        <p>جاري تحميل الإعدادات...</p>
+    </div>
+
     <div class="page-bg"></div>
 
     <div class="particles-container">
@@ -652,18 +696,18 @@
 
     <div class="container">
 
-        <div class="card">
+        <div class="card" id="setupCard">
 
             <div class="header">
                 <div class="logo">
                     <div class="logo-box">ن.ت</div>
                     <div>
-                        <h1 id="pageTitleHeader"></h1>
-                        <p id="pageSubtitle"></p>
+                        <h1 id="pageTitleHeader">تهيئة النظام</h1>
+                        <p id="pageSubtitle">نقابة تكنولوجيا المعلومات والبرمجيات</p>
                     </div>
                 </div>
                 <div class="flex" style="gap:8px;">
-                    <a href="index.html" class="btn btn-outline btn-sm" id="homeBtn"></a>
+                    <a href="index.html" class="btn btn-outline btn-sm" id="homeBtn">الرئيسية</a>
                 </div>
             </div>
 
@@ -671,134 +715,139 @@
 
             <div class="loader" id="loader">
                 <div class="spinner"></div>
-                <div style="color:var(--text-muted);" id="loaderText"></div>
+                <div style="color:var(--text-muted);" id="loaderText">جاري التنفيذ...</div>
             </div>
 
             <div class="status-grid" id="statusGrid">
                 <div class="status-item">
                     <div class="icon">🔥</div>
-                    <div class="title" id="statusFirebaseTitle"></div>
-                    <div class="value pending" id="sFirebase"></div>
+                    <div class="title" id="statusFirebaseTitle">Firebase</div>
+                    <div class="value pending" id="sFirebase">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">☁️</div>
-                    <div class="title" id="statusCloudTitle"></div>
-                    <div class="value pending" id="sCloudinary"></div>
+                    <div class="title" id="statusCloudTitle">Cloudinary</div>
+                    <div class="value pending" id="sCloudinary">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">👤</div>
-                    <div class="title" id="statusUsersTitle"></div>
-                    <div class="value pending" id="sUsers"></div>
+                    <div class="title" id="statusUsersTitle">المستخدمين</div>
+                    <div class="value pending" id="sUsers">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🏛️</div>
-                    <div class="title" id="statusAcademiesTitle"></div>
-                    <div class="value pending" id="sAcademies"></div>
+                    <div class="title" id="statusAcademiesTitle">الأكاديميات</div>
+                    <div class="value pending" id="sAcademies">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📜</div>
-                    <div class="title" id="statusCertificatesTitle"></div>
-                    <div class="value pending" id="sCertificates"></div>
+                    <div class="title" id="statusCertificatesTitle">الشهادات</div>
+                    <div class="value pending" id="sCertificates">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">📊</div>
-                    <div class="title" id="statusActivitiesTitle"></div>
-                    <div class="value pending" id="sActivities"></div>
+                    <div class="title" id="statusActivitiesTitle">النشاطات</div>
+                    <div class="value pending" id="sActivities">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">🔍</div>
-                    <div class="title" id="statusSearchTitle"></div>
-                    <div class="value pending" id="sSearchLogs"></div>
+                    <div class="title" id="statusSearchTitle">سجل البحث</div>
+                    <div class="value pending" id="sSearchLogs">جاري</div>
+                </div>
+                <div class="status-item">
+                    <div class="icon">⏱️</div>
+                    <div class="title" id="statusSessionsTitle">الجلسات</div>
+                    <div class="value pending" id="sSessions">جاري</div>
                 </div>
                 <div class="status-item">
                     <div class="icon">⚙️</div>
-                    <div class="title" id="statusSettingsTitle"></div>
-                    <div class="value pending" id="sSettings"></div>
+                    <div class="title" id="statusSettingsTitle">الإعدادات</div>
+                    <div class="value pending" id="sSettings">جاري</div>
                 </div>
             </div>
 
             <div style="text-align:center;margin-bottom:16px;position:relative;z-index:2;">
                 <button class="btn btn-success" onclick="runFullSetup()" id="mainBtn" style="font-size:18px;padding:16px 40px;">
-                    <span id="mainBtnText"></span>
+                    <span id="mainBtnText">تهيئة النظام بالكامل</span>
                 </button>
             </div>
 
-            <div style="font-size:12px;color:var(--text-dim);text-align:center;margin-bottom:16px;position:relative;z-index:2;" id="mainBtnDesc"></div>
+            <div style="font-size:12px;color:var(--text-dim);text-align:center;margin-bottom:16px;position:relative;z-index:2;" id="mainBtnDesc">سيتم إنشاء قاعدة البيانات بالكامل مع مستخدم سوبر أدمن</div>
 
             <div class="border-top">
-                <div class="section-title" id="adminSectionTitle"></div>
+                <div class="section-title" id="adminSectionTitle">بيانات السوبر أدمن</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="adminEmailLabel"></label>
+                        <label id="adminEmailLabel">البريد الإلكتروني</label>
                         <input type="email" id="adminEmail" value="superadmin@itws.com" />
                     </div>
                     <div class="form-group">
-                        <label id="adminPasswordLabel"></label>
+                        <label id="adminPasswordLabel">كلمة المرور</label>
                         <input type="password" id="adminPassword" value="Admin@2026" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="adminNameLabel"></label>
+                        <label id="adminNameLabel">الاسم الكامل</label>
                         <input type="text" id="adminName" value="سوبر أدمن النظام" />
                     </div>
                     <div class="form-group">
-                        <label id="adminPhoneLabel"></label>
+                        <label id="adminPhoneLabel">رقم الهاتف</label>
                         <input type="text" id="adminPhone" value="01234567890" />
                     </div>
                 </div>
             </div>
 
             <div class="border-top">
-                <div class="section-title" id="settingsSectionTitle"></div>
+                <div class="section-title" id="settingsSectionTitle">إعدادات النظام</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="unionNameLabel"></label>
+                        <label id="unionNameLabel">اسم النقابة</label>
                         <input type="text" id="unionName" value="نقابة تكنولوجيا المعلومات والبرمجيات" />
                     </div>
                     <div class="form-group">
-                        <label id="committeeNameLabel"></label>
+                        <label id="committeeNameLabel">اسم اللجنة</label>
                         <input type="text" id="committeeName" value="لجنة التحول الرقمي والتدريب" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="splashDurationLabel"></label>
+                        <label id="splashDurationLabel">مدة العرض الترحيبي (ثواني)</label>
                         <input type="number" id="splashDuration" value="3" min="1" max="15" />
                     </div>
                     <div class="form-group">
-                        <label id="sessionTimeoutLabel"></label>
+                        <label id="sessionTimeoutLabel">مدة الجلسة (دقائق)</label>
                         <input type="number" id="sessionTimeout" value="30" min="5" max="120" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="infoBoxLabel"></label>
+                        <label id="infoBoxLabel">نص البوكس تحت البحث</label>
                         <input type="text" id="infoBoxText" value="يمكنك البحث عن أي شهادة تدريبية باستخدام الكود المطبوع عليها، أو البحث عن أكاديمية باستخدام الرقم الاعتمادي الخاص بها." />
                     </div>
                     <div class="form-group">
-                        <label id="footerTextLabel"></label>
+                        <label id="footerTextLabel">نص تذييل الصفحة</label>
                         <input type="text" id="footerText" value="© 2026 نقابة تكنولوجيا المعلومات والبرمجيات - جميع الحقوق محفوظة" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label id="servicesTextLabel"></label>
+                        <label id="servicesTextLabel">نص زر الخدمات</label>
                         <input type="text" id="servicesBtnText" value="خدمات النقابة الإلكترونية" />
                     </div>
                     <div class="form-group">
-                        <label id="servicesLinkLabel"></label>
+                        <label id="servicesLinkLabel">رابط زر الخدمات</label>
                         <input type="url" id="servicesBtnLink" value="https://itws.org.eg/services" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label id="presidentNameLabel"></label>
+                    <label id="presidentNameLabel">اسم النقيب العام</label>
                     <input type="text" id="presidentName" value="المهندس / محمود جميل" />
                 </div>
             </div>
 
             <div class="border-top">
-                <div class="section-title" id="imagesSectionTitle"></div>
+                <div class="section-title" id="imagesSectionTitle">رفع اللوجو والختم</div>
 
                 <div class="form-row">
                     <div>
@@ -806,12 +855,12 @@
                             <div class="preview" id="logoPreview">
                                 <img src="" alt="لوجو النقابة" style="display:none;" />
                             </div>
-                            <div class="text" id="logoPlaceholder"></div>
-                            <div class="sub" id="logoSub"></div>
+                            <div class="text" id="logoPlaceholder">اضغط لرفع لوجو النقابة</div>
+                            <div class="sub" id="logoSub">PNG, JPG, SVG • حد أقصى 2MB</div>
                             <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="previewLogo(event)" />
                         </div>
                         <div class="flex" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn"></button>
+                            <button class="btn btn-primary btn-sm" onclick="uploadLogoToCloudinary()" id="uploadLogoBtn">رفع اللوجو</button>
                             <span class="upload-status" id="logoStatus"></span>
                         </div>
                     </div>
@@ -821,42 +870,50 @@
                             <div class="preview" id="stampPreview">
                                 <img src="" alt="ختم النقابة" style="display:none;" />
                             </div>
-                            <div class="text" id="stampPlaceholder"></div>
-                            <div class="sub" id="stampSub"></div>
+                            <div class="text" id="stampPlaceholder">اضغط لرفع ختم النقابة</div>
+                            <div class="sub" id="stampSub">PNG, JPG, SVG • حد أقصى 2MB</div>
                             <input type="file" id="stampInput" accept="image/*" style="display:none;" onchange="previewStamp(event)" />
                         </div>
                         <div class="flex" style="gap:8px;margin-top:8px;">
-                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn"></button>
+                            <button class="btn btn-primary btn-sm" onclick="uploadStampToCloudinary()" id="uploadStampBtn">رفع الختم</button>
                             <span class="upload-status" id="stampStatus"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex" style="gap:10px;margin-top:12px;">
-                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromFirestore()" id="loadImagesBtn"></button>
-                    <button class="btn btn-danger btn-sm" onclick="clearImages()" id="clearImagesBtn"></button>
+                    <button class="btn btn-outline btn-sm" onclick="loadImagesFromFirestore()" id="loadImagesBtn">تحميل الصور الحالية</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearImages()" id="clearImagesBtn">حذف الصور</button>
                 </div>
             </div>
 
             <div class="border-top">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                    <div class="section-title" style="margin-bottom:0;" id="logTitle"></div>
-                    <button class="btn btn-outline btn-sm" onclick="clearLog()" id="clearLogBtn"></button>
+                    <div class="section-title" style="margin-bottom:0;" id="logTitle">سجل العمليات</div>
+                    <button class="btn btn-outline btn-sm" onclick="clearLog()" id="clearLogBtn">مسح السجل</button>
                 </div>
                 <div class="log" id="log">
-                    <div class="line info" id="logReady"></div>
+                    <div class="line info" id="logReady">جاهز - اضغط على زر التهيئة</div>
                 </div>
             </div>
 
         </div>
 
         <div class="footer">
-            <span id="footerText"></span>
+            <span id="footerText">© 2026 نقابة تكنولوجيا المعلومات والبرمجيات</span>
         </div>
 
     </div>
 
     <script>
+        // ============================================================
+        // منع قائمة النقر بزر الماوس الأيمن
+        // ============================================================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
         // ============================================================
         // 1. تهيئة Firebase
         // ============================================================
@@ -870,7 +927,6 @@
             measurementId: "G-JBMGW74DV4"
         };
 
-        // التأكد من عدم وجود تطبيق Firebase مكرر
         if (firebase.apps.length > 0) {
             try {
                 firebase.apps.forEach(app => app.delete());
@@ -896,6 +952,8 @@
         let logoFile = null;
         let stampFile = null;
         let isRunning = false;
+        let isReady = false;
+        let loaderHidden = false;
 
         let settings = {
             pageTitleHeader: 'تهيئة النظام',
@@ -939,6 +997,7 @@
             statusCertificatesTitle: 'الشهادات',
             statusActivitiesTitle: 'النشاطات',
             statusSearchTitle: 'سجل البحث',
+            statusSessionsTitle: 'الجلسات',
             statusSettingsTitle: 'الإعدادات',
             unionName: 'نقابة تكنولوجيا المعلومات والبرمجيات',
             committeeName: 'لجنة التحول الرقمي والتدريب',
@@ -967,7 +1026,34 @@
         };
 
         // ============================================================
-        // 4. تطبيق الإعدادات النصية
+        // 4. إخفاء وإظهار المحتوى
+        // ============================================================
+        function hidePageLoader() {
+            if (loaderHidden) return;
+            loaderHidden = true;
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.add('hidden');
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+            document.getElementById('setupCard').style.display = 'block';
+        }
+
+        // ============================================================
+        // 5. مهلة زمنية احتياطية 3 ثواني
+        // ============================================================
+        setTimeout(function() {
+            if (!isReady) {
+                console.warn('⚠️ انتهى الوقت الاحتياطي، جاري إظهار الصفحة مع البيانات المحلية');
+                hidePageLoader();
+                isReady = true;
+            }
+        }, 3000);
+
+        // ============================================================
+        // 6. تطبيق الإعدادات النصية
         // ============================================================
         function applyTextSettings() {
             const pageTitle = document.getElementById('pageTitle');
@@ -1012,6 +1098,7 @@
             const statusCertificatesTitle = document.getElementById('statusCertificatesTitle');
             const statusActivitiesTitle = document.getElementById('statusActivitiesTitle');
             const statusSearchTitle = document.getElementById('statusSearchTitle');
+            const statusSessionsTitle = document.getElementById('statusSessionsTitle');
             const statusSettingsTitle = document.getElementById('statusSettingsTitle');
 
             if (pageTitle) pageTitle.textContent = settings.pageTitleHeader;
@@ -1056,11 +1143,12 @@
             if (statusCertificatesTitle) statusCertificatesTitle.textContent = settings.statusCertificatesTitle;
             if (statusActivitiesTitle) statusActivitiesTitle.textContent = settings.statusActivitiesTitle;
             if (statusSearchTitle) statusSearchTitle.textContent = settings.statusSearchTitle;
+            if (statusSessionsTitle) statusSessionsTitle.textContent = settings.statusSessionsTitle;
             if (statusSettingsTitle) statusSettingsTitle.textContent = settings.statusSettingsTitle;
         }
 
         // ============================================================
-        // 5. تطبيق الألوان
+        // 7. تطبيق الألوان
         // ============================================================
         function applyColors(colors) {
             const root = document.documentElement;
@@ -1089,28 +1177,68 @@
         }
 
         // ============================================================
-        // 6. جلب الإعدادات من Firestore
+        // 8. جلب الإعدادات من Firestore
         // ============================================================
-        function loadSettings() {
-            db.collection('settings').doc('general').get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
-                        applyColors(settings.colors);
-                    } else {
-                        applyColors(settings.colors);
-                    }
-                })
-                .catch(function() {
-                    applyColors(settings.colors);
-                });
+        let generalUnsubscribe = null;
+        let designUnsubscribe = null;
 
-            applyTextSettings();
+        function loadSettings() {
+            document.getElementById('setupCard').style.display = 'none';
+            document.getElementById('pageLoader').classList.remove('hidden');
+
+            if (generalUnsubscribe) generalUnsubscribe();
+            generalUnsubscribe = db.collection('settings').doc('general').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) settings.colors = { ...settings.colors, ...data.colors };
+                    if (data.unionName) settings.unionName = data.unionName;
+                    if (data.committeeName) settings.committeeName = data.committeeName;
+                    if (data.splashDuration) settings.splashDuration = data.splashDuration;
+                    if (data.sessionTimeout) settings.sessionTimeout = data.sessionTimeout;
+                    if (data.infoBoxText) settings.infoBoxText = data.infoBoxText;
+                    if (data.footerText) settings.footerText = data.footerText;
+                    if (data.presidentName) settings.presidentName = data.presidentName;
+                }
+                applyColors(settings.colors);
+                applyTextSettings();
+                if (!isReady) {
+                    isReady = true;
+                    hidePageLoader();
+                }
+                console.log('تحديث فوري: الإعدادات العامة (Setup)');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للإعدادات العامة:', error);
+                if (!isReady) {
+                    isReady = true;
+                    hidePageLoader();
+                }
+            });
+
+            if (designUnsubscribe) designUnsubscribe();
+            designUnsubscribe = db.collection('settings').doc('design').onSnapshot(function(doc) {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.colors) {
+                        settings.colors = { ...settings.colors, ...data.colors };
+                    }
+                }
+                applyColors(settings.colors);
+                if (!isReady) {
+                    isReady = true;
+                    hidePageLoader();
+                }
+                console.log('تحديث فوري: التصميم (Setup)');
+            }, function(error) {
+                console.warn('خطأ في الاستماع للتصميم:', error);
+                if (!isReady) {
+                    isReady = true;
+                    hidePageLoader();
+                }
+            });
         }
 
         // ============================================================
-        // 7. دوال مساعدة
+        // 9. دوال مساعدة
         // ============================================================
         function addLog(msg, type = 'info') {
             const log = document.getElementById('log');
@@ -1164,7 +1292,7 @@
         }
 
         // ============================================================
-        // 8. رفع الصور
+        // 10. رفع الصور
         // ============================================================
         function previewLogo(e) {
             const file = e.target.files[0];
@@ -1360,10 +1488,10 @@
         }
 
         // ============================================================
-        // 9. مسح جميع المجموعات (ما عدا settings)
+        // 11. مسح جميع المجموعات (ما عدا settings)
         // ============================================================
         async function clearAllCollections() {
-            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs'];
+            const collections = ['users', 'academies', 'certificates', 'activities', 'searchLogs', 'sessions'];
             let cleared = 0;
 
             for (const name of collections) {
@@ -1403,17 +1531,15 @@
         }
 
         // ============================================================
-        // 10. إنشاء المستخدم - حل مشكلة auth/invalid-credential
+        // 12. إنشاء المستخدم
         // ============================================================
         async function createUser(email, password, name, phone) {
             addLog('جاري إنشاء المستخدم: ' + email, 'info');
 
             try {
-                // 1. تسجيل الخروج من أي جلسة سابقة
                 try { await auth.signOut(); } catch(e) {}
                 await sleep(500);
 
-                // 2. محاولة تسجيل الدخول (لو المستخدم موجود)
                 try {
                     const cred = await auth.signInWithEmailAndPassword(email, password);
                     const uid = cred.user.uid;
@@ -1432,7 +1558,6 @@
 
                     return { success: true, uid, isNew: false };
                 } catch (loginErr) {
-                    // 3. لو المستخدم غير موجود → ننشئه
                     if (loginErr.code === 'auth/user-not-found') {
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         const uid = cred.user.uid;
@@ -1451,16 +1576,13 @@
 
                         return { success: true, uid, isNew: true };
                     } else if (loginErr.code === 'auth/invalid-credential') {
-                        // 4. مشكلة في بيانات الاعتماد - نعيد المحاولة مع تنظيف كامل
                         addLog('مشكلة في بيانات الاعتماد، جاري إعادة المحاولة...', 'warning');
                         await sleep(1000);
 
-                        // التأكد من أن البريد صحيح
                         if (!email || email.length < 5 || !email.includes('@')) {
                             throw new Error('البريد الإلكتروني غير صحيح');
                         }
 
-                        // نحاول إنشاء المستخدم من جديد
                         const cred = await auth.createUserWithEmailAndPassword(email, password);
                         const uid = cred.user.uid;
                         addLog('تم إنشاء المستخدم بعد إعادة المحاولة', 'success');
@@ -1488,7 +1610,7 @@
         }
 
         // ============================================================
-        // 11. حفظ الإعدادات
+        // 13. حفظ الإعدادات
         // ============================================================
         async function saveSettings() {
             const data = {
@@ -1518,7 +1640,28 @@
         }
 
         // ============================================================
-        // 12. التحقق من Firebase
+        // 14. إنشاء هيكل الجلسات
+        // ============================================================
+        async function createSessionsStructure() {
+            try {
+                // إنشاء وثيقة init في جدول sessions
+                await db.collection('sessions').doc('_init').set({
+                    initialized: true,
+                    createdAt: getEgyptTime(),
+                    description: 'جدول جلسات المستخدمين - يستخدم لتتبع المتصلين'
+                });
+                addLog('تم إنشاء هيكل الجلسات', 'success');
+                setStatus('sSessions', 'جاهز', 'done');
+                return true;
+            } catch (err) {
+                addLog('خطأ في إنشاء هيكل الجلسات: ' + err.message, 'error');
+                setStatus('sSessions', 'خطأ', 'error');
+                return false;
+            }
+        }
+
+        // ============================================================
+        // 15. التحقق من Firebase
         // ============================================================
         async function checkFirebase() {
             try {
@@ -1534,7 +1677,7 @@
         }
 
         // ============================================================
-        // 13. التحقق من Cloudinary
+        // 16. التحقق من Cloudinary
         // ============================================================
         async function checkCloudinary() {
             try {
@@ -1555,7 +1698,7 @@
         }
 
         // ============================================================
-        // 14. تشغيل التهيئة الكاملة (ضغطة واحدة)
+        // 17. تشغيل التهيئة الكاملة (ضغطة واحدة)
         // ============================================================
         async function runFullSetup() {
             if (isRunning) {
@@ -1610,18 +1753,22 @@
                 await clearAllCollections();
                 await sleep(500);
 
-                // 3. حفظ الإعدادات
+                // 3. إنشاء هيكل الجلسات
+                await createSessionsStructure();
+                await sleep(300);
+
+                // 4. حفظ الإعدادات
                 await saveSettings();
                 await sleep(300);
 
-                // 4. إنشاء المستخدم (مع حل مشكلة المصادقة)
+                // 5. إنشاء المستخدم
                 await createUser(email, password, name, phone);
                 await sleep(300);
 
-                // 5. تحميل الصور إن وجدت
+                // 6. تحميل الصور إن وجدت
                 loadImagesFromFirestore();
 
-                // 6. تحديث الحالة النهائية
+                // 7. تحديث الحالة النهائية
                 setStatus('sUsers', '✅ ' + email, 'done');
                 setStatus('sAcademies', 'جاهز', 'done');
                 setStatus('sCertificates', 'جاهز', 'done');
@@ -1630,8 +1777,9 @@
 
                 showMsg('تمت تهيئة النظام بالكامل بنجاح!\n' + email + ' / ' + password, 'success');
                 addLog('اكتملت تهيئة النظام بالكامل', 'success');
-                addLog(email + ' / ' + password, 'info');
-                addLog('يمكنك تسجيل الدخول الآن', 'info');
+                addLog('📧 ' + email + ' / 🔑 ' + password, 'info');
+                addLog('✅ يمكنك تسجيل الدخول الآن', 'success');
+                addLog('✅ تم إنشاء جدول الجلسات للمستخدمين', 'success');
 
             } catch (err) {
                 showMsg('خطأ: ' + err.message, 'error');
@@ -1650,10 +1798,9 @@
         }
 
         // ============================================================
-        // 15. تحميل الصفحة
+        // 18. تحميل الصفحة
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // تسجيل الخروج من أي جلسة سابقة لتجنب مشاكل المصادقة
             auth.signOut().catch(() => {});
 
             loadSettings();
@@ -1677,7 +1824,8 @@
             loadImagesFromFirestore();
             addLog(settings.logReady, 'info');
             addLog('اضغط "تهيئة النظام بالكامل" لإنشاء قاعدة البيانات', 'info');
-            addLog('تم إصلاح مشكلة auth/invalid-credential', 'success');
+            addLog('✅ تم إضافة جدول الجلسات (sessions) لتتبع المستخدمين', 'success');
+            addLog('🔧 تم إصلاح مشكلة auth/invalid-credential', 'success');
         });
     </script>
 
